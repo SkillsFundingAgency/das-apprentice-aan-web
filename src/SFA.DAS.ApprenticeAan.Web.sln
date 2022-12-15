@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32804.467
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ApprenticeAan.Web", "SFA.DAS.ApprenticeAan.Web\SFA.DAS.ApprenticeAan.Web.csproj", "{EF3F9ED0-2912-4265-8DEE-3347AC2D5C69}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF3F9ED0-2912-4265-8DEE-3347AC2D5C69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF3F9ED0-2912-4265-8DEE-3347AC2D5C69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF3F9ED0-2912-4265-8DEE-3347AC2D5C69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF3F9ED0-2912-4265-8DEE-3347AC2D5C69}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4A73F9BF-B39B-4624-A3E9-2DE9DEE32CC5}
+	EndGlobalSection
+EndGlobal
