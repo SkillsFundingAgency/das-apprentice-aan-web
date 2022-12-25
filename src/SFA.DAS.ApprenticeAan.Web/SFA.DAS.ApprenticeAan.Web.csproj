@@ -12,4 +12,8 @@
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="3.0.84" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.ApprenticeAan.Application\SFA.DAS.ApprenticeAan.Application.csproj" />
+  </ItemGroup>
+
 </Project>
