@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ApprenticeAan.Web", "SFA.DAS.ApprenticeAan.Web\SFA.DAS.ApprenticeAan.Web.csproj", "{EF3F9ED0-2912-4265-8DEE-3347AC2D5C69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ApprenticeAan.Web", "SFA.DAS.ApprenticeAan.Web\SFA.DAS.ApprenticeAan.Web.csproj", "{EF3F9ED0-2912-4265-8DEE-3347AC2D5C69}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{60CC78EB-71AE-462B-BFC8-8DE07C9D4C96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ApprenticeAan.Web.UnitTests", "SFA.DAS.ApprenticeAan.Web.UnitTests\SFA.DAS.ApprenticeAan.Web.UnitTests.csproj", "{8419610B-919D-4FBC-964C-E63F24F3120C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{EF3F9ED0-2912-4265-8DEE-3347AC2D5C69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF3F9ED0-2912-4265-8DEE-3347AC2D5C69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF3F9ED0-2912-4265-8DEE-3347AC2D5C69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8419610B-919D-4FBC-964C-E63F24F3120C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8419610B-919D-4FBC-964C-E63F24F3120C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8419610B-919D-4FBC-964C-E63F24F3120C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8419610B-919D-4FBC-964C-E63F24F3120C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8419610B-919D-4FBC-964C-E63F24F3120C} = {60CC78EB-71AE-462B-BFC8-8DE07C9D4C96}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4A73F9BF-B39B-4624-A3E9-2DE9DEE32CC5}
