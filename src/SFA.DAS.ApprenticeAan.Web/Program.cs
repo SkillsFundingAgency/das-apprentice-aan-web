@@ -1,8 +1,11 @@
 using NLog.Web;
+using SFA.DAS.ApprenticeAan.Web.AppStart;
 
 var builder = WebApplication.CreateBuilder(args);
 NLogBuilder.ConfigureNLog("nlog.config");
 builder.Host.UseNLog();
+
+builder.Configuration.LoadConfiguration();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
