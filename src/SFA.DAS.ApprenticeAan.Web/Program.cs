@@ -1,4 +1,8 @@
+using NLog.Web;
+
 var builder = WebApplication.CreateBuilder(args);
+NLogBuilder.ConfigureNLog("nlog.config");
+builder.Host.UseNLog();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
