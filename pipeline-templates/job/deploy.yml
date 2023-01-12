@@ -40,7 +40,7 @@ jobs:
             TargetFileName: '*.schema.json'
             TableName: Configuration
             ConfigurationSecrets:
-              DefaultSessionRedisConnectionString: $(DefaultSessionRedisConnectionString)
+              SharedRedisConnectionString: $(SharedRedisConnectionString)
         - template: azure-pipelines-templates/deploy/step/app-deploy.yml@das-platform-building-blocks
           parameters:
             ServiceConnection: ${{ parameters.ServiceConnection }}
