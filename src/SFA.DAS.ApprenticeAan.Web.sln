@@ -7,15 +7,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ApprenticeAan.Web",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{60CC78EB-71AE-462B-BFC8-8DE07C9D4C96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ApprenticeAan.Web.UnitTests", "SFA.DAS.ApprenticeAan.Web.UnitTests\SFA.DAS.ApprenticeAan.Web.UnitTests.csproj", "{8419610B-919D-4FBC-964C-E63F24F3120C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ApprenticeAan.Web.UnitTests", "SFA.DAS.ApprenticeAan.Web.UnitTests\SFA.DAS.ApprenticeAan.Web.UnitTests.csproj", "{8419610B-919D-4FBC-964C-E63F24F3120C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ApprenticeAan.Application", "SFA.DAS.ApprenticeAan.Application\SFA.DAS.ApprenticeAan.Application.csproj", "{92BC32E0-3AA1-4DD7-AF6A-1227B86A1FA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ApprenticeAan.Application", "SFA.DAS.ApprenticeAan.Application\SFA.DAS.ApprenticeAan.Application.csproj", "{92BC32E0-3AA1-4DD7-AF6A-1227B86A1FA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ApprenticeAan.Application.UnitTests", "SFA.DAS.ApprenticeAan.Application.UnitTests\SFA.DAS.ApprenticeAan.Application.UnitTests.csproj", "{95F3D5AD-02B6-458D-AB5F-C068983AAAC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ApprenticeAan.Application.UnitTests", "SFA.DAS.ApprenticeAan.Application.UnitTests\SFA.DAS.ApprenticeAan.Application.UnitTests.csproj", "{95F3D5AD-02B6-458D-AB5F-C068983AAAC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ApprenticeAan.Infrastructure", "SFA.DAS.ApprenticeAan.Infrastructure\SFA.DAS.ApprenticeAan.Infrastructure.csproj", "{69611BAB-1945-4EF1-9D1A-7B96FDA8361A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ApprenticeAan.Infrastructure", "SFA.DAS.ApprenticeAan.Infrastructure\SFA.DAS.ApprenticeAan.Infrastructure.csproj", "{69611BAB-1945-4EF1-9D1A-7B96FDA8361A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ApprenticeAan.Infrastructure.UnitTests", "SFA.DAS.ApprenticeAan.Infrastructure.UnitTests\SFA.DAS.ApprenticeAan.Infrastructure.UnitTests.csproj", "{FA00E9C5-6D6E-4A81-A741-C476D8F70A10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ApprenticeAan.Infrastructure.UnitTests", "SFA.DAS.ApprenticeAan.Infrastructure.UnitTests\SFA.DAS.ApprenticeAan.Infrastructure.UnitTests.csproj", "{FA00E9C5-6D6E-4A81-A741-C476D8F70A10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ApprenticeAan.Domain", "SFA.DAS.ApprenticeAan.Domain\SFA.DAS.ApprenticeAan.Domain.csproj", "{4A6B7F51-7DF4-465C-AF37-2BC96573AE33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{FA00E9C5-6D6E-4A81-A741-C476D8F70A10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA00E9C5-6D6E-4A81-A741-C476D8F70A10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA00E9C5-6D6E-4A81-A741-C476D8F70A10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A6B7F51-7DF4-465C-AF37-2BC96573AE33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A6B7F51-7DF4-465C-AF37-2BC96573AE33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A6B7F51-7DF4-465C-AF37-2BC96573AE33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A6B7F51-7DF4-465C-AF37-2BC96573AE33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

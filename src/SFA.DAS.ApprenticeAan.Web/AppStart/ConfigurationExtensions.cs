@@ -1,17 +1,20 @@
-﻿using SFA.DAS.Configuration.AzureTableStorage;
+﻿using System.Diagnostics.CodeAnalysis;
+using SFA.DAS.Configuration.AzureTableStorage;
 
-namespace SFA.DAS.ApprenticeAan.Web.AppStart;
-
-public static class ConfigurationExtensions
+namespace SFA.DAS.ApprenticeAan.Web.AppStart
 {
-    public static void LoadConfiguration(this ConfigurationManager configuration)
+    [ExcludeFromCodeCoverage]
+    public static class ConfigurationExtensions
     {
-        configuration.AddAzureTableStorage(options =>
+        public static void LoadConfiguration(this ConfigurationManager configuration)
         {
-            options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
-            options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
-            options.EnvironmentName = configuration["EnvironmentName"];
-            options.PreFixConfigurationKeys = false;
-        });
+            configuration.AddAzureTableStorage(options =>
+            {
+                options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
+                options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
+                options.EnvironmentName = configuration["EnvironmentName"];
+                options.PreFixConfigurationKeys = false;
+            });
+        }
     }
 }

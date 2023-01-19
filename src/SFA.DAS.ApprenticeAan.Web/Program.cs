@@ -1,34 +1,19 @@
+using System.Diagnostics.CodeAnalysis;
 using NLog.Web;
-using SFA.DAS.ApprenticeAan.Web.AppStart;
 
-var builder = WebApplication.CreateBuilder(args);
-NLogBuilder.ConfigureNLog("nlog.config");
-builder.Host.UseNLog();
-
-builder.Configuration.LoadConfiguration();
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+namespace SFA.DAS.ApprenticeAan.Web
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    [ExcludeFromCodeCoverage]
+    public static class Program
+    {
+        public static void Main(string[] args) => CreateHostBuilder(args).Build().Run();
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseNLog();
+                });
+    }
 }
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseAuthorization();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.Run();

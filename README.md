@@ -1,6 +1,6 @@
 ## ⛔Never push sensitive information such as client id's, secrets or keys into repositories including in the README file⛔
 
-# _Project Name_
+# _SFA.DAS.ApprenticeAan.Web_
 
 <img src="https://avatars.githubusercontent.com/u/9841374?s=200&v=4" align="right" alt="UK Government logo">
 
@@ -12,32 +12,6 @@ _Update these badges with the correct information for this project. These give t
 [![Confluence Project](https://img.shields.io/badge/Confluence-Project-blue)](https://skillsfundingagency.atlassian.net/wiki/spaces/_pageurl_)
 [![License](https://img.shields.io/badge/license-MIT-lightgrey.svg?longCache=true&style=flat-square)](https://en.wikipedia.org/wiki/MIT_License)
 
-_Add a description of the project and the high-level features that it provides. This should give new developers an understanding of the background of the project and the reason for its existence._
-
-_For Example_
-
-```
-The ServiceBus Support Utility is an Azure ServiceBus Queue management tool that allows you to manage messages that have moved to error queues without having to resort to managing each message individually.
-
-1. Utilises Azure Active Directory for Authentication
-2. Automatically enumerates error queues within the Azure Service Bus namespace
-3. Messages can be retrieved per queue
-4. Retrieved messages can be:
-    - Aborted - all retrieved messages will be placed back on the queue they were received from
-    - Replayed - messages will be moved back onto the original processing queue so that they can be processed again
-    - Deleted - messages will be removed and will be no longer available for processing
-```
-
-## How It Works
-
-_Add a description of how the project works technically, this should give new developers an insight into the how the project hangs together, the core concepts in-use and the high-level features that it provides_
-
-_For Example_
-```
-The ServiceBus Utility is a combination of website and background processor that enumerates Azure Service Bus queues within a namespace using the error queue naming convention and presents them to the user as a selectable list, allowing messages on a queue to be retrieved for investigation. Once a queue has been selected the website will retrieve the messages from the error queue and place them into a CosmosDB under the exclusive possession of the logged in user. Once the messages have been moved into the CosmosDB the background processor will ensure that those messages are held for a maximum sliding time period of 24 hours. If messages are still present after this period expires the background processer will move them back to the error queue automatically so that they aren't held indefinitely.
-
-Depending on the action performed by the user the messages will follow one of three paths. In the event that the user Aborts the process, the messages are moved back to the error queue they came from, if the user replays the messages they will be placed back onto the "processing queue" they were on prior to ending up in the error queue and will be removed from the CosmosDB. If the user deletes the messages then they will be removed from the CosmosDB and will be gone forever.
-```
 
 ## 🚀 Installation
 
@@ -50,7 +24,6 @@ _For Example_
 * A clone of this repository
 * A code editor that supports Azure functions and .NetCore 3.1
 * A CosmosDB instance or emulator
-* An Azure Service Bus instance
 * An Azure Active Directory account with the appropriate roles as per the [config](https://github.com/SkillsFundingAgency/das-employer-config/blob/master/das-tools-servicebus-support/SFA.DAS.Tools.Servicebus.Support.json)
 * The [das-audit](https://github.com/SkillsFundingAgency/das-audit) API available either running locally or accessible in an Azure tenancy    
 ```
@@ -82,7 +55,7 @@ AppSettings.Development.json file
       }
     },
     "ConfigurationStorageConnectionString": "UseDevelopmentStorage=true;",
-    "ConfigNames": "SFA.DAS.Tools.Servicebus.Support,SFA.DAS.AuditApiClient",
+    "ConfigNames": "SFA.DAS.ApprenticeAan.Web",
     "EnvironmentName": "LOCAL",
     "Version": "1.0",
     "APPINSIGHTS_INSTRUMENTATIONKEY": ""
@@ -91,7 +64,7 @@ AppSettings.Development.json file
 
 Azure Table Storage config
 
-Row Key: SFA.DAS.Tools.Servicebus.Support_1.0
+Row Key: SFA.DAS.ApprenticeAan.Web_1.0
 
 Partition Key: LOCAL
 
@@ -105,16 +78,6 @@ Data:
     "UserSessionExpiryHours": 24,
     "UserRefreshSessionIntervalMinutes": 5,
     "NameClaim": "name"
-  },
-  "ServiceBusSettings":{
-    "ServiceBusConnectionString": "",
-    "QueueSelectionRegex": "[-,_]+error",
-    "PeekMessageBatchSize": 10,
-    "MaxRetrievalSize": 250,
-    "ErrorQueueRegex": "[-,_]error[s]*$",
-    "RedactPatterns": [
-      "(.*SharedAccessKey=)([\\s\\S]+=)(.*)"
-    ]
   },
   "CosmosDbSettings":{
     "Url": "",
