@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="OuterApi\Responses\" />
+    <Folder Include="OuterApi\Requests\" />
+  </ItemGroup>
+
 </Project>

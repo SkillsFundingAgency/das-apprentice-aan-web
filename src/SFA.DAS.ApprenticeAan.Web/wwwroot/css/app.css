@@ -1,0 +1,47 @@
+.autocomplete__dropdown-arrow-down-wrapper {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+}
+
+@media (min-width: 40.0625em) {
+    .autocomplete__dropdown-arrow-down-wrapper {
+        top: 9px;
+        right: 9px;
+    }
+}
+
+.das-search-form__group .autocomplete__input {
+    height: 40px;
+}
+
+@media (min-width: 40.0625em) {
+    .das-search-form__group .autocomplete__wrapper {
+        width: 100%;
+    }
+}
+
+@media (min-width: 40.0625em) {
+    .app-flex-row {
+        display: flex;
+        margin-bottom: 20px;
+    }
+}
+
+.app-feature-box {
+    padding: 20px;
+    height: 100%;
+    display: block;
+    border: 1px solid #b1b4b6;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+.app-feature-box__heading {
+    margin-bottom: 15px;
+}
+
+.app-feature-box__content {
+    margin-bottom: 0;
+    font-size: 100%;
+}
