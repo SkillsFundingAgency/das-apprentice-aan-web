@@ -2,23 +2,22 @@
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Services;
 
-namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding
+namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
+
+public class BeforeYouStartController : OnboardingControllerBase
 {
-    public class BeforeYouStartController : OnboardingControllerBase
+    public BeforeYouStartController(ISessionService sessionService) : base(sessionService) { }
+
+    [HttpGet]
+    public IActionResult Get()
     {
-        public BeforeYouStartController(ISessionService sessionService) : base(sessionService) { }
+        return View();
+    }
 
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Post()
-        {
-            SessionService.Set(new OnboardingSessionModel());
-            return Ok();
-        }
+    [HttpPost]
+    public IActionResult Post()
+    {
+        SessionService.Set(new OnboardingSessionModel());
+        return Ok();
     }
 }
