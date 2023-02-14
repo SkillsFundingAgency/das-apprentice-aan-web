@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using SFA.DAS.ApprenticeAan.Web.Services;
+using SFA.DAS.ApprenticePortal.SharedUi.Services;
 
 namespace SFA.DAS.ApprenticeAan.Web.AppStart;
 
@@ -10,6 +11,7 @@ public static class ServiceRegistrationsStartup
     {
         ConfigureHttpClient(services);
         services.AddTransient<ISessionService, SessionService>();
+        services.AddTransient<IMenuVisibility, MenuVisibility>();
     }
 
     private static void ConfigureHttpClient(IServiceCollection services)
