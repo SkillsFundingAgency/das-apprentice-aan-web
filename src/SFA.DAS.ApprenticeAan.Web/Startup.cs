@@ -42,6 +42,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         var appConfig = _configuration.Get<ApplicationConfiguration>();
+        services.AddSingleton(appConfig);
 
         services
             .AddApplicationInsightsTelemetry()

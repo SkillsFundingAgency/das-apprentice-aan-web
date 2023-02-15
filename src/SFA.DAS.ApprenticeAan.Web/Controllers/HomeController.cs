@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 public class HomeController : Controller
 {
-    public IActionResult Index() => View();
+    public IActionResult Index()
+    {
+        return new RedirectToRouteResult(RouteNames.Onboarding.BeforeYouStart, null);
+    }
 }

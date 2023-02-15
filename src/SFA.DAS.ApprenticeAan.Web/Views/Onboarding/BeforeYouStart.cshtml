@@ -1,0 +1,37 @@
+﻿@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
+@model BeforeYouStartViewModel
+@{
+    ViewData["Title"] = "Before you start";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Apply to become an Apprenticeship Ambassador</h1>
+
+        <p>
+            Find out more about the <a href="https://www.apprenticeships.gov.uk/">Apprenticeship Ambassador Network</a> and how it champions apprenticeships across England.
+        </p>
+
+        <p>
+            Before you start your application you will need:
+        </p>
+            
+        <ul class="govuk-body-m medium-margin-bottom indent">
+            <li>approval from your line manager due to time commitments outside of work hours</li>
+            <li>name of your employer</li>
+            <li>postcode of your employer</li>
+            <li>where you live and work</li>
+            <li>your reasons for wanting to join the network</li>
+        </ul>
+
+        <p>
+            You cannot save your answers during the application process and each page will time out after 30 minitues of inactivity.
+        </p>
+
+        <div class="govuk-button-group">
+            <button id="StartNow" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true">
+                Start now
+            </button>
+        </div>
+    </div>
+</div>
