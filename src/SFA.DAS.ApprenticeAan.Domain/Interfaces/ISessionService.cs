@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.ApprenticeAan.Web.Services;
+﻿namespace SFA.DAS.ApprenticeAan.Domain.Interfaces;
 
 public interface ISessionService
 {
