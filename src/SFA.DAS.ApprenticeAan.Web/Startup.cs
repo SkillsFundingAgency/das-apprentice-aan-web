@@ -51,7 +51,7 @@ public class Startup
             //.AddAuthentication(appConfig.Authentication, _environment)
             //.AddOuterApi(appConfig.ApprenticeFeedbackOuterApi)
             .AddHttpContextAccessor()
-            .AddServiceRegistrations();
+            .AddServiceRegistrations(appConfig.ApprenticeAanOuterApi);
 
         services.AddSharedUi(appConfig, options =>
         {
