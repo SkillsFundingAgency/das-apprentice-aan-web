@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="OuterApi\Responses\" />
     <Folder Include="OuterApi\Requests\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RestEase" Version="1.6.1" />
   </ItemGroup>
 
 </Project>

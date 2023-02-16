@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Models;
-using SFA.DAS.ApprenticeAan.Web.Services;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
-public class OnboardingControllerBase : Controller
+public abstract class OnboardingControllerBase : Controller
 {
     protected readonly ISessionService SessionService;
     protected OnboardingControllerBase(ISessionService sessionService)
