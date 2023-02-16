@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.Api.Common.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.AppStart;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
@@ -92,11 +90,7 @@ public class Startup
         if (env.IsDevelopment()) { app.UseDeveloperExceptionPage(); }
         else
         {
-            app.UseHealthChecks("/health",
-                new HealthCheckOptions
-                {
-                    ResponseWriter = HealthCheckResponseWriter.WriteJsonResponse
-                });
+            app.UseHealthChecks("/health"); //TODO add outer api health check
 
             app.UseStatusCodePagesWithReExecute("/error/{0}"); //TODO add error controller and pages
             app.UseExceptionHandler("/error");
