@@ -24,6 +24,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Transitive updates -->
+    <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="6.0.0" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.ApprenticeAan.Application\SFA.DAS.ApprenticeAan.Application.csproj" />
     <ProjectReference Include="..\SFA.DAS.ApprenticeAan.Domain\SFA.DAS.ApprenticeAan.Domain.csproj" />
   </ItemGroup>
