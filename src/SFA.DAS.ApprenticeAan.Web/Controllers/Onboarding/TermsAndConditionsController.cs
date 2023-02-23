@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
-using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
-using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
@@ -12,11 +10,12 @@ public class TermsAndConditionsController : OnboardingControllerBase
 {
     public const string ViewPath = "~/Views/Onboarding/TermsAndConditions.cshtml";
 
-    private readonly ApplicationConfiguration _applicationConfiguration;
+    //private readonly ApplicationConfiguration _applicationConfiguration;
+    private readonly ILogger<TermsAndConditionsController> _logger;
 
-    public TermsAndConditionsController(ISessionService sessionService, ApplicationConfiguration applicationConfiguration) : base(sessionService)
+    public TermsAndConditionsController(ISessionService sessionService, ILogger<TermsAndConditionsController> logger) : base(sessionService)
     {
-        _applicationConfiguration = applicationConfiguration;
+        _logger = logger;
     }
 
     [HttpGet]
@@ -32,10 +31,16 @@ public class TermsAndConditionsController : OnboardingControllerBase
     [HttpPost]
     public IActionResult Post()
     {
-        var sessionModel = SessionService.Get<OnboardingSessionModel>();
-        sessionModel.HasAcceptedTermsAndConditions = true;
-        SessionService.Set(sessionModel);
-
-        return Ok();
+        var (sessionModel, escapeRoute) = GetSessionModelWithEscapeRoute(_logger);
+        if (sessionModel == null)
+        {
+            return escapeRoute!;
+        }
+        else
+        {
+            sessionModel.HasAcceptedTermsAndConditions = true;
+            SessionService.Set(sessionModel);
+            return Ok(sessionModel);
+        }
     }
 }
