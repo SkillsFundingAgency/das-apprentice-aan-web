@@ -15,7 +15,7 @@
         <p>
             Before you start your application you will need:
         </p>
-            
+
         <ul class="govuk-body-m medium-margin-bottom indent">
             <li>approval from your line manager due to time commitments outside of work hours</li>
             <li>name of your employer</li>
@@ -29,9 +29,11 @@
         </p>
 
         <div class="govuk-button-group">
-            <button id="StartNow" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true">
-                Start now
-            </button>
+            <form asp-action="Post">
+                <button id="StartNow" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true">
+                    Start now
+                </button>
+            </form>
         </div>
     </div>
 </div>

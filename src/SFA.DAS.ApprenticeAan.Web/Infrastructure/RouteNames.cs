@@ -7,6 +7,8 @@ public static class RouteNames
 {
     public static class Onboarding
     {
-        public const string BeforeYouStart = "onboarding-before-you-start";
+        public const string BeforeYouStart = nameof(BeforeYouStart);
+        public const string TermsAndConditions = nameof(TermsAndConditions);
+
     }
 }
