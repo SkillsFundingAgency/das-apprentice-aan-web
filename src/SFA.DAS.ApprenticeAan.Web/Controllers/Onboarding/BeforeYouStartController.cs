@@ -19,7 +19,6 @@ public class BeforeYouStartController : OnboardingControllerBase
         _applicationConfiguration = applicationConfiguration;
     }
 
-
     [HttpGet]
     public IActionResult Get()
     {
@@ -34,6 +33,6 @@ public class BeforeYouStartController : OnboardingControllerBase
     public IActionResult Post()
     {
         SessionService.Set(new OnboardingSessionModel());
-        return Ok();
+        return RedirectToRoute(RouteNames.Onboarding.TermsAndConditions);
     }
 }
