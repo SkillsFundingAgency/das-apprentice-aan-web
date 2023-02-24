@@ -10,7 +10,6 @@ public class TermsAndConditionsController : OnboardingControllerBase
 {
     public const string ViewPath = "~/Views/Onboarding/TermsAndConditions.cshtml";
 
-    //private readonly ApplicationConfiguration _applicationConfiguration;
     private readonly ILogger<TermsAndConditionsController> _logger;
 
     public TermsAndConditionsController(ISessionService sessionService, ILogger<TermsAndConditionsController> logger) : base(sessionService)
