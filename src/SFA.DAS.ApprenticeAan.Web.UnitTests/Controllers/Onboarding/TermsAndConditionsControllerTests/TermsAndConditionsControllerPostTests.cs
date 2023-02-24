@@ -27,7 +27,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.TermsAndCon
         public void GetSessionModelWithEscapeRoute_SessionModelIsMissing_ReturnsEscapeRoute()
         {
             var sessionServiceMock = new Mock<ISessionService>();
-            sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns((OnboardingSessionModel)null);
+            sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns((OnboardingSessionModel)null!);
             var ctrl = new TermsAndConditionsController(sessionServiceMock.Object, Mock.Of<ILogger<TermsAndConditionsController>>());
 
             var result = ctrl.Post();
