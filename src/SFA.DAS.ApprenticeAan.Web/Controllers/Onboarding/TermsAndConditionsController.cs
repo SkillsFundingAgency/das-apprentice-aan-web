@@ -1,23 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Web.Filters;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
+using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
 [Route("onboarding/terms-and-conditions", Name = RouteNames.Onboarding.TermsAndConditions)]
-public class TermsAndConditionsController : OnboardingControllerBase
+[RequiredSessionModel(typeof(OnboardingSessionModel))]
+public class TermsAndConditionsController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/TermsAndConditions.cshtml";
 
     private readonly ILogger<TermsAndConditionsController> _logger;
+    private readonly ISessionService _sessionService;
 
-    public TermsAndConditionsController(ISessionService sessionService, ILogger<TermsAndConditionsController> logger) : base(sessionService)
+    public TermsAndConditionsController(ISessionService sessionService, ILogger<TermsAndConditionsController> logger)
     {
+        _sessionService = sessionService;
         _logger = logger;
     }
 
     [HttpGet]
+    //[RequiredSessionModel(typeof(OnboardingSessionModel))]
     public IActionResult Get()
     {
         var model = new TermsAndConditionsViewModel()
@@ -28,18 +34,12 @@ public class TermsAndConditionsController : OnboardingControllerBase
     }
 
     [HttpPost]
+    //[RequiredSessionModel(typeof(OnboardingSessionModel))]
     public IActionResult Post()
     {
-        var (sessionModel, escapeRoute) = GetSessionModelWithEscapeRoute(_logger);
-        if (sessionModel == null)
-        {
-            return escapeRoute!;
-        }
-        else
-        {
-            sessionModel.HasAcceptedTermsAndConditions = true;
-            SessionService.Set(sessionModel);
-            return Ok(sessionModel);
-        }
+        var sessionModel = _sessionService.Get<OnboardingSessionModel>();
+        sessionModel.HasAcceptedTermsAndConditions = true;
+        _sessionService.Set(sessionModel);
+        return Ok(sessionModel);
     }
 }
