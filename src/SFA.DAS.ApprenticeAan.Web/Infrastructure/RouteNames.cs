@@ -9,6 +9,7 @@ public static class RouteNames
     {
         public const string BeforeYouStart = nameof(BeforeYouStart);
         public const string TermsAndConditions = nameof(TermsAndConditions);
+        public const string Regions = nameof(Regions);
 
     }
 }

@@ -1,0 +1,49 @@
+﻿@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
+@model RegionsViewModel
+@{
+    ViewData["Title"] = "Apprenticeship region";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form asp-action="post">
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            Tell us what area of the country you work in as an apprentice
+                        </h1>
+                    </legend>
+                    <div id="regions-hint" class="govuk-hint">
+                        This can be the location of your employer rather than the area you live.
+                        Further information on each region and its network chair can be found on the regional network page.
+                    </div>
+                    <div id="regions-option"class="govuk-radios" data-module="govuk-radios">
+                        @{
+                            foreach (var region in Model.Regions)
+                            {
+                                var regionIdentifier = region.Area.Trim().Replace(' ', '-');
+                                var buttonIdentifier = $"region-{regionIdentifier}";
+
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id=@buttonIdentifier name=@buttonIdentifier type="radio" value=@region.Id>
+                                    <label class="govuk-label govuk-radios__label" for=@buttonIdentifier>
+                                        @region.Area
+                                    </label>
+                                </div>
+                            }
+                        }
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="govuk-button-group">
+
+                <button id="continue-button" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true">
+                    Continue
+                </button>
+
+            </div>
+        </form>
+    </div>
+</div>

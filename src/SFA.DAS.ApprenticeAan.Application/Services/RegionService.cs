@@ -1,20 +1,19 @@
 ﻿using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 
-namespace SFA.DAS.ApprenticeAan.Application.Services;
-
-public class RegionService : IRegionService
+namespace SFA.DAS.ApprenticeAan.Application.Services
 {
-    private readonly IOuterApiClient _outerApiClient;
-
-    public RegionService(IOuterApiClient outerApiClient)
+    public class RegionService : IRegionService
     {
-        _outerApiClient = outerApiClient;
-    }
+        private readonly IOuterApiClient _outerApiClient;
 
-    public async Task<List<Region>> GetRegions()
-    {
-        var result = await _outerApiClient.GetRegions();
-        return result.Regions;
+        public RegionService(IOuterApiClient outerApiClient) => _outerApiClient = outerApiClient;
+
+        public async Task<List<Region>> GetRegions()
+        {
+            var result = await _outerApiClient.GetRegions();
+            var sortedList = result.Regions.OrderBy(x => x.Ordering).ToList();
+            return sortedList;
+        }
     }
 }
