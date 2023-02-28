@@ -13,17 +13,14 @@ public class TermsAndConditionsController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/TermsAndConditions.cshtml";
 
-    private readonly ILogger<TermsAndConditionsController> _logger;
     private readonly ISessionService _sessionService;
 
-    public TermsAndConditionsController(ISessionService sessionService, ILogger<TermsAndConditionsController> logger)
+    public TermsAndConditionsController(ISessionService sessionService)
     {
         _sessionService = sessionService;
-        _logger = logger;
     }
 
     [HttpGet]
-    //[RequiredSessionModel(typeof(OnboardingSessionModel))]
     public IActionResult Get()
     {
         var model = new TermsAndConditionsViewModel()
@@ -34,7 +31,6 @@ public class TermsAndConditionsController : Controller
     }
 
     [HttpPost]
-    //[RequiredSessionModel(typeof(OnboardingSessionModel))]
     public IActionResult Post()
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
