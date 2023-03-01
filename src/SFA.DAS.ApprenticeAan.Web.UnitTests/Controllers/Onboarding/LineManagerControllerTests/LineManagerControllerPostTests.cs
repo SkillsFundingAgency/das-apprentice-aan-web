@@ -1,5 +1,7 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
@@ -29,6 +31,8 @@ public class LineManagerControllerPostTests
 
         sut.ModelState.AddModelError("key", "message");
 
+        sut.ModelState.IsValid.Should().BeFalse();
+
         result.As<ViewResult>().Should().NotBeNull();
         result.As<ViewResult>().ViewName.Should().Be(LineManagerController.ViewPath);
         result.As<ViewResult>().Model.As<LineManagerViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
@@ -37,19 +41,27 @@ public class LineManagerControllerPostTests
     [MoqAutoData]
     public void Post_IsValid_RedirectsToLineManager(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        [Greedy] LineManagerController sut,
-        [Frozen] LineManagerSubmitModel submitmodel)
+        [Frozen] Mock<IValidator<LineManagerSubmitModel>> validatorMock,
+        [Frozen] LineManagerSubmitModel submitmodel,
+        [Greedy] LineManagerController sut)
     {
         OnboardingSessionModel sessionModel = new();
+        ValidationResult validationResult = new();
+
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.TermsAndConditions);
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+        validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
+
+        sessionServiceMock.Object.Set(sessionModel);
+
         var result = sut.Post(submitmodel);
-        sessionModel.HasEmployersApproval = (bool)submitmodel.HasEmployersApproval!;
 
-        sessionServiceMock.Verify(s => s.Set(sessionModel), Times.Never);
+        sessionServiceMock.Verify(s => s.Set(sessionModel));
 
-        sessionModel.HasEmployersApproval.Should().Be((bool)submitmodel.HasEmployersApproval);
+        sessionModel.HasEmployersApproval.Should().Be((bool)submitmodel.HasEmployersApproval!);
+
+        sut.ModelState.IsValid.Should().BeTrue();
 
         result.As<ViewResult>().Should().NotBeNull();
         result.As<ViewResult>().ViewName.Should().Be(LineManagerController.ViewPath);
