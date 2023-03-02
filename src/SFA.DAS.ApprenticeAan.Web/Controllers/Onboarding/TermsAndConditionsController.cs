@@ -37,10 +37,6 @@ public class TermsAndConditionsController : Controller
         sessionModel.HasAcceptedTermsAndConditions = true;
         _sessionService.Set(sessionModel);
 
-        var model = new LineManagerViewModel()
-        {
-            BackLink = Url.RouteUrl(RouteNames.Onboarding.BeforeYouStart)!
-        };
-        return new RedirectToRouteResult(RouteNames.Onboarding.LineManager, model);
+        return new RedirectToRouteResult(RouteNames.Onboarding.LineManager, true);
     }
 }

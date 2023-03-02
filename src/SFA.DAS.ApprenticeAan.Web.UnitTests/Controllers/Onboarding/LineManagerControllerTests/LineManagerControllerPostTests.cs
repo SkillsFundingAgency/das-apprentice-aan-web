@@ -27,9 +27,10 @@ public class LineManagerControllerPostTests
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.TermsAndConditions);
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
-        var result = sut.Post(submitmodel);
 
         sut.ModelState.AddModelError("key", "message");
+
+        var result = sut.Post(submitmodel);
 
         sut.ModelState.IsValid.Should().BeFalse();
 

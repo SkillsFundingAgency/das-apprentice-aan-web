@@ -36,21 +36,19 @@ public class LineManagerController : Controller
     [HttpPost]
     public IActionResult Post(LineManagerSubmitModel submitmodel)
     {
-        var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-
-        ValidationResult result = _validator.Validate(submitmodel);
-
         var model = new LineManagerViewModel()
         {
             BackLink = Url.RouteUrl(@RouteNames.Onboarding.TermsAndConditions)!
         };
 
+        ValidationResult result = _validator.Validate(submitmodel);
         if (!result.IsValid)
         {
             result.AddToModelState(this.ModelState);
             return View(ViewPath, model);
         }
 
+        var sessionModel = _sessionService.Get<OnboardingSessionModel>();
         sessionModel.HasEmployersApproval = (bool)submitmodel.HasEmployersApproval!;
         _sessionService.Set(sessionModel);
 
