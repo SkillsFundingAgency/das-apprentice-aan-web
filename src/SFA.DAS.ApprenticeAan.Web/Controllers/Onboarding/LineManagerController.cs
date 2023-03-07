@@ -26,8 +26,11 @@ public class LineManagerController : Controller
     [HttpGet]
     public IActionResult Get()
     {
+        var sessionModel = _sessionService.Get<OnboardingSessionModel>();
+
         var model = new LineManagerViewModel()
         {
+            HasEmployersApproval = sessionModel.HasEmployersApproval,
             BackLink = Url.RouteUrl(@RouteNames.Onboarding.TermsAndConditions)!
         };
         return View(ViewPath, model);
@@ -36,6 +39,7 @@ public class LineManagerController : Controller
     [HttpPost]
     public IActionResult Post(LineManagerSubmitModel submitmodel)
     {
+        var sessionModel = _sessionService.Get<OnboardingSessionModel>();
         var model = new LineManagerViewModel()
         {
             BackLink = Url.RouteUrl(@RouteNames.Onboarding.TermsAndConditions)!
@@ -44,12 +48,14 @@ public class LineManagerController : Controller
         ValidationResult result = _validator.Validate(submitmodel);
         if (!result.IsValid)
         {
+            sessionModel.HasEmployersApproval = null;
+            _sessionService.Set(sessionModel);
+
             result.AddToModelState(this.ModelState);
             return View(ViewPath, model);
         }
 
-        var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-        sessionModel.HasEmployersApproval = (bool)submitmodel.HasEmployersApproval!;
+        sessionModel.HasEmployersApproval = submitmodel.HasEmployersApproval!;
         _sessionService.Set(sessionModel);
 
         return View(ViewPath, model);

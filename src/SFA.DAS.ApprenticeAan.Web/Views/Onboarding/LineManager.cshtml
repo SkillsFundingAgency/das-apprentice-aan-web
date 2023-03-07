@@ -7,17 +7,11 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_validationSummary" />
-        <h1 class="govuk-heading-l">Apply to become an Apprenticeship Ambassador</h1>
-
-        <p>
-            Find out more about the <a href="https://www.apprenticeships.gov.uk/">Apprenticeship Ambassador Network</a> and how it champions apprenticeships across England.
-        </p>
+        <h1 class="govuk-heading-l">
+            Do you have approval from your line
+            manager to join the network?
+        </h1>
         <form method="post" asp-route=" @RouteNames.Onboarding.LineManager" enctype="multipart/form-data" novalidate>
-            <p>
-                Do you have approval from your line
-                manager to join the network?
-            </p>
-
             <div esfa-validation-marker-for="HasEmployersApproval" class="govuk-form-group">
                 <span asp-validation-for="HasEmployersApproval" class="govuk-error-message"></span>
                 <div id="HasEmployersApproval" class="govuk-radios" data-module="govuk-radios">

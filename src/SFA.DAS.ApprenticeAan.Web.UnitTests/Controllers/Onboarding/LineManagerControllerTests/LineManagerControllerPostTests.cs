@@ -34,6 +34,10 @@ public class LineManagerControllerPostTests
 
         sut.ModelState.IsValid.Should().BeFalse();
 
+        sessionModel.HasEmployersApproval.Should().BeNull();
+
+        sessionServiceMock.Verify(s => s.Set(sessionModel));
+
         result.As<ViewResult>().Should().NotBeNull();
         result.As<ViewResult>().ViewName.Should().Be(LineManagerController.ViewPath);
         result.As<ViewResult>().Model.As<LineManagerViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
@@ -60,7 +64,7 @@ public class LineManagerControllerPostTests
 
         sessionServiceMock.Verify(s => s.Set(sessionModel));
 
-        sessionModel.HasEmployersApproval.Should().Be((bool)submitmodel.HasEmployersApproval!);
+        sessionModel.HasEmployersApproval.Should().Be(submitmodel.HasEmployersApproval!);
 
         sut.ModelState.IsValid.Should().BeTrue();
 

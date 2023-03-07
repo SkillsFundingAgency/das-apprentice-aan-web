@@ -37,6 +37,6 @@ public class TermsAndConditionsController : Controller
         sessionModel.HasAcceptedTermsAndConditions = true;
         _sessionService.Set(sessionModel);
 
-        return new RedirectToRouteResult(RouteNames.Onboarding.LineManager, true);
+        return RedirectToRoute(RouteNames.Onboarding.LineManager);
     }
 }
