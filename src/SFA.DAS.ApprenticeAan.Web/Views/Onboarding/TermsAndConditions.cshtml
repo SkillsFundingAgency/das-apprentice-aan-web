@@ -1,0 +1,43 @@
+﻿@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
+@model TermsAndConditionsViewModel
+@{
+    ViewData["Title"] = "Terms and Conditions";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Terms and Conditions</h1>
+
+        <p>
+            By using this service you agree to:
+        </p>
+
+        <ul class="govuk-body-m medium-margin-bottom indent">
+            <li>share your name, email adress and the areas of the country which you live and work in</li>
+            <li>adhere to network's <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="https://assets.ctfassets.net/8kbr1n52z8s2/7dYIz99EPjBV1koLzivbeV/cb5dee9d74f03a9035f6bd9334a94fca/PDF-AAN-handbook-2022.pdf#page=1">code of conduct and values</a></li>
+        </ul>
+
+        <p>
+            Your agreement will allow us to:
+        </p>
+
+        <ul class="govuk-body-m medium-margin-bottom indent">
+            <li>display your information to ambassadors searching within the network</li>
+            <li>show members your name, email address and the area you live in relation to the events you have signed up for</li>
+            <li>provide members with a way to contact and network with you</li>
+            <li>monitor ambassador activity to support and develop the network</li>
+        </ul>
+
+        <p>
+            You can alter your information sharing preferences at any time within your profile settings. If your profile is set to private, network members will not be able to search and contact you.
+        </p>
+
+        <div class="govuk-button-group">
+            <form asp-action="post">
+                <button id="confirm-and-continue" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true">
+                    Confirm and continue
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,6 @@
 ﻿using AutoFixture.NUnit3;
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
@@ -15,8 +17,9 @@ public class BeforeYouStartControllerPostTests
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] BeforeYouStartController sut)
     {
-        sut.Post();
+        var result = sut.Post();
 
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => !m.HasAcceptedTermsAndConditions)));
+        result.As<RedirectToRouteResult>().RouteName.Should().Be("TermsAndConditions");
     }
 }

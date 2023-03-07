@@ -8,17 +8,18 @@ using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
 [Route("onboarding/before-you-start", Name = RouteNames.Onboarding.BeforeYouStart)]
-public class BeforeYouStartController : OnboardingControllerBase
+public class BeforeYouStartController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/BeforeYouStart.cshtml";
 
     private readonly ApplicationConfiguration _applicationConfiguration;
+    private readonly ISessionService _sessionService;
 
-    public BeforeYouStartController(ISessionService sessionService, ApplicationConfiguration applicationConfiguration) : base(sessionService)
+    public BeforeYouStartController(ISessionService sessionService, ApplicationConfiguration applicationConfiguration)
     {
+        _sessionService = sessionService;
         _applicationConfiguration = applicationConfiguration;
     }
-
 
     [HttpGet]
     public IActionResult Get()
@@ -33,7 +34,7 @@ public class BeforeYouStartController : OnboardingControllerBase
     [HttpPost]
     public IActionResult Post()
     {
-        SessionService.Set(new OnboardingSessionModel());
-        return Ok();
+        _sessionService.Set(new OnboardingSessionModel());
+        return RedirectToRoute(RouteNames.Onboarding.TermsAndConditions);
     }
 }

@@ -10,10 +10,11 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 [ExcludeFromCodeCoverage]
 
 [Route("onboarding/regions")]
-public class RegionsController : OnboardingControllerBase
+public class RegionsController : Controller
 {
     private readonly IRegionService _regionService;
-    public RegionsController(ISessionService sessionService, IRegionService regionService) : base(sessionService)
+
+    public RegionsController(IRegionService regionService)
     {
         _regionService = regionService;
     }
