@@ -16,7 +16,7 @@ public class OnboardingSessionModelTests
         var model = new OnboardingSessionModel()
         {
             HasAcceptedTermsAndConditions = hasAcceptedTAndCs,
-            HasEmployersApproval = hasEmployersApproval.GetValueOrDefault(),
+            HasEmployersApproval = hasEmployersApproval,
         };
         model.ApprenticeDetails.ApprenticeId = apprenticeId;
 

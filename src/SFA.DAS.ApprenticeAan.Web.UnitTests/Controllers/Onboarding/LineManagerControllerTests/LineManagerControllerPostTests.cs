@@ -18,7 +18,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.LineManager
 public class LineManagerControllerPostTests
 {
     [MoqAutoData]
-    public void Post_ModelStateIsInvalid_RedirectsToLineManager(
+    public void Post_ModelStateIsInvalid_ReloadsViewWithValidationErrors(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] LineManagerController sut,
         [Frozen] LineManagerSubmitModel submitmodel)
@@ -44,7 +44,7 @@ public class LineManagerControllerPostTests
     }
 
     [MoqAutoData]
-    public void Post_IsValid_RedirectsToLineManager(
+    public void Post_ModelStateIsValid_RedirectsToLineManagerView(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IValidator<LineManagerSubmitModel>> validatorMock,
         [Frozen] LineManagerSubmitModel submitmodel,
