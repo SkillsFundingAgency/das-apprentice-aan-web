@@ -10,12 +10,13 @@ public class OnboardingSessionModelTests
     [TestCase("bf92480f-1ef6-4552-8a5e-35d7951213f9", false, true, false)]
     [TestCase("bf92480f-1ef6-4552-8a5e-35d7951213f9", true, false, false)]
     [TestCase("bf92480f-1ef6-4552-8a5e-35d7951213f9", true, true, true)]
-    public void IsValid_ChecksModelValidity(Guid? apprenticeId, bool hasAcceptedTAndCs, bool hasEmployersApproval, bool expectedResult)
+    [TestCase("bf92480f-1ef6-4552-8a5e-35d7951213f9", true, null, false)]
+    public void IsValid_ChecksModelValidity(Guid? apprenticeId, bool hasAcceptedTAndCs, bool? hasEmployersApproval, bool expectedResult)
     {
         var model = new OnboardingSessionModel()
         {
             HasAcceptedTermsAndConditions = hasAcceptedTAndCs,
-            HasEmployersApproval = hasEmployersApproval
+            HasEmployersApproval = hasEmployersApproval.GetValueOrDefault(),
         };
         model.ApprenticeDetails.ApprenticeId = apprenticeId;
 

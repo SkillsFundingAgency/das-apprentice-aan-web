@@ -9,7 +9,7 @@ public class OnboardingSessionModel
     public int? RegionId { get; set; }
 
     public bool IsValid => ApprenticeDetails.ApprenticeId != null && ApprenticeDetails.ApprenticeId != Guid.Empty &&
-        HasAcceptedTermsAndConditions && HasEmployersApproval != null && (bool)HasEmployersApproval;
+        HasAcceptedTermsAndConditions && HasEmployersApproval.GetValueOrDefault();
 }
 
 public class ApprenticeDetailsModel

@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Web.Filters;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
@@ -10,6 +11,7 @@ using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
 [Route("onboarding/line-manager", Name = RouteNames.Onboarding.LineManager)]
+[RequiredSessionModel(typeof(OnboardingSessionModel))]
 public class LineManagerController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/LineManager.cshtml";

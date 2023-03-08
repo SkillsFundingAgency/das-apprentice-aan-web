@@ -20,7 +20,8 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
 
         [TestCase(true, true)]
         [TestCase(false, false)]
-        public void HasEmployersApproval_Valid_NoErrors(bool value, bool isValid)
+        [TestCase(null, false)]
+        public void HasEmployersApproval_Valid_NoErrors(bool? value, bool isValid)
         {
             var model = new LineManagerSubmitModel { HasEmployersApproval = value };
             var sut = new LineManagerSubmitModelValidator();
@@ -29,7 +30,11 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
 
             if (isValid)
                 result.ShouldNotHaveValidationErrorFor(c => c.HasEmployersApproval);
-            else
+
+            if (!isValid && value == null)
+                    result.ShouldHaveValidationErrorFor(c => c.HasEmployersApproval).WithErrorMessage(LineManagerSubmitModelValidator.NoSelectionErrorMessage);
+
+            if (!isValid && value == false)
                 result.ShouldHaveValidationErrorFor(c => c.HasEmployersApproval).WithErrorMessage(LineManagerSubmitModelValidator.NoApprovalErrorMessage);
         }
     }

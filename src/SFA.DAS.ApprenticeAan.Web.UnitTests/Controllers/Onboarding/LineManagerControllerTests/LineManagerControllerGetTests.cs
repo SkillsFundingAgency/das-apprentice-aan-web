@@ -43,10 +43,11 @@ public class LineManagerControllerGetTests
     }
 
     [MoqAutoData]
-    public void Get_ViewModelHasEmployersApproval_RestoreFromSession([Greedy] LineManagerController sut,
-                        [Frozen] Mock<ISessionService> sessionServiceMock)
+    public void Get_ViewModelHasEmployersApproval_RestoreFromSession(
+                        [Frozen] Mock<ISessionService> sessionServiceMock,
+                        OnboardingSessionModel sessionModel,
+                        [Greedy] LineManagerController sut)
     {
-        OnboardingSessionModel sessionModel = new();
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.TermsAndConditions);
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
