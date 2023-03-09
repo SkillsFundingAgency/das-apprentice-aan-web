@@ -44,7 +44,7 @@ public class LineManagerControllerPostTests
     }
 
     [MoqAutoData]
-    public void Post_ModelStateIsValid_RedirectsToLineManagerView(
+    public void Post_ModelStateIsValid_UpdatesSessionModel(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IValidator<LineManagerSubmitModel>> validatorMock,
         [Frozen] LineManagerSubmitModel submitmodel,
@@ -60,11 +60,31 @@ public class LineManagerControllerPostTests
 
         sessionServiceMock.Object.Set(sessionModel);
 
-        var result = sut.Post(submitmodel);
+        sut.Post(submitmodel);
 
         sessionServiceMock.Verify(s => s.Set(sessionModel));
 
-        sessionModel.HasEmployersApproval.Should().Be(submitmodel.HasEmployersApproval!);
+        sessionModel.HasEmployersApproval.Should().Be(submitmodel.HasEmployersApproval);
+
+        sut.ModelState.IsValid.Should().BeTrue();
+    }
+
+    [MoqAutoData]
+    public void Post_ModelStateIsValid_RedirectsToLineManagerView(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Frozen] Mock<IValidator<LineManagerSubmitModel>> validatorMock,
+        [Frozen] LineManagerSubmitModel submitmodel,
+        [Greedy] LineManagerController sut)
+    {
+        OnboardingSessionModel sessionModel = new();
+        ValidationResult validationResult = new();
+
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.TermsAndConditions);
+
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+        validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
+
+        var result = sut.Post(submitmodel);
 
         sut.ModelState.IsValid.Should().BeTrue();
 
