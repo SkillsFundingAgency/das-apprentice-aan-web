@@ -22,6 +22,11 @@ public class OnboardingSessionModelTests
 
         var actualResult = model.IsValid;
 
+        Assert.That(actualResult, Is.EqualTo(model.ApprenticeDetails.ApprenticeId != null
+            && model.ApprenticeDetails.ApprenticeId != Guid.Empty
+            && model.HasAcceptedTermsAndConditions
+            && model.HasEmployersApproval.GetValueOrDefault()));
+
         Assert.That(actualResult, Is.EqualTo(expectedResult));
     }
 }
