@@ -18,14 +18,16 @@ public class OnboardingSessionModelTests
             HasAcceptedTermsAndConditions = hasAcceptedTAndCs,
             HasEmployersApproval = hasEmployersApproval,
         };
-        model.ApprenticeDetails.ApprenticeId = apprenticeId;
 
-        Assert.That(model.IsValid, Is.EqualTo(model.ApprenticeDetails.ApprenticeId != null
+        ApprenticeDetailsModel apprenticeDetails = new() { ApprenticeId= apprenticeId };
+        model.ApprenticeDetails = apprenticeDetails;
+
+        var actualResult = model.IsValid;
+        Assert.That(actualResult, Is.EqualTo(model.ApprenticeDetails.ApprenticeId != null
             && model.ApprenticeDetails.ApprenticeId != Guid.Empty
             && model.HasAcceptedTermsAndConditions
             && model.HasEmployersApproval.GetValueOrDefault()));
 
-        var actualResult = model.IsValid;
         Assert.That(actualResult, Is.EqualTo(expectedResult));
     }
 }
