@@ -23,7 +23,6 @@ public class BeforeYouStartControllerPostTests
         result.As<RedirectToRouteResult>().RouteName.Should().Be("TermsAndConditions");
     }
 
-
     [MoqAutoData]
     public async Task Post_GetProfiles_UpdatesSessionModel(
         [Frozen] Mock<ISessionService> sessionServiceMock,
