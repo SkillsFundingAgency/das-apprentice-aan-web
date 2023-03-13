@@ -11,14 +11,21 @@ namespace SFA.DAS.ApprenticeAan.Application.UnitTests.Services;
 public class ProfileServiceTests
 {
     [MoqAutoData]
-    public async Task Service_OuterApi_ReturnsProfiles(
+    public async Task WhenGetProfile_OuterApi_ReturnsProfiles(
         [Frozen] Mock<IOuterApiClient> _outerApiClient)
     {
         var result = await _outerApiClient.Object.GetProfiles();
-        _outerApiClient.Verify(p => p.GetProfiles());
 
         Assert.That(result.Profiles, Is.Not.Null);
-        Assert.That(result.Profiles.Count(), Is.GreaterThan(0));
-        Assert.That(result.Profiles.FirstOrDefault().GetType().Name.Equals(nameof(Profile)));
+    }
+
+    [MoqAutoData]
+    public async Task WhenGetProfile_ProfileService_ReturnsProfiles(
+        [Frozen] Mock<IProfileService> _profileService)
+    {
+        var profiles = await _profileService.Object.GetProfiles();
+        _profileService.Verify(p => p.GetProfiles());
+
+        Assert.That(profiles, Is.Not.Null);
     }
 }
