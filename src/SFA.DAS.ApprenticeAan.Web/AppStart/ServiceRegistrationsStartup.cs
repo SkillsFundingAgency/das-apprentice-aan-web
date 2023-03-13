@@ -2,6 +2,7 @@
 using RestEase.HttpClientFactory;
 using SFA.DAS.ApprenticeAan.Application.Services;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Services;
 using SFA.DAS.ApprenticePortal.SharedUi.Services;
@@ -18,6 +19,7 @@ public static class ServiceRegistrationsStartup
         services.AddTransient<IMenuVisibility, MenuVisibility>();
         services.AddTransient<ISessionService, SessionService>();
         services.AddTransient<IRegionService, RegionService>();
+        services.AddTransient<IProfileService, ProfileService>();
     }
 
     private static void AddOuterApi(this IServiceCollection services, OuterApiConfiguration configuration)

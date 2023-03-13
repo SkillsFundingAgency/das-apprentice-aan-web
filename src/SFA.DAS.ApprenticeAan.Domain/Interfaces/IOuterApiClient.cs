@@ -7,5 +7,8 @@ namespace SFA.DAS.ApprenticeAan.Domain.Interfaces
     {
         [Get("/regions")]
         Task<GetRegionsResult> GetRegions();
+
+        [Get("/profiles")]
+        Task<GetProfilesResult> GetProfiles();
     }
 }
