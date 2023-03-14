@@ -5,7 +5,6 @@ using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 
-
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
 [Route("onboarding/before-you-start", Name = RouteNames.Onboarding.BeforeYouStart)]
