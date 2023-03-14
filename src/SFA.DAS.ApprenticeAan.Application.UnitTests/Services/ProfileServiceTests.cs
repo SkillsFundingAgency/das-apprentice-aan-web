@@ -14,16 +14,17 @@ public class ProfileServiceTests
     public async Task Service_ProfileData_ReturnsProfiles(
         [Frozen] Mock<IOuterApiClient> _outerApiClient)
     {
-
         var service = new ProfileService(_outerApiClient.Object);
         var profiles = await service.GetProfiles();
 
         var result = await _outerApiClient.Object.GetProfiles();
 
-        Assert.That(profiles, Is.Not.Null);
-        Assert.That(result, Is.Not.Null);
-        Assert.That(result.Profiles, Is.Not.Null);
-
+        Assert.Multiple(() =>
+        {
+            Assert.That(profiles, Is.Not.Null);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Profiles, Is.Not.Null);
+        });
         result.Profiles.Should().BeEquivalentTo(profiles);
     }
 }
