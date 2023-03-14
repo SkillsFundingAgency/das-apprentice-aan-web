@@ -8,7 +8,7 @@ namespace SFA.DAS.ApprenticeAan.Domain.Interfaces
         [Get("/regions")]
         Task<GetRegionsResult> GetRegions();
 
-        [Get("/profiles")]
-        Task<GetProfilesResult> GetProfiles();
+        [Get("/profiles/{userType}")]
+        Task<GetProfilesResult> GetProfilesByUserType([Path("userType")] string userType);
     }
 }

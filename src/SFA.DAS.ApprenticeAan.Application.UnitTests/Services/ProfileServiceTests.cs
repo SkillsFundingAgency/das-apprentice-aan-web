@@ -10,14 +10,16 @@ namespace SFA.DAS.ApprenticeAan.Application.UnitTests.Services;
 [TestFixture]
 public class ProfileServiceTests
 {
+
     [MoqAutoData]
     public async Task Service_ProfileData_ReturnsProfiles(
         [Frozen] Mock<IOuterApiClient> _outerApiClient)
     {
+        const string userType = "apprentice";
         var service = new ProfileService(_outerApiClient.Object);
-        var profiles = await service.GetProfiles();
+        var profiles = await service.GetProfilesByUserType(userType);
 
-        var result = await _outerApiClient.Object.GetProfiles();
+        var result = await _outerApiClient.Object.GetProfilesByUserType(userType);
 
         Assert.Multiple(() =>
         {

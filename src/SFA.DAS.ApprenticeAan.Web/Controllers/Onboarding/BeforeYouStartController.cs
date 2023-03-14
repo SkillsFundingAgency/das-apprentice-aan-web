@@ -36,7 +36,7 @@ public class BeforeYouStartController : Controller
     [HttpPost]
     public async Task<IActionResult> PostAsync()
     {
-        var profiles = await _profileService.GetProfiles();
+        var profiles = await _profileService.GetProfilesByUserType("apprentice");
         _sessionService.Set(new OnboardingSessionModel());
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
         sessionModel.ProfileData = profiles.ConvertAll(p => new ProfileModel());

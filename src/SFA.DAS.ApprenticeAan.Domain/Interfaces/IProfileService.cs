@@ -4,5 +4,5 @@ namespace SFA.DAS.ApprenticeAan.Domain.Interfaces;
 
 public interface IProfileService
 {
-    Task<List<Profile>> GetProfiles();
+    Task<List<Profile>> GetProfilesByUserType(string userType);
 }

@@ -12,9 +12,9 @@ public class ProfileService : IProfileService
         _outerApiClient = outerApiClient;
     }
 
-    public async Task<List<Profile>> GetProfiles()
+    public async Task<List<Profile>> GetProfilesByUserType(string userType)
     {
-        var result = await _outerApiClient.GetProfiles();
+        var result = await _outerApiClient.GetProfilesByUserType(userType);
         return result.Profiles;
     }
 }

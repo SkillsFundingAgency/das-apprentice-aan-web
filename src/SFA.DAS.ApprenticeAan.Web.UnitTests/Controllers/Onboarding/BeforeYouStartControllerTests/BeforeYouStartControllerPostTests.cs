@@ -29,10 +29,12 @@ public class BeforeYouStartControllerPostTests
         [Frozen] Mock<IProfileService> _profileService,
         [Greedy] BeforeYouStartController sut)
     {
-        OnboardingSessionModel sessionModel = new();
-        var profiles = await _profileService.Object.GetProfiles();
+        const string userType = "apprentice";
 
-        _profileService.Verify(p => p.GetProfiles());
+        OnboardingSessionModel sessionModel = new();
+        var profiles = await _profileService.Object.GetProfilesByUserType(userType);
+
+        _profileService.Verify(p => p.GetProfilesByUserType(userType));
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sessionServiceMock.Object.Set(sessionModel);
