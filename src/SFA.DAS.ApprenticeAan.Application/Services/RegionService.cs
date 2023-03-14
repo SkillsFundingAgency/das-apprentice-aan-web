@@ -7,14 +7,12 @@ public class RegionService : IRegionService
 {
     private readonly IOuterApiClient _outerApiClient;
 
-    public RegionService(IOuterApiClient outerApiClient)
-    {
-        _outerApiClient = outerApiClient;
-    }
+    public RegionService(IOuterApiClient outerApiClient) => _outerApiClient = outerApiClient;
 
     public async Task<List<Region>> GetRegions()
     {
         var result = await _outerApiClient.GetRegions();
-        return result.Regions;
+        var sortedList = result.Regions.OrderBy(x => x.Ordering).ToList();
+        return sortedList;
     }
 }
