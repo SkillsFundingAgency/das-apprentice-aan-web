@@ -2,6 +2,6 @@
 {
     public class GetProfilesResult
     {
-        public List<Profile> Profiles { get; set; } = new();
+        public List<Profile> ProfileModels { get; set; } = new();
     }
 }

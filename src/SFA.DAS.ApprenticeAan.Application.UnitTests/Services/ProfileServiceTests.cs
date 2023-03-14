@@ -25,8 +25,8 @@ public class ProfileServiceTests
         {
             Assert.That(profiles, Is.Not.Null);
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Profiles, Is.Not.Null);
+            Assert.That(result.ProfileModels, Is.Not.Null);
         });
-        result.Profiles.Should().BeEquivalentTo(profiles);
+        result.ProfileModels.Should().BeEquivalentTo(profiles);
     }
 }
