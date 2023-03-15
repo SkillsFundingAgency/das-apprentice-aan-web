@@ -1,10 +1,12 @@
 ﻿using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
-namespace SFA.DAS.ApprenticeAan.Web.Models.Onboarding
-
+namespace SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
+public class RegionsViewModel : RegionsSubmitModel, IBackLink
 {
-    public class RegionsViewModel : IBackLink
-    {
-        public List<Region> Regions { get; set; }
-        public string BackLink { get; set; } = null!;
-    }
+    public List<Region> Regions { get; set; }
+    public string BackLink { get; set; } = null!;
+}
+
+public class RegionsSubmitModel
+{
+    public int? SelectedRegionId { get; set; }
 }

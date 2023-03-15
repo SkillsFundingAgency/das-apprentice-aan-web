@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Filters;
@@ -8,10 +9,6 @@ using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
-//TODO remove ExcludeFromCodeCoverage on proper implementation
-//This is initial implementation just to get api client working example
-//remove this comments once proper implementation is done
-[ExcludeFromCodeCoverage]
 [Route("onboarding/regions", Name = RouteNames.Onboarding.Regions)]
 [RequiredSessionModel(typeof(OnboardingSessionModel))]
 public class RegionsController : Controller
@@ -19,11 +16,13 @@ public class RegionsController : Controller
     public const string ViewPath = "~/Views/Onboarding/Regions.cshtml";
     private readonly IRegionService _regionService;
     private readonly ISessionService _sessionService;
+    private readonly IValidator<RegionsSubmitModel> _validator;
 
-    public RegionsController(ISessionService sessionService, IRegionService regionService)
+    public RegionsController(ISessionService sessionService, IRegionService regionService, IValidator<RegionsSubmitModel> validator)
     {
         _sessionService = sessionService;
         _regionService = regionService;
+        _validator = validator;
     }
 
     [HttpGet]
@@ -31,7 +30,7 @@ public class RegionsController : Controller
     {
         var model = new RegionsViewModel
         {
-            BackLink = Url.RouteUrl(RouteNames.Onboarding.TermsAndConditions)!,
+            BackLink = Url.RouteUrl(RouteNames.Onboarding.CurrentJobTitle)!,
             Regions = await _regionService.GetRegions()
         };
 
@@ -39,16 +38,31 @@ public class RegionsController : Controller
     }
 
     [HttpPost]
-    //TODO: Variables not being passed to controller from View.
-    public IActionResult Post(string value)
+    public async Task<IActionResult> Post(RegionsSubmitModel submitmodel)
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-        sessionModel.RegionId = Convert.ToInt16(value);
+
+        var model = new RegionsViewModel()
+        {
+            BackLink = Url.RouteUrl(@RouteNames.Onboarding.CurrentJobTitle)!,
+            Regions = await _regionService.GetRegions()
+        };
+
+        ValidationResult result = _validator.Validate(submitmodel);
+
+        if (!result.IsValid)
+        {
+            sessionModel.RegionId = null;
+            _sessionService.Set(sessionModel);
+            return View(ViewPath, model);
+        }
+
+        model.SelectedRegionId = sessionModel.RegionId = Convert.ToInt16(submitmodel.SelectedRegionId);
         _sessionService.Set(sessionModel);
-        return Ok(sessionModel);
+
+        return View(ViewPath, model);
 
         //TODO: Redirect to "Why do you want to join the network" page, when developed
         //return RedirectToRoute(RouteNames.Onboarding.TermsAndConditions);
-
     }
 }

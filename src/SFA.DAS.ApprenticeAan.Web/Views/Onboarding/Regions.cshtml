@@ -1,12 +1,16 @@
 ﻿@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
+@using SFA.DAS.ApprenticeAan.Web.Infrastructure;
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
 @model RegionsViewModel
+   
 @{
     ViewData["Title"] = "Apprenticeship region";
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <form asp-action="post">
+        <partial name="_validationSummary" />
+        <form method="post"  >
             <div class="govuk-form-group">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -26,7 +30,7 @@
                                 var buttonIdentifier = $"region-{regionIdentifier}";
 
                                 <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input"  id=@buttonIdentifier name=@buttonIdentifier type="radio" value=@region.Id>
+                                    <input class="govuk-radios__input"  asp-for=@Model.SelectedRegionId  type="radio" value=@region.Id >
                                     <label class="govuk-label govuk-radios__label" for=@buttonIdentifier>
                                         @region.Area
                                     </label>
@@ -39,7 +43,7 @@
 
             <div class="govuk-button-group">
 
-                <button id="continue-button" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true">
+                <button id="continue-button" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true" asp-page-handler="Submit">
                     Continue
                 </button>
 

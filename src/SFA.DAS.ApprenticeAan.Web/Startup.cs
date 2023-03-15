@@ -74,6 +74,7 @@ public class Startup
         services
             .AddValidatorsFromAssembly(typeof(LineManagerViewModel).Assembly);
 
+
         services.AddHttpContextAccessor();
 
         if (_configuration.IsDev() || _configuration.IsLocal()) services.AddDistributedMemoryCache();

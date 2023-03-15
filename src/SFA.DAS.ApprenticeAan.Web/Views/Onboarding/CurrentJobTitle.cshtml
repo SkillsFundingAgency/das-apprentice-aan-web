@@ -1,0 +1,25 @@
+﻿@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
+@model TermsAndConditionsViewModel
+@{
+    ViewData["Title"] = "Current Job Title";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">What is your current job title?</h1>
+
+        <p>
+            <input type="text" class="govuk-input" />
+        </p>
+
+         
+
+        <div class="govuk-button-group">
+            <form asp-action="post">
+                <button id="continue" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true">
+                    Continue
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
