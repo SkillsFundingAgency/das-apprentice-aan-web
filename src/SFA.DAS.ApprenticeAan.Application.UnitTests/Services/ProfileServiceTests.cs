@@ -3,6 +3,7 @@ using FluentAssertions;
 using Moq;
 using SFA.DAS.ApprenticeAan.Application.Services;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Application.UnitTests.Services;
@@ -10,23 +11,22 @@ namespace SFA.DAS.ApprenticeAan.Application.UnitTests.Services;
 [TestFixture]
 public class ProfileServiceTests
 {
-
     [MoqAutoData]
     public async Task Service_ProfileData_ReturnsProfiles(
-        [Frozen] Mock<IOuterApiClient> _outerApiClient)
+        [Frozen] Mock<IOuterApiClient> _outerApiClient,
+        [Greedy] ProfileService sut,
+        List<Profile> profiles)
     {
         const string userType = "apprentice";
-        var service = new ProfileService(_outerApiClient.Object);
-        var profiles = await service.GetProfilesByUserType(userType);
+        _outerApiClient.Setup(r => r.GetProfilesByUserType(userType)).ReturnsAsync(new GetProfilesResult() { Profiles = profiles });
 
-        var result = await _outerApiClient.Object.GetProfilesByUserType(userType);
+        var result = await sut.GetProfilesByUserType(userType);
 
         Assert.Multiple(() =>
         {
             Assert.That(profiles, Is.Not.Null);
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.ProfileModels, Is.Not.Null);
         });
-        result.ProfileModels.Should().BeEquivalentTo(profiles);
+        result.Should().BeEquivalentTo(profiles);
     }
 }

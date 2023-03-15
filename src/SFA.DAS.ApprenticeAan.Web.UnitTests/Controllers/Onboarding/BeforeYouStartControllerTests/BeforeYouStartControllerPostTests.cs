@@ -43,7 +43,7 @@ public class BeforeYouStartControllerPostTests
 
         sessionServiceMock.Verify(s => s.Set(sessionModel));
 
-        sessionModel.ProfileData.Should().BeEquivalentTo(profiles.ConvertAll(p => new ProfileModel()));
+        sessionModel.ProfileData.Should().BeEquivalentTo(profiles.Select(p => (ProfileModel)p).ToList());
     }
 
     [MoqAutoData]

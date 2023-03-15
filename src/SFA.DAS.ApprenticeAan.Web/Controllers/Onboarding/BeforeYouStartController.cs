@@ -39,7 +39,7 @@ public class BeforeYouStartController : Controller
         var profiles = await _profileService.GetProfilesByUserType("apprentice");
         _sessionService.Set(new OnboardingSessionModel());
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-        sessionModel.ProfileData = profiles.ConvertAll(p => new ProfileModel());
+        sessionModel.ProfileData = profiles.Select(p => (ProfileModel)p).ToList();
         _sessionService.Set(sessionModel);
         return RedirectToRoute(RouteNames.Onboarding.TermsAndConditions);
     }

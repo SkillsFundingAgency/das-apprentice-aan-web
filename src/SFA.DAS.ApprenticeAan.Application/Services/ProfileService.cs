@@ -15,6 +15,6 @@ public class ProfileService : IProfileService
     public async Task<List<Profile>> GetProfilesByUserType(string userType)
     {
         var result = await _outerApiClient.GetProfilesByUserType(userType);
-        return result.ProfileModels;
+        return result.Profiles;
     }
 }
