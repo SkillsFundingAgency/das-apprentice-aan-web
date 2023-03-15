@@ -7,23 +7,23 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_validationSummary" />
-        <h1 class="govuk-heading-l">
-            Do you have approval from your line
-            manager to join the network?
-        </h1>
         <form method="post" asp-route=" @RouteNames.Onboarding.LineManager" enctype="multipart/form-data" novalidate>
             <div esfa-validation-marker-for="HasEmployersApproval" class="govuk-form-group">
                 <span asp-validation-for="HasEmployersApproval" class="govuk-error-message"></span>
-                <div id="HasEmployersApproval" class="govuk-radios" data-module="govuk-radios">
+                <h1 class="govuk-heading-l">
+                    Do you have approval from your line
+                    manager to join the network?
+                </h1>
+                <div class="govuk-radios" data-module="govuk-radios">
                     <div class="govuk-radios__item">
-                        <input asp-for="HasEmployersApproval" id="Yes" class="govuk-radios__input" type="radio" value="true"
+                        <input asp-for="HasEmployersApproval" id="HasEmployersApproval" class="govuk-radios__input" type="radio" value="true"
                                sfa-validationerror-class="form-control-error">
                         <label class="govuk-label govuk-radios__label" for="Yes">
                             Yes
                         </label>
                     </div>
                     <div class="govuk-radios__item">
-                        <input asp-for="HasEmployersApproval" id="No" class="govuk-radios__input" type="radio" value="false"
+                        <input asp-for="HasEmployersApproval" id="HasEmployersApproval" class="govuk-radios__input" type="radio" value="false"
                                sfa-validationerror-class="form-control-error">
                         <label class="govuk-label govuk-radios__label" for="No">
                             No
@@ -31,10 +31,6 @@
                     </div>
                 </div>
             </div>
-            <p>
-                You cannot save your answers during the application process and each page will time out after 30 minitues of inactivity.
-            </p>
-
             <div class="govuk-button-group">
                 <button id="continue" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true">
                     Continue
