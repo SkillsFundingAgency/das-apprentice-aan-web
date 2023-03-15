@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
+using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -26,16 +27,15 @@ public class BeforeYouStartControllerPostTests
     [MoqAutoData]
     public async Task Post_GetProfiles_UpdatesSessionModel(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        [Frozen] Mock<IProfileService> _profileService,
+        [Frozen] Mock<IProfileService> profileServiceMock,
         [Greedy] BeforeYouStartController sut)
     {
         const string userType = "apprentice";
 
         OnboardingSessionModel sessionModel = new();
-        var profiles = await _profileService.Object.GetProfilesByUserType(userType);
+        var profiles = await profileServiceMock.Object.GetProfilesByUserType(userType);
 
-        _profileService.Verify(p => p.GetProfilesByUserType(userType));
-
+        profileServiceMock.Setup(s => s.GetProfilesByUserType(userType)).ReturnsAsync(profiles);
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sessionServiceMock.Object.Set(sessionModel);
 
@@ -43,7 +43,7 @@ public class BeforeYouStartControllerPostTests
 
         sessionServiceMock.Verify(s => s.Set(sessionModel));
 
-        sessionModel.ProfileData.Should().BeEquivalentTo(profiles.Select(p => (ProfileModel)p).ToList());
+        sessionModel.ProfileData.Should().BeEquivalentTo(profiles);
     }
 
     [MoqAutoData]
@@ -58,6 +58,6 @@ public class BeforeYouStartControllerPostTests
         var result = await sut.PostAsync();
 
         result.As<RedirectToRouteResult>().Should().NotBeNull();
-        result.As<RedirectToRouteResult>().RouteName.Should().Be("TermsAndConditions");
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.TermsAndConditions);
     }
 }
