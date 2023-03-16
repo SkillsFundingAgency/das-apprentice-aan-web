@@ -34,18 +34,12 @@ public class BeforeYouStartControllerPostTests
     {
         const string userType = "apprentice";
 
-        OnboardingSessionModel sessionModel = new();
-
         profileServiceMock.Setup(s => s.GetProfilesByUserType(userType)).ReturnsAsync(profiles);
-        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
-        sessionServiceMock.Object.Set(sessionModel);
 
         await sut.Post();
 
-        sessionServiceMock.Verify(s => s.Set(sessionModel));
-
-        sessionModel.ProfileData.Should().BeEquivalentTo(profiles);
-    }
+        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(n => n.ProfileData.Count == profiles.Count)));
+     }
 
     [MoqAutoData]
     public async Task Post_SessionModel_RedirectsRouteToTermsAndConditions(

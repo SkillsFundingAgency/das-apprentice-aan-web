@@ -37,8 +37,7 @@ public class BeforeYouStartController : Controller
     public async Task<IActionResult> Post()
     {
         var profiles = await _profileService.GetProfilesByUserType("apprentice");
-        _sessionService.Set(new OnboardingSessionModel());
-        var sessionModel = _sessionService.Get<OnboardingSessionModel>();
+        var sessionModel = new OnboardingSessionModel();
         sessionModel.ProfileData = profiles.Select(p => (ProfileModel)p).ToList();
         _sessionService.Set(sessionModel);
         return RedirectToRoute(RouteNames.Onboarding.TermsAndConditions);
