@@ -41,16 +41,11 @@ public class RegionControllerPostTests
         sut.AddUrlHelperMock();
         RegionSubmitModel submitmodel = new();
         submitmodel.SelectedRegionId = null;
-        ValidationResult validationResult = new();
-
-        validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
 
         var result = await sut.Post(submitmodel);
 
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.RegionId == null)));
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => !m.IsValid)));
-
         result.As<ViewResult>().Model.As<RegionViewModel>().SelectedRegionId.Should().BeNull();
-
     }
 }
