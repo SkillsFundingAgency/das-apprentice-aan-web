@@ -11,14 +11,14 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
 [Route("onboarding/regions", Name = RouteNames.Onboarding.Regions)]
 [RequiredSessionModel(typeof(OnboardingSessionModel))]
-public class RegionsController : Controller
+public class RegionController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/Regions.cshtml";
     private readonly IRegionService _regionService;
     private readonly ISessionService _sessionService;
-    private readonly IValidator<RegionsSubmitModel> _validator;
+    private readonly IValidator<RegionSubmitModel> _validator;
 
-    public RegionsController(ISessionService sessionService, IRegionService regionService, IValidator<RegionsSubmitModel> validator)
+    public RegionController(ISessionService sessionService, IRegionService regionService, IValidator<RegionSubmitModel> validator)
     {
         _sessionService = sessionService;
         _regionService = regionService;
@@ -28,7 +28,7 @@ public class RegionsController : Controller
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var model = new RegionsViewModel
+        var model = new RegionViewModel
         {
             BackLink = Url.RouteUrl(RouteNames.Onboarding.CurrentJobTitle)!,
             Regions = await _regionService.GetRegions()
@@ -38,11 +38,11 @@ public class RegionsController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(RegionsSubmitModel submitmodel)
+    public async Task<IActionResult> Post(RegionSubmitModel submitmodel)
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
 
-        var model = new RegionsViewModel()
+        var model = new RegionViewModel()
         {
             BackLink = Url.RouteUrl(@RouteNames.Onboarding.CurrentJobTitle)!,
             Regions = await _regionService.GetRegions()

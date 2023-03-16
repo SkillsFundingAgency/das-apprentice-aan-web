@@ -12,14 +12,14 @@ using SFA.DAS.Testing.AutoFixture;
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.RegionsControllerTests;
 
 [TestFixture]
-public class RegionsControllerPostTests
+public class RegionControllerPostTests
 {
     [MoqAutoData]
     public async Task Post_SetsSelectedRegionInOnBoardingSessionModel(
   [Frozen] Mock<ISessionService> sessionServiceMock,
-  [Frozen] Mock<IValidator<RegionsSubmitModel>> validatorMock,
-  [Greedy] RegionsController sut,
-  RegionsSubmitModel submitmodel)
+  [Frozen] Mock<IValidator<RegionSubmitModel>> validatorMock,
+  [Greedy] RegionController sut,
+  RegionSubmitModel submitmodel)
     {
         sut.AddUrlHelperMock();
         ValidationResult validationResult = new();
