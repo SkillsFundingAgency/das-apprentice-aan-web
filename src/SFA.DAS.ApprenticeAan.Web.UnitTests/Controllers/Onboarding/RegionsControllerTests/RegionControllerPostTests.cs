@@ -29,4 +29,21 @@ public class RegionControllerPostTests
         await sut.Post(submitmodel);
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.RegionId == submitmodel.SelectedRegionId)));
     }
+
+    [MoqAutoData]
+    public async Task Post_Errors_WhenSelectedRegionIsNull(
+  [Frozen] Mock<ISessionService> sessionServiceMock,
+  [Frozen] Mock<IValidator<RegionSubmitModel>> validatorMock,
+  [Greedy] RegionController sut)
+    {
+        sut.AddUrlHelperMock();
+        RegionSubmitModel submitmodel = new();
+        submitmodel.SelectedRegionId = null;
+        ValidationResult validationResult = new();
+
+        validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
+
+        await sut.Post(submitmodel);
+        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.RegionId == null)));
+    }
 }
