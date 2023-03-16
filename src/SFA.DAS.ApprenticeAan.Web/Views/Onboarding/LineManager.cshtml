@@ -9,11 +9,10 @@
         <partial name="_validationSummary" />
         <form method="post" asp-route=" @RouteNames.Onboarding.LineManager" enctype="multipart/form-data" novalidate>
             <div esfa-validation-marker-for="HasEmployersApproval" class="govuk-form-group">
-                <span asp-validation-for="HasEmployersApproval" class="govuk-error-message"></span>
                 <h1 class="govuk-heading-l">
-                    Do you have approval from your line
-                    manager to join the network?
+                    Do you have approval from your line manager to join the network?
                 </h1>
+                <span asp-validation-for="HasEmployersApproval" class="govuk-error-message"></span>
                 <div id="HasEmployersApproval" class="govuk-radios" data-module="govuk-radios">
                     <div class="govuk-radios__item">
                         <input asp-for="HasEmployersApproval" id="Yes" class="govuk-radios__input" type="radio" value="true"
