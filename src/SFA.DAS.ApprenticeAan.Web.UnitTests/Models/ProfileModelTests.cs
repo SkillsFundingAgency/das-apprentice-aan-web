@@ -13,11 +13,14 @@ public class ProfileModelTests
     {
         var profileData = (ProfileModel)profiles;
 
-        Assert.That(profileData, Is.Not.Null);
+        Assert.Multiple(() =>
+        {
+            Assert.That(profileData, Is.Not.Null);
 
-        Assert.That(profiles!.Id, Is.EqualTo(profileData.Id));
-        Assert.That(profiles.Description, Is.EqualTo(profileData.Description));
-        Assert.That(profiles.Category, Is.EqualTo(profileData.Category));
-        Assert.That(profiles.Ordering, Is.EqualTo(profileData.Ordering));
+            Assert.That(profiles!.Id, Is.EqualTo(profileData.Id));
+            Assert.That(profiles.Description, Is.EqualTo(profileData.Description));
+            Assert.That(profiles.Category, Is.EqualTo(profileData.Category));
+            Assert.That(profiles.Ordering, Is.EqualTo(profileData.Ordering));
+        });
     }
 }
