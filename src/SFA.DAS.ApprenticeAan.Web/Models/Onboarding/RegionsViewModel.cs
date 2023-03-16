@@ -2,7 +2,7 @@
 namespace SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 public class RegionsViewModel : RegionsSubmitModel, IBackLink
 {
-    public List<Region> Regions { get; set; }
+    public List<Region> Regions { get; set; } = null!;
     public string BackLink { get; set; } = null!;
 }
 

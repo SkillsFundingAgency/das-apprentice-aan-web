@@ -61,8 +61,5 @@ public class RegionsController : Controller
         _sessionService.Set(sessionModel);
 
         return View(ViewPath, model);
-
-        //TODO: Redirect to "Why do you want to join the network" page, when developed
-        //return RedirectToRoute(RouteNames.Onboarding.TermsAndConditions);
     }
 }
