@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
+using SFA.DAS.ApprenticeAan.Application.Services;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
-using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Application.UnitTests.Services;
@@ -11,11 +11,11 @@ public class RegionServiceTests
 {
     [MoqAutoData]
     public async Task Post_SetsSelectedRegionInOnBoardingSessionModel(
-    Mock<IRegionService> regionServiceMock, Task<List<Region>> regions)
+      Mock<IOuterApiClient> outerApiClient)
     {
-        regionServiceMock.Setup(x => x.GetRegions()).Returns(regions);
+        var regionService = new RegionService(outerApiClient.Object);
 
-        var result = await regionServiceMock.Object.GetRegions();
+        var result = await regionService.GetRegions();
         result.Should().NotBeNullOrEmpty();
     }
 }
