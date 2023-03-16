@@ -1,6 +1,8 @@
 ﻿using AutoFixture.NUnit3;
+using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
@@ -43,7 +45,12 @@ public class RegionControllerPostTests
 
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
 
-        await sut.Post(submitmodel);
+        var result = await sut.Post(submitmodel);
+
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.RegionId == null)));
+        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => !m.IsValid)));
+
+        result.As<ViewResult>().Model.As<RegionViewModel>().SelectedRegionId.Should().BeNull();
+
     }
 }
