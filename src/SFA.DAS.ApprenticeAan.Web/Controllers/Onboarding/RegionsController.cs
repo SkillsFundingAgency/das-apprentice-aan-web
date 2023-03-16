@@ -57,7 +57,7 @@ public class RegionsController : Controller
             return View(ViewPath, model);
         }
 
-        model.SelectedRegionId = sessionModel.RegionId = Convert.ToInt16(submitmodel.SelectedRegionId);
+        sessionModel.RegionId = submitmodel.SelectedRegionId;
         _sessionService.Set(sessionModel);
 
         return View(ViewPath, model);

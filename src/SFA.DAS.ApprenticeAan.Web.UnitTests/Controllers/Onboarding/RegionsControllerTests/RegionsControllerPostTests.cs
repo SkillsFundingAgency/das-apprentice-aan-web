@@ -1,32 +1,32 @@
 ﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
+using FluentValidation;
+using FluentValidation.Results;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
+using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.RegionsControllerTests;
-
 
 [TestFixture]
 public class RegionsControllerPostTests
 {
     [MoqAutoData]
     public async Task Post_SetsSelectedRegionInOnBoardingSessionModel(
-   [Frozen] Mock<ISessionService> sessionServiceMock,
-   [Greedy] RegionsController sut, [Greedy] RegionsSubmitModel submitmodel)
+  [Frozen] Mock<ISessionService> sessionServiceMock,
+  [Frozen] Mock<IValidator<RegionsSubmitModel>> validatorMock,
+  [Greedy] RegionsController sut,
+  RegionsSubmitModel submitmodel)
     {
-        OnboardingSessionModel value = new();
-        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(value);
+        sut.AddUrlHelperMock();
+        ValidationResult validationResult = new();
 
-        submitmodel.SelectedRegionId = 10;
+        validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
 
-        var result = await sut.Post(submitmodel);
-        result.As<ViewResult>().Model.As<RegionsViewModel>().SelectedRegionId.Should().Be(submitmodel.SelectedRegionId);
-        result.As<RedirectToRouteResult>().RouteName.Should().Be("Regions");
-
+        await sut.Post(submitmodel);
+        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.RegionId == submitmodel.SelectedRegionId)));
     }
 }
