@@ -4,11 +4,12 @@ public class OnboardingSessionModel
 {
     public ApprenticeDetailsModel ApprenticeDetails { get; set; } = new ApprenticeDetailsModel();
     public bool HasAcceptedTermsAndConditions { get; set; } = false;
-    public bool HasEmployersApproval { get; set; } = false;
+    public bool? HasEmployersApproval { get; set; }
     public List<ProfileModel> ProfileData { get; set; } = new List<ProfileModel>();
     public int? RegionId { get; set; }
 
-    public bool IsValid => ApprenticeDetails.ApprenticeId != null && ApprenticeDetails.ApprenticeId != Guid.Empty && HasAcceptedTermsAndConditions && HasEmployersApproval;
+    public bool IsValid => ApprenticeDetails.ApprenticeId != null && ApprenticeDetails.ApprenticeId != Guid.Empty &&
+        HasAcceptedTermsAndConditions && HasEmployersApproval.GetValueOrDefault();
 }
 
 public class ApprenticeDetailsModel

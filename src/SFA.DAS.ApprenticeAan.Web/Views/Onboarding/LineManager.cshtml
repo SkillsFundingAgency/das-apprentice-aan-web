@@ -1,0 +1,40 @@
+﻿@using SFA.DAS.ApprenticeAan.Web.Infrastructure
+@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
+@model LineManagerViewModel
+@{
+    ViewData["Title"] = "Requires Line Manager's approval";
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_validationSummary" />
+        <form method="post" asp-route=" @RouteNames.Onboarding.LineManager" enctype="multipart/form-data" novalidate>
+            <div esfa-validation-marker-for="HasEmployersApproval" class="govuk-form-group">
+                <h1 class="govuk-heading-l">
+                    Do you have approval from your line manager to join the network?
+                </h1>
+                <span asp-validation-for="HasEmployersApproval" class="govuk-error-message"></span>
+                <div id="HasEmployersApproval" class="govuk-radios" data-module="govuk-radios">
+                    <div class="govuk-radios__item">
+                        <input asp-for="HasEmployersApproval" id="Yes" class="govuk-radios__input" type="radio" value="true"
+                               sfa-validationerror-class="form-control-error">
+                        <label class="govuk-label govuk-radios__label" for="Yes">
+                            Yes
+                        </label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input asp-for="HasEmployersApproval" id="No" class="govuk-radios__input" type="radio" value="false"
+                               sfa-validationerror-class="form-control-error">
+                        <label class="govuk-label govuk-radios__label" for="No">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="govuk-button-group">
+                <button id="continue" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Web.AppStart;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
+using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using SFA.DAS.ApprenticePortal.SharedUi.Startup;
 using SFA.DAS.Configuration.AzureTableStorage;
@@ -63,7 +65,6 @@ public class Startup
             options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always;
         });
 
-
         services.Configure<RouteOptions>(options => { options.LowercaseUrls = true; }).AddMvc(options =>
         {
             if (!_configuration.IsDev()) options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
@@ -71,8 +72,7 @@ public class Startup
         .AddSessionStateTempDataProvider();
 
         services
-            .AddFluentValidationClientsideAdapters()
-            .AddFluentValidationAutoValidation();
+            .AddValidatorsFromAssembly(typeof(LineManagerViewModel).Assembly);
 
         services.AddHttpContextAccessor();
 
