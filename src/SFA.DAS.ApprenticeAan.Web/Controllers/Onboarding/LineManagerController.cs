@@ -62,6 +62,6 @@ public class LineManagerController : Controller
         sessionModel.HasEmployersApproval = submitmodel.HasEmployersApproval!;
         _sessionService.Set(sessionModel);
 
-        return View(ViewPath, model);
+        return RedirectToRoute(RouteNames.Onboarding.EmployerDetails);
     }
 }
