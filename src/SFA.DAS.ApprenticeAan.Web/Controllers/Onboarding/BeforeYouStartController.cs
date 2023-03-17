@@ -14,10 +14,12 @@ public class BeforeYouStartController : Controller
 
     private readonly ApplicationConfiguration _applicationConfiguration;
     private readonly ISessionService _sessionService;
+    private readonly IProfileService _profileService;
 
-    public BeforeYouStartController(ISessionService sessionService, ApplicationConfiguration applicationConfiguration)
+    public BeforeYouStartController(ISessionService sessionService, IProfileService profileService, ApplicationConfiguration applicationConfiguration)
     {
         _sessionService = sessionService;
+        _profileService = profileService;
         _applicationConfiguration = applicationConfiguration;
     }
 
@@ -32,9 +34,12 @@ public class BeforeYouStartController : Controller
     }
 
     [HttpPost]
-    public IActionResult Post()
+    public async Task<IActionResult> Post()
     {
-        _sessionService.Set(new OnboardingSessionModel());
+        var profiles = await _profileService.GetProfilesByUserType("apprentice");
+        var sessionModel = new OnboardingSessionModel();
+        sessionModel.ProfileData = profiles.Select(p => (ProfileModel)p).ToList();
+        _sessionService.Set(sessionModel);
         return RedirectToRoute(RouteNames.Onboarding.TermsAndConditions);
     }
 }

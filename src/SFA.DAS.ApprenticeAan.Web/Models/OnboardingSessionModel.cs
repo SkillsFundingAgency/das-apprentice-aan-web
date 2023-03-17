@@ -19,9 +19,3 @@ public class ApprenticeDetailsModel
     public string? Name { get; set; }
     public string? ReasonForJoiningTheNetwork { get; set; }  //maps to information field in apprentice table
 }
-
-public class ProfileModel
-{
-    public int Id { get; set; }
-    public string Value { get; set; } = null!;
-}
