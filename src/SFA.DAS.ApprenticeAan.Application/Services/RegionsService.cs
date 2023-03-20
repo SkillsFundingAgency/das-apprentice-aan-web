@@ -3,11 +3,11 @@ using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 
 namespace SFA.DAS.ApprenticeAan.Application.Services;
 
-public class RegionService : IRegionService
+public class RegionsService : IRegionService
 {
     private readonly IOuterApiClient _outerApiClient;
 
-    public RegionService(IOuterApiClient outerApiClient) => _outerApiClient = outerApiClient;
+    public RegionsService(IOuterApiClient outerApiClient) => _outerApiClient = outerApiClient;
 
     public async Task<List<Region>> GetRegions()
     {

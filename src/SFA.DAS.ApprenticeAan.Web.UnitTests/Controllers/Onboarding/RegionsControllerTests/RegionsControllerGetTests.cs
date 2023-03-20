@@ -10,10 +10,10 @@ using SFA.DAS.Testing.AutoFixture;
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.RegionsControllerTests;
 
 [TestFixture]
-public class RegionControllerGetTests
+public class RegionsControllerGetTests
 {
     [MoqAutoData]
-    public async Task Get_ReturnsViewResult([Greedy] RegionController sut)
+    public async Task Get_ReturnsViewResult([Greedy] RegionsController sut)
     {
         sut.AddUrlHelperMock();
         var result = await sut.Get();
@@ -22,21 +22,21 @@ public class RegionControllerGetTests
     }
 
     [MoqAutoData]
-    public async Task Get_ViewResult_HasCorrectViewPath([Greedy] RegionController sut)
+    public async Task Get_ViewResult_HasCorrectViewPath([Greedy] RegionsController sut)
     {
         sut.AddUrlHelperMock();
         var result = await sut.Get();
 
-        result.As<ViewResult>().ViewName.Should().Be(RegionController.ViewPath);
+        result.As<ViewResult>().ViewName.Should().Be(RegionsController.ViewPath);
     }
 
     [MoqAutoData]
     public async Task Get_ViewModel_HasBackLink(
-        [Greedy] RegionController sut)
+        [Greedy] RegionsController sut)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle);
         var result = await sut.Get();
 
-        result.As<ViewResult>().Model.As<RegionViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
+        result.As<ViewResult>().Model.As<RegionsViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
     }
 }

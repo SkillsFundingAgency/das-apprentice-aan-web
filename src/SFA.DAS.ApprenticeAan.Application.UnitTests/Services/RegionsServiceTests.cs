@@ -7,15 +7,16 @@ using SFA.DAS.Testing.AutoFixture;
 namespace SFA.DAS.ApprenticeAan.Application.UnitTests.Services;
 
 [TestFixture]
-public class RegionServiceTests
+public class RegionsServiceTests
 {
     [MoqAutoData]
     public async Task Post_SetsSelectedRegionInOnBoardingSessionModel(
       Mock<IOuterApiClient> outerApiClient)
     {
-        var regionService = new RegionService(outerApiClient.Object);
+        var sut = new RegionsService(outerApiClient.Object);
 
-        var result = await regionService.GetRegions();
+        var result = await sut.GetRegions();
         result.Should().NotBeNullOrEmpty();
+        result.Should().BeInAscendingOrder(x => x.Ordering);
     }
 }

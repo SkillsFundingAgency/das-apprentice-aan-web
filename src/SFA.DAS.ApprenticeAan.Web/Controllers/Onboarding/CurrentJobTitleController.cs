@@ -13,10 +13,6 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding
     {
         public const string ViewPath = "~/Views/Onboarding/CurrentJobTitle.cshtml";
 
-        public CurrentJobTitleController()
-        {
-        }
-
         [HttpGet]
         public IActionResult Get()
         {

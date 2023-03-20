@@ -14,14 +14,14 @@ using SFA.DAS.Testing.AutoFixture;
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.RegionsControllerTests;
 
 [TestFixture]
-public class RegionControllerPostTests
+public class RegionsControllerPostTests
 {
     [MoqAutoData]
     public async Task Post_SetsSelectedRegionInOnBoardingSessionModel(
   [Frozen] Mock<ISessionService> sessionServiceMock,
-  [Frozen] Mock<IValidator<RegionSubmitModel>> validatorMock,
-  [Greedy] RegionController sut,
-  RegionSubmitModel submitmodel)
+  [Frozen] Mock<IValidator<RegionsSubmitModel>> validatorMock,
+  [Greedy] RegionsController sut,
+  RegionsSubmitModel submitmodel)
     {
         sut.AddUrlHelperMock();
         ValidationResult validationResult = new();
@@ -35,17 +35,17 @@ public class RegionControllerPostTests
     [MoqAutoData]
     public async Task Post_Errors_WhenSelectedRegionIsNull(
   [Frozen] Mock<ISessionService> sessionServiceMock,
-  [Frozen] Mock<IValidator<RegionSubmitModel>> validatorMock,
-  [Greedy] RegionController sut)
+  [Frozen] Mock<IValidator<RegionsSubmitModel>> validatorMock,
+  [Greedy] RegionsController sut)
     {
         sut.AddUrlHelperMock();
-        RegionSubmitModel submitmodel = new();
+        RegionsSubmitModel submitmodel = new();
         submitmodel.SelectedRegionId = null;
 
         var result = await sut.Post(submitmodel);
 
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.RegionId == null)));
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => !m.IsValid)));
-        result.As<ViewResult>().Model.As<RegionViewModel>().SelectedRegionId.Should().BeNull();
+        result.As<ViewResult>().Model.As<RegionsViewModel>().SelectedRegionId.Should().BeNull();
     }
 }

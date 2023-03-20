@@ -3,7 +3,7 @@ using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 
 namespace SFA.DAS.ApprenticeAan.Web.Validators.Onboarding;
 
-public class RegionSubmitModelValidator : AbstractValidator<RegionSubmitModel>
+public class RegionSubmitModelValidator : AbstractValidator<RegionsSubmitModel>
 {
     public const string NoSelectionErrorMessage = "Select a region where you work as an apprentice.";
 
