@@ -77,6 +77,7 @@ public class Startup
             .AddSessionStateTempDataProvider();
 
         services.AddValidatorsFromAssembly(typeof(LineManagerViewModel).Assembly);
+
         if (_configuration.IsDev() || _configuration.IsLocal()) services.AddDistributedMemoryCache();
 
 #if DEBUG

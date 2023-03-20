@@ -1,0 +1,27 @@
+﻿@using SFA.DAS.ApprenticeAan.Web.Infrastructure
+@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
+@model NameOfEmployerViewModel
+@{
+    ViewData["Title"] = "Employer Name";
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_validationSummary" />
+        <form method="post" asp-route="@RouteNames.Onboarding.NameOfEmployer" enctype="multipart/form-data" novalidate>
+            <div esfa-validation-marker-for="NameOfEmployer" class="govuk-form-group">
+                <h1 class="govuk-heading-l">
+                    What is the name of your employer?
+                </h1>
+                <span asp-validation-for="NameOfEmployer" class="govuk-error-message"></span>
+                <div id="HasEmployersApproval"  data-module="govuk-input">
+                    <input type="text" asp-for="NameOfEmployer" id="NameOfEmployer" class="govuk-input" sfa-validationerror-class="form-control-error" />
+                </div>
+            </div>
+            <div class="govuk-button-group">
+                <button id="continue" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
