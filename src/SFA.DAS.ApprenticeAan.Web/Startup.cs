@@ -70,9 +70,7 @@ public class Startup
         })
         .AddSessionStateTempDataProvider();
 
-        services.AddValidatorsFromAssembly(typeof(RegionsViewModel).Assembly);
-            .AddValidatorsFromAssembly(typeof(LineManagerViewModel).Assembly);
-
+        services.AddValidatorsFromAssembly(typeof(LineManagerViewModel).Assembly);
 
         services.AddHttpContextAccessor();
 
