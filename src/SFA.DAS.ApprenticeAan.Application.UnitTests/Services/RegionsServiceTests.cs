@@ -10,7 +10,7 @@ namespace SFA.DAS.ApprenticeAan.Application.UnitTests.Services;
 public class RegionsServiceTests
 {
     [MoqAutoData]
-    public async Task Post_SetsSelectedRegionInOnBoardingSessionModel(
+    public async Task Service_GetRegions_ReturnsOrderedRegionsList(
       Mock<IOuterApiClient> outerApiClient)
     {
         var sut = new RegionsService(outerApiClient.Object);
