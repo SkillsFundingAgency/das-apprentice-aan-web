@@ -30,13 +30,13 @@ public class CurrentJobTitleControllerPostTests
 
         sut.Post(submitmodel);
 
-        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.CurrentJobTitle == submitmodel.EnteredJobTitle)));
+        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.ProfileData.FirstOrDefault(x => x.Id == 20)!.Value == submitmodel.EnteredJobTitle)));
     }
 
     [MoqAutoData]
-    public void Post_Errors_WhenSelectedRegionIsNull(
-  [Frozen] Mock<ISessionService> sessionServiceMock,
-  [Greedy] CurrentJobTitleController sut)
+    public void Post_Errors_WhenEnteredJobTitleIsNull(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] CurrentJobTitleController sut)
     {
         sut.AddUrlHelperMock();
         CurrentJobTitleSubmitModel submitmodel = new();
@@ -44,7 +44,7 @@ public class CurrentJobTitleControllerPostTests
 
         var result = sut.Post(submitmodel);
 
-        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.CurrentJobTitle == null)));
+        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.ProfileData.FirstOrDefault(x => x.Id == 20)!.Value == null)));
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => !m.IsValid)));
         result.As<ViewResult>().Model.As<CurrentJobTitleSubmitModel>().EnteredJobTitle.Should().BeNull();
     }

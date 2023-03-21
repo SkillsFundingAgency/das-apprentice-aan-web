@@ -7,14 +7,34 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding;
 [TestFixture]
 public class CurrentJobTitleSubmitModelValidatorTests
 {
-    [TestCase("FirstName LastName", true)]
-    [TestCase("Name having more than 200 characters, This is dummy characters to increase the text length. This is dummy characters to increase the text length. This is dummy characters to increase the text length. This is dummy characters to increase the text length.", false)]
-    [TestCase("FirstName", true)]
-    [TestCase(" ", false)]
+    [TestCase(1, true)]
+    [TestCase(200, true)]
+    [TestCase(201, false)]
     [TestCase(null, false)]
-    public void SelectedRegion_Validation_ErrorNoError(string? value, bool isValid)
+    public void EnteredJobTitle_Validation_ErrorNoError(int? length, bool isValid)
     {
-        var model = new CurrentJobTitleSubmitModel { EnteredJobTitle = value };
+        CurrentJobTitleSubmitModel model;
+        if (length != null)
+            model = new CurrentJobTitleSubmitModel { EnteredJobTitle = new string('a', (int)length) };
+        else
+            model = new CurrentJobTitleSubmitModel { EnteredJobTitle = null };
+
+        var sut = new CurrentJobTitleSubmitModelValidator();
+
+        var result = sut.TestValidate(model);
+
+        if (isValid)
+            result.ShouldNotHaveValidationErrorFor(c => c.EnteredJobTitle);
+        else
+            result.ShouldHaveValidationErrorFor(c => c.EnteredJobTitle);
+    }
+
+    [TestCase("", false)]
+    [TestCase("2nd Line support analyst", false)]
+    public void EnteredJobTitle_AlphanumericValidation_ErrorNoError(string jobTitle, bool isValid)
+    {
+        var model = new CurrentJobTitleSubmitModel { EnteredJobTitle = jobTitle };
+
         var sut = new CurrentJobTitleSubmitModelValidator();
 
         var result = sut.TestValidate(model);

@@ -28,13 +28,10 @@ public class CurrentJobTitleController : Controller
     [HttpGet]
     public IActionResult Get()
     {
-        var model = new CurrentJobTitleViewModel
-        {
-            BackLink = Url.RouteUrl(RouteNames.Onboarding.NameOfEmployer)!
-        };
+        var model = GetViewModel();
 
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-        model.EnteredJobTitle = sessionModel.CurrentJobTitle;
+        model.EnteredJobTitle = sessionModel.ProfileData.FirstOrDefault(x => x.Id == 20)!.Value;
 
         return View(ViewPath, model);
     }
@@ -43,25 +40,29 @@ public class CurrentJobTitleController : Controller
     public IActionResult Post(CurrentJobTitleSubmitModel submitmodel)
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-
-        var model = new CurrentJobTitleViewModel()
-        {
-            BackLink = Url.RouteUrl(@RouteNames.Onboarding.NameOfEmployer)!,
-        };
+        var model = GetViewModel();
 
         ValidationResult result = _validator.Validate(submitmodel);
 
         if (!result.IsValid)
         {
-            sessionModel.CurrentJobTitle = null;
+            sessionModel.ProfileData.FirstOrDefault(x => x.Id == 20)!.Value = string.Empty;
             _sessionService.Set(sessionModel);
             result.AddToModelState(ModelState);
             return View(ViewPath, model);
         }
 
-        sessionModel.CurrentJobTitle = submitmodel.EnteredJobTitle;
+        sessionModel.ProfileData.FirstOrDefault(x => x.Id == 20)!.Value = submitmodel.EnteredJobTitle!;
         _sessionService.Set(sessionModel);
 
         return View(ViewPath, model);
+    }
+
+    private CurrentJobTitleViewModel GetViewModel()
+    {
+        return new CurrentJobTitleViewModel()
+        {
+            BackLink = Url.RouteUrl(@RouteNames.Onboarding.NameOfEmployer)!,
+        };
     }
 }
