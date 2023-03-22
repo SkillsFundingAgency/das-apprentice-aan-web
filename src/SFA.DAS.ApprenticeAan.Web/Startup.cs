@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Web.AppStart;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
-using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Filters;
+using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticePortal.SharedUi.Startup;
 using SFA.DAS.Configuration.AzureTableStorage;
 
@@ -73,9 +73,7 @@ public class Startup
             .Configure<RouteOptions>(options => { options.LowercaseUrls = true; })
             .AddMvc(options =>
             {
-                if (!_configuration.IsDev()) options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-                //var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                //options.Filters.Add(new AuthorizeFilter(policy));
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 options.Filters.Add<RequiresRegistrationAuthorizationFilter>();
             })
             .AddSessionStateTempDataProvider();
@@ -90,11 +88,13 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        if (env.IsDevelopment()) { app.UseDeveloperExceptionPage(); }
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
         else
         {
             app.UseHealthChecks("/health"); //TODO add outer api health check
-
             app.UseStatusCodePagesWithReExecute("/error/{0}"); //TODO add error controller and pages
             app.UseExceptionHandler("/error");
             app.UseHsts();
