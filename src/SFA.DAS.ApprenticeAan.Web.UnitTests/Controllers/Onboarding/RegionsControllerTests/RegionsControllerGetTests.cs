@@ -1,8 +1,11 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
+using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
+using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
@@ -31,12 +34,18 @@ public class RegionsControllerGetTests
     }
 
     [MoqAutoData]
-    public async Task Get_ViewModel_HasBackLink(
+    public async Task Get_ViewModel_GetsRegionsViewModel(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        OnboardingSessionModel sessionModel,
         [Greedy] RegionsController sut)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle);
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+
         var result = await sut.Get();
 
         result.As<ViewResult>().Model.As<RegionsViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
+        result.As<ViewResult>().Model.As<RegionsViewModel>().Regions.Should().NotBeNull();
+        result.As<ViewResult>().Model.As<RegionsViewModel>().SelectedRegionId.Should().Be(sessionModel.RegionId);
     }
 }

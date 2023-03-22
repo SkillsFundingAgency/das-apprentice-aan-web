@@ -18,14 +18,14 @@ public class RegionsControllerPostTests
 {
     [MoqAutoData]
     public async Task Post_SetsSelectedRegionInOnBoardingSessionModel(
-  [Frozen] Mock<ISessionService> sessionServiceMock,
-  [Frozen] Mock<IValidator<RegionsSubmitModel>> validatorMock,
-  [Greedy] RegionsController sut,
-  RegionsSubmitModel submitmodel)
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Frozen] Mock<IValidator<RegionsSubmitModel>> validatorMock,
+        [Greedy] RegionsController sut,
+        RegionsSubmitModel submitmodel)
     {
         sut.AddUrlHelperMock();
-        ValidationResult validationResult = new();
 
+        ValidationResult validationResult = new();
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
 
         await sut.Post(submitmodel);
@@ -34,9 +34,8 @@ public class RegionsControllerPostTests
 
     [MoqAutoData]
     public async Task Post_Errors_WhenSelectedRegionIsNull(
-  [Frozen] Mock<ISessionService> sessionServiceMock,
-  [Frozen] Mock<IValidator<RegionsSubmitModel>> validatorMock,
-  [Greedy] RegionsController sut)
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] RegionsController sut)
     {
         sut.AddUrlHelperMock();
         RegionsSubmitModel submitmodel = new();

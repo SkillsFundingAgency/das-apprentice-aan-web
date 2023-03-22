@@ -3,7 +3,7 @@ using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 
 namespace SFA.DAS.ApprenticeAan.Application.Services;
 
-public class RegionsService : IRegionService
+public class RegionsService : IRegionsService
 {
     private readonly IOuterApiClient _outerApiClient;
 

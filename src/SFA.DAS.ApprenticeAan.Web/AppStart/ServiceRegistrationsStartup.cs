@@ -18,7 +18,7 @@ public static class ServiceRegistrationsStartup
         AddOuterApi(services, apprenticeAanOuterApi);
         services.AddTransient<IMenuVisibility, MenuVisibility>();
         services.AddTransient<ISessionService, SessionService>();
-        services.AddTransient<IRegionService, RegionsService>();
+        services.AddTransient<IRegionsService, RegionsService>();
         services.AddTransient<IProfileService, ProfileService>();
     }
 
