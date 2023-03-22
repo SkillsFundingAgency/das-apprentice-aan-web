@@ -24,3 +24,22 @@ public class ApprenticeDetailsModel
     public string? Name { get; set; }
     public string? ReasonForJoiningTheNetwork { get; set; }  //maps to information field in apprentice table
 }
+
+public static class OnboardingSessionModelExtensionMethods
+{
+    public static string GetProfileModelValue(this List<ProfileModel> profileItems, int id)
+    {
+        return profileItems.FirstOrDefault(e => e.Id == id)?.Value!;
+    }
+
+    public static IEnumerable<ProfileModel> UpdateProfileModelValue(this List<ProfileModel> profileItems, int id, string? value)
+    {
+        foreach (var profileItem in profileItems)
+        {
+            if (profileItem.Id == id)
+                profileItem.Value = value != null ? value! : null!;
+
+            yield return profileItem;
+        }
+    }
+}

@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
@@ -54,6 +55,6 @@ public class CurrentJobTitleControllerGetTests
 
         var result = sut.Get();
 
-        result.As<ViewResult>().Model.As<CurrentJobTitleViewModel>().EnteredJobTitle.Should().Be(sessionModel.ProfileData.FirstOrDefault(x => x.Id == 20)!.Value);
+        result.As<ViewResult>().Model.As<CurrentJobTitleViewModel>().EnteredJobTitle.Should().Be(sessionModel.ProfileData.GetProfileModelValue(ProfileDataId.JobTitle));
     }
 }

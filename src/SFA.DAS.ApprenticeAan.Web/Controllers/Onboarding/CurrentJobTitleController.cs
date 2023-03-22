@@ -2,6 +2,7 @@
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Filters;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
@@ -31,7 +32,7 @@ public class CurrentJobTitleController : Controller
         var model = GetViewModel();
 
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-        model.EnteredJobTitle = sessionModel.ProfileData.FirstOrDefault(x => x.Id == 20)!.Value;
+        model.EnteredJobTitle = sessionModel.ProfileData.GetProfileModelValue(ProfileDataId.JobTitle);
 
         return View(ViewPath, model);
     }
@@ -46,13 +47,13 @@ public class CurrentJobTitleController : Controller
 
         if (!result.IsValid)
         {
-            sessionModel.ProfileData.FirstOrDefault(x => x.Id == 20)!.Value = string.Empty;
+            sessionModel.ProfileData.UpdateProfileModelValue(ProfileDataId.JobTitle, null);
             _sessionService.Set(sessionModel);
             result.AddToModelState(ModelState);
             return View(ViewPath, model);
         }
 
-        sessionModel.ProfileData.FirstOrDefault(x => x.Id == 20)!.Value = submitmodel.EnteredJobTitle!;
+        sessionModel.ProfileData.UpdateProfileModelValue(ProfileDataId.JobTitle, submitmodel.EnteredJobTitle!);
         _sessionService.Set(sessionModel);
 
         return View(ViewPath, model);
