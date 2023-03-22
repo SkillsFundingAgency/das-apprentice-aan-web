@@ -9,7 +9,7 @@ public class MenuVisibitlityTests
     public void ConfirmMyApprenticeshipTitleStatus_ReturnsShowAsConfirmed()
     {
         MenuVisibility sut = new();
-        sut.ConfirmMyApprenticeshipTitleStatus().Result.Should().Be(ApprenticePortal.SharedUi.Services.ConfirmMyApprenticeshipTitleStatus.ShowAsConfirmed);
+        sut.ConfirmMyApprenticeshipTitleStatus().Result.Should().Be(ApprenticePortal.SharedUi.Services.ConfirmMyApprenticeshipTitleStatus.DoNotShow);
     }
 
     [Test]

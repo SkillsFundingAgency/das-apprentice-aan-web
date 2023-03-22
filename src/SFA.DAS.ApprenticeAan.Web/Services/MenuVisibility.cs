@@ -7,7 +7,7 @@ public class MenuVisibility : IMenuVisibility
     public Task<ConfirmMyApprenticeshipTitleStatus> ConfirmMyApprenticeshipTitleStatus()
     {
 
-        return Task.FromResult(ApprenticePortal.SharedUi.Services.ConfirmMyApprenticeshipTitleStatus.ShowAsConfirmed);
+        return Task.FromResult(ApprenticePortal.SharedUi.Services.ConfirmMyApprenticeshipTitleStatus.DoNotShow);
     }
 
     public Task<bool> ShowApprenticeFeedback() => Task.FromResult(false);
