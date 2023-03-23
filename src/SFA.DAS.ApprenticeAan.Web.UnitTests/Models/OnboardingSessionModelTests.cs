@@ -55,7 +55,7 @@ public class OnboardingSessionModelTests
 
     [Test]
     [AutoData]
-    public void GetProfileModelValue_FoundProfileIdWithValue_ReturnsValue(OnboardingSessionModel sut, ProfileModel profileModel)
+    public void GetProfileValue_FoundProfileIdWithValue_ReturnsValue(OnboardingSessionModel sut, ProfileModel profileModel)
     {
         sut.ProfileData.Add(profileModel);
 
@@ -64,7 +64,7 @@ public class OnboardingSessionModelTests
 
     [Test]
     [AutoData]
-    public void GetProfileModelValue_FoundProfileIdWithNoValue_ReturnsNull(OnboardingSessionModel sut, ProfileModel profileModel)
+    public void GetProfilelValue_FoundProfileIdWithNoValue_ReturnsNull(OnboardingSessionModel sut, ProfileModel profileModel)
     {
         profileModel.Value = null;
         sut.ProfileData.Add(profileModel);
@@ -74,7 +74,7 @@ public class OnboardingSessionModelTests
 
     [Test]
     [AutoData]
-    public void GetProfileModelValue_ProfileNotFound_ThrowsInvalidOperationException(OnboardingSessionModel sut, ProfileModel profileModel)
+    public void GetProfilelValue_ProfileNotFound_ThrowsInvalidOperationException(OnboardingSessionModel sut, ProfileModel profileModel)
     {
         profileModel.Value = null;
 
@@ -85,7 +85,7 @@ public class OnboardingSessionModelTests
 
     [Test]
     [AutoData]
-    public void SetProfileModelValue_ProfileFound_UpdatesValue(OnboardingSessionModel sut, string value)
+    public void SetProfileValue_ProfileFound_UpdatesValue(OnboardingSessionModel sut, string value)
     {
         var profileModel = sut.ProfileData[0];
 
@@ -95,7 +95,7 @@ public class OnboardingSessionModelTests
     }
 
     [Test]
-    public void SetProfileModelValue_ProfileNotFound_ThrowsInvalidOperationException()
+    public void SetProfileValue_ProfileNotFound_ThrowsInvalidOperationException()
     {
         OnboardingSessionModel sut = new();
 
