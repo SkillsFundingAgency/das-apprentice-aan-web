@@ -74,7 +74,7 @@ public class OnboardingSessionModelTests
 
     [Test]
     [AutoData]
-    public void GetProfileModelValue_ProfileNotFound_Throws(OnboardingSessionModel sut, ProfileModel profileModel)
+    public void GetProfileModelValue_ProfileNotFound_ThrowsInvalidOperationException(OnboardingSessionModel sut, ProfileModel profileModel)
     {
         profileModel.Value = null;
 
@@ -85,7 +85,7 @@ public class OnboardingSessionModelTests
 
     [Test]
     [AutoData]
-    public void GetProfileModelValue_ProfileFound_UpdatesValue(OnboardingSessionModel sut, string value)
+    public void SetProfileModelValue_ProfileFound_UpdatesValue(OnboardingSessionModel sut, string value)
     {
         var profileModel = sut.ProfileData[0];
 
@@ -94,4 +94,13 @@ public class OnboardingSessionModelTests
         profileModel.Value.Should().Be(value);
     }
 
+    [Test]
+    public void SetProfileModelValue_ProfileNotFound_ThrowsInvalidOperationException()
+    {
+        OnboardingSessionModel sut = new();
+
+        Action action = () => sut.SetProfileValue(111, "randome value");
+
+        action.Should().Throw<InvalidOperationException>();
+    }
 }
