@@ -38,8 +38,10 @@ public class RegionsControllerPostTests
         [Greedy] RegionsController sut)
     {
         sut.AddUrlHelperMock();
-        RegionsSubmitModel submitmodel = new();
-        submitmodel.SelectedRegionId = null;
+        RegionsSubmitModel submitmodel = new()
+        {
+            SelectedRegionId = null
+        };
 
         var result = await sut.Post(submitmodel);
 

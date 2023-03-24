@@ -48,8 +48,6 @@ public class Startup
             .AddDataProtection(appConfig.ConnectionStrings, _environment)
             .AddAuthentication(appConfig.Authentication, _environment)
             .AddHttpContextAccessor()
-            .AddFluentValidationClientsideAdapters()
-            .AddFluentValidationAutoValidation()
             .AddServiceRegistrations(appConfig.ApprenticeAanOuterApi)
             .AddHealthChecks();
 
