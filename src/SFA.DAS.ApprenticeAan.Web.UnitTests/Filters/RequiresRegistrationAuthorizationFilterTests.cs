@@ -60,7 +60,7 @@ public class RequiresRegistrationAuthorizationFilterTests
         context.Result.As<RedirectResult>().Url.Should().Be(expectedRedirectUrl);
     }
 
-    private AuthorizationFilterContext GetAuthContext()
+    private static AuthorizationFilterContext GetAuthContext()
     {
         ActionContext actionContext = new(new DefaultHttpContext(), new RouteData(), new ActionDescriptor());
         AuthorizationFilterContext context = new(actionContext, Enumerable.Empty<IFilterMetadata>().ToList());
@@ -69,7 +69,7 @@ public class RequiresRegistrationAuthorizationFilterTests
         return context;
     }
 
-    private ClaimsPrincipal GetClaimsPrinciple(bool hasCreatedAccount)
+    private static ClaimsPrincipal GetClaimsPrinciple(bool hasCreatedAccount)
     {
         ClaimsPrincipal claimsPrincipal = new();
         claimsPrincipal.AddIdentity(new ClaimsIdentity(new[]

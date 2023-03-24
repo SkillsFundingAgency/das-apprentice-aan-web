@@ -14,15 +14,12 @@ public class ApprenticeAccountService : IApprenticeAccountService
 
     public async Task<ApprenticeAccount?> GetApprenticeAccountDetails(Guid apprenticeId)
     {
-        try
+        var response = await _client.GetApprenticeAccount(apprenticeId);
+        return response.ResponseMessage.StatusCode switch
         {
-            return await _client.GetApprenticeAccount(apprenticeId);
-        }
-        catch (RestEase.ApiException ex)
-        {
-            //User has not completed registration, this will navigate to accounts web
-            if (ex.StatusCode == HttpStatusCode.NotFound) return null;
-            throw;
-        }
+            HttpStatusCode.NotFound => null,
+            HttpStatusCode.OK => response.GetContent(),
+            _ => throw new InvalidOperationException($"Outer api came back with unsuccessful response. StatusCode:{response.ResponseMessage.StatusCode}")
+        };
     }
 }

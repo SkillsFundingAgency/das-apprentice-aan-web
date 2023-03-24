@@ -53,8 +53,8 @@ public class Startup
 
         services.AddSharedUi(appConfig, options =>
         {
-            //We dont have a menu yet so cannot set this
-            //options.SetCurrentNavigationSection(NavigationSection.ApprenticeFeedback);
+            /// We dont have a menu yet so cannot set this
+            /// options.SetCurrentNavigationSection(NavigationSection.ApprenticeFeedback);
             options.EnableZendesk();
             options.EnableGoogleAnalytics();
         });

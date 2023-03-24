@@ -10,7 +10,8 @@ public interface IOuterApiClient
 
     [Get("/profiles/{userType}")]
     Task<GetProfilesResult> GetProfilesByUserType([Path("userType")] string userType);
-    
+
     [Get("/apprentices/account/{apprenticeId}")]
-    Task<ApprenticeAccount?> GetApprenticeAccount([Path] Guid apprenticeId);
+    [AllowAnyStatusCode]
+    Task<Response<ApprenticeAccount?>> GetApprenticeAccount([Path] Guid apprenticeId);
 }
