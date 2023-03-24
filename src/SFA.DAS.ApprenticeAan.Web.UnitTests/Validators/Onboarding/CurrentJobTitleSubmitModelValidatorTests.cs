@@ -30,7 +30,14 @@ public class CurrentJobTitleSubmitModelValidatorTests
     }
 
     [TestCase("", false)]
-    [TestCase("2nd Line support analyst", false)]
+    [TestCase("Line1 support analyst", true)]
+    [TestCase("Line 1 support analyst", true)]
+    [TestCase("2nd Line support analyst", true)]
+    [TestCase("2 nd Line support analyst", true)]
+    [TestCase("£ 2nd Line support analyst", false)]
+    [TestCase("2nd Line support analyst $", false)]
+    [TestCase("2nd Line£ support analyst", false)]
+    [TestCase("2nd Line $ support analyst", false)]
     public void EnteredJobTitle_AlphanumericValidation_ErrorNoError(string jobTitle, bool isValid)
     {
         var model = new CurrentJobTitleSubmitModel { EnteredJobTitle = jobTitle };

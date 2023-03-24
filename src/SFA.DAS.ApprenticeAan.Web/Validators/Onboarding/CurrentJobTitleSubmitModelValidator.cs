@@ -6,8 +6,9 @@ namespace SFA.DAS.ApprenticeAan.Web.Validators.Onboarding;
 public class CurrentJobTitleSubmitModelValidator : AbstractValidator<CurrentJobTitleSubmitModel>
 {
     public const string EmptyJobTitleErrorMessage = "Your current title must be 200 character or less.";
-    private const string regExAlphanumeric = "^[a-zA-Z0-9]+$";
+    public const string NotValidJobTitleErrorMessage = "Only alphanumeric charactors are allowed.";
 
+    private const string regExAlphanumeric = "^[a-zA-Z0-9\\s.\\-]+$";
     public CurrentJobTitleSubmitModelValidator()
     {
         RuleLevelCascadeMode = CascadeMode.Stop;
@@ -15,7 +16,8 @@ public class CurrentJobTitleSubmitModelValidator : AbstractValidator<CurrentJobT
             .NotEmpty()
             .MaximumLength(200)
             .MinimumLength(1)
+            .WithMessage(EmptyJobTitleErrorMessage)
             .Matches(regExAlphanumeric)
-            .WithMessage(EmptyJobTitleErrorMessage);
+            .WithMessage(NotValidJobTitleErrorMessage);
     }
 }
