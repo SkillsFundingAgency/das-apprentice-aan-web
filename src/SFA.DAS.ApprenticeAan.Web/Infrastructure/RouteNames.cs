@@ -10,5 +10,7 @@ public static class RouteNames
         public const string BeforeYouStart = nameof(BeforeYouStart);
         public const string TermsAndConditions = nameof(TermsAndConditions);
         public const string LineManager = nameof(LineManager);
+        public const string Regions = nameof(Regions);
+        public const string CurrentJobTitle = nameof(CurrentJobTitle);
     }
 }

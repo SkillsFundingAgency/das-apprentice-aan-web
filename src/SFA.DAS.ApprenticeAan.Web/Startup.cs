@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using FluentValidation;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Web.AppStart;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
@@ -71,8 +70,7 @@ public class Startup
         })
         .AddSessionStateTempDataProvider();
 
-        services
-            .AddValidatorsFromAssembly(typeof(LineManagerViewModel).Assembly);
+        services.AddValidatorsFromAssembly(typeof(LineManagerViewModel).Assembly);
 
         services.AddHttpContextAccessor();
 
