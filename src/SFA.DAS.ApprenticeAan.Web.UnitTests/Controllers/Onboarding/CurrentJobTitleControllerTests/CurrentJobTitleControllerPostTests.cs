@@ -4,7 +4,6 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Models;
@@ -26,16 +25,12 @@ public class CurrentJobTitleControllerPostTests
     {
         sut.AddUrlHelperMock();
 
-        var sessionModel = new OnboardingSessionModel();
-        sessionModel.ProfileData = new List<ProfileModel> { new ProfileModel() { Id = ProfileDataId.JobTitle, Description = "Job title", Category = "Personal", Ordering = 1, Value = "something" } };
-        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
-
         ValidationResult validationResult = new();
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
 
         sut.Post(submitmodel);
 
-        sessionServiceMock.Equals(sessionModel.ProfileData.GetProfileModelValue(ProfileDataId.JobTitle) == submitmodel.EnteredJobTitle);
+        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.ProfileData.FirstOrDefault(x => x.Id == 20)!.Value == submitmodel.EnteredJobTitle)));
     }
 
     [MoqAutoData]
@@ -44,17 +39,12 @@ public class CurrentJobTitleControllerPostTests
         [Greedy] CurrentJobTitleController sut)
     {
         sut.AddUrlHelperMock();
-
-        var sessionModel = new OnboardingSessionModel();
-        sessionModel.ProfileData = new List<ProfileModel> { new ProfileModel() { Id = ProfileDataId.JobTitle, Description = "Job title", Category = "Personal", Ordering = 1, Value = "something" } };
-        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
-
         CurrentJobTitleSubmitModel submitmodel = new();
         submitmodel.EnteredJobTitle = null;
 
         var result = sut.Post(submitmodel);
 
-        sessionServiceMock.Equals(sessionModel.ProfileData.GetProfileModelValue(ProfileDataId.JobTitle) == null);
+        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.ProfileData.FirstOrDefault(x => x.Id == 20)!.Value == null)));
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => !m.IsValid)));
         result.As<ViewResult>().Model.As<CurrentJobTitleSubmitModel>().EnteredJobTitle.Should().BeNull();
     }
