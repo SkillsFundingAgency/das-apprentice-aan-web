@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Filters;
@@ -10,6 +11,7 @@ using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
+[Authorize]
 [Route("onboarding/line-manager", Name = RouteNames.Onboarding.LineManager)]
 [RequiredSessionModel(typeof(OnboardingSessionModel))]
 public class LineManagerController : Controller
