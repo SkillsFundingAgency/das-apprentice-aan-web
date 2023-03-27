@@ -120,7 +120,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
         }
 
         [TestCase(5, true)]
-        [TestCase(51, false)]
+        [TestCase(201, false)]
         public void Validates_Town_Length(int length, bool isValid)
         {
             var sut = new EmployerDetailsSubmitModelValidator();
