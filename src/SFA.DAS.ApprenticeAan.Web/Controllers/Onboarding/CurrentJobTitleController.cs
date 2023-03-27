@@ -32,7 +32,7 @@ public class CurrentJobTitleController : Controller
         var model = GetViewModel();
 
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-        model.EnteredJobTitle = sessionModel.GetProfileValue(ProfileDataId.JobTitle);
+        model.JobTitle = sessionModel.GetProfileValue(ProfileDataId.JobTitle);
 
         return View(ViewPath, model);
     }
@@ -50,7 +50,7 @@ public class CurrentJobTitleController : Controller
             return View(ViewPath);
         }
 
-        sessionModel.SetProfileValue(ProfileDataId.JobTitle, submitmodel.EnteredJobTitle!);
+        sessionModel.SetProfileValue(ProfileDataId.JobTitle, submitmodel.JobTitle!);
         _sessionService.Set(sessionModel);
         //remomve below line when next page link is configured.
         var model1 = GetViewModel();

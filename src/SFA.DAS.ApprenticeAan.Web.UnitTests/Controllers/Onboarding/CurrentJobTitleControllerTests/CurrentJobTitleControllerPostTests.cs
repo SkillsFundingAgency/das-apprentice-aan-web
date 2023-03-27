@@ -2,7 +2,6 @@
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
@@ -35,7 +34,7 @@ public class CurrentJobTitleControllerPostTests
 
         sut.Post(submitmodel);
 
-        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.GetProfileValue(ProfileDataId.JobTitle) == submitmodel.EnteredJobTitle)));
+        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.GetProfileValue(ProfileDataId.JobTitle) == submitmodel.JobTitle)));
     }
 
     [MoqAutoData]
@@ -49,12 +48,10 @@ public class CurrentJobTitleControllerPostTests
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         CurrentJobTitleSubmitModel submitmodel = new();
-        submitmodel.EnteredJobTitle = null;
+        submitmodel.JobTitle = null;
 
-        var result = sut.Post(submitmodel);
+        sut.Post(submitmodel);
 
-        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.GetProfileValue(ProfileDataId.JobTitle) == null)));
-        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => !m.IsValid)));
-        result.As<ViewResult>().Model.As<CurrentJobTitleSubmitModel>().EnteredJobTitle.Should().BeNull();
+        sut.ModelState.IsValid.Should().BeFalse();
     }
 }

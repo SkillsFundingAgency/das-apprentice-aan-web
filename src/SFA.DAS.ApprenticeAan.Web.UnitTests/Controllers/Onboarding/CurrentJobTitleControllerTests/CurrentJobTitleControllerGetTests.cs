@@ -73,6 +73,6 @@ public class CurrentJobTitleControllerGetTests
 
         var result = sut.Get();
 
-        result.As<ViewResult>().Model.As<CurrentJobTitleViewModel>().EnteredJobTitle.Should().Be(sessionModel.GetProfileValue(ProfileDataId.JobTitle));
+        result.As<ViewResult>().Model.As<CurrentJobTitleViewModel>().JobTitle.Should().Be(sessionModel.GetProfileValue(ProfileDataId.JobTitle));
     }
 }

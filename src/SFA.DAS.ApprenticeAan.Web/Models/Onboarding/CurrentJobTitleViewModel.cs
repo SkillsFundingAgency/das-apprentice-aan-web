@@ -6,5 +6,5 @@ public class CurrentJobTitleViewModel : CurrentJobTitleSubmitModel, IBackLink
 
 public class CurrentJobTitleSubmitModel
 {
-    public string? EnteredJobTitle { get; set; }
+    public string? JobTitle { get; set; }
 }

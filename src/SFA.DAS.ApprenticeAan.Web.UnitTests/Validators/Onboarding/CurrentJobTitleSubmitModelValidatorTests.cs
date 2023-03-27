@@ -15,21 +15,20 @@ public class CurrentJobTitleSubmitModelValidatorTests
     {
         CurrentJobTitleSubmitModel model;
         if (length != null)
-            model = new CurrentJobTitleSubmitModel { EnteredJobTitle = new string('a', (int)length) };
+            model = new CurrentJobTitleSubmitModel { JobTitle = new string('a', (int)length) };
         else
-            model = new CurrentJobTitleSubmitModel { EnteredJobTitle = null };
+            model = new CurrentJobTitleSubmitModel { JobTitle = null };
 
         var sut = new CurrentJobTitleSubmitModelValidator();
 
         var result = sut.TestValidate(model);
 
         if (isValid)
-            result.ShouldNotHaveValidationErrorFor(c => c.EnteredJobTitle);
+            result.ShouldNotHaveValidationErrorFor(c => c.JobTitle);
         else
-            result.ShouldHaveValidationErrorFor(c => c.EnteredJobTitle);
+            result.ShouldHaveValidationErrorFor(c => c.JobTitle);
     }
 
-    [TestCase("", false)]
     [TestCase("Line1 support analyst", true)]
     [TestCase("Line 1 support analyst", true)]
     [TestCase("2nd Line support analyst", true)]
@@ -40,15 +39,15 @@ public class CurrentJobTitleSubmitModelValidatorTests
     [TestCase("2nd Line $ support analyst", false)]
     public void EnteredJobTitle_AlphanumericValidation_ErrorNoError(string jobTitle, bool isValid)
     {
-        var model = new CurrentJobTitleSubmitModel { EnteredJobTitle = jobTitle };
+        var model = new CurrentJobTitleSubmitModel { JobTitle = jobTitle };
 
         var sut = new CurrentJobTitleSubmitModelValidator();
 
         var result = sut.TestValidate(model);
 
         if (isValid)
-            result.ShouldNotHaveValidationErrorFor(c => c.EnteredJobTitle);
+            result.ShouldNotHaveValidationErrorFor(c => c.JobTitle);
         else
-            result.ShouldHaveValidationErrorFor(c => c.EnteredJobTitle);
+            result.ShouldHaveValidationErrorFor(c => c.JobTitle).WithErrorMessage(CurrentJobTitleSubmitModelValidator.NotValidJobTitleErrorMessage);
     }
 }

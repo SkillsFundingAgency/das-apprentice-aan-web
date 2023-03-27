@@ -8,13 +8,13 @@
     <div class="govuk-grid-column-two-thirds">
         <partial name="_validationSummary" />
         <form method="post" asp-route="@RouteNames.Onboarding.CurrentJobTitle" enctype="multipart/form-data" novalidate>
-            <div esfa-validation-marker-for="EnteredJobTitle" class="govuk-form-group">
+            <div esfa-validation-marker-for="JobTitle" class="govuk-form-group">
                 <h1 class="govuk-heading-l">
                     What is your current job title?
                 </h1>
-                <span asp-validation-for="EnteredJobTitle" class="govuk-error-message"></span>
+                <span asp-validation-for="JobTitle" class="govuk-error-message"></span>
                 <div id="HasEmployersApproval"  data-module="govuk-input">
-                    <input type="text" asp-for="EnteredJobTitle" id="EnteredJobTitle" class="govuk-input" sfa-validationerror-class="form-control-error" />
+                    <input type="text" asp-for="JobTitle" id="EnteredJobTitle" class="govuk-input" sfa-validationerror-class="form-control-error" />
                 </div>
             </div>
             <div class="govuk-button-group">
