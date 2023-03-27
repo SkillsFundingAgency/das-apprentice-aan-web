@@ -131,15 +131,13 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
         [TestCase("", false)]
         [TestCase(null, false)]
         [TestCase(" ", false)]
-        [TestCase("M1", false)]
-        [TestCase("M1 1AA", true)]
         [TestCase("M60 1NW", true)]
         [TestCase("CR2 6HP", true)]
         [TestCase("DN55 1PT", true)]
         [TestCase("W1P 1HQ", true)]
         [TestCase("EC1A 1BB", true)]
         [TestCase("eC1A1bB", true)]
-        public void Validate_Postcode(string postcode, bool isValid)
+        public void Validate_Postcode_NullOrEmpty(string postcode, bool isValid)
         {
             var sut = new EmployerDetailsSubmitModelValidator();
 
@@ -148,7 +146,21 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
             if (isValid)
                 result.ShouldNotHaveValidationErrorFor(c => c.Postcode);
             else
-                result.ShouldHaveValidationErrorFor(c => c.Postcode);
+                result.ShouldHaveValidationErrorFor(c => c.Postcode).WithErrorMessage(EmployerDetailsSubmitModelValidator.PostcodeEmptyMessage);
+        }
+
+        [TestCase("M1", false)]
+        [TestCase("M1 1AA", true)]
+        public void Validate_Postcode_Bonafide(string postcode, bool isValid)
+        {
+            var sut = new EmployerDetailsSubmitModelValidator();
+
+            var result = sut.TestValidate(new EmployerDetailsSubmitModel { Postcode = postcode });
+
+            if (isValid)
+                result.ShouldNotHaveValidationErrorFor(c => c.Postcode);
+            else
+                result.ShouldHaveValidationErrorFor(c => c.Postcode).WithErrorMessage(EmployerDetailsSubmitModelValidator.PostcodeInvalidMessage);
         }
     }
 }

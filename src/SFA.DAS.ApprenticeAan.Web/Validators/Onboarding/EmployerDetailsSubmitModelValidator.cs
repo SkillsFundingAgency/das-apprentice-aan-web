@@ -11,7 +11,7 @@ public class EmployerDetailsSubmitModelValidator : AbstractValidator<EmployerDet
     public const string AddressLine1EmptyMessage = "Please enter the Building and Street.";
     public const string TownOrCityEmptyMessage = "Please enter a Town or City.";
     public const string PostcodeEmptyMessage = "Please enter a postcode";
-    public const string PostcodeInvalidMessage = "Enter a real postcode";
+    public const string PostcodeInvalidMessage = "Please enter a real postcode";
 
     public EmployerDetailsSubmitModelValidator()
     {

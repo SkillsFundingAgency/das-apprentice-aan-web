@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Filters;
+using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using System.Reflection;
 
@@ -18,7 +19,7 @@ public class EmployerControllerAttributeTests
             .Where(y => y.GetCustomAttributes().OfType<HttpGetAttribute>().Any()).ToList())
         {
             httpGetMethod.Should().BeDecoratedWith<RouteAttribute>().Subject.Template.Should().Be("onboarding/employer-details");
-            httpGetMethod.Should().BeDecoratedWith<RouteAttribute>().Subject.Name.Should().Be("EmployerDetails");
+            httpGetMethod.Should().BeDecoratedWith<RouteAttribute>().Subject.Name.Should().Be(RouteNames.Onboarding.EmployerDetails);
         }
     }
 
