@@ -16,7 +16,7 @@
                 </label>
                 <div esfa-validation-marker-for="EmployerName" class="govuk-form-group">
                     <span asp-validation-for="EmployerName" class="govuk-error-message"></span>
-                    <input asp-for="EmployerName" id="EmployerName" class="govuk-input" type="text" maxlength="256"
+                    <input asp-for="EmployerName" id="EmployerName" class="govuk-input govuk-!-width-two-thirds" type="text" maxlength="200"
                            sfa-validationerror-class="form-control-error">
                 </div>
             </div>
@@ -26,17 +26,17 @@
                 </label>
                 <div esfa-validation-marker-for="AddressLine1" class="govuk-form-group">
                     <span asp-validation-for="AddressLine1" class="govuk-error-message"></span>
-                    <input asp-for="AddressLine1" id="AddressLine1" class="govuk-input" type="text" maxlength="256"
+                    <input asp-for="AddressLine1" id="AddressLine1" class="govuk-input" type="text" maxlength="200"
                            sfa-validationerror-class="form-control-error">
                 </div>
 
                 <div class="govuk-form-group">
-                    <input asp-for="AddressLine2" id="AddressLine2" class="govuk-input" type="text" maxlength="256">
+                    <input asp-for="AddressLine2" id="AddressLine2" class="govuk-input" type="text" maxlength="200">
 
                 </div>
 
                 <div class="govuk-form-group">
-                    <input asp-for="County" id="County" class="govuk-input" type="text" maxlength="256">
+                    <input asp-for="County" id="County" class="govuk-input" type="text" maxlength="200">
                 </div>
             </div>
 
@@ -45,7 +45,7 @@
                     Town or City
                 </label>
                 <span asp-validation-for="Town" class="govuk-error-message"></span>
-                <input asp-for="Town" id="Town" class="govuk-input govuk-input--width-10" type="text" maxlength="50"
+                <input asp-for="Town" id="Town" class="govuk-input govuk-!-width-two-thirds" type="text" maxlength="200"
                         sfa-validationerror-class="form-control-error">
             </div>
 
@@ -54,7 +54,7 @@
                     Postcode
                 </label>
                 <span asp-validation-for="Postcode" class="govuk-error-message"></span>
-                <input asp-for="Postcode" id="Postcode" class="govuk-input" type="text" maxlength="8"
+                <input asp-for="Postcode" id="Postcode" class="govuk-input  govuk-input--width-10" type="text" maxlength="8"
                        sfa-validationerror-class="form-control-error">
             </div>
             <div class="govuk-button-group">
