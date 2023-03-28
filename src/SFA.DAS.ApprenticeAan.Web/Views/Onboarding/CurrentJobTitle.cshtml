@@ -13,8 +13,8 @@
                     What is your current job title?
                 </h1>
                 <span asp-validation-for="JobTitle" class="govuk-error-message"></span>
-                <div id="HasEmployersApproval"  data-module="govuk-input">
-                    <input type="text" asp-for="JobTitle" id="EnteredJobTitle" class="govuk-input" sfa-validationerror-class="form-control-error" />
+                <div id="EnteredJobTitle" data-module="govuk-input">
+                    <input type="text" asp-for="JobTitle"  class="govuk-input" sfa-validationerror-class="form-control-error" maxlength="200" />
                 </div>
             </div>
             <div class="govuk-button-group">
