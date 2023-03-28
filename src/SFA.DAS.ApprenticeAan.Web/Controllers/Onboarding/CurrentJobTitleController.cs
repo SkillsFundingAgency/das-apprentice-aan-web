@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
@@ -13,6 +14,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
 [Route("onboarding/current-job-title", Name = RouteNames.Onboarding.CurrentJobTitle)]
 [RequiredSessionModel(typeof(OnboardingSessionModel))]
+[Authorize]
 public class CurrentJobTitleController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/CurrentJobTitle.cshtml";
