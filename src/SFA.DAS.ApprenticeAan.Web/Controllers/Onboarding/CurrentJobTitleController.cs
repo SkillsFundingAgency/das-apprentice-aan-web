@@ -41,20 +41,20 @@ public class CurrentJobTitleController : Controller
     public IActionResult Post(CurrentJobTitleSubmitModel submitmodel)
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
+        var model = GetViewModel();
 
         ValidationResult result = _validator.Validate(submitmodel);
 
         if (!result.IsValid)
         {
             result.AddToModelState(ModelState);
-            return View(ViewPath);
+            return View(ViewPath, model);
         }
 
         sessionModel.SetProfileValue(ProfileDataId.JobTitle, submitmodel.JobTitle!);
         _sessionService.Set(sessionModel);
         //remomve below line when next page link is configured.
-        var model1 = GetViewModel();
-        return View(ViewPath, model1);
+        return View(ViewPath, model);
     }
 
     private CurrentJobTitleViewModel GetViewModel()

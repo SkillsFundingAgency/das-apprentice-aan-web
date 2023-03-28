@@ -2,10 +2,12 @@
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
+using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
@@ -24,17 +26,17 @@ public class CurrentJobTitleControllerPostTests
         CurrentJobTitleSubmitModel submitmodel,
         OnboardingSessionModel sessionModel)
     {
-        sut.AddUrlHelperMock();
-
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.NameOfEmployer);
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         ValidationResult validationResult = new();
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
 
-        sut.Post(submitmodel);
+        var result = sut.Post(submitmodel);
 
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.GetProfileValue(ProfileDataId.JobTitle) == submitmodel.JobTitle)));
+        result.As<ViewResult>().Model.As<CurrentJobTitleViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
     }
 
     [MoqAutoData]
@@ -43,15 +45,16 @@ public class CurrentJobTitleControllerPostTests
         [Greedy] CurrentJobTitleController sut,
         OnboardingSessionModel sessionModel)
     {
-        sut.AddUrlHelperMock();
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.NameOfEmployer);
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         CurrentJobTitleSubmitModel submitmodel = new();
         submitmodel.JobTitle = null;
 
-        sut.Post(submitmodel);
+        var result = sut.Post(submitmodel);
 
         sut.ModelState.IsValid.Should().BeFalse();
+        result.As<ViewResult>().Model.As<CurrentJobTitleViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
     }
 }
