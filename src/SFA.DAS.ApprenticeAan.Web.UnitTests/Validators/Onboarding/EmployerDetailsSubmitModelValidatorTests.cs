@@ -39,6 +39,21 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
                     .WithErrorMessage(EmployerDetailsSubmitModelValidator.EmployerNameMaxLengthMessage);
         }
 
+        [TestCase("Royal Mail", true)]
+        [TestCase("Royal@ Mail", false)]
+        public void Validates_EmployerName_InputValue(string? employerName, bool isValid)
+        {
+            var sut = new EmployerDetailsSubmitModelValidator();
+
+            var result = sut.TestValidate(new EmployerDetailsSubmitModel { EmployerName = employerName });
+
+            if (isValid)
+                result.ShouldNotHaveValidationErrorFor(c => c.EmployerName);
+            else
+                result.ShouldHaveValidationErrorFor(x => x.EmployerName)
+                .WithErrorMessage(EmployerDetailsSubmitModelValidator.EmployerNameDisallowedCharsMessage);
+        }
+
         [TestCase("Farringdon Rd", true)]
         [TestCase("", false)]
         [TestCase(null, false)]
@@ -71,6 +86,20 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
                     .WithErrorMessage(EmployerDetailsSubmitModelValidator.AddressLine1MaxLengthMessage);
         }
 
+        [TestCase("Farringdon Rd", true)]
+        [TestCase("Farringdon$Rd", false)]
+        public void Validates_AddressLine1_InputValue(string? addressLine1, bool isValid)
+        {
+            var sut = new EmployerDetailsSubmitModelValidator();
+
+            var result = sut.TestValidate(new EmployerDetailsSubmitModel { AddressLine1 = addressLine1 });
+
+            if (isValid)
+                result.ShouldNotHaveValidationErrorFor(c => c.AddressLine1);
+            else
+                result.ShouldHaveValidationErrorFor(x => x.AddressLine1)
+                .WithErrorMessage(EmployerDetailsSubmitModelValidator.AddressLine1DisallowedCharsMessage);
+        }
 
         [TestCase(5, true)]
         [TestCase(201, false)]
@@ -87,6 +116,21 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
                     .WithErrorMessage(EmployerDetailsSubmitModelValidator.AddressLine2MaxLengthMessage);
         }
 
+        [TestCase(null, true)]
+        [TestCase("<", false)]
+        public void Validates_AddressLine2_InputValue(string? addressLine2, bool isValid)
+        {
+            var sut = new EmployerDetailsSubmitModelValidator();
+
+            var result = sut.TestValidate(new EmployerDetailsSubmitModel { AddressLine2 = addressLine2 });
+
+            if (isValid)
+                result.ShouldNotHaveValidationErrorFor(c => c.AddressLine2);
+            else
+                result.ShouldHaveValidationErrorFor(x => x.AddressLine2)
+                .WithErrorMessage(EmployerDetailsSubmitModelValidator.AddressLine2DisallowedCharsMessage);
+        }
+
         [TestCase(5, true)]
         [TestCase(201, false)]
         public void Validates_County_Length(int length, bool isValid)
@@ -99,7 +143,22 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
                 result.ShouldNotHaveValidationErrorFor(c => c.County);
             else
                 result.ShouldHaveValidationErrorFor(x => x.County)
-                    .WithErrorMessage(EmployerDetailsSubmitModelValidator.CountyMaxLengthMessage);
+                    .WithErrorMessage(EmployerDetailsSubmitModelValidator.AddressLine3MaxLengthMessage);
+        }
+
+        [TestCase(null, true)]
+        [TestCase("\\", false)]
+        public void Validates_County_InputValue(string? county, bool isValid)
+        {
+            var sut = new EmployerDetailsSubmitModelValidator();
+
+            var result = sut.TestValidate(new EmployerDetailsSubmitModel { County = county });
+
+            if (isValid)
+                result.ShouldNotHaveValidationErrorFor(c => c.County);
+            else
+                result.ShouldHaveValidationErrorFor(x => x.County)
+                .WithErrorMessage(EmployerDetailsSubmitModelValidator.AddressLine3DisallowedCharsMessage);
         }
 
         [TestCase("London", true)]
@@ -132,6 +191,21 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
             else
                 result.ShouldHaveValidationErrorFor(x => x.Town)
                     .WithErrorMessage(EmployerDetailsSubmitModelValidator.TownOrCityMaxLengthMessage);
+        }
+
+        [TestCase("London", true)]
+        [TestCase("+", false)]
+        public void Validates_Town_InputValue(string? town, bool isValid)
+        {
+            var sut = new EmployerDetailsSubmitModelValidator();
+
+            var result = sut.TestValidate(new EmployerDetailsSubmitModel { Town = town });
+
+            if (isValid)
+                result.ShouldNotHaveValidationErrorFor(c => c.Town);
+            else
+                result.ShouldHaveValidationErrorFor(x => x.Town)
+                .WithErrorMessage(EmployerDetailsSubmitModelValidator.TownOrCityDisallowedCharsMessage);
         }
 
         [TestCase("", false)]
