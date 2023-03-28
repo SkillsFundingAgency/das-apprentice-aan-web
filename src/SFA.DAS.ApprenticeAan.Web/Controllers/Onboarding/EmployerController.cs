@@ -7,9 +7,11 @@ using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
+[Authorize]
 [RequiredSessionModel(typeof(OnboardingSessionModel))]
 public class EmployerController : Controller
 {
