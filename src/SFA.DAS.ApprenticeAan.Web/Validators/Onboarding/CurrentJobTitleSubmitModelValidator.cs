@@ -8,7 +8,7 @@ public class CurrentJobTitleSubmitModelValidator : AbstractValidator<CurrentJobT
     public const string JobTitleLengthInvalidErrorMessage = "Your current title must be 200 character or less";
     public const string NotValidJobTitleErrorMessage = "Only alphanumeric charactors are allowed";
 
-    private const string regExAlphanumeric = "^[a-zA-Z0-9\\s.\\-]+$";
+    private const string regExAlphanumeric = "^[a-zA-Z0-9\\s.\\-\\(\\)]+$";
     public CurrentJobTitleSubmitModelValidator()
     {
         RuleLevelCascadeMode = CascadeMode.Stop;

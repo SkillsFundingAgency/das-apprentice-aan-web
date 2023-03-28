@@ -37,6 +37,7 @@ public class CurrentJobTitleSubmitModelValidatorTests
     [TestCase("2nd Line support analyst $", false)]
     [TestCase("2nd Line£ support analyst", false)]
     [TestCase("2nd Line $ support analyst", false)]
+    [TestCase("Chief Technology Officer (CTO)", true)]
     public void EnteredJobTitle_AlphanumericValidation_ErrorNoError(string jobTitle, bool isValid)
     {
         var model = new CurrentJobTitleSubmitModel { JobTitle = jobTitle };
