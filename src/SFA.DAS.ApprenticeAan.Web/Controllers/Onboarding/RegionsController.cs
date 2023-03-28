@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
@@ -10,6 +11,7 @@ using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
+[Authorize]
 [Route("onboarding/regions", Name = RouteNames.Onboarding.Regions)]
 [RequiredSessionModel(typeof(OnboardingSessionModel))]
 public class RegionsController : Controller

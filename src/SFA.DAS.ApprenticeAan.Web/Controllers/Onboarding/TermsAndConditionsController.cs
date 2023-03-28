@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Filters;
@@ -7,6 +8,7 @@ using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
+[Authorize]
 [Route("onboarding/terms-and-conditions", Name = RouteNames.Onboarding.TermsAndConditions)]
 [RequiredSessionModel(typeof(OnboardingSessionModel))]
 public class TermsAndConditionsController : Controller

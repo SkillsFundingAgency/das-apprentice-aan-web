@@ -10,17 +10,17 @@ namespace SFA.DAS.ApprenticeAan.Web.Configuration;
 [ExcludeFromCodeCoverage]
 public class ApplicationConfiguration : ISharedUiConfiguration
 {
-    public NavigationSectionUrls ApplicationUrls { get; set; } = null!;
+    public NavigationSectionUrls ApplicationUrls { get; set; } = new();
 
-    public GoogleAnalyticsConfiguration GoogleAnalytics { get; set; } = null!;
+    public GoogleAnalyticsConfiguration GoogleAnalytics { get; set; } = new();
 
-    public ZenDeskConfiguration Zendesk { get; set; } = null!;
+    public ZenDeskConfiguration Zendesk { get; set; } = new();
 
-    public ConnectionStringsConfiguration ConnectionStrings { get; set; } = null!;
+    public ConnectionStringsConfiguration ConnectionStrings { get; set; } = new();
 
-    public AuthenticationConfiguration Authentication { get; set; } = null!;
+    public AuthenticationConfiguration Authentication { get; set; } = new();
 
-    public OuterApiConfiguration ApprenticeAanOuterApi { get; set; } = null!;
+    public OuterApiConfiguration ApprenticeAanOuterApi { get; set; } = new();
 }
 
 public class ConnectionStringsConfiguration

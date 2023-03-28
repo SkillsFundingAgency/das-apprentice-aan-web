@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Web.AppStart;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
+using SFA.DAS.ApprenticeAan.Web.Filters;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
-using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using SFA.DAS.ApprenticePortal.SharedUi.Startup;
 using SFA.DAS.Configuration.AzureTableStorage;
 
@@ -46,37 +46,38 @@ public class Startup
         services
             .AddApplicationInsightsTelemetry()
             .AddDataProtection(appConfig.ConnectionStrings, _environment)
-            //TODO
-            //.AddAuthentication(appConfig.Authentication, _environment)
-            //.AddOuterApi(appConfig.ApprenticeFeedbackOuterApi)
+            .AddAuthentication(appConfig.Authentication, _environment)
             .AddHttpContextAccessor()
-            .AddServiceRegistrations(appConfig.ApprenticeAanOuterApi);
+            .AddServiceRegistrations(appConfig.ApprenticeAanOuterApi)
+            .AddHealthChecks();
 
         services.AddSharedUi(appConfig, options =>
         {
-            options.SetCurrentNavigationSection(NavigationSection.ApprenticeFeedback); //TODO to change the navigation section
+            /// We dont have a menu yet so cannot set this
+            /// options.SetCurrentNavigationSection(NavigationSection.ApprenticeFeedback);
             options.EnableZendesk();
             options.EnableGoogleAnalytics();
         });
 
         services.AddSession(options =>
         {
-            options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always;
+            options.IdleTimeout = TimeSpan.FromMinutes(10);
+            options.Cookie.HttpOnly = true;
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            options.Cookie.IsEssential = true;
         });
 
-        services.Configure<RouteOptions>(options => { options.LowercaseUrls = true; }).AddMvc(options =>
-        {
-            if (!_configuration.IsDev()) options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-        })
-        .AddSessionStateTempDataProvider();
+        services
+            .Configure<RouteOptions>(options => { options.LowercaseUrls = true; })
+            .AddMvc(options =>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                options.Filters.Add<RequiresRegistrationAuthorizationFilter>();
+            })
+            .AddSessionStateTempDataProvider();
 
         services.AddValidatorsFromAssembly(typeof(LineManagerViewModel).Assembly);
-
-        services.AddHttpContextAccessor();
-
         if (_configuration.IsDev() || _configuration.IsLocal()) services.AddDistributedMemoryCache();
-
-        services.AddHealthChecks();
 
 #if DEBUG
         services.AddControllersWithViews().AddRazorRuntimeCompilation();
@@ -85,11 +86,13 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        if (env.IsDevelopment()) { app.UseDeveloperExceptionPage(); }
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
         else
         {
             app.UseHealthChecks("/health"); //TODO add outer api health check
-
             app.UseStatusCodePagesWithReExecute("/error/{0}"); //TODO add error controller and pages
             app.UseExceptionHandler("/error");
             app.UseHsts();
@@ -100,10 +103,8 @@ public class Startup
         app.UseCookiePolicy();
         app.UseRouting();
         app.UseMiddleware<SecurityHeadersMiddleware>();
-
-        //TODO Renable after authentication
-        //app.UseAuthentication();
-        //app.UseAuthorization();
+        app.UseAuthentication();
+        app.UseAuthorization();
         app.UseSession();
 
         app.UseEndpoints(endpoints =>

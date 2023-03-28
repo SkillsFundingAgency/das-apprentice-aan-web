@@ -14,8 +14,9 @@
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.14" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="RestEase.HttpClientFactory" Version="1.6.1" />
     <PackageReference Include="SFA.DAS.ApprenticePortal.SharedUi" Version="1.1.68" />
+    <PackageReference Include="RestEase" Version="1.6.1" />
+    <PackageReference Include="RestEase.HttpClientFactory" Version="1.6.1" />
     <PackageReference Include="SFA.DAS.Http" Version="3.2.69" />
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="3.0.84" />
     <PackageReference Include="WebEssentials.AspNetCore.CdnTagHelpers" Version="1.0.21" />

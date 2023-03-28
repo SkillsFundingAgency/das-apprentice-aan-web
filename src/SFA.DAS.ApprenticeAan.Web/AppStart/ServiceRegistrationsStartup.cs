@@ -13,13 +13,15 @@ namespace SFA.DAS.ApprenticeAan.Web.AppStart;
 [ExcludeFromCodeCoverage]
 public static class ServiceRegistrationsStartup
 {
-    public static void AddServiceRegistrations(this IServiceCollection services, OuterApiConfiguration apprenticeAanOuterApi)
+    public static IServiceCollection AddServiceRegistrations(this IServiceCollection services, OuterApiConfiguration outerApiConfiguration)
     {
-        AddOuterApi(services, apprenticeAanOuterApi);
+        AddOuterApi(services, outerApiConfiguration);
         services.AddTransient<IMenuVisibility, MenuVisibility>();
         services.AddTransient<ISessionService, SessionService>();
         services.AddTransient<IRegionsService, RegionsService>();
         services.AddTransient<IProfileService, ProfileService>();
+        services.AddTransient<IApprenticeAccountService, ApprenticeAccountService>();
+        return services;
     }
 
     private static void AddOuterApi(this IServiceCollection services, OuterApiConfiguration configuration)
