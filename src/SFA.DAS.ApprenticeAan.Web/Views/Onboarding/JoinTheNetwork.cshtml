@@ -8,16 +8,19 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_validationSummary" />
-        <partial name="_WordCountScriptsPartial" />
         <form method="post" asp-route=" @RouteNames.Onboarding.JoinTheNetwork" enctype="multipart/form-data" novalidate>
             <div esfa-validation-marker-for="ReasonForJoiningTheNetwork" class="govuk-form-group">
-                <h1 class="govuk-heading-l">Why do you want to join the network?</h1>
+                <h1 class="govuk-label-wrapper">
+                    <label class="govuk-label govuk-label--l"  sp-for="ReasonForJoiningTheNetwork">
+                        Why do you want to join the network?
+                    </label>
+                </h1>
                 <div id="join-the-network-hint" class="govuk-hint" asp-for="JoinTheNetwork">
                     This can include information such as what initially attracted you to the
                     network and what you would like to get out of being a network member. Your
-                    answer must be in 250 words or less.
+                    answer must be in @maxWordCount words or less.
                 </div>
-                <div class="govuk-word-count" data-module="govuk-word-count" data-maxwords="250">
+                <div class="govuk-character-count" data-module="govuk-character-count" data-maxwords="@maxWordCount">
                     <span asp-validation-for="ReasonForJoiningTheNetwork" class="govuk-error-message"></span>
                     <textarea class="govuk-textarea govuk-js-character-count" asp-for="ReasonForJoiningTheNetwork"  id="ReasonForJoiningTheNetwork" rows="12" aria-describedby="join-the-network-hint"
                                   sfa-validationerror-class="form-control-error">@Model.ReasonForJoiningTheNetwork</textarea>
