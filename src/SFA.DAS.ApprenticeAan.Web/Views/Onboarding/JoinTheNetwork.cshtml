@@ -1,0 +1,36 @@
+﻿@using SFA.DAS.ApprenticeAan.Web.Infrastructure
+@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
+@model JoinTheNetworkViewModel
+@{
+    ViewData["Title"] = "Why do you want to join the network?";
+    var maxWordCount = 250;
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_validationSummary" />
+        <partial name="_WordCountScriptsPartial" />
+        <form method="post" asp-route=" @RouteNames.Onboarding.JoinTheNetwork" enctype="multipart/form-data" novalidate>
+            <div esfa-validation-marker-for="ReasonForJoiningTheNetwork" class="govuk-form-group">
+                <h1 class="govuk-heading-l">Why do you want to join the network?</h1>
+                <div id="join-the-network-hint" class="govuk-hint" asp-for="JoinTheNetwork">
+                    This can include information such as what initially attracted you to the
+                    network and what you would like to get out of being a network member. Your
+                    answer must be in 250 words or less.
+                </div>
+                <div class="govuk-word-count" data-module="govuk-word-count" data-maxwords="250">
+                    <span asp-validation-for="ReasonForJoiningTheNetwork" class="govuk-error-message"></span>
+                    <textarea class="govuk-textarea govuk-js-character-count" asp-for="ReasonForJoiningTheNetwork"  id="ReasonForJoiningTheNetwork" rows="12" aria-describedby="join-the-network-hint"
+                                  sfa-validationerror-class="form-control-error">@Model.ReasonForJoiningTheNetwork</textarea>
+                    <span id="ReasonForJoiningTheNetwork-info" class="govuk-hint govuk-character-count__message" aria-live="polite">
+                        You can enter up to @maxWordCount words
+                    </span>
+                </div>
+            </div>
+            <div class="govuk-button-group">
+                <button id="continue" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
