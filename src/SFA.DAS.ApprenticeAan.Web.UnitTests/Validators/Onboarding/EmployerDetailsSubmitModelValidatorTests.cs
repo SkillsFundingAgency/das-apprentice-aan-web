@@ -51,7 +51,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
                 result.ShouldNotHaveValidationErrorFor(c => c.EmployerName);
             else
                 result.ShouldHaveValidationErrorFor(x => x.EmployerName)
-                .WithErrorMessage(EmployerDetailsSubmitModelValidator.EmployerNameDisallowedCharsMessage);
+                .WithErrorMessage(EmployerDetailsSubmitModelValidator.EmployerNameHasInvalidCharacter);
         }
 
         [TestCase("Farringdon Rd", true)]
@@ -98,7 +98,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
                 result.ShouldNotHaveValidationErrorFor(c => c.AddressLine1);
             else
                 result.ShouldHaveValidationErrorFor(x => x.AddressLine1)
-                .WithErrorMessage(EmployerDetailsSubmitModelValidator.AddressLine1DisallowedCharsMessage);
+                .WithErrorMessage(EmployerDetailsSubmitModelValidator.AddressLine1HasInvalidCharacter);
         }
 
         [TestCase(5, true)]
@@ -128,7 +128,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
                 result.ShouldNotHaveValidationErrorFor(c => c.AddressLine2);
             else
                 result.ShouldHaveValidationErrorFor(x => x.AddressLine2)
-                .WithErrorMessage(EmployerDetailsSubmitModelValidator.AddressLine2DisallowedCharsMessage);
+                .WithErrorMessage(EmployerDetailsSubmitModelValidator.AddressLine2HasInvalidCharacter);
         }
 
         [TestCase(5, true)]
@@ -158,7 +158,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
                 result.ShouldNotHaveValidationErrorFor(c => c.County);
             else
                 result.ShouldHaveValidationErrorFor(x => x.County)
-                .WithErrorMessage(EmployerDetailsSubmitModelValidator.AddressLine3DisallowedCharsMessage);
+                .WithErrorMessage(EmployerDetailsSubmitModelValidator.AddressLine3HasInvalidCharacter);
         }
 
         [TestCase("London", true)]
@@ -205,7 +205,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
                 result.ShouldNotHaveValidationErrorFor(c => c.Town);
             else
                 result.ShouldHaveValidationErrorFor(x => x.Town)
-                .WithErrorMessage(EmployerDetailsSubmitModelValidator.TownOrCityDisallowedCharsMessage);
+                .WithErrorMessage(EmployerDetailsSubmitModelValidator.TownOrCityHasInvalidCharacter);
         }
 
         [TestCase("", false)]
