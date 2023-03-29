@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
 [Authorize]
+[Route("onboarding/employer-details", Name = RouteNames.Onboarding.EmployerDetails)]
 [RequiredSessionModel(typeof(OnboardingSessionModel))]
 public class EmployerController : Controller
 {
@@ -28,7 +29,6 @@ public class EmployerController : Controller
     }
 
     [HttpGet]
-    [Route("onboarding/employer-details", Name = RouteNames.Onboarding.EmployerDetails)]
     public IActionResult GetEmployerDetails()
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
@@ -48,7 +48,6 @@ public class EmployerController : Controller
     }
 
     [HttpPost]
-    [Route("onboarding/employer-details", Name = RouteNames.Onboarding.EmployerDetails)]
     public IActionResult PostEmployerDetails(EmployerDetailsSubmitModel submitmodel)
     {
         var model = new EmployerDetailsViewModel()

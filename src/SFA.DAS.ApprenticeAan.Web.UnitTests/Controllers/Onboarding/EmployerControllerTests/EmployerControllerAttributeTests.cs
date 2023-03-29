@@ -14,13 +14,10 @@ public class EmployerControllerAttributeTests
     [Test]
     public void Controller_HasCorrectAttributes()
     {
-        foreach (var httpGetMethod in typeof(EmployerController)
-            .GetMethods()
-            .Where(y => y.GetCustomAttributes().OfType<HttpGetAttribute>().Any()).ToList())
-        {
-            httpGetMethod.Should().BeDecoratedWith<RouteAttribute>().Subject.Template.Should().Be("onboarding/employer-details");
-            httpGetMethod.Should().BeDecoratedWith<RouteAttribute>().Subject.Name.Should().Be(RouteNames.Onboarding.EmployerDetails);
-        }
+
+        typeof(EmployerController).Should().BeDecoratedWith<RouteAttribute>();
+        typeof(EmployerController).Should().BeDecoratedWith<RouteAttribute>().Subject.Template.Should().Be("onboarding/employer-details");
+        typeof(EmployerController).Should().BeDecoratedWith<RouteAttribute>().Subject.Name.Should().Be(RouteNames.Onboarding.EmployerDetails);
     }
 
     [Test]
