@@ -10,8 +10,7 @@ public class CurrentJobTitleSubmitModelValidatorTests
     [TestCase(1, true)]
     [TestCase(200, true)]
     [TestCase(201, false)]
-    [TestCase(null, false)]
-    public void EnteredJobTitle_Validation_ErrorNoError(int? length, bool isValid)
+    public void EnteredJobTitle_LengthValidation_ErrorNoError(int? length, bool isValid)
     {
         CurrentJobTitleSubmitModel model;
         if (length != null)
@@ -27,6 +26,23 @@ public class CurrentJobTitleSubmitModelValidatorTests
             result.ShouldNotHaveValidationErrorFor(c => c.JobTitle);
         else
             result.ShouldHaveValidationErrorFor(c => c.JobTitle);
+    }
+
+    [TestCase("Support analyst", true)]
+    [TestCase("", false)]
+    [TestCase(null, false)]
+    public void EnteredJobTitle_EmptyTextValidation_ErrorNoError(string? jobTitle, bool isValid)
+    {
+        CurrentJobTitleSubmitModel model = new CurrentJobTitleSubmitModel { JobTitle = jobTitle };
+
+        var sut = new CurrentJobTitleSubmitModelValidator();
+
+        var result = sut.TestValidate(model);
+
+        if (isValid)
+            result.ShouldNotHaveValidationErrorFor(c => c.JobTitle);
+        else
+            result.ShouldHaveValidationErrorFor(c => c.JobTitle).WithErrorMessage(CurrentJobTitleSubmitModelValidator.JobTitleEmpty);
     }
 
     [TestCase("Line1 support analyst", true)]
