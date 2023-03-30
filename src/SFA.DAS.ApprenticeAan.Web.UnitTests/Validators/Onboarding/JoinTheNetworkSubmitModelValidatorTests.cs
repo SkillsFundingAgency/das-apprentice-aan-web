@@ -1,5 +1,4 @@
 ﻿using FluentValidation.TestHelper;
-using Microsoft.Extensions.Primitives;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Validators.Onboarding;
 using System.Text;
@@ -26,7 +25,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
                     .WithErrorMessage(JoinTheNetworkSubmitModelValidator.ReasonForJoiningTheNetworkEmptyMessage);
         }
 
-        private string GetParagraph(string str, int ctr)
+        private static string GetParagraph(string str, int ctr)
         {
             StringBuilder sb = new();
             for (int i = 0; i < ctr; i++)
