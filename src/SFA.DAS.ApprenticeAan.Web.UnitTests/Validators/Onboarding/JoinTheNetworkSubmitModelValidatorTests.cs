@@ -1,4 +1,5 @@
 ﻿using FluentValidation.TestHelper;
+using Microsoft.Extensions.Primitives;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Validators.Onboarding;
 using System.Text;
@@ -27,7 +28,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
 
         private string GetParagraph(string str, int ctr)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             for (int i = 0; i < ctr; i++)
             {
                 sb.Append(str);
@@ -36,7 +37,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
         }
 
         [TestCase("Mary had a little lamb, and its fleece was white. ", 250, true)]
-        [TestCase("Mary had a little lamb, and its fleece was white as snow. ", 251, false)]
+        [TestCase("Mary had a little lamb, and its fleece was white. ", 251, false)]
         public void Validates_ReasonForJoiningTheNetwork_Max(string input, int maxWords, bool isValid)
         {
             var times = (int)Math.Ceiling((double)maxWords / 10);
