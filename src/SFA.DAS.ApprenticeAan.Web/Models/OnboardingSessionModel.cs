@@ -7,7 +7,6 @@ public class OnboardingSessionModel
     public bool? HasEmployersApproval { get; set; }
     public List<ProfileModel> ProfileData { get; set; } = new List<ProfileModel>();
     public int? RegionId { get; set; }
-
     public bool IsValid =>
         ApprenticeDetails.ApprenticeId.GetValueOrDefault() != Guid.Empty &&
         HasAcceptedTermsAndConditions && HasEmployersApproval.GetValueOrDefault() &&
