@@ -39,7 +39,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
         [TestCase("Mary had a little lamb, and its fleece was white. ", 251, false)]
         public void Validates_ReasonForJoiningTheNetwork_Max(string input, int maxWords, bool isValid)
         {
-            var times = (int)Math.Ceiling((double)maxWords / 10);
+            var times = maxWords / 10 + maxWords % 10;
 
             var value = GetParagraph(input, times);
             var model = new JoinTheNetworkViewModel { ReasonForJoiningTheNetwork = value };
