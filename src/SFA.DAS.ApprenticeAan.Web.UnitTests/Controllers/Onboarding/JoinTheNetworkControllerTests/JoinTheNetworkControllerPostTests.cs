@@ -24,7 +24,7 @@ public class JoinTheNetworkControllerPostTests
         [Frozen] JoinTheNetworkSubmitModel submitmodel)
     {
         OnboardingSessionModel sessionModel = new();
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.TermsAndConditions);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle);
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
@@ -53,7 +53,7 @@ public class JoinTheNetworkControllerPostTests
         OnboardingSessionModel sessionModel = new();
         ValidationResult validationResult = new();
 
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.TermsAndConditions);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle);
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
@@ -79,7 +79,7 @@ public class JoinTheNetworkControllerPostTests
         OnboardingSessionModel sessionModel = new();
         ValidationResult validationResult = new();
 
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.TermsAndConditions);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle);
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);

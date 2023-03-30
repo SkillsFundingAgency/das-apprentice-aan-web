@@ -35,7 +35,7 @@ public class JoinTheNetworkController : Controller
         var model = new JoinTheNetworkViewModel()
         {
             ReasonForJoiningTheNetwork = sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork,
-            BackLink = Url.RouteUrl(@RouteNames.Onboarding.TermsAndConditions)!
+            BackLink = Url.RouteUrl(@RouteNames.Onboarding.CurrentJobTitle)!
         };
         return View(ViewPath, model);
     }
@@ -46,7 +46,7 @@ public class JoinTheNetworkController : Controller
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
         var model = new JoinTheNetworkViewModel()
         {
-            BackLink = Url.RouteUrl(@RouteNames.Onboarding.TermsAndConditions)!
+            BackLink = Url.RouteUrl(@RouteNames.Onboarding.CurrentJobTitle)!
         };
 
         ValidationResult result = _validator.Validate(submitmodel);
