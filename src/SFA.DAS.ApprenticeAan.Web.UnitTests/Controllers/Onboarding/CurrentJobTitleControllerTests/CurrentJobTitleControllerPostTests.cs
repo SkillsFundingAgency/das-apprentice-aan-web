@@ -36,7 +36,8 @@ public class CurrentJobTitleControllerPostTests
         var result = sut.Post(submitmodel);
 
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.GetProfileValue(ProfileDataId.JobTitle) == submitmodel.JobTitle)));
-        result.As<ViewResult>().Model.As<CurrentJobTitleViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
+
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.JoinTheNetwork);
     }
 
     [MoqAutoData]

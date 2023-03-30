@@ -55,8 +55,8 @@ public class CurrentJobTitleController : Controller
 
         sessionModel.SetProfileValue(ProfileDataId.JobTitle, submitmodel.JobTitle!);
         _sessionService.Set(sessionModel);
-        //remomve below line when next page link is configured.
-        return View(ViewPath, model);
+
+        return RedirectToRoute(RouteNames.Onboarding.JoinTheNetwork);
     }
 
     private CurrentJobTitleViewModel GetViewModel()
