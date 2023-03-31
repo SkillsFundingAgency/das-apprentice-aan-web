@@ -31,6 +31,7 @@ public class ReasonToJoinTheNetworkControllerGetTests
         result.As<ViewResult>().ViewName.Should().Be(ReasonToJoinTheNetworkController.ViewPath);
     }
 
+    [MoqAutoData]
     public void Get_ViewResult_SelectedNo_HasCorrectViewPath(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         OnboardingSessionModel sessionModel,
