@@ -17,7 +17,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.ReasonToJoi
 public class ReasonToJoinTheNetworkControllerGetTests
 {
     [MoqAutoData]
-    public void Get_ViewResult_HasCorrectViewPath(
+    public void Get_ViewResult_SelectedYes_HasCorrectViewPath(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         OnboardingSessionModel sessionModel,
         [Greedy] ReasonToJoinTheNetworkController sut)
@@ -25,6 +25,20 @@ public class ReasonToJoinTheNetworkControllerGetTests
         sut.AddUrlHelperMock();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork, Value = "True" });
+
+        var result = sut.Get();
+
+        result.As<ViewResult>().ViewName.Should().Be(ReasonToJoinTheNetworkController.ViewPath);
+    }
+
+    public void Get_ViewResult_SelectedNo_HasCorrectViewPath(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        OnboardingSessionModel sessionModel,
+        [Greedy] ReasonToJoinTheNetworkController sut)
+    {
+        sut.AddUrlHelperMock();
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork, Value = "False" });
 
         var result = sut.Get();
 
@@ -47,7 +61,7 @@ public class ReasonToJoinTheNetworkControllerGetTests
     }
 
     [MoqAutoData]
-    public void Get_ViewModelHasEmployersApproval_RestoreFromSession(
+    public void Get_ViewModel_SelectedYes_RestoreFromSession(
                         [Frozen] Mock<ISessionService> sessionServiceMock,
                         OnboardingSessionModel sessionModel,
                         [Greedy] ReasonToJoinTheNetworkController sut)
@@ -59,5 +73,20 @@ public class ReasonToJoinTheNetworkControllerGetTests
         var result = sut.Get();
 
         result.As<ViewResult>().Model.As<ReasonToJoinTheNetworkViewModel>().EngagedWithAPreviousAmbassadorInTheNetwork.Should().BeTrue();
+    }
+
+    [MoqAutoData]
+    public void Get_ViewModel_SelectedNo_RestoreFromSession(
+                    [Frozen] Mock<ISessionService> sessionServiceMock,
+                    OnboardingSessionModel sessionModel,
+                    [Greedy] ReasonToJoinTheNetworkController sut)
+    {
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest);
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork, Value = "False" });
+
+        var result = sut.Get();
+
+        result.As<ViewResult>().Model.As<ReasonToJoinTheNetworkViewModel>().EngagedWithAPreviousAmbassadorInTheNetwork.Should().BeFalse();
     }
 }

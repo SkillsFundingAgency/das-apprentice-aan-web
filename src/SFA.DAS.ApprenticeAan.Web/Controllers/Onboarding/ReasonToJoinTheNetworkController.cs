@@ -32,12 +32,11 @@ public class ReasonToJoinTheNetworkController : Controller
     public IActionResult Get()
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
+        var reasonToJoinTheNetwork = sessionModel.GetProfileValue(ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork);
 
         var model = new ReasonToJoinTheNetworkViewModel()
         {
-            EngagedWithAPreviousAmbassadorInTheNetwork = sessionModel.GetProfileValue(ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork) == null ?
-            null :
-            bool.Parse(sessionModel.GetProfileValue(ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork)!),
+            EngagedWithAPreviousAmbassadorInTheNetwork = reasonToJoinTheNetwork == null ?null :bool.Parse(reasonToJoinTheNetwork!),
             BackLink = Url.RouteUrl(@RouteNames.Onboarding.AreasOfInterest)!
         };
         return View(ViewPath, model);
@@ -55,9 +54,6 @@ public class ReasonToJoinTheNetworkController : Controller
         ValidationResult result = _validator.Validate(submitmodel);
         if (!result.IsValid)
         {
-            sessionModel.HasEmployersApproval = null;
-            _sessionService.Set(sessionModel);
-
             result.AddToModelState(this.ModelState);
             return View(ViewPath, model);
         }

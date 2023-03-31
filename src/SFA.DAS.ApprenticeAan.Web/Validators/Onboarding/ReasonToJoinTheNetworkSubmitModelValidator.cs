@@ -9,7 +9,6 @@ public class ReasonToJoinTheNetworkSubmitModelValidator : AbstractValidator<Reas
 
     public ReasonToJoinTheNetworkSubmitModelValidator()
     {
-        RuleLevelCascadeMode = CascadeMode.Stop;
         RuleFor(m => m.EngagedWithAPreviousAmbassadorInTheNetwork)
             .NotNull()
             .WithMessage(NoSelectionErrorMessage);

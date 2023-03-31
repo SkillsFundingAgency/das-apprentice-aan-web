@@ -6,6 +6,5 @@ public class ReasonToJoinTheNetworkViewModel: ReasonToJoinTheNetworkSubmitModel,
 
 public class ReasonToJoinTheNetworkSubmitModel
 {
-
     public bool? EngagedWithAPreviousAmbassadorInTheNetwork { get; set; }
 }

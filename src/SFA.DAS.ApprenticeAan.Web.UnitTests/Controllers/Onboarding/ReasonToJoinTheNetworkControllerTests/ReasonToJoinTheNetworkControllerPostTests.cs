@@ -35,10 +35,6 @@ public class ReasonToJoinTheNetworkControllerPostTests
 
         sut.ModelState.IsValid.Should().BeFalse();
 
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork, Value = "True" });
-
-        sessionServiceMock.Verify(s => s.Set(sessionModel));
-
         result.As<ViewResult>().Should().NotBeNull();
         result.As<ViewResult>().ViewName.Should().Be(ReasonToJoinTheNetworkController.ViewPath);
         result.As<ViewResult>().Model.As<ReasonToJoinTheNetworkViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
