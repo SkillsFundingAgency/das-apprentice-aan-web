@@ -34,8 +34,6 @@ public class JoinTheNetworkControllerPostTests
 
         sut.ModelState.IsValid.Should().BeFalse();
 
-        sessionModel.HasEmployersApproval.Should().BeNull();
-
         sessionServiceMock.Verify(s => s.Set(sessionModel));
 
         result.As<ViewResult>().Should().NotBeNull();

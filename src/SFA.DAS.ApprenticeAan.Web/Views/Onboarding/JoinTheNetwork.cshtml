@@ -3,7 +3,6 @@
 @model JoinTheNetworkViewModel
 @{
     ViewData["Title"] = "Why do you want to join the network?";
-    var maxWordCount = 250;
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -18,14 +17,14 @@
                 <div id="join-the-network-hint" class="govuk-hint" asp-for="JoinTheNetwork">
                     This can include information such as what initially attracted you to the
                     network and what you would like to get out of being a network member. Your
-                    answer must be in @maxWordCount words or less.
+                    answer must be in @Model.maxWordCount words or less.
                 </div>
-                <div class="govuk-character-count" data-module="govuk-character-count" data-maxwords="@maxWordCount">
+                <div class="govuk-character-count" data-module="govuk-character-count" data-maxwords="@Model.maxWordCount">
                     <span asp-validation-for="ReasonForJoiningTheNetwork" class="govuk-error-message"></span>
                     <textarea class="govuk-textarea govuk-js-character-count" asp-for="ReasonForJoiningTheNetwork"  id="ReasonForJoiningTheNetwork" rows="12" aria-describedby="join-the-network-hint"
                                   sfa-validationerror-class="form-control-error">@Model.ReasonForJoiningTheNetwork</textarea>
                     <span id="ReasonForJoiningTheNetwork-info" class="govuk-hint govuk-character-count__message" aria-live="polite">
-                        You can enter up to @maxWordCount words
+                        You can enter up to @Model.maxWordCount words
                     </span>
                 </div>
             </div>

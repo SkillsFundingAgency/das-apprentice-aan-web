@@ -35,14 +35,13 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
             return sb.ToString();
         }
 
-        [TestCase("Mary had a little lamb, and its fleece was white. ", 250, true)]
-        [TestCase("Mary had a little lamb, and its fleece was white. ", 251, false)]
-        public void Validates_ReasonForJoiningTheNetwork_Max(string input, int maxWords, bool isValid)
+        [TestCase(250, true)]
+        [TestCase(251, false)]
+        public void Validates_ReasonForJoiningTheNetwork_Max(int maxWords, bool isValid)
         {
-            var times = maxWords / 10 + maxWords % 10;
-
-            var value = GetParagraph(input, times);
-            var model = new JoinTheNetworkViewModel { ReasonForJoiningTheNetwork = value };
+            var word = "test ";
+            var paragraph = GetParagraph(word, maxWords);
+            var model = new JoinTheNetworkViewModel { ReasonForJoiningTheNetwork = paragraph };
             var sut = new JoinTheNetworkSubmitModelValidator();
 
             var result = sut.TestValidate(model);

@@ -10,12 +10,11 @@ public class JoinTheNetworkSubmitModelValidator : AbstractValidator<JoinTheNetwo
 
     public JoinTheNetworkSubmitModelValidator()
     {
-        const int MaxWords = 250;
         RuleLevelCascadeMode = CascadeMode.Stop;
         RuleFor(m => m.ReasonForJoiningTheNetwork)
             .NotEmpty()
             .WithMessage(ReasonForJoiningTheNetworkEmptyMessage)
-            .Must((m, x) => m.ReasonForJoiningTheNetwork!.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries).Length <= MaxWords)
+            .Must((m, x) => m.ReasonForJoiningTheNetwork!.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries).Length <= m.maxWordCount)
             .WithMessage(ReasonForJoiningTheNetworkMaxWordsMessage);
     }
 }

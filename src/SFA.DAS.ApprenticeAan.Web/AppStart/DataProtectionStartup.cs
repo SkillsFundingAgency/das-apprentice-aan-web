@@ -14,7 +14,7 @@ public static class DataProtectionStartup
         ConnectionStringsConfiguration configuration,
         IWebHostEnvironment environment)
     {
-        const string appName = "apprentice-aan";
+        const string appName = "apprentice-portal";
 
         if (environment.IsDevelopment())
         {

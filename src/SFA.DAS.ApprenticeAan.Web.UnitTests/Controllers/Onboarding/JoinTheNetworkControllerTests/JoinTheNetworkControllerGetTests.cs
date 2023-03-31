@@ -16,15 +16,6 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.JoinTheNetw
 public class JoinTheNetworkControllerGetTests
 {
     [MoqAutoData]
-    public void Get_ReturnsViewResult([Greedy] JoinTheNetworkController sut)
-    {
-        sut.AddUrlHelperMock();
-        var result = sut.Get();
-
-        result.As<ViewResult>().Should().NotBeNull();
-    }
-
-    [MoqAutoData]
     public void Get_ViewResult_HasCorrectViewPath([Greedy] JoinTheNetworkController sut)
     {
         sut.AddUrlHelperMock();

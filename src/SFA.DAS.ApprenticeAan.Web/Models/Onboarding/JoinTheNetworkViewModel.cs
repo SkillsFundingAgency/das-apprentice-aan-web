@@ -6,5 +6,6 @@ public class JoinTheNetworkViewModel: JoinTheNetworkSubmitModel, IBackLink
 
 public class JoinTheNetworkSubmitModel
 {
+    public int maxWordCount { get; } = 250;
     public string? ReasonForJoiningTheNetwork { get; set; }
 }

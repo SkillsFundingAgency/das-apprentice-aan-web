@@ -44,6 +44,7 @@ public class Startup
         services.AddSingleton(appConfig);
 
         services
+            .AddLogging()
             .AddApplicationInsightsTelemetry()
             .AddDataProtection(appConfig.ConnectionStrings, _environment)
             .AddAuthentication(appConfig.Authentication, _environment)
