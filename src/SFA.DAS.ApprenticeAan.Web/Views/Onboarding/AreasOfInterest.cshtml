@@ -1,7 +1,7 @@
 ﻿@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
 @using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 @addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
-@model AreasOfInterestViewModel 
+@model AreasOfInterestViewModel
 @{
     ViewData["Title"] = "Apprenticeship region";
 }
@@ -12,7 +12,7 @@
         <form method="post">
             <div class="govuk-form-group">
                 <fieldset class="govuk-fieldset">
-                    <div esfa-validation-marker-for="@Model.Events" class="govuk-form-group">
+                    <div esfa-validation-marker-for="@Model.AreasOfInterest" class="govuk-form-group">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                             <h1 class="govuk-fieldset__heading">
                                 Please tell us which areas interest you most in your role as an ambassador
@@ -22,44 +22,45 @@
                         <div id="regions-hint" class="govuk-hint">
                             Your areas of interest will help regional support teams find the most relevant opportunities available to you. Ambassadors are expected to participate in a minimum of six engagement activities/events across the year.
                         </div>
-                        <span asp-validation-for="@Model.Events" class="govuk-error-message"></span>
-                    </div>
-                    <h2 class="govuk-heading-m">
-                        Events
-                    </h2>
-                    <div id="regions-option" class="govuk-checkboxes" data-module="govuk-checkboxes">
-                        @{
-                            for (int i=0; i<Model.Events.Count;i++)
-                            {
-                                <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.Events[i].IsSelected >
-                                    <label class="govuk-label govuk-checkboxes__label" asp-for=@Model.Events[i].IsSelected>
-                                        @Model.Events[i].Description
-                                    </label>
-                                    <input type="hidden" asp-for="@Model.Events[i].Id" />
-                                    <input type="hidden" asp-for="@Model.Events[i].Ordering" />
-                                </div>
+                        <span asp-validation-for="@Model.AreasOfInterest" class="govuk-error-message"></span>
+
+                        <div id="AreasOfInterest" class="govuk-checkboxes" data-module="govuk-checkboxes">
+                            <h2 class="govuk-heading-m">
+                                Events
+                            </h2>
+                            @{
+                                for (int i = 0; i < Model.Events.Count; i++)
+                                {
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.Events[i].IsSelected>
+                                        <label class="govuk-label govuk-checkboxes__label" asp-for=@Model.Events[i].IsSelected>
+                                            @Model.Events[i].Description
+                                        </label>
+                                        <input type="hidden" asp-for="@Model.Events[i].Id" />
+                                        <input type="hidden" asp-for="@Model.Events[i].Ordering" />
+                                    </div>
+                                }
                             }
-                        }
-                    </div>
-                    <p />
-                    <h2 class="govuk-heading-m">
-                        Promotions
-                    </h2>
-                    <div id="regions-option" class="govuk-checkboxes" data-module="govuk-checkboxes">
-                        @{
-                            for (int i = 0; i < Model.Promotions.Count; i++)
-                            {
-                                <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.Promotions[i].IsSelected>
-                                    <label class="govuk-label govuk-checkboxes__label" asp-for=@Model.Promotions[i].IsSelected>
-                                        @Model.Events[i].Description
-                                    </label>
-                                    <input type="hidden" asp-for="@Model.Promotions[i].Id" />
-                                    <input type="hidden" asp-for="@Model.Promotions[i].Ordering" />
-                                </div>
+                        </div>
+                        <p />
+                        <div id="promotions-option" class="govuk-checkboxes" data-module="govuk-checkboxes">
+                            <h2 class="govuk-heading-m">
+                                Promotions
+                            </h2>
+                            @{
+                                for (int i = 0; i < Model.Promotions.Count; i++)
+                                {
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.Promotions[i].IsSelected>
+                                        <label class="govuk-label govuk-checkboxes__label" asp-for=@Model.AreasOfInterest>
+                                            @Model.Events[i].Description
+                                        </label>
+                                        <input type="hidden" asp-for="@Model.Promotions[i].Id" />
+                                        <input type="hidden" asp-for="@Model.Promotions[i].Ordering" />
+                                    </div>
+                                }
                             }
-                        }
+                        </div>
                     </div>
                     <p />
                     <div class="govuk-hint">
@@ -67,7 +68,6 @@
                     </div>
                 </fieldset>
             </div>
-
             <div class="govuk-button-group">
                 <button id="continue-button" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true" asp-page-handler="Submit">
                     Continue

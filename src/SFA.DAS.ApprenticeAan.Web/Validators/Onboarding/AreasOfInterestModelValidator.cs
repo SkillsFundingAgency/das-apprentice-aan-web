@@ -10,7 +10,6 @@ public class AreasOfInterestModelValidator : AbstractValidator<AreasOfInterestSu
     public AreasOfInterestModelValidator()
     {
         RuleLevelCascadeMode = CascadeMode.Stop;
-        RuleFor(x => x.Events.Count(x => x.IsSelected)).GreaterThan(0).WithMessage(NoSelectionErrorMessage);
-        RuleFor(x => x.Promotions.Count(x => x.IsSelected)).GreaterThan(0).WithMessage(NoSelectionErrorMessage);
+        RuleFor(x => x.AreasOfInterest).Must(c => c.Any(p => p.IsSelected)).WithMessage(NoSelectionErrorMessage);
     }
 }

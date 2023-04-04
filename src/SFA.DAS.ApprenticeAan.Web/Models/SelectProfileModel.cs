@@ -7,12 +7,14 @@ public class SelectProfileModel
     public string Category { get; set; } = null!;
     public int Ordering { get; set; }
     public bool IsSelected { get; set; }
+    public string? Value { get; set; } = null!;
 
     public static implicit operator SelectProfileModel(ProfileModel profile) => new()
     {
         Id = profile.Id,
         Description = profile.Description,
         Category = profile.Category,
-        Ordering = profile.Ordering
+        Ordering = profile.Ordering,
+        Value = profile.Value
     };
 }

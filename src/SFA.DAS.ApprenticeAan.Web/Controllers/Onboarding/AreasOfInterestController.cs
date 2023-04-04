@@ -27,16 +27,15 @@ public class AreasOfInterestController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public IActionResult Get()
     {
         var model = GetViewModel();
-
         return View(ViewPath, model);
     }
 
 
     [HttpPost]
-    public async Task<IActionResult> Post(AreasOfInterestSubmitModel submitmodel)
+    public IActionResult Post(AreasOfInterestSubmitModel submitmodel)
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
         var model = GetViewModel();
@@ -44,23 +43,14 @@ public class AreasOfInterestController : Controller
 
         if (!result.IsValid)
         {
-            sessionModel.RegionId = null;
             result.AddToModelState(ModelState);
-            _sessionService.Set(sessionModel);
             return View(ViewPath, model);
         }
 
-        //.Where(x => x.IsSelected).ToList()
-        submitmodel.Events.ForEach(x =>
+        submitmodel.AreasOfInterest.ToList().ForEach(x =>
         {
             sessionModel.SetProfileValue(x.Id, x.IsSelected.ToString());
         });
-
-        submitmodel.Promotions.ForEach(x =>
-        {
-            sessionModel.SetProfileValue(x.Id, x.IsSelected.ToString());
-        });
-
         _sessionService.Set(sessionModel);
 
         return View(ViewPath, model);
