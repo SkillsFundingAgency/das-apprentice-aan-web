@@ -88,8 +88,7 @@ public class LineManagerControllerPostTests
 
         sut.ModelState.IsValid.Should().BeTrue();
 
-        result.As<ViewResult>().Should().NotBeNull();
-        result.As<ViewResult>().ViewName.Should().Be(LineManagerController.ViewPath);
-        result.As<ViewResult>().Model.As<LineManagerViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
+        result.As<RedirectToRouteResult>().Should().NotBeNull();
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.EmployerDetails);
     }
 }
