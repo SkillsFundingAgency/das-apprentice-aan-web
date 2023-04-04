@@ -8,7 +8,6 @@ using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
-using SFA.DAS.ApprenticeAan.Web.Services;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
 
