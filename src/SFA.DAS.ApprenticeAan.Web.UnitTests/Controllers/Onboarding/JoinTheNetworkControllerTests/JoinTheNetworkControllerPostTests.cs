@@ -34,8 +34,6 @@ public class JoinTheNetworkControllerPostTests
 
         sut.ModelState.IsValid.Should().BeFalse();
 
-        sessionServiceMock.Verify(s => s.Set(sessionModel));
-
         result.As<ViewResult>().Should().NotBeNull();
         result.As<ViewResult>().ViewName.Should().Be(JoinTheNetworkController.ViewPath);
         result.As<ViewResult>().Model.As<JoinTheNetworkViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);

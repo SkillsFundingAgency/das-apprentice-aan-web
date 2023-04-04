@@ -52,9 +52,6 @@ public class JoinTheNetworkController : Controller
         ValidationResult result = _validator.Validate(submitmodel);
         if (!result.IsValid)
         {
-            sessionModel.HasEmployersApproval = null;
-            _sessionService.Set(sessionModel);
-
             result.AddToModelState(this.ModelState);
             return View(ViewPath, model);
         }
