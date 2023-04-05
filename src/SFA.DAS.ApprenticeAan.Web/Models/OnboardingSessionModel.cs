@@ -2,6 +2,7 @@
 
 public class OnboardingSessionModel
 {
+    public bool HasSeenPreview { get; set; }
     public ApprenticeDetailsModel ApprenticeDetails { get; set; } = new ApprenticeDetailsModel();
     public bool HasAcceptedTermsAndConditions { get; set; } = false;
     public bool? HasEmployersApproval { get; set; }
