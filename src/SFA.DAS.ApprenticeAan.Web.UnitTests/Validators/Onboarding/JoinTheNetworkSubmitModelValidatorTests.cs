@@ -6,15 +6,15 @@ using System.Text;
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
 {
     [TestFixture]
-    public class JoinTheNetworkSubmitModelValidatorTests
+    public class ReasonToJoinSubmitModelValidatorTests
     {
         [TestCase(null, false)]
         [TestCase("", false)]
         [TestCase(" ", false)]
         public void Validates_ReasonForJoiningTheNetwork_NullOrEmpty(string? value, bool isValid)
         {
-            var model = new JoinTheNetworkViewModel { ReasonForJoiningTheNetwork = value };
-            var sut = new JoinTheNetworkSubmitModelValidator();
+            var model = new ReasonToJoinViewModel { ReasonForJoiningTheNetwork = value };
+            var sut = new ReasonToJoinSubmitModelValidator();
 
             var result = sut.TestValidate(model);
 
@@ -22,7 +22,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
                 result.ShouldNotHaveValidationErrorFor(c => c.ReasonForJoiningTheNetwork);
             else
                 result.ShouldHaveValidationErrorFor(x => x.ReasonForJoiningTheNetwork)
-                    .WithErrorMessage(JoinTheNetworkSubmitModelValidator.ReasonForJoiningTheNetworkEmptyMessage);
+                    .WithErrorMessage(ReasonToJoinSubmitModelValidator.ReasonForJoiningTheNetworkEmptyMessage);
         }
 
         private static string GetParagraph(string str, int ctr)
@@ -41,8 +41,8 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
         {
             var word = "test ";
             var paragraph = GetParagraph(word, maxWords);
-            var model = new JoinTheNetworkViewModel { ReasonForJoiningTheNetwork = paragraph };
-            var sut = new JoinTheNetworkSubmitModelValidator();
+            var model = new ReasonToJoinViewModel { ReasonForJoiningTheNetwork = paragraph };
+            var sut = new ReasonToJoinSubmitModelValidator();
 
             var result = sut.TestValidate(model);
 
@@ -50,7 +50,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
                 result.ShouldNotHaveValidationErrorFor(c => c.ReasonForJoiningTheNetwork);
             else
                 result.ShouldHaveValidationErrorFor(c => c.ReasonForJoiningTheNetwork)
-                    .WithErrorMessage(JoinTheNetworkSubmitModelValidator.ReasonForJoiningTheNetworkMaxWordsMessage);
+                    .WithErrorMessage(ReasonToJoinSubmitModelValidator.ReasonForJoiningTheNetworkMaxWordsMessage);
         }
     }
 }

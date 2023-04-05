@@ -56,7 +56,7 @@ public class RegionsController : Controller
         sessionModel.RegionId = submitmodel.SelectedRegionId;
         _sessionService.Set(sessionModel);
 
-        return RedirectToRoute(RouteNames.Onboarding.JoinTheNetwork);
+        return RedirectToRoute(RouteNames.Onboarding.ReasonToJoin);
     }
 
     private async Task<RegionsViewModel> GetViewModel()

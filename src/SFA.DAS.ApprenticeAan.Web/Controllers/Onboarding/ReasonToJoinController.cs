@@ -12,16 +12,16 @@ using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
 [Authorize]
-[Route("onboarding/join-the-network", Name = RouteNames.Onboarding.JoinTheNetwork)]
+[Route("onboarding/join-the-network", Name = RouteNames.Onboarding.ReasonToJoin)]
 [RequiredSessionModel(typeof(OnboardingSessionModel))]
-public class JoinTheNetworkController : Controller
+public class ReasonToJoinController : Controller
 {
-    public const string ViewPath = "~/Views/Onboarding/JoinTheNetwork.cshtml";
+    public const string ViewPath = "~/Views/Onboarding/ReasonToJoin.cshtml";
     private readonly ISessionService _sessionService;
-    private readonly IValidator<JoinTheNetworkSubmitModel> _validator;
+    private readonly IValidator<ReasonToJoinSubmitModel> _validator;
 
-    public JoinTheNetworkController(ISessionService sessionService,
-        IValidator<JoinTheNetworkSubmitModel> validator)
+    public ReasonToJoinController(ISessionService sessionService,
+        IValidator<ReasonToJoinSubmitModel> validator)
     {
         _validator = validator;
         _sessionService = sessionService;
@@ -32,7 +32,7 @@ public class JoinTheNetworkController : Controller
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
 
-        var model = new JoinTheNetworkViewModel()
+        var model = new ReasonToJoinViewModel()
         {
             ReasonForJoiningTheNetwork = sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork,
             BackLink = Url.RouteUrl(@RouteNames.Onboarding.Regions)!
@@ -41,10 +41,10 @@ public class JoinTheNetworkController : Controller
     }
 
     [HttpPost]
-    public IActionResult Post(JoinTheNetworkSubmitModel submitmodel)
+    public IActionResult Post(ReasonToJoinSubmitModel submitmodel)
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-        var model = new JoinTheNetworkViewModel()
+        var model = new ReasonToJoinViewModel()
         {
             BackLink = Url.RouteUrl(@RouteNames.Onboarding.Regions)!
         };

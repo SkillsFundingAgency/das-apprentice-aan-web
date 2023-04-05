@@ -52,7 +52,7 @@ public class RegionsControllerPostTests
     }
 
     [MoqAutoData]
-    public async Task Post_ModelStateIsValid_RedirectsToJoinTheNetworkView(
+    public async Task Post_ModelStateIsValid_RedirectsToReasonToJoinView(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IValidator<RegionsSubmitModel>> validatorMock,
         [Frozen] RegionsSubmitModel submitmodel,
@@ -71,6 +71,6 @@ public class RegionsControllerPostTests
         sut.ModelState.IsValid.Should().BeTrue();
 
         result.As<RedirectToRouteResult>().Should().NotBeNull();
-        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.JoinTheNetwork);
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.ReasonToJoin);
     }
 }

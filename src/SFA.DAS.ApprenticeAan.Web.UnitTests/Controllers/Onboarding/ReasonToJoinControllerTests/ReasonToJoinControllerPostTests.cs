@@ -12,16 +12,16 @@ using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
 
-namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.JoinTheNetworkControllerTests;
+namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.ReasonToJoinControllerTests;
 
 [TestFixture]
-public class JoinTheNetworkControllerPostTests
+public class ReasonToJoinControllerPostTests
 {
     [MoqAutoData]
     public void Post_ModelStateIsInvalid_ReloadsViewWithValidationErrors(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        [Greedy] JoinTheNetworkController sut,
-        [Frozen] JoinTheNetworkSubmitModel submitmodel)
+        [Greedy] ReasonToJoinController sut,
+        [Frozen] ReasonToJoinSubmitModel submitmodel)
     {
         OnboardingSessionModel sessionModel = new();
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.Regions);
@@ -35,16 +35,16 @@ public class JoinTheNetworkControllerPostTests
         sut.ModelState.IsValid.Should().BeFalse();
 
         result.As<ViewResult>().Should().NotBeNull();
-        result.As<ViewResult>().ViewName.Should().Be(JoinTheNetworkController.ViewPath);
-        result.As<ViewResult>().Model.As<JoinTheNetworkViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
+        result.As<ViewResult>().ViewName.Should().Be(ReasonToJoinController.ViewPath);
+        result.As<ViewResult>().Model.As<ReasonToJoinViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
     }
 
     [MoqAutoData]
     public void Post_ModelStateIsValid_UpdatesSessionModel(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        [Frozen] Mock<IValidator<JoinTheNetworkSubmitModel>> validatorMock,
-        [Frozen] JoinTheNetworkSubmitModel submitmodel,
-        [Greedy] JoinTheNetworkController sut)
+        [Frozen] Mock<IValidator<ReasonToJoinSubmitModel>> validatorMock,
+        [Frozen] ReasonToJoinSubmitModel submitmodel,
+        [Greedy] ReasonToJoinController sut)
     {
         OnboardingSessionModel sessionModel = new();
         ValidationResult validationResult = new();
@@ -66,11 +66,11 @@ public class JoinTheNetworkControllerPostTests
     }
 
     [MoqAutoData]
-    public void Post_ModelStateIsValid_RedirectsToJoinTheNetworkView(
+    public void Post_ModelStateIsValid_RedirectsToReasonToJoinView(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        [Frozen] Mock<IValidator<JoinTheNetworkSubmitModel>> validatorMock,
-        [Frozen] JoinTheNetworkSubmitModel submitmodel,
-        [Greedy] JoinTheNetworkController sut)
+        [Frozen] Mock<IValidator<ReasonToJoinSubmitModel>> validatorMock,
+        [Frozen] ReasonToJoinSubmitModel submitmodel,
+        [Greedy] ReasonToJoinController sut)
     {
         OnboardingSessionModel sessionModel = new();
         ValidationResult validationResult = new();
@@ -85,7 +85,7 @@ public class JoinTheNetworkControllerPostTests
         sut.ModelState.IsValid.Should().BeTrue();
 
         result.As<ViewResult>().Should().NotBeNull();
-        result.As<ViewResult>().ViewName.Should().Be(JoinTheNetworkController.ViewPath);
-        result.As<ViewResult>().Model.As<JoinTheNetworkViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
+        result.As<ViewResult>().ViewName.Should().Be(ReasonToJoinController.ViewPath);
+        result.As<ViewResult>().Model.As<ReasonToJoinViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
     }
 }

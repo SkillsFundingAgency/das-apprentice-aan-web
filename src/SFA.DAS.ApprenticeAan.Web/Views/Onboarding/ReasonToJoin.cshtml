@@ -1,20 +1,20 @@
 ﻿@using SFA.DAS.ApprenticeAan.Web.Infrastructure
 @using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
-@model JoinTheNetworkViewModel
+@model ReasonToJoinViewModel
 @{
     ViewData["Title"] = "Why do you want to join the network?";
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_validationSummary" />
-        <form method="post" asp-route=" @RouteNames.Onboarding.JoinTheNetwork" enctype="multipart/form-data" novalidate>
+        <form method="post" asp-route=" @RouteNames.Onboarding.ReasonToJoin" enctype="multipart/form-data" novalidate>
             <div esfa-validation-marker-for="ReasonForJoiningTheNetwork" class="govuk-form-group">
                 <h1 class="govuk-label-wrapper">
                     <label class="govuk-label govuk-label--l"  sp-for="ReasonForJoiningTheNetwork">
                         Why do you want to join the network?
                     </label>
                 </h1>
-                <div id="join-the-network-hint" class="govuk-hint" asp-for="JoinTheNetwork">
+                <div id="join-the-network-hint" class="govuk-hint" asp-for="ReasonToJoin">
                     This can include information such as what initially attracted you to the
                     network and what you would like to get out of being a network member. Your
                     answer must be in @Model.maxWordCount words or less.
