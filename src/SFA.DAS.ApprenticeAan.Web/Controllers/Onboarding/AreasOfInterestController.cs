@@ -49,7 +49,7 @@ public class AreasOfInterestController : Controller
 
         submitmodel.AreasOfInterest.ToList().ForEach(x =>
         {
-            sessionModel.SetProfileValue(x.Id, x.IsSelected.ToString());
+            sessionModel.SetProfileValue(x.Id, x.IsSelected ? true.ToString() : null!);
         });
         _sessionService.Set(sessionModel);
 
@@ -62,7 +62,7 @@ public class AreasOfInterestController : Controller
 
         return new AreasOfInterestViewModel
         {
-            BackLink = Url.RouteUrl(RouteNames.Onboarding.ReasonToJoinTheNetwork)!,
+            BackLink = Url.RouteUrl(RouteNames.Onboarding.ReasonToJoin)!,
             Events = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == "Events").OrderBy(x => x.Ordering).Select(x => (SelectProfileModel)x)),
             Promotions = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == "Promotions").OrderBy(x => x.Ordering).Select(x => (SelectProfileModel)x))
         };

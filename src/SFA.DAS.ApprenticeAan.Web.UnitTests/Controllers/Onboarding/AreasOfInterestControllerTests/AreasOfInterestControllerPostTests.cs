@@ -23,17 +23,17 @@ public class AreasOfInterestControllerPostTests
     [Greedy] AreasOfInterestController sut,
     OnboardingSessionModel sessionModel)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.ReasonToJoinTheNetwork);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.ReasonToJoin);
 
-        sessionModel.ProfileData.Add(new ProfileModel { Id = 1, Value = false.ToString() });
-        sessionModel.ProfileData.Add(new ProfileModel { Id = 2, Value = false.ToString() });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = 1, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = 2, Value = true.ToString() });
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         AreasOfInterestSubmitModel submitmodel = new()
         {
             Events = new List<SelectProfileModel> { new SelectProfileModel { Id = 1, IsSelected = false } },
-            Promotions = new List<SelectProfileModel> { new SelectProfileModel { Id = 2, IsSelected = false } }
+            Promotions = new List<SelectProfileModel> { new SelectProfileModel { Id = 2, IsSelected = true } }
         };
 
         ValidationResult validationResult = new();
@@ -41,16 +41,17 @@ public class AreasOfInterestControllerPostTests
 
         sut.Post(submitmodel);
 
-        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.GetProfileValue(1) == false.ToString())));
+        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.GetProfileValue(1) == null)));
+        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.GetProfileValue(2) == true.ToString())));
     }
 
     [MoqAutoData]
-    public void Post_Errors_WhenNoSelectionInAreasOfInterest(
+    public void Post_WhenNoSelectionInAreasOfInterest_Errors(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         OnboardingSessionModel sessionModel,
         [Greedy] AreasOfInterestController sut)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.ReasonToJoinTheNetwork);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.ReasonToJoin);
 
         sessionModel.ProfileData.Add(new ProfileModel { Id = 1, Value = true.ToString() });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);

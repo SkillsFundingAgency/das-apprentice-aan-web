@@ -39,12 +39,17 @@ public class AreasOfInterestControllerGetTests
         OnboardingSessionModel sessionModel,
         [Greedy] AreasOfInterestController sut)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.ReasonToJoinTheNetwork);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.ReasonToJoin);
+
+        sessionModel.ProfileData.Add(new ProfileModel { Id = 101, Category = "Events" });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = 202, Category = "Promotions" });
+
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         var result = sut.Get();
 
         result.As<ViewResult>().Model.As<AreasOfInterestViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
-        result.As<ViewResult>().Model.As<AreasOfInterestViewModel>().AreasOfInterest.Should().NotBeNull();
+        result.As<ViewResult>().Model.As<AreasOfInterestViewModel>().AreasOfInterest.Should().Contain(x => x.Id == 101 && x.Category == "Events");
+        result.As<ViewResult>().Model.As<AreasOfInterestViewModel>().AreasOfInterest.Should().Contain(x => x.Id == 202 && x.Category == "Promotions");
     }
 }

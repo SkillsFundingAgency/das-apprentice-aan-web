@@ -9,7 +9,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding;
 public class AreasOfInterestModelValidatorTests
 {
     [Test]
-    public void NoSelection_Validation_Error()
+    public void Validate_NoSelection_Invalid()
     {
         var model = new AreasOfInterestSubmitModel
         {
@@ -24,7 +24,7 @@ public class AreasOfInterestModelValidatorTests
     }
 
     [Test]
-    public void EventsSelection_Validation_NoError()
+    public void Validate_EventSelected_Valid()
     {
         var model = new AreasOfInterestSubmitModel
         {
@@ -39,7 +39,7 @@ public class AreasOfInterestModelValidatorTests
     }
 
     [Test]
-    public void PromotionsSelection_Validation_NoError()
+    public void Validate_PromotionSelected_Valid()
     {
         var model = new AreasOfInterestSubmitModel
         {
@@ -54,7 +54,7 @@ public class AreasOfInterestModelValidatorTests
     }
 
     [Test]
-    public void EventsAndPromotionsSelection_Validation_NoError()
+    public void Validate_EventAndPromotionSelected_Valid()
     {
         var model = new AreasOfInterestSubmitModel
         {
