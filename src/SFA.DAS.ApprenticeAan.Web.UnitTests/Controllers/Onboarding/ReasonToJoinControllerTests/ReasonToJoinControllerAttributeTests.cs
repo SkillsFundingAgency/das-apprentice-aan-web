@@ -14,7 +14,7 @@ public class ReasonToJoinControllerAttributeTests
     public void Controller_HasCorrectAttributes()
     {
         typeof(ReasonToJoinController).Should().BeDecoratedWith<RouteAttribute>();
-        typeof(ReasonToJoinController).Should().BeDecoratedWith<RouteAttribute>().Subject.Template.Should().Be("onboarding/join-the-network");
+        typeof(ReasonToJoinController).Should().BeDecoratedWith<RouteAttribute>().Subject.Template.Should().Be("onboarding/reason-to-join");
         typeof(ReasonToJoinController).Should().BeDecoratedWith<RouteAttribute>().Subject.Name.Should().Be(RouteNames.Onboarding.ReasonToJoin);
     }
 

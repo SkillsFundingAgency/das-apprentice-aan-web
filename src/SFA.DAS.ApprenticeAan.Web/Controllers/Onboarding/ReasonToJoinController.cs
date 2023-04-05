@@ -12,7 +12,7 @@ using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
 [Authorize]
-[Route("onboarding/join-the-network", Name = RouteNames.Onboarding.ReasonToJoin)]
+[Route("onboarding/reason-to-join", Name = RouteNames.Onboarding.ReasonToJoin)]
 [RequiredSessionModel(typeof(OnboardingSessionModel))]
 public class ReasonToJoinController : Controller
 {
