@@ -23,7 +23,7 @@ public class CheckYourAnswersViewModelTests
 
         var checkYourAnswersViewModel = new CheckYourAnswersViewModel(mockUrlHelper.Object, sessionModel);
 
-        Assert.That(checkYourAnswersViewModel.JobTitleChangeLink.Equals(TestConstants.DefaultUrl));
+        Assert.That(checkYourAnswersViewModel.JobTitleChangeLink, Is.EqualTo(TestConstants.DefaultUrl));
     }
 
     [Test]
@@ -36,6 +36,6 @@ public class CheckYourAnswersViewModelTests
 
         var checkYourAnswersViewModel = new CheckYourAnswersViewModel(mockUrlHelper.Object, sessionModel);
 
-        Assert.That(checkYourAnswersViewModel.JobTitle.Equals(expectedJobTitle));
+        Assert.That(checkYourAnswersViewModel.JobTitle, Is.EqualTo(expectedJobTitle));
     }
 }
