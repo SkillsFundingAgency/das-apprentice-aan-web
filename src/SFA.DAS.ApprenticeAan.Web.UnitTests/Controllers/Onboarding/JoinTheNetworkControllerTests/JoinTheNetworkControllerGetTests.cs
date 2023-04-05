@@ -27,7 +27,7 @@ public class JoinTheNetworkControllerGetTests
     [MoqAutoData]
     public void Get_ViewModel_HasBackLink([Greedy] JoinTheNetworkController sut)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.Regions);
         var result = sut.Get();
 
         result.As<ViewResult>().Model.As<JoinTheNetworkViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);

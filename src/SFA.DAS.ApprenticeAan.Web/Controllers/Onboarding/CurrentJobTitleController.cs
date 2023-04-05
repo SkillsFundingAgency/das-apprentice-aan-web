@@ -56,14 +56,14 @@ public class CurrentJobTitleController : Controller
         sessionModel.SetProfileValue(ProfileDataId.JobTitle, submitmodel.JobTitle!);
         _sessionService.Set(sessionModel);
 
-        return RedirectToRoute(RouteNames.Onboarding.JoinTheNetwork);
+        return RedirectToRoute(RouteNames.Onboarding.Regions);
     }
 
     private CurrentJobTitleViewModel GetViewModel()
     {
         return new CurrentJobTitleViewModel()
         {
-            BackLink = Url.RouteUrl(@RouteNames.Onboarding.NameOfEmployer)!,
+            BackLink = Url.RouteUrl(RouteNames.Onboarding.EmployerDetails)!,
         };
     }
 }

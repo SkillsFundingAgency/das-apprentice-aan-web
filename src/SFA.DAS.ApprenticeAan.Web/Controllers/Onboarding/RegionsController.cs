@@ -38,7 +38,6 @@ public class RegionsController : Controller
         return View(ViewPath, model);
     }
 
-
     [HttpPost]
     public async Task<IActionResult> Post(RegionsSubmitModel submitmodel)
     {
@@ -57,7 +56,7 @@ public class RegionsController : Controller
         sessionModel.RegionId = submitmodel.SelectedRegionId;
         _sessionService.Set(sessionModel);
 
-        return View(ViewPath, model);
+        return RedirectToRoute(RouteNames.Onboarding.JoinTheNetwork);
     }
 
     private async Task<RegionsViewModel> GetViewModel()

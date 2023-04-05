@@ -52,7 +52,7 @@ public class CurrentJobTitleControllerGetTests
         [Greedy] CurrentJobTitleController sut,
         OnboardingSessionModel sessionModel)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.NameOfEmployer);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerDetails);
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
@@ -67,7 +67,7 @@ public class CurrentJobTitleControllerGetTests
         OnboardingSessionModel sessionModel,
         [Greedy] CurrentJobTitleController sut)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.NameOfEmployer);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerDetails);
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 

@@ -70,7 +70,7 @@ public class LineManagerControllerPostTests
     }
 
     [MoqAutoData]
-    public void Post_ModelStateIsValid_RedirectsToLineManagerView(
+    public void Post_ModelStateIsValid_RedirectsToEmployerDetailsView(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IValidator<LineManagerSubmitModel>> validatorMock,
         [Frozen] LineManagerSubmitModel submitmodel,

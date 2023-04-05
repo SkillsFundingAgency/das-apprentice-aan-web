@@ -108,7 +108,7 @@ public class EmployerControllerPostTests
     }
 
     [MoqAutoData]
-    public void Post_ModelStateIsValid_RedirectsToEmployerView(
+    public void Post_ModelStateIsValid_RedirectsToCurrentJobTitleView(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IProfileService> profileServiceMock,
         [Frozen] Mock<IValidator<EmployerDetailsSubmitModel>> validatorMock,
@@ -130,8 +130,7 @@ public class EmployerControllerPostTests
 
         sut.ModelState.IsValid.Should().BeTrue();
 
-        result.As<ViewResult>().Should().NotBeNull();
-        result.As<ViewResult>().ViewName.Should().Be(EmployerController.ViewPath);
-        result.As<ViewResult>().Model.As<EmployerDetailsViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
+        result.As<RedirectToRouteResult>().Should().NotBeNull();
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.CurrentJobTitle);
     }
 }
