@@ -3,11 +3,10 @@
 public class SelectProfileModel
 {
     public int Id { get; set; }
-    public string Description { get; set; } = null!;
-    public string Category { get; set; } = null!;
-    public int Ordering { get; set; }
+    public string? Description { get; set; }
+    public string? Category { get; set; }
+    public int? Ordering { get; set; }
     public bool IsSelected { get; set; }
-    public string? Value { get; set; } = null!;
 
     public static implicit operator SelectProfileModel(ProfileModel profile) => new()
     {
@@ -15,6 +14,5 @@ public class SelectProfileModel
         Description = profile.Description,
         Category = profile.Category,
         Ordering = profile.Ordering,
-        Value = profile.Value
     };
 }
