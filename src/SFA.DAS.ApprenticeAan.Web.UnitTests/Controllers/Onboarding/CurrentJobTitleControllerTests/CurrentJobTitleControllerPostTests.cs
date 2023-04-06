@@ -26,7 +26,7 @@ public class CurrentJobTitleControllerPostTests
         CurrentJobTitleSubmitModel submitmodel,
         OnboardingSessionModel sessionModel)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.NameOfEmployer);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerSearch);
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
@@ -45,7 +45,7 @@ public class CurrentJobTitleControllerPostTests
         [Greedy] CurrentJobTitleController sut,
         OnboardingSessionModel sessionModel)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.NameOfEmployer);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerSearch);
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
