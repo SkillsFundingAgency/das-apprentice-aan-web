@@ -13,16 +13,16 @@ using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
 [Authorize]
-[Route("onboarding/reason-to-join-the-network", Name = RouteNames.Onboarding.ReasonToJoinTheNetwork)]
+[Route("onboarding/previous-engagement", Name = RouteNames.Onboarding.PreviousEngagement)]
 [RequiredSessionModel(typeof(OnboardingSessionModel))]
-public class ReasonToJoinTheNetworkController : Controller
+public class PreviousEngagementController : Controller
 {
-    public const string ViewPath = "~/Views/Onboarding/ReasonToJoinTheNetwork.cshtml";
+    public const string ViewPath = "~/Views/Onboarding/PreviousEngagement.cshtml";
     private readonly ISessionService _sessionService;
-    private readonly IValidator<ReasonToJoinTheNetworkSubmitModel> _validator;
+    private readonly IValidator<PreviousEngagementSubmitModel> _validator;
 
-    public ReasonToJoinTheNetworkController(ISessionService sessionService,
-        IValidator<ReasonToJoinTheNetworkSubmitModel> validator)
+    public PreviousEngagementController(ISessionService sessionService,
+        IValidator<PreviousEngagementSubmitModel> validator)
     {
         _validator = validator;
         _sessionService = sessionService;
@@ -32,21 +32,21 @@ public class ReasonToJoinTheNetworkController : Controller
     public IActionResult Get()
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-        var reasonToJoinTheNetwork = sessionModel.GetProfileValue(ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork);
+        var previousEngagement = sessionModel.GetProfileValue(ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork);
 
-        var model = new ReasonToJoinTheNetworkViewModel()
+        var model = new PreviousEngagementViewModel()
         {
-            EngagedWithAPreviousAmbassadorInTheNetwork = reasonToJoinTheNetwork == null ?null :bool.Parse(reasonToJoinTheNetwork!),
+            EngagedWithAPreviousAmbassadorInTheNetwork = previousEngagement == null ? null : bool.Parse(previousEngagement!),
             BackLink = Url.RouteUrl(@RouteNames.Onboarding.AreasOfInterest)!
         };
         return View(ViewPath, model);
     }
 
     [HttpPost]
-    public IActionResult Post(ReasonToJoinTheNetworkSubmitModel submitmodel)
+    public IActionResult Post(PreviousEngagementSubmitModel submitmodel)
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-        var model = new ReasonToJoinTheNetworkViewModel()
+        var model = new PreviousEngagementViewModel()
         {
             BackLink = Url.RouteUrl(@RouteNames.Onboarding.AreasOfInterest)!
         };

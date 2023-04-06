@@ -1,10 +1,10 @@
 ﻿namespace SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
-public class ReasonToJoinTheNetworkViewModel: ReasonToJoinTheNetworkSubmitModel, IBackLink
+public class PreviousEngagementViewModel : PreviousEngagementSubmitModel, IBackLink
 {
     public string BackLink { get; set; } = null!;
 }
 
-public class ReasonToJoinTheNetworkSubmitModel
+public class PreviousEngagementSubmitModel
 {
     public bool? EngagedWithAPreviousAmbassadorInTheNetwork { get; set; }
 }
