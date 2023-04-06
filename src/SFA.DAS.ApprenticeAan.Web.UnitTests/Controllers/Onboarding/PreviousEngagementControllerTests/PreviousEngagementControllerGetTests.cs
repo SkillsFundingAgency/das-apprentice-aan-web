@@ -11,16 +11,16 @@ using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
 
-namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.ReasonToJoinTheNetworkControllerTests;
+namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.PreviousEngagementControllerTests;
 
 [TestFixture]
-public class ReasonToJoinTheNetworkControllerGetTests
+public class PreviousEngagementControllerGetTests
 {
     [MoqAutoData]
     public void Get_ViewResult_SelectedYes_HasCorrectViewPath(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         OnboardingSessionModel sessionModel,
-        [Greedy] ReasonToJoinTheNetworkController sut)
+        [Greedy] PreviousEngagementController sut)
     {
         sut.AddUrlHelperMock();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
@@ -28,14 +28,14 @@ public class ReasonToJoinTheNetworkControllerGetTests
 
         var result = sut.Get();
 
-        result.As<ViewResult>().ViewName.Should().Be(ReasonToJoinTheNetworkController.ViewPath);
+        result.As<ViewResult>().ViewName.Should().Be(PreviousEngagementController.ViewPath);
     }
 
     [MoqAutoData]
     public void Get_ViewResult_SelectedNo_HasCorrectViewPath(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         OnboardingSessionModel sessionModel,
-        [Greedy] ReasonToJoinTheNetworkController sut)
+        [Greedy] PreviousEngagementController sut)
     {
         sut.AddUrlHelperMock();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
@@ -43,14 +43,14 @@ public class ReasonToJoinTheNetworkControllerGetTests
 
         var result = sut.Get();
 
-        result.As<ViewResult>().ViewName.Should().Be(ReasonToJoinTheNetworkController.ViewPath);
+        result.As<ViewResult>().ViewName.Should().Be(PreviousEngagementController.ViewPath);
     }
 
     [MoqAutoData]
     public void Get_ViewModel_HasBackLink(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         OnboardingSessionModel sessionModel,
-        [Greedy] ReasonToJoinTheNetworkController sut)
+        [Greedy] PreviousEngagementController sut)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest);
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
@@ -58,14 +58,14 @@ public class ReasonToJoinTheNetworkControllerGetTests
 
         var result = sut.Get();
 
-        result.As<ViewResult>().Model.As<ReasonToJoinTheNetworkViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
+        result.As<ViewResult>().Model.As<PreviousEngagementViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
     }
 
     [MoqAutoData]
     public void Get_ViewModel_SelectedYes_RestoreFromSession(
                         [Frozen] Mock<ISessionService> sessionServiceMock,
                         OnboardingSessionModel sessionModel,
-                        [Greedy] ReasonToJoinTheNetworkController sut)
+                        [Greedy] PreviousEngagementController sut)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest);
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
@@ -73,14 +73,14 @@ public class ReasonToJoinTheNetworkControllerGetTests
 
         var result = sut.Get();
 
-        result.As<ViewResult>().Model.As<ReasonToJoinTheNetworkViewModel>().EngagedWithAPreviousAmbassadorInTheNetwork.Should().BeTrue();
+        result.As<ViewResult>().Model.As<PreviousEngagementViewModel>().EngagedWithAPreviousAmbassadorInTheNetwork.Should().BeTrue();
     }
 
     [MoqAutoData]
     public void Get_ViewModel_SelectedNo_RestoreFromSession(
                     [Frozen] Mock<ISessionService> sessionServiceMock,
                     OnboardingSessionModel sessionModel,
-                    [Greedy] ReasonToJoinTheNetworkController sut)
+                    [Greedy] PreviousEngagementController sut)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest);
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
@@ -88,6 +88,6 @@ public class ReasonToJoinTheNetworkControllerGetTests
 
         var result = sut.Get();
 
-        result.As<ViewResult>().Model.As<ReasonToJoinTheNetworkViewModel>().EngagedWithAPreviousAmbassadorInTheNetwork.Should().BeFalse();
+        result.As<ViewResult>().Model.As<PreviousEngagementViewModel>().EngagedWithAPreviousAmbassadorInTheNetwork.Should().BeFalse();
     }
 }

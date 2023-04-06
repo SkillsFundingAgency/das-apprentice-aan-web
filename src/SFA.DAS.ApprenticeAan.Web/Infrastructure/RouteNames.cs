@@ -17,5 +17,6 @@ public static class RouteNames
         public const string ReasonToJoinTheNetwork = nameof(ReasonToJoinTheNetwork);
         public const string AreasOfInterest = nameof(AreasOfInterest);
         public const string CheckYourAnswers = nameof(CheckYourAnswers);
+        public const string PreviousEngagement = nameof(PreviousEngagement);
     }
 }
