@@ -30,6 +30,13 @@ public class AreasOfInterestController : Controller
     public IActionResult Get()
     {
         var model = GetViewModel();
+        var sessionModel = _sessionService.Get<OnboardingSessionModel>();
+
+        model.AreasOfInterest.ToList().ForEach(x =>
+        {
+            x.IsSelected = Convert.ToBoolean(sessionModel.GetProfileValue(x.Id));
+        });
+
         return View(ViewPath, model);
     }
 
