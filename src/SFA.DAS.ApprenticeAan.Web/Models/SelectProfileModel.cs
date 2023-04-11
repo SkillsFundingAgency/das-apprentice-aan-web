@@ -14,5 +14,6 @@ public class SelectProfileModel
         Description = profile.Description,
         Category = profile.Category,
         Ordering = profile.Ordering,
+        IsSelected = bool.TryParse(profile.Value, out var result) && result
     };
 }
