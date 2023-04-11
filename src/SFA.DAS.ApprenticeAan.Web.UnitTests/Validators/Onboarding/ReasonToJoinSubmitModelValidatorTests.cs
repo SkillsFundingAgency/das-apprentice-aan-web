@@ -28,7 +28,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
         private static string GetParagraph(string str, int ctr)
         {
             StringBuilder sb = new();
-            for (int i = 0; i < ctr; i++)
+            for (int i = 1; i < ctr; i++)
             {
                 sb.Append(str);
             }
