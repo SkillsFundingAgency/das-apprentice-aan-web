@@ -134,8 +134,10 @@ public class CurrentJobTitleControllerPostTests
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
-        CurrentJobTitleSubmitModel submitmodel = new();
-        submitmodel.JobTitle = null;
+        CurrentJobTitleSubmitModel submitmodel = new()
+        {
+            JobTitle = null
+        };
 
         var result = sut.Post(submitmodel);
 
