@@ -102,7 +102,6 @@ public class Startup
         app.UseStaticFiles();
         app.UseCookiePolicy();
         app.UseRouting();
-        app.UseMiddleware<SecurityHeadersMiddleware>();
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseSession();
