@@ -14,4 +14,7 @@ public interface IOuterApiClient
     [Get("/apprentices/account/{apprenticeId}")]
     [AllowAnyStatusCode]
     Task<Response<ApprenticeAccount?>> GetApprenticeAccount([Path] Guid apprenticeId);
+
+    [Get("/locations")]
+    Task<GetAddressesResult> GetAddresses([Query] string query);
 }
