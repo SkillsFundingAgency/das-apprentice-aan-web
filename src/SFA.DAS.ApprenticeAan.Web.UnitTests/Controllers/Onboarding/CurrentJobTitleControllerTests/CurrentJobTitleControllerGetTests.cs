@@ -47,7 +47,7 @@ public class CurrentJobTitleControllerGetTests
     }
 
     [MoqAutoData]
-    public void SessionModel_HasSeenPreview_BackLinkRedirectsRouteToCheckYourAnswers(
+    public void Get_BackLink_RedirectsRouteToCheckYourAnswers(
     [Frozen] Mock<ISessionService> sessionServiceMock,
     [Greedy] CurrentJobTitleController sut,
     OnboardingSessionModel sessionModel)
@@ -62,12 +62,13 @@ public class CurrentJobTitleControllerGetTests
     }
 
     [MoqAutoData]
-    public void SessionModel_HasSeenPreview_BackLinkRedirectsRouteToNameOfEmployer(
+    public void Get_BackLink_RedirectsRouteToEmployerDetails(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] CurrentJobTitleController sut,
         OnboardingSessionModel sessionModel)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerDetails);
+        sessionModel.HasSeenPreview = false;
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 

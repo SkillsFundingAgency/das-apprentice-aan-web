@@ -28,6 +28,7 @@ public class CheckYourAnswersController : Controller
         _sessionService.Set(sessionModel);
 
         CheckYourAnswersViewModel model = new(Url, sessionModel);
+        model.BackLink = Url.RouteUrl(@RouteNames.Onboarding.PreviousEngagement!);
         return View(ViewPath, model);
     }
 }
