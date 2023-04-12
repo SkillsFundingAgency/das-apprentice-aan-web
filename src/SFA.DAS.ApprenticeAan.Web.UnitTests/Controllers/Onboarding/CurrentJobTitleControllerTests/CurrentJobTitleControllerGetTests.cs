@@ -47,7 +47,22 @@ public class CurrentJobTitleControllerGetTests
     }
 
     [MoqAutoData]
-    public void Get_ViewModel_HasBackLink(
+    public void SessionModel_HasSeenPreview_BackLinkRedirectsRouteToCheckYourAnswers(
+    [Frozen] Mock<ISessionService> sessionServiceMock,
+    [Greedy] CurrentJobTitleController sut,
+    OnboardingSessionModel sessionModel)
+    {
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers);
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+
+        var result = sut.Get();
+
+        result.As<ViewResult>().Model.As<CurrentJobTitleViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
+    }
+
+    [MoqAutoData]
+    public void SessionModel_HasSeenPreview_BackLinkRedirectsRouteToNameOfEmployer(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] CurrentJobTitleController sut,
         OnboardingSessionModel sessionModel)

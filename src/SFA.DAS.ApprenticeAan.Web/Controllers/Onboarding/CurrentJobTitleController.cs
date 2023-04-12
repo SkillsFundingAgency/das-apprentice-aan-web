@@ -31,9 +31,9 @@ public class CurrentJobTitleController : Controller
     [HttpGet]
     public IActionResult Get()
     {
-        var model = GetViewModel();
-
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
+        var model = GetViewModel(sessionModel);
+
         model.JobTitle = sessionModel.GetProfileValue(ProfileDataId.JobTitle);
 
         return View(ViewPath, model);
@@ -43,6 +43,7 @@ public class CurrentJobTitleController : Controller
     public IActionResult Post(CurrentJobTitleSubmitModel submitmodel)
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
+        var model = GetViewModel();
 
         ValidationResult result = _validator.Validate(submitmodel);
 
@@ -59,7 +60,7 @@ public class CurrentJobTitleController : Controller
         return RedirectToRoute(RouteNames.Onboarding.Regions);
     }
 
-    private CurrentJobTitleViewModel GetViewModel()
+    private CurrentJobTitleViewModel GetViewModel(OnboardingSessionModel sessionModel)
     {
         return new CurrentJobTitleViewModel()
         {

@@ -19,7 +19,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.CurrentJobT
 public class CurrentJobTitleControllerPostTests
 {
     [MoqAutoData]
-    public void Post_SetsEnteredJobTitleInOnBoardingSessionModel(
+        public void Post_SetsEnteredJobTitleInOnBoardingSessionModel(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IValidator<CurrentJobTitleSubmitModel>> validatorMock,
         [Greedy] CurrentJobTitleController sut,

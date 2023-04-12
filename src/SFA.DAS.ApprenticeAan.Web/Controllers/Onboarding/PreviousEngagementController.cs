@@ -63,6 +63,6 @@ public class PreviousEngagementController : Controller
 
         _sessionService.Set(sessionModel);
 
-        return View(ViewPath, model);
+        return RedirectToRoute(RouteNames.Onboarding.CheckYourAnswers);
     }
 }
