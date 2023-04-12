@@ -42,7 +42,7 @@ public class EmployerDetailsController : Controller
             County = sessionModel.GetProfileValue(ProfileDataId.County),
             Postcode = sessionModel.GetProfileValue(ProfileDataId.Postcode),
 
-            BackLink = Url.RouteUrl(@RouteNames.Onboarding.LineManager)!
+            BackLink = Url.RouteUrl(@RouteNames.Onboarding.EmployerSearch)!
         };
         return View(ViewPath, model);
     }
@@ -52,7 +52,7 @@ public class EmployerDetailsController : Controller
     {
         var model = new EmployerDetailsViewModel()
         {
-            BackLink = Url.RouteUrl(RouteNames.Onboarding.LineManager)!
+            BackLink = Url.RouteUrl(RouteNames.Onboarding.EmployerSearch)!
         };
 
         FluentValidation.Results.ValidationResult result = _validator.Validate(submitmodel);

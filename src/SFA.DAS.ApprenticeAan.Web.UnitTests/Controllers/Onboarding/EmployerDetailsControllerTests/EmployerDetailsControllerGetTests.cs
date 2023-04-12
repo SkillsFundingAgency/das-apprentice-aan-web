@@ -38,7 +38,7 @@ public class EmployerDetailsControllerGetTests
         OnboardingSessionModel sessionModel,
         [Greedy] EmployerDetailsController sut)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.LineManager);
+        sut.AddUrlHelperMock();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sessionModel.ProfileData = profileData;
 
@@ -54,7 +54,7 @@ public class EmployerDetailsControllerGetTests
         OnboardingSessionModel sessionModel,
         [Greedy] EmployerDetailsController sut)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.LineManager);
+        sut.AddUrlHelperMock();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sessionModel.ProfileData = profileData;
 
@@ -69,7 +69,7 @@ public class EmployerDetailsControllerGetTests
         OnboardingSessionModel sessionModel,
         [Greedy] EmployerDetailsController sut)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.LineManager);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerSearch);
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sessionModel.ProfileData = profileData;
 
@@ -84,7 +84,7 @@ public class EmployerDetailsControllerGetTests
         OnboardingSessionModel sessionModel,
         [Greedy] EmployerDetailsController sut)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.LineManager);
+        sut.AddUrlHelperMock();
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sessionModel.ProfileData = profileData;

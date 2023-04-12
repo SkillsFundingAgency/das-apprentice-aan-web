@@ -44,7 +44,7 @@ public class EmployerDetailsControllerPostTests
         [Greedy] EmployerDetailsController sut)
     {
         OnboardingSessionModel sessionModel = new();
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.LineManager);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerSearch);
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sessionModel.ProfileData = _profiles.Select(p => (ProfileModel)p).ToList();
