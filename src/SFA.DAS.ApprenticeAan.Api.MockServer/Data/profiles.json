@@ -1,0 +1,118 @@
+{
+  "profiles": [
+    {
+      "id": 1,
+      "description": "Networking at events in person",
+      "category": "Events",
+      "ordering": 1
+    },
+    {
+      "id": 2,
+      "description": "Presenting at events in person",
+      "category": "Events",
+      "ordering": 2
+    },
+    {
+      "id": 3,
+      "description": "Presenting at hybrid events (online and in person)",
+      "category": "Events",
+      "ordering": 3
+    },
+    {
+      "id": 4,
+      "description": "Presenting at online in person",
+      "category": "Events",
+      "ordering": 4
+    },
+    {
+      "id": 5,
+      "description": "Project management and delivery of regional events or playing a role in organising national events",
+      "category": "Events",
+      "ordering": 5
+    },
+    {
+      "id": 10,
+      "description": "Carrying out and writing up case studies",
+      "category": "Promotions",
+      "ordering": 1
+    },
+    {
+      "id": 11,
+      "description": "Designing and creating marketing materials to champion the network",
+      "category": "Promotions",
+      "ordering": 2
+    },
+    {
+      "id": 12,
+      "description": "Distributing communications to the network",
+      "category": "Promotions",
+      "ordering": 3
+    },
+    {
+      "id": 13,
+      "description": "Engaging with stakeholders to work out how to improve the network",
+      "category": "Promotions",
+      "ordering": 4
+    },
+    {
+      "id": 14,
+      "description": "Promoting the network on social media channels",
+      "category": "Promotions",
+      "ordering": 5
+    },
+    {
+      "id": 20,
+      "description": "Job title",
+      "category": "Personal",
+      "ordering": 1
+    },
+    {
+      "id": 21,
+      "description": "Engaged with a previous ambassador in the network",
+      "category": "Personal",
+      "ordering": 2
+    },
+    {
+      "id": 22,
+      "description": "Reason to join ambassador network",
+      "category": "Personal",
+      "ordering": 3
+    },
+    {
+      "id": 30,
+      "description": "Employer name",
+      "category": "Employer",
+      "ordering": 1
+    },
+    {
+      "id": 31,
+      "description": "Employer Address line 1",
+      "category": "Employer",
+      "ordering": 2
+    },
+    {
+      "id": 32,
+      "description": "Employer Address line 2",
+      "category": "Employer",
+      "ordering": 3
+    },
+    {
+      "id": 33,
+      "description": "Employer Town or City",
+      "category": "Employer",
+      "ordering": 4
+    },
+    {
+      "id": 34,
+      "description": "Employer County",
+      "category": "Employer",
+      "ordering": 5
+    },
+    {
+      "id": 35,
+      "description": "Employer Postcode",
+      "category": "Employer",
+      "ordering": 6
+    }
+  ]
+}
