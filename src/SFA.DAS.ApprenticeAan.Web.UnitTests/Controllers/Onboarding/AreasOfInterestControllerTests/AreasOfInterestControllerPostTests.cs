@@ -2,6 +2,7 @@
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
@@ -17,7 +18,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.AreasOfInte
 public class AreasOfInterestControllerPostTests
 {
     [MoqAutoData]
-    public void Post_SetsAreasOfInterestValuesInOnBoardingSessionModel(
+    public void Post_SetsAreasOfInterestValuesInOnBoardingSessionModelRedirectsToPreviousEngagement(
     [Frozen] Mock<ISessionService> sessionServiceMock,
     [Frozen] Mock<IValidator<AreasOfInterestSubmitModel>> validatorMock,
     [Greedy] AreasOfInterestController sut,
@@ -39,10 +40,13 @@ public class AreasOfInterestControllerPostTests
         ValidationResult validationResult = new();
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
 
-        sut.Post(submitmodel);
+        var result = sut.Post(submitmodel);
 
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.GetProfileValue(1) == null)));
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.GetProfileValue(2) == true.ToString())));
+
+        result.As<RedirectToRouteResult>().Should().NotBeNull();
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.PreviousEngagement);
     }
 
     [MoqAutoData]

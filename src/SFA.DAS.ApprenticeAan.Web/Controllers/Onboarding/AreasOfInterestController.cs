@@ -53,7 +53,7 @@ public class AreasOfInterestController : Controller
         });
         _sessionService.Set(sessionModel);
 
-        return View(ViewPath, model);
+        return RedirectToRoute(RouteNames.Onboarding.PreviousEngagement);
     }
 
     private AreasOfInterestViewModel GetViewModel()
