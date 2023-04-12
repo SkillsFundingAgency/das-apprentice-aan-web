@@ -1,0 +1,49 @@
+{
+  "regions": [
+    {
+      "id": 1,
+      "area": "East Midlands",
+      "ordering": 1
+    },
+    {
+      "id": 2,
+      "area": "East of England",
+      "ordering": 2
+    },
+    {
+      "id": 3,
+      "area": "London",
+      "ordering": 3
+    },
+    {
+      "id": 4,
+      "area": "North East",
+      "ordering": 4
+    },
+    {
+      "id": 5,
+      "area": "North West",
+      "ordering": 5
+    },
+    {
+      "id": 6,
+      "area": "South East",
+      "ordering": 6
+    },
+    {
+      "id": 7,
+      "area": "South West",
+      "ordering": 7
+    },
+    {
+      "id": 8,
+      "area": "West Midlands",
+      "ordering": 8
+    },
+    {
+      "id": 9,
+      "area": "Yorkshire and the Humber",
+      "ordering": 9
+    }
+  ]
+}
