@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
-using System.Drawing.Text;
 
 namespace SFA.DAS.ApprenticeAan.Web.Validators.Onboarding;
 
