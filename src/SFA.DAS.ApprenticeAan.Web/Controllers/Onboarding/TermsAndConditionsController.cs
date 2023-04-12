@@ -1,16 +1,14 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
-using SFA.DAS.ApprenticeAan.Web.Filters;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
-[Authorize]
+//[Authorize]
 [Route("onboarding/terms-and-conditions", Name = RouteNames.Onboarding.TermsAndConditions)]
-[RequiredSessionModel(typeof(OnboardingSessionModel))]
+//[RequiredSessionModel(typeof(OnboardingSessionModel))]
 public class TermsAndConditionsController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/TermsAndConditions.cshtml";

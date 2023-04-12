@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Filters;
@@ -11,7 +10,7 @@ using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
-[Authorize]
+//[Authorize]
 [Route("onboarding/line-manager", Name = RouteNames.Onboarding.LineManager)]
 [RequiredSessionModel(typeof(OnboardingSessionModel))]
 public class LineManagerController : Controller
@@ -62,6 +61,6 @@ public class LineManagerController : Controller
         sessionModel.HasEmployersApproval = submitmodel.HasEmployersApproval!;
         _sessionService.Set(sessionModel);
 
-        return RedirectToRoute(RouteNames.Onboarding.EmployerDetails);
+        return RedirectToRoute(RouteNames.Onboarding.EmployerSearch);
     }
 }

@@ -1,12 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [ExcludeFromCodeCoverage]
-[Authorize]
+//[Authorize]
 public class LocationsController : Controller
 {
     private readonly IOuterApiClient _outerApiClient;

@@ -1,19 +1,17 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
-using SFA.DAS.ApprenticeAan.Web.Filters;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
-[Authorize]
+//[Authorize]
 [Route("onboarding/employer-search", Name = RouteNames.Onboarding.EmployerSearch)]
-[RequiredSessionModel(typeof(OnboardingSessionModel))]
+//[RequiredSessionModel(typeof(OnboardingSessionModel))]
 public class EmployerSearchController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/EmployerSearch.cshtml";
