@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
+using System.Drawing.Text;
 
 namespace SFA.DAS.ApprenticeAan.Web.Validators.Onboarding;
 
@@ -14,7 +15,7 @@ public class ReasonToJoinSubmitModelValidator : AbstractValidator<ReasonToJoinSu
         RuleFor(m => m.ReasonForJoiningTheNetwork)
             .NotEmpty()
             .WithMessage(ReasonForJoiningTheNetworkEmptyMessage)
-            .Must((m, x) => m.ReasonForJoiningTheNetwork!.Split(new[] { " " }, StringSplitOptions.None).Length <= m.maxWordCount)
+            .Must((m, x) => m.ReasonForJoiningTheNetwork!.Trim().Split(new[] { ' ', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length <= m.maxWordCount)
             .WithMessage(ReasonForJoiningTheNetworkMaxWordsMessage);
     }
 }

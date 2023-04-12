@@ -28,7 +28,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
         private static string GetParagraph(string str, int ctr)
         {
             StringBuilder sb = new();
-            for (int i = 1; i < ctr; i++)
+            for (int i = 0; i < ctr; i++)
             {
                 sb.Append(str);
             }
@@ -39,7 +39,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
         [TestCase(251, false)]
         public void Validates_ReasonForJoiningTheNetwork_Max(int maxWords, bool isValid)
         {
-            var word = "test ";
+            var word = " \r\ntest ";
             var paragraph = GetParagraph(word, maxWords);
             var model = new ReasonToJoinViewModel { ReasonForJoiningTheNetwork = paragraph };
             var sut = new ReasonToJoinSubmitModelValidator();
