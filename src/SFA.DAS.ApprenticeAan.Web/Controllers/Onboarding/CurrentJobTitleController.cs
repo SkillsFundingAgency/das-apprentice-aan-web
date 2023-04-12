@@ -43,27 +43,27 @@ public class CurrentJobTitleController : Controller
     public IActionResult Post(CurrentJobTitleSubmitModel submitmodel)
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-        var model = GetViewModel();
 
         ValidationResult result = _validator.Validate(submitmodel);
 
         if (!result.IsValid)
         {
             result.AddToModelState(ModelState);
+            var model = GetViewModel();
             return View(ViewPath, model);
         }
 
         sessionModel.SetProfileValue(ProfileDataId.JobTitle, submitmodel.JobTitle!);
         _sessionService.Set(sessionModel);
-        //remomve below line when next page link is configured.
-        return View(ViewPath, model);
+
+        return RedirectToRoute(RouteNames.Onboarding.Regions);
     }
 
     private CurrentJobTitleViewModel GetViewModel()
     {
         return new CurrentJobTitleViewModel()
         {
-            BackLink = Url.RouteUrl(@RouteNames.Onboarding.NameOfEmployer)!,
+            BackLink = Url.RouteUrl(RouteNames.Onboarding.EmployerDetails)!,
         };
     }
 }

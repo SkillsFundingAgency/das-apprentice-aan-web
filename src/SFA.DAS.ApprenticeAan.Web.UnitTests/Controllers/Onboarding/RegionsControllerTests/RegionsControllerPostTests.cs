@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
+using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
@@ -48,5 +49,28 @@ public class RegionsControllerPostTests
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.RegionId == null)));
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => !m.IsValid)));
         result.As<ViewResult>().Model.As<RegionsViewModel>().SelectedRegionId.Should().BeNull();
+    }
+
+    [MoqAutoData]
+    public async Task Post_ModelStateIsValid_RedirectsToReasonToJoinView(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Frozen] Mock<IValidator<RegionsSubmitModel>> validatorMock,
+        [Frozen] RegionsSubmitModel submitmodel,
+        [Greedy] RegionsController sut)
+    {
+        OnboardingSessionModel sessionModel = new();
+        ValidationResult validationResult = new();
+
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle);
+
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+        validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
+
+        var result = await sut.Post(submitmodel);
+
+        sut.ModelState.IsValid.Should().BeTrue();
+
+        result.As<RedirectToRouteResult>().Should().NotBeNull();
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.ReasonToJoin);
     }
 }

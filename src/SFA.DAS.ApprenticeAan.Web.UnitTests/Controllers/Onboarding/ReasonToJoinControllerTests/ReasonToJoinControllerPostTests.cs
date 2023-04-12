@@ -12,19 +12,19 @@ using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
 
-namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.LineManagerControllerTests;
+namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.ReasonToJoinControllerTests;
 
 [TestFixture]
-public class LineManagerControllerPostTests
+public class ReasonToJoinControllerPostTests
 {
     [MoqAutoData]
     public void Post_ModelStateIsInvalid_ReloadsViewWithValidationErrors(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        [Greedy] LineManagerController sut,
-        [Frozen] LineManagerSubmitModel submitmodel)
+        [Greedy] ReasonToJoinController sut,
+        [Frozen] ReasonToJoinSubmitModel submitmodel)
     {
         OnboardingSessionModel sessionModel = new();
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.TermsAndConditions);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.Regions);
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
@@ -34,26 +34,22 @@ public class LineManagerControllerPostTests
 
         sut.ModelState.IsValid.Should().BeFalse();
 
-        sessionModel.HasEmployersApproval.Should().BeNull();
-
-        sessionServiceMock.Verify(s => s.Set(sessionModel));
-
         result.As<ViewResult>().Should().NotBeNull();
-        result.As<ViewResult>().ViewName.Should().Be(LineManagerController.ViewPath);
-        result.As<ViewResult>().Model.As<LineManagerViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
+        result.As<ViewResult>().ViewName.Should().Be(ReasonToJoinController.ViewPath);
+        result.As<ViewResult>().Model.As<ReasonToJoinViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
     }
 
     [MoqAutoData]
     public void Post_ModelStateIsValid_UpdatesSessionModel(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        [Frozen] Mock<IValidator<LineManagerSubmitModel>> validatorMock,
-        [Frozen] LineManagerSubmitModel submitmodel,
-        [Greedy] LineManagerController sut)
+        [Frozen] Mock<IValidator<ReasonToJoinSubmitModel>> validatorMock,
+        [Frozen] ReasonToJoinSubmitModel submitmodel,
+        [Greedy] ReasonToJoinController sut)
     {
         OnboardingSessionModel sessionModel = new();
         ValidationResult validationResult = new();
 
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.TermsAndConditions);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.Regions);
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
@@ -64,22 +60,22 @@ public class LineManagerControllerPostTests
 
         sessionServiceMock.Verify(s => s.Set(sessionModel));
 
-        sessionModel.HasEmployersApproval.Should().Be(submitmodel.HasEmployersApproval);
+        sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork.Should().Be(submitmodel.ReasonForJoiningTheNetwork);
 
         sut.ModelState.IsValid.Should().BeTrue();
     }
 
     [MoqAutoData]
-    public void Post_ModelStateIsValid_RedirectsToEmployerDetailsView(
+    public void Post_ModelStateIsValid_RedirectsToReasonToJoinView(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        [Frozen] Mock<IValidator<LineManagerSubmitModel>> validatorMock,
-        [Frozen] LineManagerSubmitModel submitmodel,
-        [Greedy] LineManagerController sut)
+        [Frozen] Mock<IValidator<ReasonToJoinSubmitModel>> validatorMock,
+        [Frozen] ReasonToJoinSubmitModel submitmodel,
+        [Greedy] ReasonToJoinController sut)
     {
         OnboardingSessionModel sessionModel = new();
         ValidationResult validationResult = new();
 
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.TermsAndConditions);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.Regions);
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
@@ -88,7 +84,8 @@ public class LineManagerControllerPostTests
 
         sut.ModelState.IsValid.Should().BeTrue();
 
-        result.As<RedirectToRouteResult>().Should().NotBeNull();
-        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.EmployerDetails);
+        result.As<ViewResult>().Should().NotBeNull();
+        result.As<ViewResult>().ViewName.Should().Be(ReasonToJoinController.ViewPath);
+        result.As<ViewResult>().Model.As<ReasonToJoinViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
     }
 }
