@@ -14,14 +14,14 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 [Authorize]
 [Route("onboarding/employer-details", Name = RouteNames.Onboarding.EmployerDetails)]
 [RequiredSessionModel(typeof(OnboardingSessionModel))]
-public class EmployerController : Controller
+public class EmployerDetailsController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/EmployerDetails.cshtml";
 
     private readonly ISessionService _sessionService;
     private readonly IValidator<EmployerDetailsSubmitModel> _validator;
 
-    public EmployerController(ISessionService sessionService,
+    public EmployerDetailsController(ISessionService sessionService,
         IValidator<EmployerDetailsSubmitModel> validator)
     {
         _validator = validator;
