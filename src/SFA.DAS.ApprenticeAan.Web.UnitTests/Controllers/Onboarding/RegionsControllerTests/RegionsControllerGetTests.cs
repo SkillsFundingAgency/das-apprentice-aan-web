@@ -39,8 +39,8 @@ public class RegionsControllerGetTests
         OnboardingSessionModel sessionModel,
         [Greedy] RegionsController sut)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle);
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+        sut.AddUrlHelperMock().AddUrlForRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.CurrentJobTitle);
 
         var result = await sut.Get();
 

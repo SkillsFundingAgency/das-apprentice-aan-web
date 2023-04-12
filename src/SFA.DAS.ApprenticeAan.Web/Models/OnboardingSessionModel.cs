@@ -7,8 +7,8 @@ public class OnboardingSessionModel
     public bool HasAcceptedTerms { get; set; } = false;
     public List<ProfileModel> ProfileData { get; set; } = new List<ProfileModel>();
     public int? RegionId { get; set; }
+    public string? RegionName { get; set; }
 
-    public bool IsValid => HasAcceptedTerms && ProfileData.Count > 0;
 
     public string? GetProfileValue(int id) => ProfileData.Single(p => p.Id == id)?.Value;
 

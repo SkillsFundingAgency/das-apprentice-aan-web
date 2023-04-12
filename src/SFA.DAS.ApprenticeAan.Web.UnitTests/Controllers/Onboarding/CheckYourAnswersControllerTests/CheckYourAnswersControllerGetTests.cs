@@ -51,4 +51,25 @@ public class CheckYourAnswersControllerGetTests
         result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().JobTitle.Should().Be(jobTitle);
         result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().JobTitleChangeLink.Should().Be(TestConstants.DefaultUrl);
     }
+
+    [MoqAutoData]
+    public void Index_ReturnsViewResult_ValidRegions(
+    [Frozen] Mock<ISessionService> sessionServiceMock,
+    [Greedy] CheckYourAnswersController sut,
+    OnboardingSessionModel sessionModel)
+    {
+        var regionName = "London";
+        var jobTitle = "Some Title";
+
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.Regions);
+        sessionModel.RegionName = regionName;
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = jobTitle });
+
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+
+        var result = sut.Index();
+
+        result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().Region.Should().Be(regionName);
+        result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().RegionChangeLink.Should().Be(TestConstants.DefaultUrl);
+    }
 }

@@ -5,6 +5,7 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
@@ -20,11 +21,20 @@ public class RegionsControllerPostTests
     [MoqAutoData]
     public async Task Post_SetsSelectedRegionInOnBoardingSessionModel(
         [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Frozen] Mock<IRegionsService> regionsService,
         [Frozen] Mock<IValidator<RegionsSubmitModel>> validatorMock,
         [Greedy] RegionsController sut,
-        RegionsSubmitModel submitmodel)
+        RegionsSubmitModel submitmodel
+        )
     {
         sut.AddUrlHelperMock();
+
+        List<Region> regionList = new()
+        {
+            new Region() { Area = "London", Id = (int)submitmodel.SelectedRegionId!, Ordering = 1 }
+        };
+
+        regionsService.Setup(x => x.GetRegions()).Returns(Task.FromResult(regionList));
 
         ValidationResult validationResult = new();
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
