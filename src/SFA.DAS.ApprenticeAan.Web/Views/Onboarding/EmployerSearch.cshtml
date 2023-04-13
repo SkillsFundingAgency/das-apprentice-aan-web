@@ -8,13 +8,6 @@
         <partial name="_validationSummary" />
         <form method="post" asp-route="@RouteNames.Onboarding.EmployerSearch" enctype="multipart/form-data" novalidate>
 
-            @Html.HiddenFor(c => c.OrganisationName)
-            @Html.HiddenFor(c => c.Town)
-            @Html.HiddenFor(c => c.County)
-            @Html.HiddenFor(c => c.Postcode)
-            @Html.HiddenFor(c => c.AddressLine1)
-            @Html.HiddenFor(c => c.AddressLine2)
-
             <div esfa-validation-marker-for="SearchTerm" class="govuk-form-group">
                 <h1 class="govuk-heading-l">Search for your employer's name or address</h1>
                 <div class="govuk-label">
@@ -25,9 +18,63 @@
                     <input id="search-term" type="text" asp-for="SearchTerm" class="govuk-input" sfa-validationerror-class="form-control-error" maxlength="200" data-module="autoComplete" />
                 </div>
             </div>
-            <p>
-                <a class="govuk-link" href="@Model.ManualEntryLink">Enter address manually</a>
-            </p>
+            <div data-module="das-show-hide">
+                <p><a class="das-show-hide__button govuk-body das-button--inline-link" href="#" data-aria-controls="das-show-hide" data-focus-id="OrganisationName" data-button-string="manual address form"> Show/hide</a></p>
+                <div id="das-show-hide">
+                    <div esfa-validation-marker-for="OrganisationName" class="govuk-form-group">
+                        <label class="govuk-label" asp-for="OrganisationName">
+                            Employers name
+                        </label>
+                        <span asp-validation-for="OrganisationName" class="govuk-error-message"></span>
+                        <input asp-for="OrganisationName" id="OrganisationName" class="govuk-input govuk-!-width-two-thirds" type="text" maxlength="200"
+                                sfa-validationerror-class="form-control-error">
+                    </div>
+                    <div class="govuk-form-group" esfa-validation-marker-for="AddressLine1">
+                        <label class="govuk-label" asp-for="AddressLine1">
+                            Building and street
+                        </label>
+                        <span asp-validation-for="AddressLine1" class="govuk-error-message"></span>
+                        <input asp-for="AddressLine1" id="AddressLine1" class="govuk-input  govuk-!-width-two-thirds" type="text" maxlength="200"
+                                sfa-validationerror-class="form-control-error">
+                    </div>
+
+                    <div class="govuk-form-group" esfa-validation-marker-for="AddressLine2">
+                        <span asp-validation-for="AddressLine2" class="govuk-error-message"></span>
+                        <input asp-for="AddressLine2" id="AddressLine2" class="govuk-input  govuk-!-width-two-thirds" type="text" maxlength="200"
+                                sfa-validationerror-class="form-control-error">
+                    </div>
+
+
+                    <div class="govuk-form-group"  esfa-validation-marker-for="Town">
+                        <label class="govuk-label" asp-for="Town">
+                            Town or city
+                        </label>
+                        <span asp-validation-for="Town" class="govuk-error-message"></span>
+                        <input asp-for="Town" id="Town" class="govuk-input govuk-!-width-two-thirds" type="text" maxlength="200"
+                                sfa-validationerror-class="form-control-error">
+                    </div>
+
+                    <div class="govuk-form-group" esfa-validation-marker-for="County">
+                        <label class="govuk-label" asp-for="County">
+                            County
+                        </label>
+                        <span asp-validation-for="County" class="govuk-error-message"></span>
+                        <input asp-for="County" id="County" class="govuk-input  govuk-!-width-two-thirds" type="text" maxlength="200"
+                            sfa-validationerror-class="form-control-error">
+                    </div>
+
+                    <div class="govuk-form-group" esfa-validation-marker-for="Postcode">
+                        <label class="govuk-label" asp-for="Postcode">
+                            Postcode
+                        </label>
+                        <span asp-validation-for="Postcode" class="govuk-error-message"></span>
+                        <input asp-for="Postcode" id="Postcode" class="govuk-input govuk-input--width-10" type="text" maxlength="8"
+                            sfa-validationerror-class="form-control-error">
+                    </div>
+                </div>
+            </div>
+
+
             <div class="govuk-button-group">
                 <button id="continue" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true">
                     Continue

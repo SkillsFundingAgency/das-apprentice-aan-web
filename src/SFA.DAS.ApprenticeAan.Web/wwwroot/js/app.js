@@ -9,7 +9,7 @@ AutoComplete.prototype.init = function() {
 
 AutoComplete.prototype.getSuggestions = function(query, updateResults) {
     var results = [];
-    var apiUrl = "https://localhost:7054/locations"
+    var apiUrl = "https://localhost:7054/locations?query=" + query
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
@@ -26,6 +26,13 @@ AutoComplete.prototype.getSuggestions = function(query, updateResults) {
 
 AutoComplete.prototype.onConfirm = function(option) {
   // Populate form fields with selected option
+  console.log(option)
+  document.getElementById("OrganisationName").value = option.organisationName
+  document.getElementById("AddressLine1").value = option.addressLine1
+  document.getElementById("AddressLine2").value = option.addressLine2
+  document.getElementById("Town").value = option.town
+  document.getElementById("County").value = option.county
+  document.getElementById("Postcode").value = option.postcode
 
 }
 
