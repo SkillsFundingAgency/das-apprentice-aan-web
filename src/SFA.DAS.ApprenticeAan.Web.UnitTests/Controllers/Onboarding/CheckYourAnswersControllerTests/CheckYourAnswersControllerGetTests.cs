@@ -53,7 +53,7 @@ public class CheckYourAnswersControllerGetTests
     }
 
     [MoqAutoData]
-    public void Index_ReturnsViewResult_ValidRegions(
+    public void Get_ReturnsViewResult_ValidRegions(
     [Frozen] Mock<ISessionService> sessionServiceMock,
     [Greedy] CheckYourAnswersController sut,
     OnboardingSessionModel sessionModel)
@@ -67,7 +67,7 @@ public class CheckYourAnswersControllerGetTests
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
-        var result = sut.Index();
+        var result = sut.Get();
 
         result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().Region.Should().Be(regionName);
         result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().RegionChangeLink.Should().Be(TestConstants.DefaultUrl);

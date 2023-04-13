@@ -12,7 +12,7 @@ ViewData["Title"] = "Check your answers";
             Here are the details you have provided.
         </div>
 	<dl class="govuk-summary-list">
-            <div class="govuk-summary-list__row">
+             
                 <dt class="govuk-summary-list__key">Current job title</dt>
                 <dd class="govuk-summary-list__value">@Model.JobTitle</dd>
                 <dd class="govuk-summary-list__actions">
@@ -27,14 +27,11 @@ ViewData["Title"] = "Check your answers";
                     @Model.Region
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a href=@Url.RouteUrl(RouteNames.Onboarding.Regions) class="govuk-link govuk-link--no-visited-state">
-                        Change
-                    </a>
+                    <a href=@Url.RouteUrl(RouteNames.Onboarding.Regions) class="govuk-link govuk-link--no-visited-state">Change</a>
                 </dd>
             </div>
         </dl>
                 
-
         </dl>
     </div>
 </div>
