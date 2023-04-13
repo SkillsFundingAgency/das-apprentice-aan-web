@@ -52,7 +52,7 @@ public class RegionsController : Controller
         }
 
         sessionModel.RegionId = submitmodel.SelectedRegionId;
-        sessionModel.RegionName = model.Regions.Find(x => x.Id == sessionModel.RegionId).Area;
+        sessionModel.RegionName = model.Regions.First(x => x.Id == sessionModel.RegionId).Area;
         _sessionService.Set(sessionModel);
 
         return RedirectToRoute(RouteNames.Onboarding.ReasonToJoin);
