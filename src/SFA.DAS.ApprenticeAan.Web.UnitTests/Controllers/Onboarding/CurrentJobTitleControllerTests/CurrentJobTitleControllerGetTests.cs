@@ -68,16 +68,16 @@ public class CurrentJobTitleControllerGetTests
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] CurrentJobTitleController sut,
         OnboardingSessionModel sessionModel,
-        string checkYourAnswersUrl)
+        string currentJobTitleUrl)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerDetails, checkYourAnswersUrl);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerDetails, currentJobTitleUrl);
         sessionModel.HasSeenPreview = false;
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         var result = sut.Get();
 
-        result.As<ViewResult>().Model.As<CurrentJobTitleViewModel>().BackLink.Should().Be(checkYourAnswersUrl);
+        result.As<ViewResult>().Model.As<CurrentJobTitleViewModel>().BackLink.Should().Be(currentJobTitleUrl);
     }
 
     [MoqAutoData]
