@@ -70,6 +70,7 @@ public class CurrentJobTitleControllerPostTests
         OnboardingSessionModel sessionModel)
     {
         sut.AddUrlHelperMock();
+        sessionModel.HasSeenPreview = true;
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
@@ -109,6 +110,7 @@ public class CurrentJobTitleControllerPostTests
         OnboardingSessionModel sessionModel)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers);
+        sessionModel.HasSeenPreview = true;
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 

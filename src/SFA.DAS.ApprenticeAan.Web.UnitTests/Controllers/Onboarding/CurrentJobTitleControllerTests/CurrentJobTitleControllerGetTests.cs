@@ -48,33 +48,36 @@ public class CurrentJobTitleControllerGetTests
 
     [MoqAutoData]
     public void Get_ViewModelHasSeenPreview_RedirectsRouteToCheckYourAnswers(
-    [Frozen] Mock<ISessionService> sessionServiceMock,
-    [Greedy] CurrentJobTitleController sut,
-    OnboardingSessionModel sessionModel)
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] CurrentJobTitleController sut,
+        OnboardingSessionModel sessionModel,
+        string checkYourAnswersUrl)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers, checkYourAnswersUrl);
+        sessionModel.HasSeenPreview = true;
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         var result = sut.Get();
 
-        result.As<ViewResult>().Model.As<CurrentJobTitleViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
+        result.As<ViewResult>().Model.As<CurrentJobTitleViewModel>().BackLink.Should().Be(checkYourAnswersUrl);
     }
 
     [MoqAutoData]
     public void Get_ViewModelHasSeenPreview_RedirectsRouteToEmployerDetails(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] CurrentJobTitleController sut,
-        OnboardingSessionModel sessionModel)
+        OnboardingSessionModel sessionModel,
+        string checkYourAnswersUrl)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerDetails);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerDetails, checkYourAnswersUrl);
         sessionModel.HasSeenPreview = false;
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         var result = sut.Get();
 
-        result.As<ViewResult>().Model.As<CurrentJobTitleViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
+        result.As<ViewResult>().Model.As<CurrentJobTitleViewModel>().BackLink.Should().Be(checkYourAnswersUrl);
     }
 
     [MoqAutoData]
