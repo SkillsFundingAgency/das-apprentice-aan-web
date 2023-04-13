@@ -47,7 +47,7 @@ public class CurrentJobTitleControllerGetTests
     }
 
     [MoqAutoData]
-    public void Get_BackLink_RedirectsRouteToCheckYourAnswers(
+    public void Get_ViewModelHasSeenPreview_RedirectsRouteToCheckYourAnswers(
     [Frozen] Mock<ISessionService> sessionServiceMock,
     [Greedy] CurrentJobTitleController sut,
     OnboardingSessionModel sessionModel)
@@ -62,7 +62,7 @@ public class CurrentJobTitleControllerGetTests
     }
 
     [MoqAutoData]
-    public void Get_BackLink_RedirectsRouteToEmployerDetails(
+    public void Get_ViewModelHasSeenPreview_RedirectsRouteToEmployerDetails(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] CurrentJobTitleController sut,
         OnboardingSessionModel sessionModel)

@@ -14,8 +14,26 @@ using SFA.DAS.Testing.AutoFixture;
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.CheckYourAnswersControllerTests;
 
 [TestFixture]
-public class CheckYourAnswersControllerTests
+public class CheckYourAnswersControllerGetTests
 {
+    [MoqAutoData]
+    public void Index_ReturnsViewResult(
+    [Frozen] Mock<ISessionService> sessionServiceMock,
+    [Greedy] CheckYourAnswersController sut,
+    OnboardingSessionModel sessionModel)
+    {
+        var jobTitle = "Test Job Title";
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle);
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = jobTitle });
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+
+        var result = sut.Index();
+
+        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.HasSeenPreview)));
+        result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().JobTitle.Should().Be(jobTitle);
+        result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().JobTitleChangeLink.Should().Be(TestConstants.DefaultUrl);
+    }
+
     [MoqAutoData]
     public void Index_ChangeJobTitle_ReturnsJobTitleViewResult(
     [Frozen] Mock<ISessionService> sessionServiceMock,
@@ -32,21 +50,5 @@ public class CheckYourAnswersControllerTests
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.HasSeenPreview)));
         result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().JobTitle.Should().Be(jobTitle);
         result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().JobTitleChangeLink.Should().Be(TestConstants.DefaultUrl);
-    }
-
-    [MoqAutoData]
-    public void Get_ViewModel_BackLink_RedirectsRouteToEmployerDetails(
-        [Frozen] Mock<ISessionService> sessionServiceMock,
-        [Greedy] CurrentJobTitleController sut,
-        OnboardingSessionModel sessionModel)
-    {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerDetails);
-        sessionModel.HasSeenPreview = false;
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
-        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
-
-        var result = sut.Get();
-
-        result.As<ViewResult>().Model.As<CurrentJobTitleViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
     }
 }

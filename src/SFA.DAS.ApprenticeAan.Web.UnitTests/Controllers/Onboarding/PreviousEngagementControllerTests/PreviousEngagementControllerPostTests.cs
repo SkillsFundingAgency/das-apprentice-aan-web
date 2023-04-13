@@ -68,7 +68,7 @@ public class PreviousEngagementControllerPostTests
     }
 
     [MoqAutoData]
-    public void Post_ModelStateIsValid_RedirectsToPreviousEngagementView(
+    public void Post_ModelStateIsValid_RedirectsToCheckYourAnswersw(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IValidator<PreviousEngagementSubmitModel>> validatorMock,
         [Frozen] PreviousEngagementSubmitModel submitmodel,

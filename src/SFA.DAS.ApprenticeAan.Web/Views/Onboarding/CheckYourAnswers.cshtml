@@ -5,33 +5,26 @@
     ViewData["Title"] = "Check your answers";
 }
 
-<form method="post" asp-route="@RouteNames.Onboarding.CheckYourAnswers" enctype="multipart/form-data" novalidate>
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-l">Check the information you have provided before submitting your application</h1>
-            <div id="regions-hint" class="govuk-hint">
-                Here are the details you have provided.
-            </div>
-            <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                                    Current job title
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                                    @Model.JobTitle
-                    </dd>
-                    <dd class="govuk-summary-list__actions">
-                        <a href=@Url.RouteUrl(RouteNames.Onboarding.CurrentJobTitle) class="govuk-link govuk-link--no-visited-state">
-                            Change
-                        </a>
-                    </dd>
-                </div>
-            </dl>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Check the information you have provided before submitting your application</h1>
+        <div id="regions-hint" class="govuk-hint">
+            Here are the details you have provided.
         </div>
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                                Current job title
+                </dt>
+                <dd class="govuk-summary-list__value">
+                                @Model.JobTitle
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a href=@Url.RouteUrl(RouteNames.Onboarding.CurrentJobTitle) class="govuk-link govuk-link--no-visited-state">
+                        Change
+                    </a>
+                </dd>
+            </div>
+        </dl>
     </div>
-    <div class="govuk-button-group">
-        <button id="accept-and-submit" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true">
-            Accept and Submit
-        </button>
-    </div>
-</form>
+</div>

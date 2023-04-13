@@ -19,7 +19,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.CurrentJobT
 public class CurrentJobTitleControllerPostTests
 {
     [MoqAutoData]
-        public void Post_SetsEnteredJobTitleInOnBoardingSessionModel(
+    public void Post_SetsEnteredJobTitleInOnBoardingSessionModel(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IValidator<CurrentJobTitleSubmitModel>> validatorMock,
         [Greedy] CurrentJobTitleController sut,
@@ -83,12 +83,11 @@ public class CurrentJobTitleControllerPostTests
         result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.CheckYourAnswers);
     }
 
-
     [MoqAutoData]
     public void Post_Errors_WhenEnteredJobTitleIsNull(
-    [Frozen] Mock<ISessionService> sessionServiceMock,
-    [Greedy] CurrentJobTitleController sut,
-    OnboardingSessionModel sessionModel)
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] CurrentJobTitleController sut,
+        OnboardingSessionModel sessionModel)
     {
         sut.AddUrlHelperMock();
         sessionModel.HasSeenPreview = false;
@@ -105,9 +104,9 @@ public class CurrentJobTitleControllerPostTests
 
     [MoqAutoData]
     public void Post_BackLink_RedirectsRouteToCheckYourAnswers(
-    [Frozen] Mock<ISessionService> sessionServiceMock,
-    [Greedy] CurrentJobTitleController sut,
-    OnboardingSessionModel sessionModel)
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] CurrentJobTitleController sut,
+        OnboardingSessionModel sessionModel)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers);
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
