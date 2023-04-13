@@ -8,12 +8,12 @@ AutoComplete.prototype.init = function() {
 }
 
 AutoComplete.prototype.getSuggestions = function(query, updateResults) {
-    var results = [];
-    var apiUrl = "/locations?query=" + query
-    var xhr = new XMLHttpRequest();
+    let results = [];
+    let apiUrl = "/locations?query=" + query
+    let xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
-        var jsonResponse = JSON.parse(xhr.responseText);
+        let jsonResponse = JSON.parse(xhr.responseText);
         results = jsonResponse.map(function (result) {
           return result
         });
@@ -45,7 +45,7 @@ function suggestionTemplate (result) {
 }
 
 AutoComplete.prototype.autoComplete = function() {
-    var that = this
+    let that = this
     accessibleAutocomplete.enhanceSelectElement({
         selectElement: that.selectElement,
         minLength: 2,
@@ -68,12 +68,12 @@ function nodeListForEach(nodes, callback) {
     if (window.NodeList.prototype.forEach) {
       return nodes.forEach(callback)
     }
-    for (var i = 0; i < nodes.length; i++) {
+    for (let i = 0; i < nodes.length; i++) {
       callback.call(window, nodes[i], i, nodes);
     }
   }
 
-var autoCompletes = document.querySelectorAll('[data-module="autoComplete"]')
+let autoCompletes = document.querySelectorAll('[data-module="autoComplete"]')
 
 nodeListForEach(autoCompletes, function (autoComplete) {
   new AutoComplete(autoComplete).init()
