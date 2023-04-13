@@ -62,17 +62,22 @@ public class RegionsControllerPostTests
 
     [MoqAutoData]
     public async Task Post_ModelStateIsValid_RedirectsToReasonToJoinView(
-        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Frozen] Mock<IRegionsService> regionsService,
         [Frozen] Mock<IValidator<RegionsSubmitModel>> validatorMock,
         [Frozen] RegionsSubmitModel submitmodel,
         [Greedy] RegionsController sut)
     {
-        OnboardingSessionModel sessionModel = new();
         ValidationResult validationResult = new();
 
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle);
 
-        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+        List<Region> regionList = new()
+        {
+            new Region() { Area = "London", Id = (int)submitmodel.SelectedRegionId!, Ordering = 1 }
+        };
+
+        regionsService.Setup(x => x.GetRegions()).Returns(Task.FromResult(regionList));
+
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
 
         var result = await sut.Post(submitmodel);
