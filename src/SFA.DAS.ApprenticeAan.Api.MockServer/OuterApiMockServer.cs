@@ -44,7 +44,7 @@ internal static class OuterApiMockServer
                 .WithBodyFromFile("Data/apprentice-account.json"));
 
         server
-            .Given(Request.Create().WithPath(u => u.Contains("locations")).WithParam("query", "cv1")
+            .Given(Request.Create().WithPath(u => u.Contains("locations"))
             .UsingGet())
             .RespondWith(Response.Create()
                 .WithStatusCode(200)

@@ -9,12 +9,12 @@ AutoComplete.prototype.init = function() {
 
 AutoComplete.prototype.getSuggestions = function(query, updateResults) {
     var results = [];
-    var apiUrl = "https://localhost:7054/locations?query=" + query
+    var apiUrl = "/locations?query=" + query
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
         var jsonResponse = JSON.parse(xhr.responseText);
-        results = jsonResponse.addresses.map(function (result) {
+        results = jsonResponse.map(function (result) {
           return result
         });
         updateResults(results);
