@@ -31,12 +31,14 @@ public class ReasonToJoinController : Controller
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
 
         return View(ViewPath, GetViewModel(sessionModel));
+            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(RouteNames.Onboarding.Regions)!
     }
 
     [HttpPost]
     public IActionResult Post(ReasonToJoinSubmitModel submitmodel)
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
+            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(RouteNames.Onboarding.Regions)!
 
         ValidationResult result = _validator.Validate(submitmodel);
         if (!result.IsValid)

@@ -12,6 +12,9 @@ public class CheckYourAnswersViewModel
     public string RegionChangeLink { get; }
     public string Region { get; }
 
+    public string ReasonForJoiningTheNetworkChangeLink { get; }
+    public string ReasonForJoiningTheNetwork { get; }
+
     public CheckYourAnswersViewModel(IUrlHelper url, OnboardingSessionModel sessionModel)
     {
         JobTitleChangeLink = url.RouteUrl(@RouteNames.Onboarding.CurrentJobTitle)!;
@@ -19,5 +22,10 @@ public class CheckYourAnswersViewModel
 
         RegionChangeLink = url.RouteUrl(@RouteNames.Onboarding.Regions)!;
         Region = sessionModel.RegionName!;
+        
+        
+        ReasonForJoiningTheNetworkChangeLink = url.RouteUrl(@RouteNames.Onboarding.ReasonToJoin)!;
+        ReasonForJoiningTheNetwork = sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork!;
+
     }
 }
