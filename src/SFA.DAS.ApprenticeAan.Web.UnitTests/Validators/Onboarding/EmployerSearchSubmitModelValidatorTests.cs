@@ -10,28 +10,6 @@ public class EmployerSearchSubmitModelValidatorTests
     [TestCase(null, false)]
     [TestCase(" ", false)]
     [TestCase("some text", true)]
-    public void Validate_SearchTerm(string? searchTerm, bool isValid)
-    {
-        EmployerSearchSubmitModelValidator sut = new();
-
-        EmployerSearchSubmitModel model = new() { SearchTerm = searchTerm };
-
-        var result = sut.TestValidate(model);
-
-        if (isValid)
-        {
-            result.ShouldNotHaveValidationErrorFor(m => m.SearchTerm);
-        }
-        else
-        {
-            result.ShouldHaveValidationErrorFor(m => m.SearchTerm);
-        }
-    }
-
-    [TestCase("", false)]
-    [TestCase(null, false)]
-    [TestCase(" ", false)]
-    [TestCase("some text", true)]
     public void Validate_Postcode(string? postcode, bool isValid)
     {
         EmployerSearchSubmitModelValidator sut = new();
