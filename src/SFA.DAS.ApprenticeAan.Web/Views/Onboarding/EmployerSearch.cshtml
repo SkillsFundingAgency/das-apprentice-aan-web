@@ -8,12 +8,12 @@
         <partial name="_validationSummary" />
         <form method="post" asp-route="@RouteNames.Onboarding.EmployerSearch" enctype="multipart/form-data" novalidate>
 
-            @Html.HiddenFor(c => c.OrganisationName)
-            @Html.HiddenFor(c => c.Town)
-            @Html.HiddenFor(c => c.County)
-            @Html.HiddenFor(c => c.Postcode)
-            @Html.HiddenFor(c => c.AddressLine1)
-            @Html.HiddenFor(c => c.AddressLine2)
+            <input asp-for="OrganisationName" id="OrganisationName" type="hidden"/>
+            <input asp-for="AddressLine1" id="AddressLine1" type="hidden" />
+            <input asp-for="AddressLine2" id="AddressLine2" type="hidden" />
+            <input asp-for="Town" id="Town" type="hidden" />
+            <input asp-for="County" id="County" type="hidden" />
+            <input asp-for="Postcode" id="Postcode" type="hidden" />
 
             <div esfa-validation-marker-for="SearchTerm" class="govuk-form-group">
                 <h1 class="govuk-heading-l">Search for your employer's name or address</h1>
@@ -22,7 +22,7 @@
                 </div>
                 <span asp-validation-for="SearchTerm" class="govuk-error-message"></span>
                 <div id="SearchTerm" data-module="govuk-input">
-                    <input id="search-term" type="text" asp-for="SearchTerm" class="govuk-input" sfa-validationerror-class="form-control-error" maxlength="200" />
+                    <input id="search-term" type="text" asp-for="SearchTerm" class="govuk-input" sfa-validationerror-class="form-control-error" maxlength="200" data-module="autoComplete" />
                 </div>
             </div>
             <p>
