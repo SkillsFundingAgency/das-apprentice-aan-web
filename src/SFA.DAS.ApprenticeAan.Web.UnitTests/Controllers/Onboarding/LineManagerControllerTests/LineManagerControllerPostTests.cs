@@ -98,8 +98,7 @@ public class LineManagerControllerPostTests
         [Frozen] Mock<IValidator<LineManagerSubmitModel>> validatorMock,
         [Greedy] LineManagerController sut,
         Mock<ITempDataDictionary> tempDataMock,
-        LineManagerSubmitModel submitModel,
-        List<Profile> profiles)
+        LineManagerSubmitModel submitModel)
     {
         tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.HasSeenTermsAndConditions)).Returns(true);
         sut.TempData = tempDataMock.Object;
