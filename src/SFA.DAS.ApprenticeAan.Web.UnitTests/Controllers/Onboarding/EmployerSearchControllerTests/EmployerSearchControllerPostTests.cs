@@ -69,7 +69,7 @@ public class EmployerSearchControllerPostTests
         result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.EmployerDetails);
     }
 
-    private OnboardingSessionModel GetSessionModelWithProfile() =>
+    private static OnboardingSessionModel GetSessionModelWithProfile() =>
         new()
         {
             ProfileData = new()
