@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
-using SFA.DAS.ApprenticeAan.Web.Filters;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
@@ -14,7 +13,6 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
 [Authorize]
 [Route("onboarding/previous-engagement", Name = RouteNames.Onboarding.PreviousEngagement)]
-[RequiredSessionModel(typeof(OnboardingSessionModel))]
 public class PreviousEngagementController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/PreviousEngagement.cshtml";
