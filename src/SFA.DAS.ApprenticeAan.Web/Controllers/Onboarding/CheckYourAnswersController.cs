@@ -21,7 +21,8 @@ public class CheckYourAnswersController : Controller
         _sessionService = sessionService;
     }
 
-    public IActionResult Index()
+    [HttpGet]
+    public IActionResult Get()
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
         sessionModel.HasSeenPreview = true;

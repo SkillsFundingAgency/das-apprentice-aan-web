@@ -1,7 +1,8 @@
-﻿@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
-@model BeforeYouStartViewModel
+﻿@using SFA.DAS.ApprenticeAan.Web.Infrastructure
+@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
+@model CheckYourAnswersViewModel
 @{
-    ViewData["Title"] = "Before you start";
+    ViewData["Title"] = "Check your answers";
 }
 
 <div class="govuk-grid-row">
@@ -10,5 +11,14 @@
         <div id="regions-hint" class="govuk-hint">
             Here are the details you have provided.
         </div>
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Current job title</dt>
+                <dd class="govuk-summary-list__value">@Model.JobTitle</dd>
+                <dd class="govuk-summary-list__actions">
+                    <a href=@Url.RouteUrl(RouteNames.Onboarding.CurrentJobTitle) class="govuk-link govuk-link--no-visited-state">Change</a>
+                </dd>
+            </div>
+        </dl>
     </div>
 </div>

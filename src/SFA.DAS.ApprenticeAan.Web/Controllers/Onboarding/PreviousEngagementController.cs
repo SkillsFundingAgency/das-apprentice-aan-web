@@ -46,14 +46,15 @@ public class PreviousEngagementController : Controller
     public IActionResult Post(PreviousEngagementSubmitModel submitmodel)
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-        var model = new PreviousEngagementViewModel()
-        {
-            BackLink = Url.RouteUrl(@RouteNames.Onboarding.AreasOfInterest)!
-        };
 
         ValidationResult result = _validator.Validate(submitmodel);
         if (!result.IsValid)
         {
+            var model = new PreviousEngagementViewModel()
+            {
+                BackLink = Url.RouteUrl(@RouteNames.Onboarding.AreasOfInterest)!
+            };
+
             result.AddToModelState(this.ModelState);
             return View(ViewPath, model);
         }
@@ -63,6 +64,6 @@ public class PreviousEngagementController : Controller
 
         _sessionService.Set(sessionModel);
 
-        return View(ViewPath, model);
+        return RedirectToRoute(RouteNames.Onboarding.CheckYourAnswers);
     }
 }
