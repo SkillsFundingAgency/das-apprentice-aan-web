@@ -16,13 +16,4 @@ public class AddressItem
     public string? AddressLine2 { get; set; }
     public double? Longitude { get; set; }
     public double? Latitude { get; set; }
-
-    public string DisplayText
-    {
-        get
-        {
-            string[] addressParts = new string[] { OrganisationName!, AddressLine1!, AddressLine2!, Town!, Postcode! };
-            return string.Join(", ", addressParts.Where(p => !string.IsNullOrWhiteSpace(p)));
-        }
-    }
 }
