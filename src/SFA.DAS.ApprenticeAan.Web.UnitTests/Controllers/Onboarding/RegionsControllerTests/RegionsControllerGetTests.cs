@@ -34,17 +34,49 @@ public class RegionsControllerGetTests
     }
 
     [MoqAutoData]
-    public async Task Get_ViewModel_GetsRegionsViewModel(
+    public async Task Get_ViewModelHasSeenPreviewIsTrue_RedirectsRouteToCheckYourAnswers(
         [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] RegionsController sut,
         OnboardingSessionModel sessionModel,
-        [Greedy] RegionsController sut)
+        string checkYourAnswersUrl)
     {
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers, checkYourAnswersUrl);
+        sessionModel.HasSeenPreview = true;
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
-        sut.AddUrlHelperMock().AddUrlForRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.CurrentJobTitle);
 
         var result = await sut.Get();
 
-        result.As<ViewResult>().Model.As<RegionsViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
+        result.As<ViewResult>().Model.As<RegionsViewModel>().BackLink.Should().Be(checkYourAnswersUrl);
+    }
+
+    [MoqAutoData]
+    public async Task Get_ViewModelHasSeenPreviewIsFalse_RedirectsRouteToCurrentJobTitle(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] RegionsController sut,
+        OnboardingSessionModel sessionModel,
+        string currentJobTitleUrl)
+    {
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle, currentJobTitleUrl);
+        sessionModel.HasSeenPreview = false;
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+
+        var result = await sut.Get();
+
+        result.As<ViewResult>().Model.As<RegionsViewModel>().BackLink.Should().Be(currentJobTitleUrl);
+    }
+
+    [MoqAutoData]
+    public async Task Get_ViewModel_HasSessionData(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] RegionsController sut,
+        OnboardingSessionModel sessionModel)
+    {
+        sut.AddUrlHelperMock();
+
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+
+        var result = await sut.Get();
+
         result.As<ViewResult>().Model.As<RegionsViewModel>().Regions.Should().NotBeNull();
         result.As<ViewResult>().Model.As<RegionsViewModel>().SelectedRegionId.Should().Be(sessionModel.RegionId);
     }
