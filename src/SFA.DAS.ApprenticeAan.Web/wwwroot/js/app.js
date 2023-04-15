@@ -35,12 +35,12 @@ AutoComplete.prototype.onConfirm = function(option) {
 
 }
 
-function inputValueTemplate (result) {
-  return result && result.organisationName + ',' + result.addressLine1 + ', ' + result.town + ', ' + result.postcode
+function inputValueTemplate(result) {
+  return result && [result.organisationName, result.addressLine1, result.town, result.postcode].filter(element => element).join(', ')
 }
 
 function suggestionTemplate (result) {
-  return result && '<strong>' + result.organisationName + '</strong> ' + result.addressLine1 + ', ' + result.town + ', ' + result.postcode
+  return result && [result.organisationName, result.addressLine1, result.town, result.postcode].filter(element => element).join(', ')
 }
 
 AutoComplete.prototype.autoComplete = function() {
