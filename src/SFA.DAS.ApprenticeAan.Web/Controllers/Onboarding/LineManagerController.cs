@@ -83,7 +83,8 @@ public class LineManagerController : Controller
     {
         return new LineManagerViewModel()
         {
-            BackLink = Url.RouteUrl(@RouteNames.Onboarding.TermsAndConditions)!
+            BackLink = Url.RouteUrl(@RouteNames.Onboarding.TermsAndConditions)!,
+            HasEmployersApproval = _sessionService.Get<OnboardingSessionModel>()?.HasAcceptedTerms
         };
     }
 }

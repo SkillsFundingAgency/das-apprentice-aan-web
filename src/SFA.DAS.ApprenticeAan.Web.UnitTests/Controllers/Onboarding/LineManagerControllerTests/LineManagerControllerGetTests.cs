@@ -3,8 +3,10 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
+using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
+using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
@@ -50,6 +52,22 @@ public class LineManagerControllerGetTests
         tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.HasSeenTermsAndConditions)).Returns(true);
         sut.TempData = tempDataMock.Object;
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.TermsAndConditions);
+
+        var result = sut.Get();
+
+        result.As<ViewResult>().Model.As<LineManagerViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
+    }
+
+    [MoqAutoData]
+    public void Get_ViewModel_PreselectsYesAnswer(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] LineManagerController sut,
+        Mock<ITempDataDictionary> tempDataMock)
+    {
+        tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.HasSeenTermsAndConditions)).Returns(true);
+        sut.TempData = tempDataMock.Object;
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.TermsAndConditions);
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(new OnboardingSessionModel() { HasAcceptedTerms = true });
 
         var result = sut.Get();
 
