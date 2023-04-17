@@ -19,10 +19,10 @@ public class PreviousEngagementControllerGetTests
     [MoqAutoData]
     public void Get_ViewResult_SelectedYes_HasCorrectViewPath(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        OnboardingSessionModel sessionModel,
         [Greedy] PreviousEngagementController sut)
     {
         sut.AddUrlHelperMock();
+        OnboardingSessionModel sessionModel = new();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork, Value = "True" });
 
@@ -34,12 +34,12 @@ public class PreviousEngagementControllerGetTests
     [MoqAutoData]
     public void Get_ViewResult_SelectedNo_HasCorrectViewPath(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        OnboardingSessionModel sessionModel,
         [Greedy] PreviousEngagementController sut)
     {
         sut.AddUrlHelperMock();
-        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+        OnboardingSessionModel sessionModel = new();
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork, Value = "False" });
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         var result = sut.Get();
 

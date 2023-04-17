@@ -19,11 +19,11 @@ public class CheckYourAnswersControllerGetTests
     [MoqAutoData]
     public void Get_ReturnsViewResult(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        [Greedy] CheckYourAnswersController sut,
-        OnboardingSessionModel sessionModel)
+        [Greedy] CheckYourAnswersController sut)
     {
-        var jobTitle = "Test Job Title";
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle);
+        var jobTitle = "Test Job Title";
+        OnboardingSessionModel sessionModel = new();
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = jobTitle });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
