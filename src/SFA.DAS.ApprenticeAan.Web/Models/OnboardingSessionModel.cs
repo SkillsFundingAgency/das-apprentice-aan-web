@@ -4,14 +4,11 @@ public class OnboardingSessionModel
 {
     public bool HasSeenPreview { get; set; }
     public ApprenticeDetailsModel ApprenticeDetails { get; set; } = new ApprenticeDetailsModel();
-    public bool HasAcceptedTermsAndConditions { get; set; } = false;
-    public bool? HasEmployersApproval { get; set; }
+    public bool HasAcceptedTerms { get; set; } = false;
     public List<ProfileModel> ProfileData { get; set; } = new List<ProfileModel>();
     public int? RegionId { get; set; }
-    public bool IsValid =>
-        ApprenticeDetails.ApprenticeId.GetValueOrDefault() != Guid.Empty &&
-        HasAcceptedTermsAndConditions && HasEmployersApproval.GetValueOrDefault() &&
-        ProfileData.Count > 0;
+
+    public bool IsValid => HasAcceptedTerms && ProfileData.Count > 0;
 
     public string? GetProfileValue(int id) => ProfileData.Single(p => p.Id == id)?.Value;
 

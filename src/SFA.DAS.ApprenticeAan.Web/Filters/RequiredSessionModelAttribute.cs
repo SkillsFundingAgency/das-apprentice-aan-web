@@ -1,35 +1,43 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
+using SFA.DAS.ApprenticeAan.Web.Models;
 
 namespace SFA.DAS.ApprenticeAan.Web.Filters;
 
 [ExcludeFromCodeCoverage]
 public class RequiredSessionModelAttribute : ActionFilterAttribute
 {
-    public Type ModelType { get; set; }
-
-    public string ActionName { get; set; }
-
-    public string ControllerName { get; set; }
-
-    public RequiredSessionModelAttribute(Type modelType, string actionName = "Index", string controllerName = "Home")
-    {
-        ModelType = modelType;
-        ActionName = actionName;
-        ControllerName = controllerName;
-    }
+    public const string ActionName = "Index";
+    public const string ControllerName = "Home";
 
     public override void OnActionExecuting(ActionExecutingContext context)
     {
-        var sessionService = context.HttpContext.RequestServices.GetService<ISessionService>();
+        if (BypassCheck(context)) return;
 
-        var sessionModel = sessionService!.Get(ModelType.Name);
+        ISessionService sessionService = context.HttpContext.RequestServices.GetService<ISessionService>()!;
 
-        if (sessionModel == null)
+        OnboardingSessionModel sessionModel = sessionService.Get<OnboardingSessionModel>();
+
+        if (sessionModel == null || !sessionModel.IsValid)
         {
             context.Result = new RedirectToActionResult(ActionName, ControllerName, null);
         }
+    }
+
+    private bool BypassCheck(ActionExecutingContext context)
+    {
+        var controllersToByPass = new[] { nameof(BeforeYouStartController), nameof(TermsAndConditionsController), nameof(LineManagerController) };
+
+        if (context.ActionDescriptor is not ControllerActionDescriptor controllerActionDescriptor) return true;
+
+        if (!controllerActionDescriptor.ControllerTypeInfo.FullName!.Contains("Onboarding")) return true;
+
+        if (controllersToByPass.Any(c => c == controllerActionDescriptor.ControllerTypeInfo.Name)) return true;
+
+        return false;
     }
 }
