@@ -30,33 +30,34 @@ public class ReasonToJoinController : Controller
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
 
-        var model = new ReasonToJoinViewModel()
-        {
-            ReasonForJoiningTheNetwork = sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork,
-            BackLink = Url.RouteUrl(@RouteNames.Onboarding.Regions)!
-        };
-        return View(ViewPath, model);
+        return View(ViewPath, GetViewModel(sessionModel));
     }
 
     [HttpPost]
     public IActionResult Post(ReasonToJoinSubmitModel submitmodel)
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-        var model = new ReasonToJoinViewModel()
-        {
-            BackLink = Url.RouteUrl(@RouteNames.Onboarding.Regions)!
-        };
 
         ValidationResult result = _validator.Validate(submitmodel);
         if (!result.IsValid)
         {
             result.AddToModelState(this.ModelState);
-            return View(ViewPath, model);
+            return View(ViewPath, GetViewModel(sessionModel));
         }
 
         sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork = submitmodel.ReasonForJoiningTheNetwork!;
         _sessionService.Set(sessionModel);
 
-        return View(ViewPath, model);
+        return RedirectToRoute(RouteNames.Onboarding.AreasOfInterest);
+    }
+
+    private ReasonToJoinViewModel GetViewModel(OnboardingSessionModel sessionModel)
+    {
+        var model = new ReasonToJoinViewModel()
+        {
+            ReasonForJoiningTheNetwork = sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork,
+            BackLink = Url.RouteUrl(@RouteNames.Onboarding.Regions)!
+        };
+        return model;
     }
 }
