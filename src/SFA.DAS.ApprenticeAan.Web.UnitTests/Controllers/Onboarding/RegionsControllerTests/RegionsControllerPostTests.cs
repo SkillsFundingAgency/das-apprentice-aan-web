@@ -62,12 +62,15 @@ public class RegionsControllerPostTests
 
     [MoqAutoData]
     public async Task Post_ModelStateIsValid_RedirectsToReasonToJoinView(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IRegionsService> regionsService,
         [Frozen] Mock<IValidator<RegionsSubmitModel>> validatorMock,
         [Frozen] RegionsSubmitModel submitmodel,
-        [Greedy] RegionsController sut)
+        [Greedy] RegionsController sut,
+        OnboardingSessionModel sessionModel)
     {
         ValidationResult validationResult = new();
+        sessionModel.HasSeenPreview = false;
 
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle);
 
@@ -77,7 +80,7 @@ public class RegionsControllerPostTests
         };
 
         regionsService.Setup(x => x.GetRegions()).Returns(Task.FromResult(regionList));
-
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
 
         var result = await sut.Post(submitmodel);
@@ -86,5 +89,36 @@ public class RegionsControllerPostTests
 
         result.As<RedirectToRouteResult>().Should().NotBeNull();
         result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.ReasonToJoin);
+    }
+
+    [MoqAutoData]
+    public async Task Post_Regions_RedirectsToCheckYourAnswers(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Frozen] Mock<IRegionsService> regionsService,
+        [Frozen] Mock<IValidator<RegionsSubmitModel>> validatorMock,
+        [Frozen] RegionsSubmitModel submitmodel,
+        [Greedy] RegionsController sut,
+        OnboardingSessionModel sessionModel)
+    {
+        ValidationResult validationResult = new();
+        sessionModel.HasSeenPreview = true;
+
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle);
+
+        List<Region> regionList = new()
+        {
+            new Region() { Area = "London", Id = (int)submitmodel.SelectedRegionId!, Ordering = 1 }
+        };
+
+        regionsService.Setup(x => x.GetRegions()).Returns(Task.FromResult(regionList));
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+        validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
+
+        var result = await sut.Post(submitmodel);
+
+        sut.ModelState.IsValid.Should().BeTrue();
+
+        result.As<RedirectToRouteResult>().Should().NotBeNull();
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.CheckYourAnswers);
     }
 }
