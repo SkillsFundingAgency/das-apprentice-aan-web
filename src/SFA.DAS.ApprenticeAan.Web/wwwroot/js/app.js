@@ -1,6 +1,5 @@
 function AutoComplete(selectField) {
     this.selectElement = selectField
-    this.selectedStandardIdSelectId = this.selectElement.id || null
 }
 
 AutoComplete.prototype.init = function() {
