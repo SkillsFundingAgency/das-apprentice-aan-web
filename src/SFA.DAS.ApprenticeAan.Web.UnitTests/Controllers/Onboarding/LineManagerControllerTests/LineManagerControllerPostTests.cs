@@ -70,7 +70,7 @@ public class LineManagerControllerPostTests
     }
 
     [MoqAutoData]
-    public void Post_ModelStateIsValid_RedirectsToEmployerDetailsView(
+    public void Post_ModelStateIsValid_RedirectsToEmployerSearch(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IValidator<LineManagerSubmitModel>> validatorMock,
         [Frozen] LineManagerSubmitModel submitmodel,
@@ -89,6 +89,6 @@ public class LineManagerControllerPostTests
         sut.ModelState.IsValid.Should().BeTrue();
 
         result.As<RedirectToRouteResult>().Should().NotBeNull();
-        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.EmployerDetails);
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.EmployerSearch);
     }
 }

@@ -14,16 +14,16 @@ using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
 
-namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.EmployerControllerTests;
+namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.EmployerDetailsControllerTests;
 
 [TestFixture]
-public class EmployerControllerPostTests
+public class EmployerDetailsControllerPostTests
 {
     const string userType = "apprentice";
     const string Category = "Employer";
 
     private readonly List<Profile> _profiles;
-    public EmployerControllerPostTests()
+    public EmployerDetailsControllerPostTests()
     {
         _profiles = new List<Profile>
         {
@@ -41,10 +41,10 @@ public class EmployerControllerPostTests
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IProfileService> profileServiceMock,
         [Frozen] EmployerDetailsSubmitModel submitmodel,
-        [Greedy] EmployerController sut)
+        [Greedy] EmployerDetailsController sut)
     {
         OnboardingSessionModel sessionModel = new();
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.LineManager);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerSearch);
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sessionModel.ProfileData = _profiles.Select(p => (ProfileModel)p).ToList();
@@ -58,7 +58,7 @@ public class EmployerControllerPostTests
         sut.ModelState.IsValid.Should().BeFalse();
 
         result.As<ViewResult>().Should().NotBeNull();
-        result.As<ViewResult>().ViewName.Should().Be(EmployerController.ViewPath);
+        result.As<ViewResult>().ViewName.Should().Be(EmployerDetailsController.ViewPath);
         result.As<ViewResult>().Model.As<EmployerDetailsViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
     }
 
@@ -68,7 +68,7 @@ public class EmployerControllerPostTests
         [Frozen] Mock<IProfileService> profileServiceMock,
         [Frozen] Mock<IValidator<EmployerDetailsSubmitModel>> validatorMock,
         [Frozen] EmployerDetailsSubmitModel submitmodel,
-        [Greedy] EmployerController sut)
+        [Greedy] EmployerDetailsController sut)
     {
         OnboardingSessionModel sessionModel = new();
         ValidationResult validationResult = new();
@@ -113,7 +113,7 @@ public class EmployerControllerPostTests
         [Frozen] Mock<IProfileService> profileServiceMock,
         [Frozen] Mock<IValidator<EmployerDetailsSubmitModel>> validatorMock,
         [Frozen] EmployerDetailsSubmitModel submitmodel,
-        [Greedy] EmployerController sut)
+        [Greedy] EmployerDetailsController sut)
     {
         OnboardingSessionModel sessionModel = new();
         ValidationResult validationResult = new();

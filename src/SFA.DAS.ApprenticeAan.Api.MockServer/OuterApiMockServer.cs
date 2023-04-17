@@ -50,5 +50,28 @@ internal static class OuterApiMockServer
                 .WithStatusCode(200)
                 .WithHeader("Content-Type", "application/json")
                 .WithBodyFromFile("Data/locations.json"));
+
+        server
+            .Given(Request.Create().WithPath(u => u.Contains("locations")).WithParam("query", "cv1")
+            .UsingGet())
+            .RespondWith(Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "application/json")
+                .WithBodyFromFile("Data/locations-cv1.json"));
+
+        server
+            .Given(Request.Create().WithPath(u => u.Contains("locations")).WithParam("query", "cv11")
+            .UsingGet())
+            .RespondWith(Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "application/json")
+                .WithBodyFromFile("Data/locations-cv11.json"));
+        server
+            .Given(Request.Create().WithPath(u => u.Contains("locations")).WithParam("query", "cv2")
+            .UsingGet())
+            .RespondWith(Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "application/json")
+                .WithBodyFromFile("Data/locations-cv2.json"));
     }
 }

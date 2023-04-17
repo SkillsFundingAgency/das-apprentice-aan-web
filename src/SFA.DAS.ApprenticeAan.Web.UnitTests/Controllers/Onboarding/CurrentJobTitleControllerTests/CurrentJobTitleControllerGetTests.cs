@@ -64,20 +64,20 @@ public class CurrentJobTitleControllerGetTests
     }
 
     [MoqAutoData]
-    public void Get_ViewModelHasSeenPreview_RedirectsRouteToEmployerDetails(
+    public void Get_HasNotSeenPreview_RedirectsRouteToEmployerSearch(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] CurrentJobTitleController sut,
         OnboardingSessionModel sessionModel,
-        string employerDetailsUrl)
+        string employerSearchUrl)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerDetails, employerDetailsUrl);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerSearch, employerSearchUrl);
         sessionModel.HasSeenPreview = false;
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         var result = sut.Get();
 
-        result.As<ViewResult>().Model.As<CurrentJobTitleViewModel>().BackLink.Should().Be(employerDetailsUrl);
+        result.As<ViewResult>().Model.As<CurrentJobTitleViewModel>().BackLink.Should().Be(employerSearchUrl);
     }
 
     [MoqAutoData]
@@ -86,7 +86,7 @@ public class CurrentJobTitleControllerGetTests
         OnboardingSessionModel sessionModel,
         [Greedy] CurrentJobTitleController sut)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerDetails);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerSearch);
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 

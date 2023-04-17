@@ -45,3 +45,11 @@
     margin-bottom: 0;
     font-size: 100%;
 }
+
+.govuk-error-message:empty {
+    display: none;
+}
+
+.js-enabled .das-show-hide__button {
+    display: inline-block;
+}

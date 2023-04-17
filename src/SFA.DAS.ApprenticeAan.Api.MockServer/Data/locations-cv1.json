@@ -1,0 +1,246 @@
+{
+  "addresses": [
+    {
+      "uprn": "100071365514",
+      "organisationName": "Subway",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 1HL",
+      "addressLine1": "27 The Burges",
+      "addressLine2": "",
+      "longitude": -1.5105505,
+      "latitude": 52.4100149
+    },
+    {
+      "uprn": "200001169830",
+      "organisationName": "Boots",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 1FZ",
+      "addressLine1": "Flat 22, Hillman House",
+      "addressLine2": "Smithford Way",
+      "longitude": -1.5127917,
+      "latitude": 52.4098487
+    },
+    {
+      "uprn": "10093949069",
+      "organisationName": "Halifax",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 2GS",
+      "addressLine1": "209, Abbey House",
+      "addressLine2": "7 Manor Road",
+      "longitude": -1.5115452,
+      "latitude": 52.4024763
+    },
+    {
+      "uprn": "100070723413",
+      "organisationName": "",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 5HL",
+      "addressLine1": "3 Wright Street",
+      "addressLine2": "",
+      "longitude": -1.4972809,
+      "latitude": 52.4160186
+    },
+    {
+      "uprn": "100070682830",
+      "organisationName": "",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 3BX",
+      "addressLine1": "10 Norfolk Street",
+      "addressLine2": "",
+      "longitude": -1.5211154,
+      "latitude": 52.4091232
+    },
+    {
+      "uprn": "100070611271",
+      "organisationName": "",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 5BN",
+      "addressLine1": "17 Alfred Road",
+      "addressLine2": "",
+      "longitude": -1.4921664,
+      "latitude": 52.4145494
+    },
+    {
+      "uprn": "100070678347",
+      "organisationName": "",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 4DL",
+      "addressLine1": "21 Meriden Street",
+      "addressLine2": "",
+      "longitude": -1.5214568,
+      "latitude": 52.4115429
+    },
+    {
+      "uprn": "100070644787",
+      "organisationName": "",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 4EW",
+      "addressLine1": "23 Ellys Road",
+      "addressLine2": "",
+      "longitude": -1.5141252,
+      "latitude": 52.4178331
+    },
+    {
+      "uprn": "100070707825",
+      "organisationName": "",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 5FZ",
+      "addressLine1": "46 Swanswell Street",
+      "addressLine2": "",
+      "longitude": -1.5047175,
+      "latitude": 52.4136676
+    },
+    {
+      "uprn": "100070651299",
+      "organisationName": "",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 4HU",
+      "addressLine1": "54 George Elliot Road",
+      "addressLine2": "",
+      "longitude": -1.5043275,
+      "latitude": 52.4195995
+    },
+    {
+      "uprn": "100071493442",
+      "organisationName": "",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 4BN",
+      "addressLine1": "63 St. Nicholas Street",
+      "addressLine2": "",
+      "longitude": -1.5141723,
+      "latitude": 52.4148845
+    },
+    {
+      "uprn": "100070702224",
+      "organisationName": "",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 2DL",
+      "addressLine1": "64 St. Georges Road",
+      "addressLine2": "",
+      "longitude": -1.4910492,
+      "latitude": 52.4055904
+    },
+    {
+      "uprn": "100070703337",
+      "organisationName": "",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 4BN",
+      "addressLine1": "73 St. Nicholas Street",
+      "addressLine2": "",
+      "longitude": -1.5143881,
+      "latitude": 52.4153169
+    },
+    {
+      "uprn": "100070720380",
+      "organisationName": "",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 4EJ",
+      "addressLine1": "85 Widdrington Road",
+      "addressLine2": "",
+      "longitude": -1.5105206,
+      "latitude": 52.4193646
+    },
+    {
+      "uprn": "100070641411",
+      "organisationName": "",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 4EB",
+      "addressLine1": "100 Dorset Road",
+      "addressLine2": "",
+      "longitude": -1.5133605,
+      "latitude": 52.4191785
+    },
+    {
+      "uprn": "10023037302",
+      "organisationName": "",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 3HZ",
+      "addressLine1": "1 Sherbourne House",
+      "addressLine2": "Vincent Street",
+      "longitude": -1.5222817,
+      "latitude": 52.4063014
+    },
+    {
+      "uprn": "100071322324",
+      "organisationName": "",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 3DT",
+      "addressLine1": "Flat 1, Milestone House",
+      "addressLine2": "Windsor Street",
+      "longitude": -1.5220235,
+      "latitude": 52.408075
+    },
+    {
+      "uprn": "100071316434",
+      "organisationName": "",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 5NP",
+      "addressLine1": "Flat 4, Mountfield Court",
+      "addressLine2": "Charles Street",
+      "longitude": -1.5007131,
+      "latitude": 52.4128417
+    },
+    {
+      "uprn": "10094851020",
+      "organisationName": "",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 5SF",
+      "addressLine1": "Flat 12, B-02 Code Student Accommodation",
+      "addressLine2": "Fairfax Street",
+      "longitude": -1.5044075,
+      "latitude": 52.4098824
+    },
+    {
+      "uprn": "10094851235",
+      "organisationName": "",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 5SH",
+      "addressLine1": "Flat 12, B-15 Code Student Accommodation",
+      "addressLine2": "Fairfax Street",
+      "longitude": -1.5044075,
+      "latitude": 52.4098824
+    },
+    {
+      "uprn": "10003613693",
+      "organisationName": "",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 3LL",
+      "addressLine1": "Flat 44, Compass Court",
+      "addressLine2": "Norfolk Street",
+      "longitude": -1.5216198,
+      "latitude": 52.4087027
+    },
+    {
+      "uprn": "10094849794",
+      "organisationName": "",
+      "town": "Coventry",
+      "county": "",
+      "postcode": "CV1 2XY",
+      "addressLine1": "D.02.20H, Paradise Student Village",
+      "addressLine2": "Paradise Street",
+      "longitude": -1.5015944,
+      "latitude": 52.4035067
+    }
+  ]
+}

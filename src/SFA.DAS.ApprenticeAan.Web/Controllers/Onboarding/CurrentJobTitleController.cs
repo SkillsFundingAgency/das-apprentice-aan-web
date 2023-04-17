@@ -63,7 +63,7 @@ public class CurrentJobTitleController : Controller
     {
         return new CurrentJobTitleViewModel()
         {
-            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(@RouteNames.Onboarding.EmployerDetails)!,
+            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(@RouteNames.Onboarding.EmployerSearch)!,
         };
     }
 }
