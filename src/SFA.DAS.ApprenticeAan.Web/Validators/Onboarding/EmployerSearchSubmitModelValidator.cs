@@ -9,8 +9,11 @@ public class EmployerSearchSubmitModelValidator : AbstractValidator<EmployerSear
 
     public EmployerSearchSubmitModelValidator()
     {
-        RuleFor(e => e.Postcode)
-            .NotEmpty()
-            .WithMessage(MissingAddressErrorMessage);
+        When(m => string.IsNullOrWhiteSpace(m.Postcode), () =>
+        {
+            RuleFor(e => e.SearchTerm)
+                .NotEmpty()
+                .WithMessage(MissingAddressErrorMessage);
+        });
     }
 }

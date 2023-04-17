@@ -9,8 +9,8 @@ public class EmployerSearchSubmitModelValidatorTests
     [TestCase("", false)]
     [TestCase(null, false)]
     [TestCase(" ", false)]
-    [TestCase("some text", true)]
-    public void Validate_Postcode(string? postcode, bool isValid)
+    [TestCase("some postcode", true)]
+    public void Validate_SearchTerm(string? postcode, bool isValid)
     {
         EmployerSearchSubmitModelValidator sut = new();
 
@@ -20,11 +20,11 @@ public class EmployerSearchSubmitModelValidatorTests
 
         if (isValid)
         {
-            result.ShouldNotHaveValidationErrorFor(m => m.Postcode);
+            result.ShouldNotHaveValidationErrorFor(m => m.SearchTerm);
         }
         else
         {
-            result.ShouldHaveValidationErrorFor(m => m.Postcode);
+            result.ShouldHaveValidationErrorFor(m => m.SearchTerm);
         }
     }
 }
