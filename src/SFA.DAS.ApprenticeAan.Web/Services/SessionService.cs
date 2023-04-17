@@ -17,7 +17,7 @@ public class SessionService : ISessionService
         var json = Get(typeof(T).Name);
         return (string.IsNullOrEmpty(json) ? default : JsonSerializer.Deserialize<T>(json))!;
     }
-    public void Delete<T>(T model) => Delete(typeof(T).Name);
+    public void Delete<T>() => Delete(typeof(T).Name);
     public void Clear() => _httpContextAccessor.HttpContext?.Session.Clear();
     public bool Contains<T>()
     {

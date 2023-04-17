@@ -71,6 +71,25 @@ public class LineManagerControllerPostTests
     }
 
     [MoqAutoData]
+    public async Task Post_DoesNotHaveLineManagersApproval_ClearsSession(
+    [Frozen] ApplicationConfiguration applicationConfiguration,
+    [Frozen] Mock<ISessionService> sessionServiceMock,
+    [Frozen] Mock<IValidator<LineManagerSubmitModel>> validatorMock,
+    [Greedy] LineManagerController sut,
+    Mock<ITempDataDictionary> tempDataMock)
+    {
+        tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.HasSeenTermsAndConditions)).Returns(true);
+        sut.TempData = tempDataMock.Object;
+        LineManagerSubmitModel submitModel = new() { HasEmployersApproval = false };
+        validatorMock.Setup(v => v.Validate(submitModel)).Returns(new ValidationResult());
+
+        await sut.Post(submitModel);
+
+        sessionServiceMock.Verify(s => s.Delete<OnboardingSessionModel>());
+        tempDataMock.Verify(t => t.Remove(TempDataKeys.HasSeenTermsAndConditions));
+    }
+
+    [MoqAutoData]
     public async Task Post_HasSeenTermsAndHasLineManagerApprovalAndModelNotInitialised_InitializesSessionModel(
         [Frozen] Mock<IValidator<LineManagerSubmitModel>> validatorMock,
         [Frozen] Mock<IProfileService> profileServiceMock,

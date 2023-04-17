@@ -4,7 +4,7 @@ public interface ISessionService
 {
     void Set<T>(T model);
     T Get<T>();
-    void Delete<T>(T model);
+    void Delete<T>();
     void Clear();
     bool Contains<T>();
 }
