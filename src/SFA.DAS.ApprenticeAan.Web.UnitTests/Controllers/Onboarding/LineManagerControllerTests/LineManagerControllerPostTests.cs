@@ -38,13 +38,13 @@ public class LineManagerControllerPostTests
     public async Task Post_ModelStateIsInvalid_ReloadsViewWithValidationErrors(
         [Greedy] LineManagerController sut,
         Mock<ITempDataDictionary> tempDataMock,
-        LineManagerSubmitModel submitModel,
         string termsAndConditionsUrl)
     {
         tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.HasSeenTermsAndConditions)).Returns(true);
         sut.TempData = tempDataMock.Object;
         sut.ModelState.AddModelError("key", "message");
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.TermsAndConditions, termsAndConditionsUrl);
+        LineManagerSubmitModel submitModel = new() { HasEmployersApproval = null };
 
         var result = await sut.Post(submitModel);
 
@@ -57,12 +57,11 @@ public class LineManagerControllerPostTests
         [Frozen] ApplicationConfiguration applicationConfiguration,
         [Frozen] Mock<IValidator<LineManagerSubmitModel>> validatorMock,
         [Greedy] LineManagerController sut,
-        Mock<ITempDataDictionary> tempDataMock,
-        LineManagerSubmitModel submitModel)
+        Mock<ITempDataDictionary> tempDataMock)
     {
         tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.HasSeenTermsAndConditions)).Returns(true);
         sut.TempData = tempDataMock.Object;
-        submitModel.HasEmployersApproval = false;
+        LineManagerSubmitModel submitModel = new() { HasEmployersApproval = false };
         validatorMock.Setup(v => v.Validate(submitModel)).Returns(new ValidationResult());
 
         var result = await sut.Post(submitModel);
@@ -72,18 +71,17 @@ public class LineManagerControllerPostTests
     }
 
     [MoqAutoData]
-    public async Task Post_HasSeenTermsAndHasLineManagerApproval_InitializesSessionModel(
+    public async Task Post_HasSeenTermsAndHasLineManagerApprovalAndModelNotInitialised_InitializesSessionModel(
         [Frozen] Mock<IValidator<LineManagerSubmitModel>> validatorMock,
         [Frozen] Mock<IProfileService> profileServiceMock,
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] LineManagerController sut,
         Mock<ITempDataDictionary> tempDataMock,
-        LineManagerSubmitModel submitModel,
         List<Profile> profiles)
     {
         tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.HasSeenTermsAndConditions)).Returns(true);
         sut.TempData = tempDataMock.Object;
-        submitModel.HasEmployersApproval = true;
+        LineManagerSubmitModel submitModel = new() { HasEmployersApproval = true };
         validatorMock.Setup(v => v.Validate(submitModel)).Returns(new ValidationResult());
         profileServiceMock.Setup(p => p.GetProfilesByUserType("apprentice")).ReturnsAsync(profiles);
 
@@ -94,15 +92,34 @@ public class LineManagerControllerPostTests
     }
 
     [MoqAutoData]
-    public async Task Post_HasSeenTermsAndHasLineManagerApproval_RedirectsToEmployerSearch(
+    public async Task Post_HasSeenTermsAndHasLineManagerApprovalAndModelIsInitialised_DoesNotInitializesSessionModel(
         [Frozen] Mock<IValidator<LineManagerSubmitModel>> validatorMock,
+        [Frozen] Mock<IProfileService> profileServiceMock,
+        [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] LineManagerController sut,
-        Mock<ITempDataDictionary> tempDataMock,
-        LineManagerSubmitModel submitModel)
+        Mock<ITempDataDictionary> tempDataMock)
     {
         tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.HasSeenTermsAndConditions)).Returns(true);
         sut.TempData = tempDataMock.Object;
-        submitModel.HasEmployersApproval = true;
+        LineManagerSubmitModel submitModel = new() { HasEmployersApproval = true };
+        validatorMock.Setup(v => v.Validate(submitModel)).Returns(new ValidationResult());
+        sessionServiceMock.Setup(s => s.Contains<OnboardingSessionModel>()).Returns(true);
+
+        await sut.Post(submitModel);
+
+        profileServiceMock.Verify(p => p.GetProfilesByUserType("apprentice"), Times.Never);
+        sessionServiceMock.Verify(s => s.Set(It.IsAny<OnboardingSessionModel>()), Times.Never);
+    }
+
+    [MoqAutoData]
+    public async Task Post_HasSeenTermsAndHasLineManagerApproval_RedirectsToEmployerSearch(
+        [Frozen] Mock<IValidator<LineManagerSubmitModel>> validatorMock,
+        [Greedy] LineManagerController sut,
+        Mock<ITempDataDictionary> tempDataMock)
+    {
+        tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.HasSeenTermsAndConditions)).Returns(true);
+        sut.TempData = tempDataMock.Object;
+        LineManagerSubmitModel submitModel = new() { HasEmployersApproval = true };
         validatorMock.Setup(v => v.Validate(submitModel)).Returns(new ValidationResult());
 
         var result = await sut.Post(submitModel);

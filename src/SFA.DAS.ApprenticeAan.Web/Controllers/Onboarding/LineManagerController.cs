@@ -65,13 +65,16 @@ public class LineManagerController : Controller
             return View(ShutterPageViewPath, shutterPageViewModel);
         }
 
-        var profiles = await _profileService.GetProfilesByUserType("apprentice");
-        OnboardingSessionModel sessionModel = new()
+        if (!_sessionService.Contains<OnboardingSessionModel>())
         {
-            ProfileData = profiles.Select(p => (ProfileModel)p).ToList(),
-            HasAcceptedTerms = true
-        };
-        _sessionService.Set(sessionModel);
+            var profiles = await _profileService.GetProfilesByUserType("apprentice");
+            OnboardingSessionModel sessionModel = new()
+            {
+                ProfileData = profiles.Select(p => (ProfileModel)p).ToList(),
+                HasAcceptedTerms = true
+            };
+            _sessionService.Set(sessionModel);
+        }
 
         return RedirectToRoute(RouteNames.Onboarding.EmployerSearch);
     }
