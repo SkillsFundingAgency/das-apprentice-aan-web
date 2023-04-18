@@ -53,3 +53,64 @@
 .js-enabled .das-show-hide__button {
     display: inline-block;
 }
+
+
+
+.app-calendar {
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin: 20px 0;
+}
+
+.app-calendar__header,
+.app-calendar__day {
+    font-family: "GDS Transport",arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+}
+
+.app-calendar__header {
+    background: #2C7298;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    padding: 10px 0;
+}
+
+
+.app-calendar__day {
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    min-height: 130px;
+}
+
+.app-calendar__day--last-month,
+.app-calendar__day--next-month {
+    background: #eee;
+}
+
+.app-calendar__date {
+    display: block;
+    text-align: right;
+    padding: 5px;
+}
+
+.app-calendar__month {
+    display: none;
+}
+
+.app-calendar__event {
+    border-left: 8px solid #ccc;
+    background: #F3F2F1;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 7px;
+    display: block;
+    margin-top: 3px;
+}
+
+.app-calendar__event--hybrid { border-color: #85994B;}
+.app-calendar__event--inperson { border-color: #6F72AF;}
+.app-calendar__event--online { border-color: #912B88;}

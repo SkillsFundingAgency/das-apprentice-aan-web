@@ -1,0 +1,63 @@
+@{
+	int Month = DateTime.Now.Month;
+    int Year = DateTime.Now.Year;
+
+Month = 7;
+
+    int DaysInMonth = DateTime.DaysInMonth(Year, Month);
+
+    DateTime firstDayOfTheMonthDate = new DateTime(Year, Month, 1);
+    DayOfWeek firstDayOfTheMonthName = firstDayOfTheMonthDate.DayOfWeek;
+    int firstDayOfTheMonthNo;
+    firstDayOfTheMonthNo = (int)firstDayOfTheMonthName;
+
+    int noOfDaysNeededFromLastMonth = (firstDayOfTheMonthNo + 6) % 7;
+    int noOfDaysNeededFromNextMonth = 7 - ((noOfDaysNeededFromLastMonth + DaysInMonth) % 7);
+
+    if (noOfDaysNeededFromNextMonth == 7)
+        noOfDaysNeededFromNextMonth = 0;
+}
+
+<h3 class="govuk-heading-m">@firstDayOfTheMonthDate.ToString("MMMM") @Year</h3>
+<div class="app-calendar">
+    <div class="app-calendar__header">Mon</div>
+    <div class="app-calendar__header">Tue</div>
+    <div class="app-calendar__header">Wed</div>
+    <div class="app-calendar__header">Thu</div>
+    <div class="app-calendar__header">Fri</div>
+    <div class="app-calendar__header">Sat</div>
+    <div class="app-calendar__header">Sun</div>
+    @for(var i = 0; i < noOfDaysNeededFromLastMonth; i++)
+    {
+        <div class="app-calendar__day app-calendar__day--last-month"></div>
+    }
+
+    @for(var i = 1; i <= DaysInMonth; i++)
+    {
+        <div class="app-calendar__day">
+            @{
+                DateTime day = new DateTime(Year, Month, i);
+            }
+            <span class="app-calendar__date">
+                @i
+                <span class="app-calendar__month">@day.ToString("MMMM")</span>
+            </span>
+            @{ if (i == 3) {
+                <span class="app-calendar__event app-calendar__event--hybrid">Clifton High School apprenticeship event</span>
+            }}
+            @{ if (i == 7) {
+                <span class="app-calendar__event app-calendar__event--inperson">Manchester AAN regional meet-up</span>
+            }}
+            @{ if (i == 7) {
+                <span class="app-calendar__event app-calendar__event--online">AAN online case study session</span>
+            }}
+            
+        </div>
+    }
+
+     @for(var i = 0; i < noOfDaysNeededFromNextMonth; i++)
+    {
+        <div class="app-calendar__day app-calendar__day--next-month"></div>
+    }
+
+</div>
