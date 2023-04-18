@@ -1,18 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoFixture.NUnit3;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models;
 
 [TestFixture]
 public class CheckYourAnswersViewModelTests
 {
-    [MoqAutoData]
+    [AutoData]
     public void Ctor_SetsJobTitleChangeLink(string currentJobTitleUrl)
     {
         var expectedJobTitle = "Some Title";
@@ -40,7 +40,7 @@ public class CheckYourAnswersViewModelTests
         Assert.That(checkYourAnswersViewModel.JobTitle, Is.EqualTo(expectedJobTitle));
     }
 
-    [MoqAutoData]
+    [AutoData]
     public void Ctor_SetsRegionChangeLink(string regionsUrl)
     {
         var expectedRegion = 101;

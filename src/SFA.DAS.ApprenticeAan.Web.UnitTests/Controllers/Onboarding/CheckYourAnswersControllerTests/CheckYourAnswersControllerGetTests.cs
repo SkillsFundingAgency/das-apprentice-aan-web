@@ -53,7 +53,7 @@ public class CheckYourAnswersControllerGetTests
     }
 
     [MoqAutoData]
-    public void Get_ReturnsViewResult_ValidRegions(
+    public void Get_ReturnsViewResult_ValidRegion(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] CheckYourAnswersController sut,
         OnboardingSessionModel sessionModel,

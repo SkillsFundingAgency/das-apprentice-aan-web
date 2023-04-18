@@ -34,7 +34,7 @@ public class RegionsControllerGetTests
     }
 
     [MoqAutoData]
-    public async Task Get_ViewModelHasSeenPreviewIsTrue_RedirectsRouteToCheckYourAnswers(
+    public async Task Get_ViewModelHasSeenPreviewIsTrue_BankLinkSetsToCheckYourAnswers(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] RegionsController sut,
         OnboardingSessionModel sessionModel,
@@ -50,7 +50,7 @@ public class RegionsControllerGetTests
     }
 
     [MoqAutoData]
-    public async Task Get_ViewModelHasSeenPreviewIsFalse_RedirectsRouteToCurrentJobTitle(
+    public async Task Get_ViewModelHasSeenPreviewIsFalse_BankLinkSetsToCurrentJobTitle(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] RegionsController sut,
         OnboardingSessionModel sessionModel,

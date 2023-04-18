@@ -61,7 +61,7 @@ public class RegionsControllerPostTests
     }
 
     [MoqAutoData]
-    public async Task Post_ModelStateIsValid_RedirectsToReasonToJoinView(
+    public async Task Post_IsValidAndHasNotSeenPreview_RedirectsToReasonToJoinView(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IRegionsService> regionsService,
         [Frozen] Mock<IValidator<RegionsSubmitModel>> validatorMock,
@@ -92,7 +92,7 @@ public class RegionsControllerPostTests
     }
 
     [MoqAutoData]
-    public async Task Post_Regions_RedirectsToCheckYourAnswers(
+    public async Task Post_IsValidAndHasSeenPreview_RedirectsToCheckYourAnswers(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IRegionsService> regionsService,
         [Frozen] Mock<IValidator<RegionsSubmitModel>> validatorMock,
