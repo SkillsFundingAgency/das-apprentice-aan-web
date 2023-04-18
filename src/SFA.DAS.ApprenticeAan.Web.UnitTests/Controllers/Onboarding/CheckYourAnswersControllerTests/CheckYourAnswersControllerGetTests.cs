@@ -56,12 +56,13 @@ public class CheckYourAnswersControllerGetTests
     public void Get_ReturnsViewResult_ValidReasons(
     [Frozen] Mock<ISessionService> sessionServiceMock,
     [Greedy] CheckYourAnswersController sut,
-    OnboardingSessionModel sessionModel)
+    OnboardingSessionModel sessionModel,
+    string reasonsUrl)
     {
         var reasonForJoiningTheNetwork = "The reason to join the network.";
         var jobTitle = "Some Title";
 
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.ReasonToJoin);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.ReasonToJoin, reasonsUrl);
         sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork = reasonForJoiningTheNetwork;
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = jobTitle });
 
@@ -70,7 +71,7 @@ public class CheckYourAnswersControllerGetTests
         var result = sut.Get();
 
         result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().ReasonForJoiningTheNetwork.Should().Be(reasonForJoiningTheNetwork);
-        result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().ReasonForJoiningTheNetworkChangeLink.Should().Be(TestConstants.DefaultUrl);
+        result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().ReasonForJoiningTheNetworkChangeLink.Should().Be(reasonsUrl);
     }
     
     [MoqAutoData]

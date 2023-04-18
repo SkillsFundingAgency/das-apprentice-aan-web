@@ -25,19 +25,10 @@ public class ReasonToJoinControllerGetTests
     }
 
     [MoqAutoData]
-    public void Get_ViewModel_HasBackLink([Greedy] ReasonToJoinController sut)
-    {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.Regions);
-        var result = sut.Get();
-
-        result.As<ViewResult>().Model.As<ReasonToJoinViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
-    }
-
-    [MoqAutoData]
     public void Get_ViewModelHasEmployersApproval_RestoreFromSession(
-                        [Frozen] Mock<ISessionService> sessionServiceMock,
-                        OnboardingSessionModel sessionModel,
-                        [Greedy] ReasonToJoinController sut)
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        OnboardingSessionModel sessionModel,
+        [Greedy] ReasonToJoinController sut)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle);
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
@@ -45,5 +36,37 @@ public class ReasonToJoinControllerGetTests
         var result = sut.Get();
 
         result.As<ViewResult>().Model.As<ReasonToJoinViewModel>().ReasonForJoiningTheNetwork.Should().Be(sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork);
+    }
+
+    [MoqAutoData]
+    public void Get_ViewModelHasSeenPreviewIsTrue_BankLinkSetsToCheckYourAnswers(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] ReasonToJoinController sut,
+        OnboardingSessionModel sessionModel,
+        string checkYourAnswersUrl)
+    {
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers, checkYourAnswersUrl);
+        sessionModel.HasSeenPreview = true;
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+
+        var result = sut.Get();
+
+        result.As<ViewResult>().Model.As<ReasonToJoinViewModel>().BackLink.Should().Be(checkYourAnswersUrl);
+    }
+
+    [MoqAutoData]
+    public void Get_ViewModelHasSeenPreviewIsFalse_BankLinkSetsToRegions(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] ReasonToJoinController sut,
+        OnboardingSessionModel sessionModel,
+        string regionsUrl)
+    {
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.Regions, regionsUrl);
+        sessionModel.HasSeenPreview = false;
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+
+        var result = sut.Get();
+
+        result.As<ViewResult>().Model.As<ReasonToJoinViewModel>().BackLink.Should().Be(regionsUrl);
     }
 }

@@ -66,16 +66,17 @@ public class ReasonToJoinControllerPostTests
     }
 
     [MoqAutoData]
-    public void Post_ModelStateIsValid_RedirectsToAreasOfInterest(
+    public void Post_ModelStateIsValid_SetsBackLinkToRegions(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IValidator<ReasonToJoinSubmitModel>> validatorMock,
         [Frozen] ReasonToJoinSubmitModel submitmodel,
-        [Greedy] ReasonToJoinController sut)
+        [Greedy] ReasonToJoinController sut,
+        string regionsUrl)
     {
         OnboardingSessionModel sessionModel = new();
         ValidationResult validationResult = new();
 
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.Regions);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.Regions, regionsUrl);
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
@@ -85,5 +86,6 @@ public class ReasonToJoinControllerPostTests
         sut.ModelState.IsValid.Should().BeTrue();
 
         result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.AreasOfInterest);
+        result.As<ViewResult>().Model.As<ReasonToJoinViewModel>().BackLink.Should().Be(regionsUrl);
     }
 }
