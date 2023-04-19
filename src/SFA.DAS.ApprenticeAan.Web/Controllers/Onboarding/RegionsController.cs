@@ -29,8 +29,8 @@ public class RegionsController : Controller
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var model = await GetViewModel();
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
+        var model = await GetViewModel(sessionModel);
         model.SelectedRegionId = sessionModel.RegionId;
 
         return View(ViewPath, model);
@@ -40,7 +40,7 @@ public class RegionsController : Controller
     public async Task<IActionResult> Post(RegionsSubmitModel submitmodel)
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-        var model = await GetViewModel();
+        var model = await GetViewModel(sessionModel);
         ValidationResult result = _validator.Validate(submitmodel);
 
         if (!result.IsValid)
@@ -52,16 +52,17 @@ public class RegionsController : Controller
         }
 
         sessionModel.RegionId = submitmodel.SelectedRegionId;
+        sessionModel.RegionName = model.Regions.First(x => x.Id == sessionModel.RegionId).Area;
         _sessionService.Set(sessionModel);
 
-        return RedirectToRoute(RouteNames.Onboarding.ReasonToJoin);
+        return RedirectToRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.ReasonToJoin);
     }
 
-    private async Task<RegionsViewModel> GetViewModel()
+    private async Task<RegionsViewModel> GetViewModel(OnboardingSessionModel sessionModel)
     {
         return new RegionsViewModel
         {
-            BackLink = Url.RouteUrl(RouteNames.Onboarding.CurrentJobTitle)!,
+            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(RouteNames.Onboarding.CurrentJobTitle)!,
             Regions = await _regionService.GetRegions()
         };
     }
