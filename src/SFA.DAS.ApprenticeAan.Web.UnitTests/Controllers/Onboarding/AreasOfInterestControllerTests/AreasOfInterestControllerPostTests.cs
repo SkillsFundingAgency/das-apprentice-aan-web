@@ -70,4 +70,60 @@ public class AreasOfInterestControllerPostTests
 
         sut.ModelState.IsValid.Should().BeFalse();
     }
+
+    [MoqAutoData]
+    public void Post_IsValidAndHasNotSeenPreview_RedirectsToPreviousEngagement(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Frozen] Mock<IValidator<AreasOfInterestSubmitModel>> validatorMock,
+        [Greedy] AreasOfInterestController sut,
+        OnboardingSessionModel sessionModel)
+    {
+        ValidationResult validationResult = new();
+        sessionModel.HasSeenPreview = false;
+
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.ReasonToJoin);//remove it
+
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+
+        AreasOfInterestSubmitModel submitmodel = new AreasOfInterestSubmitModel();
+        validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
+
+        submitmodel.Events = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == "Events").Select(x => (SelectProfileModel)x));
+        submitmodel.Promotions = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == "Promotions").Select(x => (SelectProfileModel)x));
+
+        var result = sut.Post(submitmodel);
+
+        sut.ModelState.IsValid.Should().BeTrue();
+
+        result.As<RedirectToRouteResult>().Should().NotBeNull();
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.PreviousEngagement);
+    }
+
+    [MoqAutoData]
+    public void Post_IsValidAndHasSeenPreview_RedirectsToCheckYourAnswers(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Frozen] Mock<IValidator<AreasOfInterestSubmitModel>> validatorMock,
+        [Greedy] AreasOfInterestController sut,
+        OnboardingSessionModel sessionModel)
+    {
+        ValidationResult validationResult = new();
+        sessionModel.HasSeenPreview = true;
+
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.ReasonToJoin);//remove it
+
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+
+        AreasOfInterestSubmitModel submitmodel = new AreasOfInterestSubmitModel();
+        validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
+
+        submitmodel.Events = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == "Events").Select(x => (SelectProfileModel)x));
+        submitmodel.Promotions = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == "Promotions").Select(x => (SelectProfileModel)x));
+
+        var result = sut.Post(submitmodel);
+
+        sut.ModelState.IsValid.Should().BeTrue();
+
+        result.As<RedirectToRouteResult>().Should().NotBeNull();
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.CheckYourAnswers);
+    }
 }

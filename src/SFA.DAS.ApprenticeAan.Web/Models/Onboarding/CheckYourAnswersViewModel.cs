@@ -34,7 +34,7 @@ public class CheckYourAnswersViewModel
         AreasOfInterestChangeLink = url.RouteUrl(@RouteNames.Onboarding.AreasOfInterest)!;
         AreasOfInterest = GetAreasOfInterest(sessionModel)!;
 
-    private string? GetAreasOfInterest(OnboardingSessionModel sessionModel)
+    public static string? GetAreasOfInterest(OnboardingSessionModel sessionModel)
     {
         var EventsAndPromotions = sessionModel.ProfileData.Where(x => (x.Category == "Events" || x.Category == "Promotions") && x.Value != null)
             .OrderBy(x => x.Id).Select(x => x.Description);

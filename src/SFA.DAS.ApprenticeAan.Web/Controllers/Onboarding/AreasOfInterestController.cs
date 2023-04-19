@@ -31,7 +31,6 @@ public class AreasOfInterestController : Controller
         return View(ViewPath, model);
     }
 
-
     [HttpPost]
     public IActionResult Post(AreasOfInterestSubmitModel submitmodel)
     {
@@ -51,7 +50,7 @@ public class AreasOfInterestController : Controller
         });
         _sessionService.Set(sessionModel);
 
-        return RedirectToRoute(RouteNames.Onboarding.PreviousEngagement);
+        return RedirectToRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.PreviousEngagement);
     }
 
     private AreasOfInterestViewModel GetViewModel()
