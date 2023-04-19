@@ -8,7 +8,7 @@
     <div class="govuk-grid-column-two-thirds">
         <partial name="_validationSummary" />
         <form method="post" asp-route=" @RouteNames.Onboarding.EmployerDetails" enctype="multipart/form-data" novalidate>
-            <h1 class="govuk-heading-l">Add your employer's name and address</h1>
+            <h1 class="govuk-heading-l">@Model.PageHeader</h1>
 
             <div esfa-validation-marker-for="EmployerName" class="govuk-form-group">
                 <label class="govuk-label govuk-label--m" asp-for="EmployerName">

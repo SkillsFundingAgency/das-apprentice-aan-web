@@ -21,11 +21,10 @@ public class AreasOfInterestControllerPostTests
     public void Post_SetsAreasOfInterestValuesInOnBoardingSessionModelRedirectsToPreviousEngagement(
     [Frozen] Mock<ISessionService> sessionServiceMock,
     [Frozen] Mock<IValidator<AreasOfInterestSubmitModel>> validatorMock,
-    [Greedy] AreasOfInterestController sut,
-    OnboardingSessionModel sessionModel)
+    [Greedy] AreasOfInterestController sut)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.ReasonToJoin);
-
+        OnboardingSessionModel sessionModel = new();
         sessionModel.ProfileData.Add(new ProfileModel { Id = 1, Value = null });
         sessionModel.ProfileData.Add(new ProfileModel { Id = 2, Value = true.ToString() });
 
@@ -52,11 +51,11 @@ public class AreasOfInterestControllerPostTests
     [MoqAutoData]
     public void Post_WhenNoSelectionInAreasOfInterest_Errors(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        OnboardingSessionModel sessionModel,
         [Greedy] AreasOfInterestController sut)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.ReasonToJoin);
 
+        OnboardingSessionModel sessionModel = new();
         sessionModel.ProfileData.Add(new ProfileModel { Id = 1, Value = true.ToString() });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 

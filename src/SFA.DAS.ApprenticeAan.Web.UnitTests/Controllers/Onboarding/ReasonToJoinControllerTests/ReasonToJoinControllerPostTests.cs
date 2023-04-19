@@ -66,7 +66,7 @@ public class ReasonToJoinControllerPostTests
     }
 
     [MoqAutoData]
-    public void Post_ModelStateIsValid_RedirectsToReasonToJoinView(
+    public void Post_ModelStateIsValid_RedirectsToAreasOfInterest(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IValidator<ReasonToJoinSubmitModel>> validatorMock,
         [Frozen] ReasonToJoinSubmitModel submitmodel,
@@ -84,8 +84,6 @@ public class ReasonToJoinControllerPostTests
 
         sut.ModelState.IsValid.Should().BeTrue();
 
-        result.As<ViewResult>().Should().NotBeNull();
-        result.As<ViewResult>().ViewName.Should().Be(ReasonToJoinController.ViewPath);
-        result.As<ViewResult>().Model.As<ReasonToJoinViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.AreasOfInterest);
     }
 }

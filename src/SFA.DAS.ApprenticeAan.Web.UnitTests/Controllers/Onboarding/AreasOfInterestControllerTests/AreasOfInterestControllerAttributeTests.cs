@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
-using SFA.DAS.ApprenticeAan.Web.Filters;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.AreasOfInterestControllerTests;
 
@@ -14,11 +13,5 @@ public class AreasOfInterestControllerAttributeTests
         typeof(AreasOfInterestController).Should().BeDecoratedWith<RouteAttribute>();
         typeof(AreasOfInterestController).Should().BeDecoratedWith<RouteAttribute>().Subject.Template.Should().Be("onboarding/areas-of-interest");
         typeof(AreasOfInterestController).Should().BeDecoratedWith<RouteAttribute>().Subject.Name.Should().Be("AreasOfInterest");
-    }
-
-    [Test]
-    public void Controller_HasRequiredSessionModelAttribute()
-    {
-        typeof(AreasOfInterestController).Should().BeDecoratedWith<RequiredSessionModelAttribute>();
     }
 }

@@ -1,10 +1,9 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authorization;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
-using SFA.DAS.ApprenticeAan.Web.Filters;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
@@ -13,7 +12,6 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
 [Authorize]
 [Route("onboarding/regions", Name = RouteNames.Onboarding.Regions)]
-[RequiredSessionModel(typeof(OnboardingSessionModel))]
 public class RegionsController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/Regions.cshtml";

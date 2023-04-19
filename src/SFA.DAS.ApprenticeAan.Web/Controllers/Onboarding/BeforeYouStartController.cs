@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
-using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
@@ -15,13 +13,9 @@ public class BeforeYouStartController : Controller
     public const string ViewPath = "~/Views/Onboarding/BeforeYouStart.cshtml";
 
     private readonly ApplicationConfiguration _applicationConfiguration;
-    private readonly ISessionService _sessionService;
-    private readonly IProfileService _profileService;
 
-    public BeforeYouStartController(ISessionService sessionService, IProfileService profileService, ApplicationConfiguration applicationConfiguration)
+    public BeforeYouStartController(ApplicationConfiguration applicationConfiguration)
     {
-        _sessionService = sessionService;
-        _profileService = profileService;
         _applicationConfiguration = applicationConfiguration;
     }
 
@@ -36,14 +30,8 @@ public class BeforeYouStartController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post()
+    public IActionResult Post()
     {
-        var profiles = await _profileService.GetProfilesByUserType("apprentice");
-        OnboardingSessionModel sessionModel = new()
-        {
-            ProfileData = profiles.Select(p => (ProfileModel)p).ToList()
-        };
-        _sessionService.Set(sessionModel);
         return RedirectToRoute(RouteNames.Onboarding.TermsAndConditions);
     }
 }

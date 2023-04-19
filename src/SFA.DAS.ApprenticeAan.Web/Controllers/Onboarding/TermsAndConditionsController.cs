@@ -1,26 +1,15 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ApprenticeAan.Domain.Interfaces;
-using SFA.DAS.ApprenticeAan.Web.Filters;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
-using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
 [Authorize]
 [Route("onboarding/terms-and-conditions", Name = RouteNames.Onboarding.TermsAndConditions)]
-[RequiredSessionModel(typeof(OnboardingSessionModel))]
 public class TermsAndConditionsController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/TermsAndConditions.cshtml";
-
-    private readonly ISessionService _sessionService;
-
-    public TermsAndConditionsController(ISessionService sessionService)
-    {
-        _sessionService = sessionService;
-    }
 
     [HttpGet]
     public IActionResult Get()
@@ -35,10 +24,7 @@ public class TermsAndConditionsController : Controller
     [HttpPost]
     public IActionResult Post()
     {
-        var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-        sessionModel.HasAcceptedTermsAndConditions = true;
-        _sessionService.Set(sessionModel);
-
+        if (!TempData.ContainsKey(TempDataKeys.HasSeenTermsAndConditions)) TempData.Add(TempDataKeys.HasSeenTermsAndConditions, true);
         return RedirectToRoute(RouteNames.Onboarding.LineManager);
     }
 }

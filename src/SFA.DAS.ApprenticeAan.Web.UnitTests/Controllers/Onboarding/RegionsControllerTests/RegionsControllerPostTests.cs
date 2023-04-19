@@ -47,7 +47,6 @@ public class RegionsControllerPostTests
         var result = await sut.Post(submitmodel);
 
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.RegionId == null)));
-        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => !m.IsValid)));
         result.As<ViewResult>().Model.As<RegionsViewModel>().SelectedRegionId.Should().BeNull();
     }
 

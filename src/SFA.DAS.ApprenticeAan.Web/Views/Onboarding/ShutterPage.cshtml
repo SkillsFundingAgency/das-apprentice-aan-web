@@ -1,0 +1,18 @@
+﻿@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
+@model ShutterPageViewModel
+@{
+    ViewData["Title"] = "Shutter Page";
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">You do not meet the necessary criteria to join the network as an apprentice ambassador</h1>
+        <div id="backtohomepage-hint" class="govuk-hint">
+            You must have your line manager's approval before completing your application.
+        </div>
+        <p class="govuk-body">
+            <a href="@Model.ApprenticeHomeUrl" class="govuk-link govuk-link--no-visited-state">
+                Back to the apprenticeship portal
+            </a>
+        </p>
+    </div>
+</div>

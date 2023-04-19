@@ -1,0 +1,136 @@
+{
+  "addresses": [
+    {
+      "uprn": "100070155347",
+      "organisationName": "Onestop",
+      "town": "Nuneaton",
+      "county": "",
+      "postcode": "CV11 6FX",
+      "addressLine1": "5 Lichfield Close",
+      "addressLine2": "",
+      "longitude": -1.43815,
+      "latitude": 52.5371006
+    },
+    {
+      "uprn": "100070163412",
+      "organisationName": "",
+      "town": "Nuneaton",
+      "county": "",
+      "postcode": "CV11 0DR",
+      "addressLine1": "5 Romsey Avenue",
+      "addressLine2": "",
+      "longitude": -1.4613063,
+      "latitude": 52.5387635
+    },
+    {
+      "uprn": "100070154282",
+      "organisationName": "Royal mail",
+      "town": "Nuneaton",
+      "county": "",
+      "postcode": "CV11 5LP",
+      "addressLine1": "6 Kingsway",
+      "addressLine2": "",
+      "longitude": -1.4777881,
+      "latitude": 52.5213783
+    },
+    {
+      "uprn": "100070141858",
+      "organisationName": "",
+      "town": "Nuneaton",
+      "county": "",
+      "postcode": "CV11 5ES",
+      "addressLine1": "7 Charles Street",
+      "addressLine2": "",
+      "longitude": -1.4795357,
+      "latitude": 52.5282818
+    },
+    {
+      "uprn": "100070134889",
+      "organisationName": "Jardins",
+      "town": "Bedworth",
+      "county": "",
+      "postcode": "CV11 9BP",
+      "addressLine1": "8 Alexander Road",
+      "addressLine2": "",
+      "longitude": -1.4666575,
+      "latitude": 52.4840295
+    },
+    {
+      "uprn": "10000229974",
+      "organisationName": "",
+      "town": "Nuneaton",
+      "county": "",
+      "postcode": "CV11 4XZ",
+      "addressLine1": "8 Gold Close",
+      "addressLine2": "",
+      "longitude": -1.4515146,
+      "latitude": 52.5057522
+    },
+    {
+      "uprn": "100070149978",
+      "organisationName": "",
+      "town": "Nuneaton",
+      "county": "",
+      "postcode": "CV11 7EY",
+      "addressLine1": "8 Greenmoor Road",
+      "addressLine2": "",
+      "longitude": -1.4755129,
+      "latitude": 52.5145453
+    },
+    {
+      "uprn": "100070124446",
+      "organisationName": "",
+      "town": "Nuneaton",
+      "county": "",
+      "postcode": "CV11 9PN",
+      "addressLine1": "9 St. Lawrence Road",
+      "addressLine2": "Ansley",
+      "longitude": -1.5619183,
+      "latitude": 52.522484
+    },
+    {
+      "uprn": "100070163670",
+      "organisationName": "",
+      "town": "Nuneaton",
+      "county": "",
+      "postcode": "CV11 9RU",
+      "addressLine1": "10 Ruskin Close",
+      "addressLine2": "Galley Common",
+      "longitude": -1.5242642,
+      "latitude": 52.5263393
+    },
+    {
+      "uprn": "100070163556",
+      "organisationName": "",
+      "town": "Nuneaton",
+      "county": "",
+      "postcode": "CV11 4RR",
+      "addressLine1": "11 Roxburgh Road",
+      "addressLine2": "",
+      "longitude": -1.4505963,
+      "latitude": 52.5073212
+    },
+    {
+      "uprn": "100070139114",
+      "organisationName": "",
+      "town": "Bedworth",
+      "county": "",
+      "postcode": "CV11 9RF",
+      "addressLine1": "12 Brewer Road",
+      "addressLine2": "Bulkington",
+      "longitude": -1.4191202,
+      "latitude": 52.4741954
+    },
+    {
+      "uprn": "100070139827",
+      "organisationName": "",
+      "town": "Nuneaton",
+      "county": "",
+      "postcode": "CV11 4SA",
+      "addressLine1": "12 Bulkington Lane",
+      "addressLine2": "",
+      "longitude": -1.4352494,
+      "latitude": 52.5046059
+    }
+  ]
+}

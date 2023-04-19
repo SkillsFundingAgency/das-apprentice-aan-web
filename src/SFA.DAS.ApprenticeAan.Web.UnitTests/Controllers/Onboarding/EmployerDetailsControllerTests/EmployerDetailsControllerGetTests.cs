@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
-using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
@@ -12,10 +11,10 @@ using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
 
-namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.EmployerControllerTests;
+namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.EmployerDetailsControllerTests;
 
 [TestFixture]
-public class EmployerControllerGetTests
+public class EmployerDetailsControllerGetTests
 {
     private const string Category = "Employer";
     private const string EmployerName = "Department for Education";
@@ -37,9 +36,9 @@ public class EmployerControllerGetTests
     public void Get_ReturnsViewResult(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         OnboardingSessionModel sessionModel,
-        [Greedy] EmployerController sut)
+        [Greedy] EmployerDetailsController sut)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.LineManager);
+        sut.AddUrlHelperMock();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sessionModel.ProfileData = profileData;
 
@@ -53,24 +52,24 @@ public class EmployerControllerGetTests
     public void Get_ViewResult_HasCorrectViewPath(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         OnboardingSessionModel sessionModel,
-        [Greedy] EmployerController sut)
+        [Greedy] EmployerDetailsController sut)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.LineManager);
+        sut.AddUrlHelperMock();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sessionModel.ProfileData = profileData;
 
         var result = sut.GetEmployerDetails();
 
-        result.As<ViewResult>().ViewName.Should().Be(EmployerController.ViewPath);
+        result.As<ViewResult>().ViewName.Should().Be(EmployerDetailsController.ViewPath);
     }
 
     [MoqAutoData]
     public void Get_ViewModel_HasBackLink(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         OnboardingSessionModel sessionModel,
-        [Greedy] EmployerController sut)
+        [Greedy] EmployerDetailsController sut)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.LineManager);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerSearch);
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sessionModel.ProfileData = profileData;
 
@@ -83,9 +82,9 @@ public class EmployerControllerGetTests
     public void Get_ViewModelProfileData_RestoreFromSession(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         OnboardingSessionModel sessionModel,
-        [Greedy] EmployerController sut)
+        [Greedy] EmployerDetailsController sut)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.LineManager);
+        sut.AddUrlHelperMock();
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sessionModel.ProfileData = profileData;

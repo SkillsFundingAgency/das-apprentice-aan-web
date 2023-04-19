@@ -1,14 +1,10 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
-using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
-using SFA.DAS.ApprenticeAan.Web.Models;
-using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
-using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.TermsAndConditionsControllerTests
@@ -17,35 +13,29 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.TermsAndCon
     public class TermsAndConditionsControllerPostTests
     {
         [MoqAutoData]
-        public void Post_SetsEmptyOnBoardingSessionModel(
-       [Frozen] Mock<ISessionService> sessionServiceMock,
-       [Greedy] TermsAndConditionsController sut)
+        public void Post_SetsTempData(
+            [Greedy] TermsAndConditionsController sut,
+            Mock<ITempDataDictionary> tempDataMock)
         {
-            sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.LineManager);
-
-            OnboardingSessionModel value = new();
-            sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(value);
+            tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.HasSeenTermsAndConditions)).Returns(false);
+            sut.TempData = tempDataMock.Object;
 
             sut.Post();
 
-            sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.Equals(value) && m.HasAcceptedTermsAndConditions)));
+            tempDataMock.Verify(t => t.Add(TempDataKeys.HasSeenTermsAndConditions, true));
         }
 
         [MoqAutoData]
         public void Post_RedirectToRouteResult_RedirectsToLineManager(
-        [Frozen] Mock<ISessionService> sessionServiceMock,
-        [Greedy] TermsAndConditionsController sut)
+            [Greedy] TermsAndConditionsController sut,
+            Mock<ITempDataDictionary> tempDataMock)
         {
-            sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.LineManager);
-
-            OnboardingSessionModel value = new();
-            sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(value);
+            sut.TempData = tempDataMock.Object;
+            tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.HasSeenTermsAndConditions)).Returns(true);
 
             var result = sut.Post();
 
-            sessionServiceMock.Verify(s => s.Set(value));
-
-            result.As<RedirectToRouteResult>().RouteName.Should().Be("LineManager");
+            result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.LineManager);
         }
     }
 }

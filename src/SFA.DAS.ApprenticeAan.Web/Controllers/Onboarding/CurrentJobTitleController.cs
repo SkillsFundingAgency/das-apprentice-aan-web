@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
-using SFA.DAS.ApprenticeAan.Web.Filters;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
@@ -13,7 +12,6 @@ using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
 [Route("onboarding/current-job-title", Name = RouteNames.Onboarding.CurrentJobTitle)]
-[RequiredSessionModel(typeof(OnboardingSessionModel))]
 [Authorize]
 public class CurrentJobTitleController : Controller
 {
@@ -63,7 +61,7 @@ public class CurrentJobTitleController : Controller
     {
         return new CurrentJobTitleViewModel()
         {
-            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(@RouteNames.Onboarding.EmployerDetails)!,
+            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(@RouteNames.Onboarding.EmployerSearch)!,
         };
     }
 }
