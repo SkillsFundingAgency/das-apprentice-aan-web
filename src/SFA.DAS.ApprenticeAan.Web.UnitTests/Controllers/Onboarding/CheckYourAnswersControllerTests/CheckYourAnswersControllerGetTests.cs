@@ -54,9 +54,9 @@ public class CheckYourAnswersControllerGetTests
 
     [MoqAutoData]
     public void Get_ReturnsViewResult_ValidReasons(
-    [Frozen] Mock<ISessionService> sessionServiceMock,
-    [Greedy] CheckYourAnswersController sut,
-    OnboardingSessionModel sessionModel,
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] CheckYourAnswersController sut,
+        OnboardingSessionModel sessionModel,
     string reasonsUrl)
     {
         var reasonForJoiningTheNetwork = "The reason to join the network.";

@@ -39,7 +39,7 @@ public class ReasonToJoinControllerGetTests
     }
 
     [MoqAutoData]
-    public void Get_ViewModelHasSeenPreviewIsTrue_BankLinkSetsToCheckYourAnswers(
+    public void Get_ViewModelHasSeenPreviewIsTrue_BackLinkSetsToCheckYourAnswers(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] ReasonToJoinController sut,
         OnboardingSessionModel sessionModel,
@@ -55,7 +55,7 @@ public class ReasonToJoinControllerGetTests
     }
 
     [MoqAutoData]
-    public void Get_ViewModelHasSeenPreviewIsFalse_BankLinkSetsToRegions(
+    public void Get_ViewModelHasSeenPreviewIsFalse_BackLinkSetsToRegions(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] ReasonToJoinController sut,
         OnboardingSessionModel sessionModel,

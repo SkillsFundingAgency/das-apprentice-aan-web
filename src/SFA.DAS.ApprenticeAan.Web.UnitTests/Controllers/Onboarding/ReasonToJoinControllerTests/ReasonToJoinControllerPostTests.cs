@@ -66,17 +66,17 @@ public class ReasonToJoinControllerPostTests
     }
 
     [MoqAutoData]
-    public void Post_ModelStateIsValid_SetsBackLinkToRegions(
+    public void Post_ModelStateIsValidAndHasNotSeenPreview_RedirectsToAreasOfInterest(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IValidator<ReasonToJoinSubmitModel>> validatorMock,
         [Frozen] ReasonToJoinSubmitModel submitmodel,
-        [Greedy] ReasonToJoinController sut,
-        string regionsUrl)
+        [Greedy] ReasonToJoinController sut)
     {
         OnboardingSessionModel sessionModel = new();
         ValidationResult validationResult = new();
+        sessionModel.HasSeenPreview = false;
 
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.Regions, regionsUrl);
+        sut.AddUrlHelperMock();
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
@@ -86,6 +86,28 @@ public class ReasonToJoinControllerPostTests
         sut.ModelState.IsValid.Should().BeTrue();
 
         result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.AreasOfInterest);
-        result.As<ViewResult>().Model.As<ReasonToJoinViewModel>().BackLink.Should().Be(regionsUrl);
+    }
+
+    [MoqAutoData]
+    public void Post_IsValidAndHasSeenPreview_RedirectsToCheckYourAnswers(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Frozen] Mock<IValidator<ReasonToJoinSubmitModel>> validatorMock,
+        [Frozen] ReasonToJoinSubmitModel submitmodel,
+        [Greedy] ReasonToJoinController sut)
+    {
+        OnboardingSessionModel sessionModel = new();
+        ValidationResult validationResult = new();
+
+        sessionModel.HasSeenPreview = true;
+        sut.AddUrlHelperMock();
+
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+        validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
+
+        var result = sut.Post(submitmodel);
+
+        sut.ModelState.IsValid.Should().BeTrue();
+
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.CheckYourAnswers);
     }
 }
