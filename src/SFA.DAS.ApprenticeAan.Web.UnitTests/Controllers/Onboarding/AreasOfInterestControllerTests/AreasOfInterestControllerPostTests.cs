@@ -19,9 +19,9 @@ public class AreasOfInterestControllerPostTests
 {
     [MoqAutoData]
     public void Post_SetsAreasOfInterestValuesInOnBoardingSessionModelRedirectsToPreviousEngagement(
-    [Frozen] Mock<ISessionService> sessionServiceMock,
-    [Frozen] Mock<IValidator<AreasOfInterestSubmitModel>> validatorMock,
-    [Greedy] AreasOfInterestController sut)
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Frozen] Mock<IValidator<AreasOfInterestSubmitModel>> validatorMock,
+        [Greedy] AreasOfInterestController sut)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.ReasonToJoin);
         OnboardingSessionModel sessionModel = new();

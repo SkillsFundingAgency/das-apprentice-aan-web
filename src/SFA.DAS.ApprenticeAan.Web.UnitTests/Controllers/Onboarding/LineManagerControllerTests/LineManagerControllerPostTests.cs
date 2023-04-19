@@ -72,11 +72,10 @@ public class LineManagerControllerPostTests
 
     [MoqAutoData]
     public async Task Post_DoesNotHaveLineManagersApproval_ClearsSession(
-    [Frozen] ApplicationConfiguration applicationConfiguration,
-    [Frozen] Mock<ISessionService> sessionServiceMock,
-    [Frozen] Mock<IValidator<LineManagerSubmitModel>> validatorMock,
-    [Greedy] LineManagerController sut,
-    Mock<ITempDataDictionary> tempDataMock)
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Frozen] Mock<IValidator<LineManagerSubmitModel>> validatorMock,
+        [Greedy] LineManagerController sut,
+        Mock<ITempDataDictionary> tempDataMock)
     {
         tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.HasSeenTermsAndConditions)).Returns(true);
         sut.TempData = tempDataMock.Object;
@@ -145,5 +144,4 @@ public class LineManagerControllerPostTests
 
         result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.EmployerSearch);
     }
-
 }
