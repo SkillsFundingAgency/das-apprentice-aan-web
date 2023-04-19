@@ -19,10 +19,10 @@ public class CurrentJobTitleControllerGetTests
     [MoqAutoData]
     public void Get_ReturnsViewResult(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        [Greedy] CurrentJobTitleController sut,
-        OnboardingSessionModel sessionModel)
+        [Greedy] CurrentJobTitleController sut)
     {
         sut.AddUrlHelperMock();
+        OnboardingSessionModel sessionModel = new OnboardingSessionModel();
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
@@ -34,10 +34,10 @@ public class CurrentJobTitleControllerGetTests
     [MoqAutoData]
     public void Get_ViewResult_HasCorrectViewPath(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        [Greedy] CurrentJobTitleController sut,
-        OnboardingSessionModel sessionModel)
+        [Greedy] CurrentJobTitleController sut)
     {
         sut.AddUrlHelperMock();
+        OnboardingSessionModel sessionModel = new OnboardingSessionModel();
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
