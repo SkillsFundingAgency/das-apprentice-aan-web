@@ -78,13 +78,13 @@ public class CheckYourAnswersControllerGetTests
     public void Get_ReturnsViewResult_ValidRegion(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] CheckYourAnswersController sut,
-        OnboardingSessionModel sessionModel,
         string regionsUrl)
     {
         var regionName = "London";
         var jobTitle = "Some Title";
 
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.Regions, regionsUrl);
+        OnboardingSessionModel sessionModel = new OnboardingSessionModel();
         sessionModel.RegionName = regionName;
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = jobTitle });
 

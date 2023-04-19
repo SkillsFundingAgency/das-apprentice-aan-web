@@ -83,10 +83,10 @@ public class CurrentJobTitleControllerGetTests
     [MoqAutoData]
     public void Get_ViewModel_HasSessionData(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        OnboardingSessionModel sessionModel,
         [Greedy] CurrentJobTitleController sut)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerSearch);
+        OnboardingSessionModel sessionModel = new OnboardingSessionModel();
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
