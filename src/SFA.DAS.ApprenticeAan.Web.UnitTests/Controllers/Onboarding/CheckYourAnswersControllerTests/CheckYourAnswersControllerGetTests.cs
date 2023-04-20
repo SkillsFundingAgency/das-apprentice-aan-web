@@ -73,7 +73,7 @@ public class CheckYourAnswersControllerGetTests
         result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().ReasonForJoiningTheNetwork.Should().Be(reasonForJoiningTheNetwork);
         result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().ReasonForJoiningTheNetworkChangeLink.Should().Be(reasonsUrl);
     }
-    
+
     [MoqAutoData]
     public void Get_ReturnsViewResult_ValidRegion(
         [Frozen] Mock<ISessionService> sessionServiceMock,
@@ -109,7 +109,11 @@ public class CheckYourAnswersControllerGetTests
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = jobTitle });
         sessionModel.ProfileData.Add(new ProfileModel { Id = 1, Category = "Events", Value = "Presenting at online events" });
         sessionModel.ProfileData.Add(new ProfileModel { Id = 2, Category = "Events", Value = "Networking at events in person" });
-        sessionModel.ProfileData.Add(new ProfileModel { Id = 3, Category = "Promotions", Value = "Carrying out and writing up case studies" });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = 3, Category = "Events", Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = 4, Category = "Promotions", Value = "Carrying out and writing up case studies" });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = 5, Category = "Promotions", Value = "Promoting the network on social media channels" });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = 6, Category = "Promotions", Value = null });
+
 
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
