@@ -98,15 +98,16 @@ public class AndSessionModelIsPopulated
         viewModel.AreasOfInterestChangeLink.Should().Be(AreasOfInterestUrl);
     }
 
-    [TestCase(true)]
-    [TestCase(false)]
-    public void ThenSetsPreviousEngagementInViewModel(bool? isPreviouslyEngagged)
+    [TestCase("true")]
+    [TestCase("false")]
+    [TestCase(null)]
+    public void ThenSetsPreviousEngagementInViewModel(string isPreviouslyEngagged)
     {
-        sessionModel.SetProfileValue(ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork, isPreviouslyEngagged.ToString());
+        sessionModel.SetProfileValue(ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork, isPreviouslyEngagged);
         getResult = sut.Get().As<ViewResult>();
         viewModel = getResult.Model.As<CheckYourAnswersViewModel>();
 
-        viewModel.PreviousEngagement.Should().Be(CheckYourAnswersViewModel.GetPreviousEngagementValue(isPreviouslyEngagged.ToString()));
+        viewModel.PreviousEngagement.Should().Be(CheckYourAnswersViewModel.GetPreviousEngagementValue(isPreviouslyEngagged));
         viewModel.PreviousEngagementChangeLink.Should().Be(PreviousEngagementUrl);
     }
 }
