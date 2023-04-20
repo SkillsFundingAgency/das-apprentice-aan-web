@@ -64,10 +64,10 @@ public class PreviousEngagementControllerGetTests
     [MoqAutoData]
     public void Get_ViewModel_SelectedYes_RestoreFromSession(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        OnboardingSessionModel sessionModel,
         [Greedy] PreviousEngagementController sut)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest);
+        OnboardingSessionModel sessionModel = new OnboardingSessionModel();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork, Value = "True" });
 

@@ -24,8 +24,7 @@ public class RegionsControllerPostTests
         [Frozen] Mock<IRegionsService> regionsService,
         [Frozen] Mock<IValidator<RegionsSubmitModel>> validatorMock,
         [Greedy] RegionsController sut,
-        RegionsSubmitModel submitmodel
-        )
+        RegionsSubmitModel submitmodel)
     {
         sut.AddUrlHelperMock();
 

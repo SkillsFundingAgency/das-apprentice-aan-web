@@ -14,6 +14,11 @@ public class CheckYourAnswersViewModel
 
     public string ReasonForJoiningTheNetworkChangeLink { get; }
     public string ReasonForJoiningTheNetwork { get; }
+    
+    public string AreasOfInterestChangeLink { get; }
+    public List<string> AreasOfInterest { get; }
+
+
 
     public CheckYourAnswersViewModel(IUrlHelper url, OnboardingSessionModel sessionModel)
     {
@@ -26,6 +31,8 @@ public class CheckYourAnswersViewModel
         
         ReasonForJoiningTheNetworkChangeLink = url.RouteUrl(@RouteNames.Onboarding.ReasonToJoin)!;
         ReasonForJoiningTheNetwork = sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork!;
-
+        
+        AreasOfInterestChangeLink = url.RouteUrl(@RouteNames.Onboarding.AreasOfInterest)!;
+        AreasOfInterest = sessionModel.ProfileData.Where(x => (x.Category == "Events" || x.Category == "Promotions") && x.Value != null).Select(x => x.Description).ToList();
     }
 }

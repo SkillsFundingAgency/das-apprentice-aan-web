@@ -73,18 +73,18 @@ public class CheckYourAnswersControllerGetTests
         result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().ReasonForJoiningTheNetwork.Should().Be(reasonForJoiningTheNetwork);
         result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().ReasonForJoiningTheNetworkChangeLink.Should().Be(reasonsUrl);
     }
-    
+
     [MoqAutoData]
     public void Get_ReturnsViewResult_ValidRegion(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] CheckYourAnswersController sut,
-        OnboardingSessionModel sessionModel,
         string regionsUrl)
     {
         var regionName = "London";
         var jobTitle = "Some Title";
 
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.Regions, regionsUrl);
+        OnboardingSessionModel sessionModel = new OnboardingSessionModel();
         sessionModel.RegionName = regionName;
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = jobTitle });
 
@@ -94,5 +94,34 @@ public class CheckYourAnswersControllerGetTests
 
         result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().Region.Should().Be(regionName);
         result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().RegionChangeLink.Should().Be(regionsUrl);
+    }
+
+    [MoqAutoData]
+    public void Get_ReturnsViewResult_ValidAreasOfInterestAndSetsChangeLink(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] CheckYourAnswersController sut,
+        string areasOfInterestUrl)
+    {
+        var jobTitle = "Some Job Title";
+
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest, areasOfInterestUrl);
+        OnboardingSessionModel sessionModel = new OnboardingSessionModel();
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = jobTitle });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = 1, Category = "Events", Value = "Presenting at online events" });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = 2, Category = "Events", Value = "Networking at events in person" });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = 3, Category = "Events", Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = 4, Category = "Promotions", Value = "Carrying out and writing up case studies" });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = 5, Category = "Promotions", Value = "Promoting the network on social media channels" });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = 6, Category = "Promotions", Value = null });
+
+
+
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+
+        var result = sut.Get();
+
+        result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().AreasOfInterest.Should()
+            .Equal(sessionModel.ProfileData.Where(x => (x.Category == "Events" || x.Category == "Promotions") && x.Value != null).Select(x => x.Description).ToList());
+        result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().AreasOfInterestChangeLink.Should().Be(areasOfInterestUrl);
     }
 }

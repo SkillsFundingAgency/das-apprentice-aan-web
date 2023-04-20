@@ -30,7 +30,7 @@
                     <a href=@Url.RouteUrl(RouteNames.Onboarding.Regions) class="govuk-link govuk-link--no-visited-state">Change</a>
                 </dd>
             </div>
-             <div class="govuk-summary-list__row">
+            <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
                     Reasons for applying
                 </dt>
@@ -39,6 +39,22 @@
                 </dd>
                 <dd class="govuk-summary-list__actions">
                     <a href=@Url.RouteUrl(RouteNames.Onboarding.ReasonToJoin) class="govuk-link govuk-link--no-visited-state">Change</a>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Areas of interest in your role</dt>
+                <dd class="govuk-summary-list__value">
+                    <ul class="govuk-list govuk-list--bullet">
+                        @{
+                            foreach (var aoi in Model.AreasOfInterest)
+                            {
+                                <li>@aoi</li>
+                            }
+                        }
+                    </ul>
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a href=@Url.RouteUrl(RouteNames.Onboarding.AreasOfInterest) class="govuk-link govuk-link--no-visited-state">Change</a>
                 </dd>
             </div>
         </dl>
