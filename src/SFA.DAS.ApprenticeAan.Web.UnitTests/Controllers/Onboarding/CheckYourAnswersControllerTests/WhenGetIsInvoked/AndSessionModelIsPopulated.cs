@@ -34,14 +34,17 @@ public class AndSessionModelIsPopulated
     static readonly string? IsPreviouslyEngagedWithNetwork = "true";
     static readonly string PreviousEngagementUrl = Guid.NewGuid().ToString();
 
+    OnboardingSessionModel sessionModel;
+    CheckYourAnswersController sut;
+
     [SetUp]
     public void Init()
     {
         var fixture = new Fixture();
-        OnboardingSessionModel sessionModel = fixture.Create<OnboardingSessionModel>();
+        sessionModel = fixture.Create<OnboardingSessionModel>();
         Mock<ISessionService> sessionServiceMock = new();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
-        CheckYourAnswersController sut = new(sessionServiceMock.Object);
+        sut = new(sessionServiceMock.Object);
 
         sut.AddUrlHelperMock()
             .AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle, JobTitleUrl)
@@ -95,10 +98,15 @@ public class AndSessionModelIsPopulated
         viewModel.AreasOfInterestChangeLink.Should().Be(AreasOfInterestUrl);
     }
 
-    [Test]
-    public void ThenSetsPreviousEngagementInViewModel()
+    [TestCase(true)]
+    [TestCase(false)]
+    public void ThenSetsPreviousEngagementInViewModel(bool? isPreviouslyEngagged)
     {
-        viewModel.PreviousEngagement.Should().Be(CheckYourAnswersViewModel.GetPreviousEngagementValue(IsPreviouslyEngagedWithNetwork));
+        sessionModel.SetProfileValue(ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork, isPreviouslyEngagged.ToString());
+        getResult = sut.Get().As<ViewResult>();
+        viewModel = getResult.Model.As<CheckYourAnswersViewModel>();
+
+        viewModel.PreviousEngagement.Should().Be(CheckYourAnswersViewModel.GetPreviousEngagementValue(isPreviouslyEngagged.ToString()));
         viewModel.PreviousEngagementChangeLink.Should().Be(PreviousEngagementUrl);
     }
 }

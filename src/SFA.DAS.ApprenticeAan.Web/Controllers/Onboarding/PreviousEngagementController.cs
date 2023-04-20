@@ -62,7 +62,7 @@ public class PreviousEngagementController : Controller
         var previousEngagement = sessionModel.GetProfileValue(ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork);
         return new PreviousEngagementViewModel()
         {
-            EngagedWithAPreviousAmbassadorInTheNetwork = previousEngagement == null ? null : bool.Parse(previousEngagement!),
+            EngagedWithAPreviousAmbassadorInTheNetwork = bool.TryParse(previousEngagement, out var result) && result,
             BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(@RouteNames.Onboarding.AreasOfInterest)!
         };
     }
