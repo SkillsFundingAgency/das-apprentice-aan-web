@@ -59,7 +59,7 @@ public class AreasOfInterestController : Controller
 
         return new AreasOfInterestViewModel
         {
-            BackLink = Url.RouteUrl(RouteNames.Onboarding.ReasonToJoin)!,
+            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(RouteNames.Onboarding.ReasonToJoin)!,
             Events = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == "Events").OrderBy(x => x.Ordering).Select(x => (SelectProfileModel)x)),
             Promotions = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == "Promotions").OrderBy(x => x.Ordering).Select(x => (SelectProfileModel)x))
         };

@@ -116,7 +116,8 @@ public class CheckYourAnswersControllerGetTests
 
         var result = sut.Get();
 
-        result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().AreasOfInterest.Should().Be(CheckYourAnswersViewModel.GetAreasOfInterest(sessionModel));
+        result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().AreasOfInterest.Should()
+            .Equal(sessionModel.ProfileData.Where(x => (x.Category == "Events" || x.Category == "Promotions") && x.Value != null).Select(x => x.Description).ToList());
         result.As<ViewResult>().Model.As<CheckYourAnswersViewModel>().AreasOfInterestChangeLink.Should().Be(areasOfInterestUrl);
     }
 }
