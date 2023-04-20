@@ -57,6 +57,17 @@
                     <a href=@Url.RouteUrl(RouteNames.Onboarding.AreasOfInterest) class="govuk-link govuk-link--no-visited-state">Change</a>
                 </dd>
             </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Previous engagement with network ambassadors
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.PreviousEngagement
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a href=@Url.RouteUrl(RouteNames.Onboarding.PreviousEngagement) class="govuk-link govuk-link--no-visited-state">Change</a>
+                </dd>
+            </div>
         </dl>
     </div>
 </div>

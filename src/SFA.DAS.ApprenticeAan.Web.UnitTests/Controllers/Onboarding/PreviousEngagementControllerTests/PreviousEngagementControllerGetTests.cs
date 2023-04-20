@@ -90,4 +90,42 @@ public class PreviousEngagementControllerGetTests
 
         result.As<ViewResult>().Model.As<PreviousEngagementViewModel>().EngagedWithAPreviousAmbassadorInTheNetwork.Should().BeFalse();
     }
+
+    [MoqAutoData]
+    public void Get_ViewModelHasSeenPreviewIsTrue_BackLinkSetsToCheckYourAnswers(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] PreviousEngagementController sut,
+        string checkYourAnswersUrl)
+    {
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers, checkYourAnswersUrl);
+
+        OnboardingSessionModel sessionModel = new OnboardingSessionModel();
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork, Value = "False" });
+        sessionModel.HasSeenPreview = true;
+
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+
+        var result = sut.Get();
+
+        result.As<ViewResult>().Model.As<PreviousEngagementViewModel>().BackLink.Should().Be(checkYourAnswersUrl);
+    }
+
+    [MoqAutoData]
+    public void Get_ViewModelHasSeenPreviewIsFalse_BackLinkSetsToAreasOfInterest(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] PreviousEngagementController sut,
+        string areasOFInterestUrl)
+    {
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest, areasOFInterestUrl);
+
+        OnboardingSessionModel sessionModel = new OnboardingSessionModel();
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork, Value = "False" });
+        sessionModel.HasSeenPreview = false;
+
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+
+        var result = sut.Get();
+
+        result.As<ViewResult>().Model.As<PreviousEngagementViewModel>().BackLink.Should().Be(areasOFInterestUrl);
+    }
 }

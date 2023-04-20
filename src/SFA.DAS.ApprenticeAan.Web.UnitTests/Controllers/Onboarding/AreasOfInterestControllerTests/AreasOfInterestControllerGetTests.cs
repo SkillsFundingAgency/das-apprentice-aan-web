@@ -41,14 +41,14 @@ public class AreasOfInterestControllerGetTests
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.ReasonToJoin);
 
         OnboardingSessionModel sessionModel = new OnboardingSessionModel();
-        sessionModel.ProfileData.Add(new ProfileModel { Id = 101, Category = "Events", Value = true.ToString() });
-        sessionModel.ProfileData.Add(new ProfileModel { Id = 202, Category = "Promotions", Value = false.ToString() });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = 101, Category = Category.Events, Value = true.ToString() });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = 202, Category = Category.Promotions, Value = false.ToString() });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         var result = sut.Get();
 
-        result.As<ViewResult>().Model.As<AreasOfInterestViewModel>().AreasOfInterest.Should().Contain(x => x.Id == 101 && x.Category == "Events" && x.IsSelected);
-        result.As<ViewResult>().Model.As<AreasOfInterestViewModel>().AreasOfInterest.Should().Contain(x => x.Id == 202 && x.Category == "Promotions" && !x.IsSelected);
+        result.As<ViewResult>().Model.As<AreasOfInterestViewModel>().AreasOfInterest.Should().Contain(x => x.Id == 101 && x.Category == Category.Events && x.IsSelected);
+        result.As<ViewResult>().Model.As<AreasOfInterestViewModel>().AreasOfInterest.Should().Contain(x => x.Id == 202 && x.Category == Category.Promotions && !x.IsSelected);
     }
 
     [MoqAutoData]
