@@ -29,8 +29,9 @@ public class ReasonToJoinController : Controller
     public IActionResult Get()
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
+        var model = GetViewModel(sessionModel);
 
-        return View(ViewPath, GetViewModel(sessionModel));
+        return View(ViewPath, model);
     }
 
     [HttpPost]
@@ -41,14 +42,14 @@ public class ReasonToJoinController : Controller
         ValidationResult result = _validator.Validate(submitmodel);
         if (!result.IsValid)
         {
-            result.AddToModelState(this.ModelState);
+            result.AddToModelState(ModelState);
             return View(ViewPath, GetViewModel(sessionModel));
         }
 
         sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork = submitmodel.ReasonForJoiningTheNetwork!;
         _sessionService.Set(sessionModel);
 
-        return RedirectToRoute(RouteNames.Onboarding.AreasOfInterest);
+        return RedirectToRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.AreasOfInterest);
     }
 
     private ReasonToJoinViewModel GetViewModel(OnboardingSessionModel sessionModel)
@@ -56,7 +57,7 @@ public class ReasonToJoinController : Controller
         var model = new ReasonToJoinViewModel()
         {
             ReasonForJoiningTheNetwork = sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork,
-            BackLink = Url.RouteUrl(@RouteNames.Onboarding.Regions)!
+            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(RouteNames.Onboarding.Regions)!
         };
         return model;
     }
