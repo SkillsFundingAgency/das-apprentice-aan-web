@@ -41,19 +41,22 @@ public class PreviousEngagementControllerPostTests
         result.As<ViewResult>().Model.As<PreviousEngagementViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
     }
 
-    [MoqAutoData]
-    public void Post_ModelStateIsValid_UpdatesSessionModel(
-        [Frozen] Mock<ISessionService> sessionServiceMock,
-        [Frozen] Mock<IValidator<PreviousEngagementSubmitModel>> validatorMock,
-        PreviousEngagementSubmitModel submitmodel,
-        [Greedy] PreviousEngagementController sut)
+    [TestCase("true")]
+    [TestCase("false")]
+    public void Post_ModelStateIsValid_UpdatesSessionModel(string? hasPreviousEngagementValue)
     {
+        Mock<ISessionService> sessionServiceMock = new();
+        Mock<IValidator<PreviousEngagementSubmitModel>> validatorMock = new();
+        PreviousEngagementSubmitModel submitmodel = new();
+        PreviousEngagementController sut = new PreviousEngagementController(sessionServiceMock.Object, validatorMock.Object);
         OnboardingSessionModel sessionModel = new();
         ValidationResult validationResult = new();
 
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest);
 
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = "True" });
+        submitmodel.HasPreviousEngagement = Convert.ToBoolean(hasPreviousEngagementValue);
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = null });
+
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
 

@@ -15,11 +15,6 @@ public class AndSessionModelIsNotPopulated
 {
     ViewResult getResult;
     CheckYourAnswersViewModel viewModel;
-    static readonly string? JobTitle = null;
-
-    static readonly string? RegionName = null;
-    static readonly string? ReasonForJoiningTheNetwork = null;
-    static readonly string? IsPreviouslyEngagedWithNetwork = null;
     CheckYourAnswersController sut;
 
     [SetUp]
@@ -33,10 +28,10 @@ public class AndSessionModelIsNotPopulated
 
         sut.AddUrlHelperMock();
 
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = JobTitle });
-        sessionModel.RegionName = RegionName;
-        sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork = ReasonForJoiningTheNetwork;
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = IsPreviouslyEngagedWithNetwork });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = null });
+        sessionModel.RegionName = null;
+        sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork = null;
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = null });
 
         getResult = sut.Get().As<ViewResult>();
         viewModel = getResult.Model.As<CheckYourAnswersViewModel>();
@@ -52,24 +47,24 @@ public class AndSessionModelIsNotPopulated
     [Test]
     public void ThenSetsJobTitleToNullInViewModel()
     {
-        viewModel.JobTitle.Should().Be(JobTitle);
+        viewModel.JobTitle.Should().BeNull();
     }
 
     [Test]
     public void ThenSetsRegionToNullInViewModel()
     {
-        viewModel.Region.Should().Be(RegionName);
+        viewModel.Region.Should().BeNull();
     }
 
     [Test]
     public void ThenSetsReasonToJoinTheNetworkToNullInViewModel()
     {
-        viewModel.ReasonForJoiningTheNetwork.Should().Be(ReasonForJoiningTheNetwork);
+        viewModel.ReasonForJoiningTheNetwork.Should().BeNull();
     }
 
     [Test]
     public void ThenSetsPreviousEngagementToNullInViewModel()
     {
-        viewModel.PreviousEngagement.Should().Be(IsPreviouslyEngagedWithNetwork);
+        viewModel.PreviousEngagement.Should().BeNull();
     }
 }
