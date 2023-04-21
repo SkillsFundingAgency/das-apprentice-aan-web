@@ -62,6 +62,21 @@ public class PreviousEngagementControllerGetTests
     }
 
     [MoqAutoData]
+    public void Get_ViewModel_HasHasPreviousEngagementDefaultValueAsNull(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] PreviousEngagementController sut)
+    {
+        OnboardingSessionModel sessionModel = new();
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = null });
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest);
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+
+        var result = sut.Get();
+
+        result.As<ViewResult>().Model.As<PreviousEngagementViewModel>().HasPreviousEngagement.Should().BeNull();
+    }
+
+    [MoqAutoData]
     public void Get_ViewModel_SelectedYes_RestoreFromSession(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] PreviousEngagementController sut)
