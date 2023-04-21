@@ -62,7 +62,7 @@ public class PreviousEngagementControllerGetTests
     }
 
     [MoqAutoData]
-    public void Get_ViewModel_HasHasPreviousEngagementDefaultValueAsNull(
+    public void Get_ViewModel_DefaultNullValueSetsHasPreviousEngagementToNull(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] PreviousEngagementController sut)
     {
