@@ -49,8 +49,8 @@ public class PreviousEngagementController : Controller
             return View(ViewPath, model);
         }
 
-        sessionModel.SetProfileValue(ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork,
-             submitmodel.EngagedWithAPreviousAmbassadorInTheNetwork.ToString()!);
+        sessionModel.SetProfileValue(ProfileDataId.HasPreviousEngagement,
+             submitmodel.HasPreviousEngagement.ToString()!);
 
         _sessionService.Set(sessionModel);
 
@@ -59,10 +59,10 @@ public class PreviousEngagementController : Controller
 
     private PreviousEngagementViewModel GetViewModel(OnboardingSessionModel sessionModel)
     {
-        var previousEngagement = sessionModel.GetProfileValue(ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork);
+        var previousEngagement = sessionModel.GetProfileValue(ProfileDataId.HasPreviousEngagement);
         return new PreviousEngagementViewModel()
         {
-            EngagedWithAPreviousAmbassadorInTheNetwork = bool.TryParse(previousEngagement, out var result) && result,
+            HasPreviousEngagement = bool.TryParse(previousEngagement, out var result) && result,
             BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(@RouteNames.Onboarding.AreasOfInterest)!
         };
     }

@@ -56,7 +56,7 @@ public class AndSessionModelIsPopulated
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = JobTitle });
         sessionModel.RegionName = RegionName;
         sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork = ReasonForJoiningTheNetwork;
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork, Value = IsPreviouslyEngagedWithNetwork });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = IsPreviouslyEngagedWithNetwork });
         sessionModel.ProfileData.AddRange(AreasOfInterest);
 
         getResult = sut.Get().As<ViewResult>();
@@ -103,7 +103,7 @@ public class AndSessionModelIsPopulated
     [TestCase(null)]
     public void ThenSetsPreviousEngagementInViewModel(string isPreviouslyEngagged)
     {
-        sessionModel.SetProfileValue(ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork, isPreviouslyEngagged);
+        sessionModel.SetProfileValue(ProfileDataId.HasPreviousEngagement, isPreviouslyEngagged);
         getResult = sut.Get().As<ViewResult>();
         viewModel = getResult.Model.As<CheckYourAnswersViewModel>();
 
