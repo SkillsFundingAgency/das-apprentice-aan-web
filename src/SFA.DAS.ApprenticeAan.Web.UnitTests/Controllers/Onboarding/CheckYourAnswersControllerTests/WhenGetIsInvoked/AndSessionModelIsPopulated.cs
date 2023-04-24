@@ -1,5 +1,4 @@
-﻿using AutoFixture;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
@@ -14,8 +13,11 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.CheckYourAn
 
 public class AndSessionModelIsPopulated
 {
+    OnboardingSessionModel sessionModel;
+    CheckYourAnswersController sut;
     ViewResult getResult;
     CheckYourAnswersViewModel viewModel;
+
     static readonly string? JobTitle = Guid.NewGuid().ToString();
     static readonly string JobTitleUrl = Guid.NewGuid().ToString();
     static readonly string? RegionName = Guid.NewGuid().ToString();
@@ -41,14 +43,10 @@ public class AndSessionModelIsPopulated
     static readonly string Postcode = Guid.NewGuid().ToString();
     static readonly string EmployerSearchUrl = Guid.NewGuid().ToString();
 
-    OnboardingSessionModel sessionModel;
-    CheckYourAnswersController sut;
-
     [SetUp]
     public void Init()
     {
-        var fixture = new Fixture();
-        sessionModel = fixture.Create<OnboardingSessionModel>();
+        sessionModel = new();
         Mock<ISessionService> sessionServiceMock = new();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sut = new(sessionServiceMock.Object);
@@ -131,5 +129,14 @@ public class AndSessionModelIsPopulated
         viewModel.CurrentEmployerName.Should().Be(EmployerName);
         viewModel.CurrentEmployerChangeLink.Should().Be(EmployerSearchUrl);
         viewModel.CurrentEmployerAddress.Should().Be($@"{AddressLine1} {AddressLine2} {County} {Town} {Postcode}");
+    }
+
+    [TearDown]
+    public void Dispose()
+    {
+        sessionModel = null!;
+        sut = null!;
+        getResult = null!;
+        viewModel = null!;
     }
 }

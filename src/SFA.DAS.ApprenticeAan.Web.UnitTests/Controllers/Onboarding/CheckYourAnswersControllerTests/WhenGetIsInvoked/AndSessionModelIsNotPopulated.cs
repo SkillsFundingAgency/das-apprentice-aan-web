@@ -1,5 +1,4 @@
-﻿using AutoFixture;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
@@ -16,12 +15,12 @@ public class AndSessionModelIsNotPopulated
     ViewResult getResult;
     CheckYourAnswersViewModel viewModel;
     CheckYourAnswersController sut;
+    OnboardingSessionModel sessionModel;
 
     [SetUp]
     public void Init()
     {
-        var fixture = new Fixture();
-        OnboardingSessionModel sessionModel = fixture.Create<OnboardingSessionModel>();
+        sessionModel = new();
         Mock<ISessionService> sessionServiceMock = new();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sut = new(sessionServiceMock.Object);
@@ -79,5 +78,13 @@ public class AndSessionModelIsNotPopulated
     {
         viewModel.CurrentEmployerName.Should().BeNull();
         viewModel.CurrentEmployerAddress.Should().BeNull();
+    }
+
+    [TearDown]
+    public void Dispose()
+    {
+        sut = null!;
+        getResult = null!;
+        viewModel = null!;
     }
 }
