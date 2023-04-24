@@ -30,13 +30,8 @@ public class PreviousEngagementController : Controller
     public IActionResult Get()
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-        var previousEngagement = sessionModel.GetProfileValue(ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork);
 
-        var model = new PreviousEngagementViewModel()
-        {
-            EngagedWithAPreviousAmbassadorInTheNetwork = previousEngagement == null ? null : bool.Parse(previousEngagement!),
-            BackLink = Url.RouteUrl(@RouteNames.Onboarding.AreasOfInterest)!
-        };
+        var model = GetViewModel(sessionModel);
         return View(ViewPath, model);
     }
 
@@ -48,20 +43,27 @@ public class PreviousEngagementController : Controller
         ValidationResult result = _validator.Validate(submitmodel);
         if (!result.IsValid)
         {
-            var model = new PreviousEngagementViewModel()
-            {
-                BackLink = Url.RouteUrl(@RouteNames.Onboarding.AreasOfInterest)!
-            };
+            var model = GetViewModel(sessionModel);
 
             result.AddToModelState(this.ModelState);
             return View(ViewPath, model);
         }
 
-        sessionModel.SetProfileValue(ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork,
-             submitmodel.EngagedWithAPreviousAmbassadorInTheNetwork.ToString()!);
+        sessionModel.SetProfileValue(ProfileDataId.HasPreviousEngagement,
+             submitmodel.HasPreviousEngagement.ToString()!);
 
         _sessionService.Set(sessionModel);
 
         return RedirectToRoute(RouteNames.Onboarding.CheckYourAnswers);
+    }
+
+    private PreviousEngagementViewModel GetViewModel(OnboardingSessionModel sessionModel)
+    {
+        var previousEngagement = sessionModel.GetProfileValue(ProfileDataId.HasPreviousEngagement);
+        return new PreviousEngagementViewModel()
+        {
+            HasPreviousEngagement = bool.TryParse(previousEngagement, out var result) ? result : null,
+            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(@RouteNames.Onboarding.AreasOfInterest)!
+        };
     }
 }

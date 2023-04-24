@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
@@ -60,8 +61,8 @@ public class AreasOfInterestController : Controller
         return new AreasOfInterestViewModel
         {
             BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(RouteNames.Onboarding.ReasonToJoin)!,
-            Events = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == "Events").OrderBy(x => x.Ordering).Select(x => (SelectProfileModel)x)),
-            Promotions = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == "Promotions").OrderBy(x => x.Ordering).Select(x => (SelectProfileModel)x))
+            Events = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == Category.Events).OrderBy(x => x.Ordering).Select(x => (SelectProfileModel)x)),
+            Promotions = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == Category.Promotions).OrderBy(x => x.Ordering).Select(x => (SelectProfileModel)x))
         };
     }
 }

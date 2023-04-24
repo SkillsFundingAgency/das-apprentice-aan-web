@@ -3,7 +3,7 @@
 public static class ProfileDataId
 {
     public const int JobTitle = 20;
-    public const int EngagedWithAPreviousAmbassadorInTheNetwork = 21;
+    public const int HasPreviousEngagement = 21;
     public const int EmployerName = 30;
     public const int AddressLine1 = 31;
     public const int AddressLine2 = 32;

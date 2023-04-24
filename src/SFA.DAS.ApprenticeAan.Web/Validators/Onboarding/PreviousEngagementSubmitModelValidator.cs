@@ -9,7 +9,7 @@ public class PreviousEngagementSubmitModelValidator : AbstractValidator<Previous
 
     public PreviousEngagementSubmitModelValidator()
     {
-        RuleFor(m => m.EngagedWithAPreviousAmbassadorInTheNetwork)
+        RuleFor(m => m.HasPreviousEngagement)
             .NotNull()
             .WithMessage(NoSelectionErrorMessage);
     }

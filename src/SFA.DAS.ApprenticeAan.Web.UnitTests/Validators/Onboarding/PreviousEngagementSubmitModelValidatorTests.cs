@@ -12,15 +12,15 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding
         [TestCase(null, false)]
         public void EngagedWithAPreviousAmbassadorInTheNetwork_IsValid_Selection(bool? value, bool isValid)
         {
-            var model = new PreviousEngagementSubmitModel { EngagedWithAPreviousAmbassadorInTheNetwork = value };
+            var model = new PreviousEngagementSubmitModel { HasPreviousEngagement = value };
             var sut = new PreviousEngagementSubmitModelValidator();
 
             var result = sut.TestValidate(model);
 
             if (isValid)
-                result.ShouldNotHaveValidationErrorFor(c => c.EngagedWithAPreviousAmbassadorInTheNetwork);
+                result.ShouldNotHaveValidationErrorFor(c => c.HasPreviousEngagement);
             else
-                result.ShouldHaveValidationErrorFor(x => x.EngagedWithAPreviousAmbassadorInTheNetwork).WithErrorMessage(PreviousEngagementSubmitModelValidator.NoSelectionErrorMessage);
+                result.ShouldHaveValidationErrorFor(x => x.HasPreviousEngagement).WithErrorMessage(PreviousEngagementSubmitModelValidator.NoSelectionErrorMessage);
         }
     }
 }

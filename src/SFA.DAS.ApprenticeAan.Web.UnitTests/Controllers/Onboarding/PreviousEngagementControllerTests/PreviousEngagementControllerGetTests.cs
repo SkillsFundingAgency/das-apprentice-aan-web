@@ -24,7 +24,7 @@ public class PreviousEngagementControllerGetTests
         sut.AddUrlHelperMock();
         OnboardingSessionModel sessionModel = new();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork, Value = "True" });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = "True" });
 
         var result = sut.Get();
 
@@ -38,7 +38,7 @@ public class PreviousEngagementControllerGetTests
     {
         sut.AddUrlHelperMock();
         OnboardingSessionModel sessionModel = new();
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork, Value = "False" });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = "False" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         var result = sut.Get();
@@ -52,13 +52,28 @@ public class PreviousEngagementControllerGetTests
         [Greedy] PreviousEngagementController sut)
     {
         OnboardingSessionModel sessionModel = new();
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork, Value = "True" });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = "True" });
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest);
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         var result = sut.Get();
 
         result.As<ViewResult>().Model.As<PreviousEngagementViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
+    }
+
+    [MoqAutoData]
+    public void Get_ViewModel_DefaultNullValueSetsHasPreviousEngagementToNull(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] PreviousEngagementController sut)
+    {
+        OnboardingSessionModel sessionModel = new();
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = null });
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest);
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+
+        var result = sut.Get();
+
+        result.As<ViewResult>().Model.As<PreviousEngagementViewModel>().HasPreviousEngagement.Should().BeNull();
     }
 
     [MoqAutoData]
@@ -69,11 +84,11 @@ public class PreviousEngagementControllerGetTests
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest);
         OnboardingSessionModel sessionModel = new OnboardingSessionModel();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork, Value = "True" });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = "True" });
 
         var result = sut.Get();
 
-        result.As<ViewResult>().Model.As<PreviousEngagementViewModel>().EngagedWithAPreviousAmbassadorInTheNetwork.Should().BeTrue();
+        result.As<ViewResult>().Model.As<PreviousEngagementViewModel>().HasPreviousEngagement.Should().BeTrue();
     }
 
     [MoqAutoData]
@@ -83,11 +98,49 @@ public class PreviousEngagementControllerGetTests
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest);
         OnboardingSessionModel sessionModel = new OnboardingSessionModel();
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EngagedWithAPreviousAmbassadorInTheNetwork, Value = "False" });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = "False" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         var result = sut.Get();
 
-        result.As<ViewResult>().Model.As<PreviousEngagementViewModel>().EngagedWithAPreviousAmbassadorInTheNetwork.Should().BeFalse();
+        result.As<ViewResult>().Model.As<PreviousEngagementViewModel>().HasPreviousEngagement.Should().BeFalse();
+    }
+
+    [MoqAutoData]
+    public void Get_ViewModelHasSeenPreviewIsTrue_BackLinkSetsToCheckYourAnswers(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] PreviousEngagementController sut,
+        string checkYourAnswersUrl)
+    {
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers, checkYourAnswersUrl);
+
+        OnboardingSessionModel sessionModel = new OnboardingSessionModel();
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = "False" });
+        sessionModel.HasSeenPreview = true;
+
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+
+        var result = sut.Get();
+
+        result.As<ViewResult>().Model.As<PreviousEngagementViewModel>().BackLink.Should().Be(checkYourAnswersUrl);
+    }
+
+    [MoqAutoData]
+    public void Get_ViewModelHasSeenPreviewIsFalse_BackLinkSetsToAreasOfInterest(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] PreviousEngagementController sut,
+        string areasOFInterestUrl)
+    {
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest, areasOFInterestUrl);
+
+        OnboardingSessionModel sessionModel = new OnboardingSessionModel();
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = "False" });
+        sessionModel.HasSeenPreview = false;
+
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+
+        var result = sut.Get();
+
+        result.As<ViewResult>().Model.As<PreviousEngagementViewModel>().BackLink.Should().Be(areasOFInterestUrl);
     }
 }

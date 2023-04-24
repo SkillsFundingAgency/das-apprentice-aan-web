@@ -4,6 +4,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
@@ -88,8 +89,8 @@ public class AreasOfInterestControllerPostTests
         AreasOfInterestSubmitModel submitmodel = new AreasOfInterestSubmitModel();
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
 
-        submitmodel.Events = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == "Events").Select(x => (SelectProfileModel)x));
-        submitmodel.Promotions = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == "Promotions").Select(x => (SelectProfileModel)x));
+        submitmodel.Events = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == Category.Events).Select(x => (SelectProfileModel)x));
+        submitmodel.Promotions = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == Category.Promotions).Select(x => (SelectProfileModel)x));
 
         var result = sut.Post(submitmodel);
 
@@ -116,8 +117,8 @@ public class AreasOfInterestControllerPostTests
         AreasOfInterestSubmitModel submitmodel = new AreasOfInterestSubmitModel();
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
 
-        submitmodel.Events = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == "Events").Select(x => (SelectProfileModel)x));
-        submitmodel.Promotions = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == "Promotions").Select(x => (SelectProfileModel)x));
+        submitmodel.Events = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == Category.Events).Select(x => (SelectProfileModel)x));
+        submitmodel.Promotions = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == Category.Promotions).Select(x => (SelectProfileModel)x));
 
         var result = sut.Post(submitmodel);
 

@@ -6,5 +6,5 @@ public class PreviousEngagementViewModel : PreviousEngagementSubmitModel, IBackL
 
 public class PreviousEngagementSubmitModel
 {
-    public bool? EngagedWithAPreviousAmbassadorInTheNetwork { get; set; }
+    public bool? HasPreviousEngagement { get; set; }
 }
