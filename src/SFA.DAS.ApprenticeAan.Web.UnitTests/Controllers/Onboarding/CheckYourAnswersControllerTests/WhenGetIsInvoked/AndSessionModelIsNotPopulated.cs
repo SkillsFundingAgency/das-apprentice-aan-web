@@ -32,6 +32,12 @@ public class AndSessionModelIsNotPopulated
         sessionModel.RegionName = null;
         sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork = null;
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EmployerName, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.AddressLine1, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.AddressLine2, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.Town, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.County, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.Postcode, Value = null });
 
         getResult = sut.Get().As<ViewResult>();
         viewModel = getResult.Model.As<CheckYourAnswersViewModel>();
@@ -66,5 +72,12 @@ public class AndSessionModelIsNotPopulated
     public void ThenSetsPreviousEngagementToNullInViewModel()
     {
         viewModel.PreviousEngagement.Should().BeNull();
+    }
+
+    [Test]
+    public void ThenSetsCurrentEmployerNameAndAddressToNullInViewModel()
+    {
+        viewModel.CurrentEmployerName.Should().BeNull();
+        viewModel.CurrentEmployerAddress.Should().BeNull();
     }
 }

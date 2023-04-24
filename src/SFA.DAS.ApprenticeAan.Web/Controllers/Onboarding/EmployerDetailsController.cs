@@ -71,6 +71,6 @@ public class EmployerDetailsController : Controller
 
         _sessionService.Set(sessionModel);
 
-        return RedirectToRoute(RouteNames.Onboarding.CurrentJobTitle);
+        return RedirectToRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.CurrentJobTitle);
     }
 }

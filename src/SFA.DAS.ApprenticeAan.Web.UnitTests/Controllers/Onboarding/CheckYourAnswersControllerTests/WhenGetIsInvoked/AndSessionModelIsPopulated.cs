@@ -23,16 +23,23 @@ public class AndSessionModelIsPopulated
     static readonly string? ReasonForJoiningTheNetwork = Guid.NewGuid().ToString();
     static readonly string ReasonForJoiningTheNetworkUrl = Guid.NewGuid().ToString();
     static readonly List<ProfileModel> AreasOfInterest = new List<ProfileModel>() {
-      new ProfileModel { Id = 1, Category = Category.Events, Value = "Presenting at online events" },
-      new ProfileModel { Id = 2, Category = Category.Events, Value = "Networking at events in person" },
-      new ProfileModel { Id = 3, Category = Category.Events, Value = null },
-      new ProfileModel { Id = 4, Category = Category.Promotions, Value = "Carrying out and writing up case studies" },
-      new ProfileModel { Id = 5, Category = Category.Promotions, Value = "Promoting the network on social media channels" },
-      new ProfileModel { Id = 6, Category = Category.Promotions, Value = null }
+        new ProfileModel { Id = 1, Category = Category.Events, Value = "Presenting at online events" },
+        new ProfileModel { Id = 2, Category = Category.Events, Value = "Networking at events in person" },
+        new ProfileModel { Id = 3, Category = Category.Events, Value = null },
+        new ProfileModel { Id = 4, Category = Category.Promotions, Value = "Carrying out and writing up case studies" },
+        new ProfileModel { Id = 5, Category = Category.Promotions, Value = "Promoting the network on social media channels" },
+        new ProfileModel { Id = 6, Category = Category.Promotions, Value = null }
     };
     static readonly string AreasOfInterestUrl = Guid.NewGuid().ToString();
     static readonly string? IsPreviouslyEngagedWithNetwork = "true";
     static readonly string PreviousEngagementUrl = Guid.NewGuid().ToString();
+    static readonly string EmployerName = Guid.NewGuid().ToString();
+    static readonly string AddressLine1 = Guid.NewGuid().ToString();
+    static readonly string AddressLine2 = Guid.NewGuid().ToString();
+    static readonly string Town = Guid.NewGuid().ToString();
+    static readonly string County = Guid.NewGuid().ToString();
+    static readonly string Postcode = Guid.NewGuid().ToString();
+    static readonly string EmployerSearchUrl = Guid.NewGuid().ToString();
 
     OnboardingSessionModel sessionModel;
     CheckYourAnswersController sut;
@@ -47,17 +54,24 @@ public class AndSessionModelIsPopulated
         sut = new(sessionServiceMock.Object);
 
         sut.AddUrlHelperMock()
-            .AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle, JobTitleUrl)
-            .AddUrlForRoute(RouteNames.Onboarding.Regions, RegionUrl)
-            .AddUrlForRoute(RouteNames.Onboarding.ReasonToJoin, ReasonForJoiningTheNetworkUrl)
-            .AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest, AreasOfInterestUrl)
-            .AddUrlForRoute(RouteNames.Onboarding.PreviousEngagement, PreviousEngagementUrl);
+        .AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle, JobTitleUrl)
+        .AddUrlForRoute(RouteNames.Onboarding.Regions, RegionUrl)
+        .AddUrlForRoute(RouteNames.Onboarding.ReasonToJoin, ReasonForJoiningTheNetworkUrl)
+        .AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest, AreasOfInterestUrl)
+        .AddUrlForRoute(RouteNames.Onboarding.PreviousEngagement, PreviousEngagementUrl)
+        .AddUrlForRoute(RouteNames.Onboarding.EmployerSearch, EmployerSearchUrl);
 
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = JobTitle });
         sessionModel.RegionName = RegionName;
         sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork = ReasonForJoiningTheNetwork;
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = IsPreviouslyEngagedWithNetwork });
         sessionModel.ProfileData.AddRange(AreasOfInterest);
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EmployerName, Value = EmployerName });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.AddressLine1, Value = AddressLine1 });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.AddressLine2, Value = AddressLine2 });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.Town, Value = Town });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.County, Value = County });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.Postcode, Value = Postcode });
 
         getResult = sut.Get().As<ViewResult>();
         viewModel = getResult.Model.As<CheckYourAnswersViewModel>();
@@ -109,5 +123,13 @@ public class AndSessionModelIsPopulated
 
         viewModel.PreviousEngagement.Should().Be(CheckYourAnswersViewModel.GetPreviousEngagementValue(isPreviouslyEngagged));
         viewModel.PreviousEngagementChangeLink.Should().Be(PreviousEngagementUrl);
+    }
+
+    [Test]
+    public void ThenSetsEmployerNameAndAddressInViewModel()
+    {
+        viewModel.CurrentEmployerName.Should().Be(EmployerName);
+        viewModel.CurrentEmployerChangeLink.Should().Be(EmployerSearchUrl);
+        viewModel.CurrentEmployerAddress.Should().Be($@"{AddressLine1} {AddressLine2} {County} {Town} {Postcode}");
     }
 }

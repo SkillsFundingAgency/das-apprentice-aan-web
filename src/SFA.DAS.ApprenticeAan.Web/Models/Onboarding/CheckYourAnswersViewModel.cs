@@ -6,6 +6,9 @@ namespace SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 
 public class CheckYourAnswersViewModel
 {
+    public string CurrentEmployerName { get; }
+    public string CurrentEmployerAddress { get; }
+    public string CurrentEmployerChangeLink { get; }
     public string JobTitleChangeLink { get; }
     public string? JobTitle { get; }
     public string RegionChangeLink { get; }
@@ -16,9 +19,12 @@ public class CheckYourAnswersViewModel
     public List<string> AreasOfInterest { get; }
     public string PreviousEngagementChangeLink { get; }
     public string? PreviousEngagement { get; }
-
     public CheckYourAnswersViewModel(IUrlHelper url, OnboardingSessionModel sessionModel)
     {
+        CurrentEmployerChangeLink = url.RouteUrl(@RouteNames.Onboarding.EmployerSearch)!;
+        CurrentEmployerName = sessionModel.GetProfileValue(ProfileDataId.EmployerName)!;
+        CurrentEmployerAddress = GetEmployerAddress(sessionModel)!;
+
         JobTitleChangeLink = url.RouteUrl(@RouteNames.Onboarding.CurrentJobTitle)!;
         JobTitle = sessionModel.GetProfileValue(ProfileDataId.JobTitle)!;
 
@@ -33,7 +39,6 @@ public class CheckYourAnswersViewModel
 
         PreviousEngagementChangeLink = url.RouteUrl(@RouteNames.Onboarding.PreviousEngagement)!;
         PreviousEngagement = GetPreviousEngagementValue(sessionModel.GetProfileValue(ProfileDataId.HasPreviousEngagement))!;
-
     }
 
     public static string? GetPreviousEngagementValue(string? previousEngagementValue)
@@ -44,5 +49,11 @@ public class CheckYourAnswersViewModel
             resultValue = result ? "Yes" : "No";
 
         return resultValue;
+    }
+
+    private string? GetEmployerAddress(OnboardingSessionModel sessionModel)
+    {
+        var address = $@"{sessionModel.GetProfileValue(ProfileDataId.AddressLine1)} {sessionModel.GetProfileValue(ProfileDataId.AddressLine2)} {sessionModel.GetProfileValue(ProfileDataId.County)} {sessionModel.GetProfileValue(ProfileDataId.Town)} {sessionModel.GetProfileValue(ProfileDataId.Postcode)}";
+        return string.IsNullOrWhiteSpace(address) ? null : address;
     }
 }
