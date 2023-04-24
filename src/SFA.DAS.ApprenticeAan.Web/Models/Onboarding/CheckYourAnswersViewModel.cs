@@ -51,7 +51,7 @@ public class CheckYourAnswersViewModel
         return resultValue;
     }
 
-    private string? GetEmployerAddress(OnboardingSessionModel sessionModel)
+    private static string? GetEmployerAddress(OnboardingSessionModel sessionModel)
     {
         var address = $@"{sessionModel.GetProfileValue(ProfileDataId.AddressLine1)} {sessionModel.GetProfileValue(ProfileDataId.AddressLine2)} {sessionModel.GetProfileValue(ProfileDataId.County)} {sessionModel.GetProfileValue(ProfileDataId.Town)} {sessionModel.GetProfileValue(ProfileDataId.Postcode)}";
         return string.IsNullOrWhiteSpace(address) ? null : address;
