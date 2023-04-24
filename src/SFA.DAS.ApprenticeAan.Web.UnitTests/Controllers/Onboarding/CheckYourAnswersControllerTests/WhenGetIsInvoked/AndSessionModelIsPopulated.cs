@@ -23,11 +23,11 @@ public class AndSessionModelIsPopulated
     static readonly string? ReasonForJoiningTheNetwork = Guid.NewGuid().ToString();
     static readonly string ReasonForJoiningTheNetworkUrl = Guid.NewGuid().ToString();
     static readonly List<ProfileModel> AreasOfInterest = new List<ProfileModel>() {
-        new ProfileModel { Id = 1, Category = Category.Events, Value = "Presenting at online events" },
-        new ProfileModel { Id = 2, Category = Category.Events, Value = "Networking at events in person" },
+        new ProfileModel { Id = 1, Category = Category.Events, Value = Guid.NewGuid().ToString() },
+        new ProfileModel { Id = 2, Category = Category.Events, Value = Guid.NewGuid().ToString() },
         new ProfileModel { Id = 3, Category = Category.Events, Value = null },
-        new ProfileModel { Id = 4, Category = Category.Promotions, Value = "Carrying out and writing up case studies" },
-        new ProfileModel { Id = 5, Category = Category.Promotions, Value = "Promoting the network on social media channels" },
+        new ProfileModel { Id = 4, Category = Category.Promotions, Value = Guid.NewGuid().ToString() },
+        new ProfileModel { Id = 5, Category = Category.Promotions, Value = Guid.NewGuid().ToString() },
         new ProfileModel { Id = 6, Category = Category.Promotions, Value = null }
     };
     static readonly string AreasOfInterestUrl = Guid.NewGuid().ToString();
