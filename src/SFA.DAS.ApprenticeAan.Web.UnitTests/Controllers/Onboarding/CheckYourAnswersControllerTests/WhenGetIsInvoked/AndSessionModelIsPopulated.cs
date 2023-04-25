@@ -128,7 +128,10 @@ public class AndSessionModelIsPopulated
     {
         viewModel.CurrentEmployerName.Should().Be(EmployerName);
         viewModel.CurrentEmployerChangeLink.Should().Be(EmployerSearchUrl);
-        viewModel.CurrentEmployerAddress.Should().Be($@"{AddressLine1} {AddressLine2} {County} {Town} {Postcode}");
+
+        var addressFields = new[] { AddressLine1, AddressLine2, Town, County, Postcode };
+        string completeAddress = string.Join(", ", addressFields.Where(s => !string.IsNullOrEmpty(s)));
+        viewModel.CurrentEmployerAddress.Should().Be(completeAddress);
     }
 
     [TearDown]
