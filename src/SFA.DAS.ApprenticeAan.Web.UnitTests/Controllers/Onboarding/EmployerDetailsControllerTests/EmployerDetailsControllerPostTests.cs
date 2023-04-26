@@ -108,7 +108,7 @@ public class EmployerDetailsControllerPostTests
     }
 
     [MoqAutoData]
-    public void Post_ModelStateIsValid_RedirectsToCurrentJobTitleView(
+    public void Post_ModelStateIsValidAndHasNotSeenPreview_RedirectsToCurrentJobTitleView(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IProfileService> profileServiceMock,
         [Frozen] Mock<IValidator<EmployerDetailsSubmitModel>> validatorMock,
@@ -122,6 +122,7 @@ public class EmployerDetailsControllerPostTests
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sessionModel.ProfileData = _profiles.Select(p => (ProfileModel)p).ToList();
+        sessionModel.HasSeenPreview = false;
         profileServiceMock.Setup(s => s.GetProfilesByUserType(userType)).ReturnsAsync(_profiles);
 
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
@@ -132,5 +133,33 @@ public class EmployerDetailsControllerPostTests
 
         result.As<RedirectToRouteResult>().Should().NotBeNull();
         result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.CurrentJobTitle);
+    }
+
+    [MoqAutoData]
+    public void Post_ModelStateIsValidAndHasSeenPreview_RedirectsToCheckYourAnswers(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Frozen] Mock<IProfileService> profileServiceMock,
+        [Frozen] Mock<IValidator<EmployerDetailsSubmitModel>> validatorMock,
+        [Frozen] EmployerDetailsSubmitModel submitmodel,
+        [Greedy] EmployerDetailsController sut)
+    {
+        OnboardingSessionModel sessionModel = new();
+        ValidationResult validationResult = new();
+
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.LineManager);
+
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+        sessionModel.ProfileData = _profiles.Select(p => (ProfileModel)p).ToList();
+        sessionModel.HasSeenPreview = true;
+        profileServiceMock.Setup(s => s.GetProfilesByUserType(userType)).ReturnsAsync(_profiles);
+
+        validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
+
+        var result = sut.PostEmployerDetails(submitmodel);
+
+        sut.ModelState.IsValid.Should().BeTrue();
+
+        result.As<RedirectToRouteResult>().Should().NotBeNull();
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.CheckYourAnswers);
     }
 }

@@ -50,9 +50,9 @@ public class CurrentJobTitleControllerGetTests
     public void Get_ViewModelHasSeenPreview_RedirectsRouteToCheckYourAnswers(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] CurrentJobTitleController sut,
-        OnboardingSessionModel sessionModel,
         string checkYourAnswersUrl)
     {
+        OnboardingSessionModel sessionModel = new();
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers, checkYourAnswersUrl);
         sessionModel.HasSeenPreview = true;
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });

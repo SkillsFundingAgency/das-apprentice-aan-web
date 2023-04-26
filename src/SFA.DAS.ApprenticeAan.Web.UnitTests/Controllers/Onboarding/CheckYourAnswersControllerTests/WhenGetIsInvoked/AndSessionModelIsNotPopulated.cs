@@ -1,5 +1,4 @@
-﻿using AutoFixture;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
@@ -16,12 +15,12 @@ public class AndSessionModelIsNotPopulated
     ViewResult getResult;
     CheckYourAnswersViewModel viewModel;
     CheckYourAnswersController sut;
+    OnboardingSessionModel sessionModel;
 
     [SetUp]
     public void Init()
     {
-        var fixture = new Fixture();
-        OnboardingSessionModel sessionModel = fixture.Create<OnboardingSessionModel>();
+        sessionModel = new();
         Mock<ISessionService> sessionServiceMock = new();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sut = new(sessionServiceMock.Object);
@@ -32,6 +31,12 @@ public class AndSessionModelIsNotPopulated
         sessionModel.RegionName = null;
         sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork = null;
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EmployerName, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.AddressLine1, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.AddressLine2, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.Town, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.County, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.Postcode, Value = null });
 
         getResult = sut.Get().As<ViewResult>();
         viewModel = getResult.Model.As<CheckYourAnswersViewModel>();
@@ -66,5 +71,20 @@ public class AndSessionModelIsNotPopulated
     public void ThenSetsPreviousEngagementToNullInViewModel()
     {
         viewModel.PreviousEngagement.Should().BeNull();
+    }
+
+    [Test]
+    public void ThenSetsCurrentEmployerNameAndAddressToNullInViewModel()
+    {
+        viewModel.CurrentEmployerName.Should().BeNull();
+        viewModel.CurrentEmployerAddress.Should().BeNull();
+    }
+
+    [TearDown]
+    public void Dispose()
+    {
+        sut = null!;
+        getResult = null!;
+        viewModel = null!;
     }
 }

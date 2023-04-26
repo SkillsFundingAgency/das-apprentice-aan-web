@@ -8,10 +8,23 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">Check the information you have provided before submitting your application</h1>
-        <div id="regions-hint" class="govuk-hint">
+        <div class="govuk-hint">
             Here are the details you have provided.
         </div>
         <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Current employer
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.CurrentEmployerName
+                    <br />
+                    @Model.CurrentEmployerAddress
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a href=@Url.RouteUrl(RouteNames.Onboarding.EmployerSearch) class="govuk-link govuk-link--no-visited-state">Change</a>
+                </dd>
+            </div>
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Current job title</dt>
                 <dd class="govuk-summary-list__value">@Model.JobTitle</dd>
@@ -69,5 +82,74 @@
                 </dd>
             </div>
         </dl>
+        <div style="visibility:hidden">
+            <h2 class="govuk-heading-m">
+                Here are your existing details from your Apprenticeship account.
+            </h2>
+            <div class="govuk-hint">
+                The information will be included in your application and shared with your regional chair so they can welcome you into network. If any of these details are incorrect. Please log in to your account and update them.
+            </div>
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Full name
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Email
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Start and end date of apprenticeship
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Apprenticeship sector
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Apprenticeship programme
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Apprenticeship level
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+
+                    </dd>
+                </div>
+            </dl>
+            <h2 class="govuk-heading-m">
+                Now send your application
+            </h2>
+            <div class="govuk-hint">
+                By submitting this application you are confirming that all the details you are providing are correct.
+            </div>
+            <div class="govuk-button-group">
+                <button id="continue-button" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true" asp-page-handler="Submit">
+                    Accept and submit
+                </button>
+            </div>
+        </div>
     </div>
 </div>
