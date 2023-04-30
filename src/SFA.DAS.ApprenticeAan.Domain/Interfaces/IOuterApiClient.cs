@@ -11,10 +11,14 @@ public interface IOuterApiClient
     [Get("/profiles/{userType}")]
     Task<GetProfilesResult> GetProfilesByUserType([Path("userType")] string userType);
 
-    [Get("/apprentices/account/{apprenticeId}")]
+    [Get("/apprentices/{apprenticeId}/account")]
     [AllowAnyStatusCode]
     Task<Response<ApprenticeAccount?>> GetApprenticeAccount([Path] Guid apprenticeId);
 
     [Get("/locations")]
     Task<GetAddressesResult> GetAddresses([Query] string query);
+
+    [Get("/apprentices/{apprenticeId}")]
+    [AllowAnyStatusCode]
+    Task<Response<ApprenticeAccount?>> GetApprentice([Path] Guid apprenticeId);
 }
