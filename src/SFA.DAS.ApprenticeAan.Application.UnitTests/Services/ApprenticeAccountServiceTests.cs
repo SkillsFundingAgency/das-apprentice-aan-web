@@ -3,12 +3,12 @@ using AutoFixture.NUnit3;
 using FluentAssertions;
 using Moq;
 using RestEase;
+using SFA.DAS.ApprenticeAan.Application.Services;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
-using SFA.DAS.ApprenticeAan.Web.Services;
 using SFA.DAS.Testing.AutoFixture;
 
-namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Services;
+namespace SFA.DAS.ApprenticeAan.Application.UnitTests.Services;
 public class ApprenticeAccountServiceTests
 {
     [Test]

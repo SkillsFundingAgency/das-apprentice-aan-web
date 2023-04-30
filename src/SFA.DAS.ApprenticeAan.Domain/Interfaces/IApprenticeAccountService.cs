@@ -1,9 +1,8 @@
 ﻿using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 
-namespace SFA.DAS.ApprenticeAan.Domain.Interfaces
+namespace SFA.DAS.ApprenticeAan.Domain.Interfaces;
+
+public interface IApprenticeAccountService
 {
-    public interface IApprenticeAccountService
-    {
-        Task<ApprenticeAccount?> GetApprenticeAccountDetails(Guid apprenticeId);
-    }
+    Task<ApprenticeAccount?> GetApprenticeAccountDetails(Guid apprenticeId);
 }
