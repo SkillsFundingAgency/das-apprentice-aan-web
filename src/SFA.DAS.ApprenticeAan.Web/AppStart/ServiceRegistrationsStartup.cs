@@ -2,7 +2,6 @@
 using RestEase.HttpClientFactory;
 using SFA.DAS.ApprenticeAan.Application.Services;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
-using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Services;
 using SFA.DAS.ApprenticePortal.SharedUi.Services;
@@ -21,6 +20,7 @@ public static class ServiceRegistrationsStartup
         services.AddTransient<IRegionsService, RegionsService>();
         services.AddTransient<IProfileService, ProfileService>();
         services.AddTransient<IApprenticeAccountService, ApprenticeAccountService>();
+        services.AddTransient<IApprenticesService, ApprenticesService>();
         return services;
     }
 
