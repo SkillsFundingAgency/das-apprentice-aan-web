@@ -24,11 +24,9 @@ public class AuthenticationEventsLocal : OpenIdConnectEvents
 
     public async Task AddClaims(ClaimsPrincipal principal)
     {
-        var claim = principal.ApprenticeIdClaim();
+        AuthenticatedUser user = new(principal);
 
-        if (!Guid.TryParse(claim?.Value, out var apprenticeId)) return;
-
-        var apprentice = await _apprenticeAccountService.GetApprenticeAccountDetails(apprenticeId);
+        var apprentice = await _apprenticeAccountService.GetApprenticeAccountDetails(user.ApprenticeId);
 
         if (apprentice == null) return;
 
@@ -39,9 +37,9 @@ public class AuthenticationEventsLocal : OpenIdConnectEvents
     {
         principal.AddIdentity(new ClaimsIdentity(new[]
         {
-                new Claim(IdentityClaims.GivenName, apprentice.FirstName),
-                new Claim(IdentityClaims.FamilyName, apprentice.LastName),
-            }));
+            new Claim(IdentityClaims.GivenName, apprentice.FirstName),
+            new Claim(IdentityClaims.FamilyName, apprentice.LastName),
+        }));
     }
 
     private static void AddApprenticeAccountClaims(ClaimsPrincipal principal, IApprenticeAccount apprentice)
