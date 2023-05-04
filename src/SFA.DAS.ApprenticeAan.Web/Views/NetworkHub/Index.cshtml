@@ -1,0 +1,47 @@
+﻿@model NetworkHubViewModel
+@{
+    ViewData["Title"] = "Your network hub";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">Your network hub</h1>
+
+        <p>
+            Welcome to your Apprenticeship Ambassador Network hub. Thank you for supporting the network in your role as an ambassador, where we can help you:
+            <ul class="govuk-body-m medium-margin-bottom indent">
+                <li>develop your skills and experience</li>
+                <li>build your professional network</li>
+                <li>champion apprenticeships in your region and across England</li>
+            </ul>
+        </p>
+
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dd class="govuk-summary-list__value">
+                    <h2><a href="@Model.EventsHubUrl">Events hub</a></h2>
+                    <p>Manage your upcoming events and give feedback about events you have attended.</p>
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dd class="govuk-summary-list__value">
+                    <h2><a href="@Model.EventsHubUrl">Network directory</a></h2>
+                    <p>Connect and network with other ambassadors across England.</p>
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dd class="govuk-summary-list__value">
+                    <h2><a href="@Model.EventsHubUrl">Profile settings</a></h2>
+                    <p>Update your profile and contact preferences including what information network members can see about you.</p>
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                </dd>
+            </div>
+        </dl>
+
+    </div>
+</div>
