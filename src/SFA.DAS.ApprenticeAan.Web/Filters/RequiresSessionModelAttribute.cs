@@ -9,7 +9,7 @@ using SFA.DAS.ApprenticeAan.Web.Models;
 namespace SFA.DAS.ApprenticeAan.Web.Filters;
 
 [ExcludeFromCodeCoverage]
-public class RequiredSessionModelAttribute : ActionFilterAttribute
+public class RequiresSessionModelAttribute : ActionFilterAttribute
 {
     public const string ActionName = "Index";
     public const string ControllerName = "Home";
