@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.ApprenticeAan.Domain.Interfaces;
 
-public interface IRegionsService
+public interface IApprenticeService
 {
-    Task<List<Region>> GetRegions();
+    Task<Apprentice?> GetApprentice(Guid apprenticeId);
 }

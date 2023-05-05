@@ -15,11 +15,11 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 public class RegionsController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/Regions.cshtml";
-    private readonly IRegionsService _regionService;
+    private readonly IRegionService _regionService;
     private readonly ISessionService _sessionService;
     private readonly IValidator<RegionsSubmitModel> _validator;
 
-    public RegionsController(ISessionService sessionService, IRegionsService regionService, IValidator<RegionsSubmitModel> validator)
+    public RegionsController(ISessionService sessionService, IRegionService regionService, IValidator<RegionsSubmitModel> validator)
     {
         _sessionService = sessionService;
         _regionService = regionService;

@@ -17,10 +17,10 @@ public static class ServiceRegistrationsStartup
         AddOuterApi(services, outerApiConfiguration);
         services.AddTransient<IMenuVisibility, MenuVisibility>();
         services.AddTransient<ISessionService, SessionService>();
-        services.AddTransient<IRegionsService, RegionsService>();
+        services.AddTransient<IRegionService, RegionService>();
         services.AddTransient<IProfileService, ProfileService>();
         services.AddTransient<IApprenticeAccountService, ApprenticeAccountService>();
-        services.AddTransient<IApprenticesService, ApprenticesService>();
+        services.AddTransient<IApprenticeService, ApprenticeService>();
         return services;
     }
 

@@ -10,9 +10,9 @@ namespace SFA.DAS.ApprenticeAan.Web.AppStart;
 public class AuthenticationEventsLocal : OpenIdConnectEvents
 {
     private readonly IApprenticeAccountService _apprenticeAccountService;
-    private readonly IApprenticesService _apprenticesService;
+    private readonly IApprenticeService _apprenticesService;
 
-    public AuthenticationEventsLocal(IApprenticeAccountService apprenticeAccountService, IApprenticesService apprenticesService)
+    public AuthenticationEventsLocal(IApprenticeAccountService apprenticeAccountService, IApprenticeService apprenticesService)
     {
         _apprenticeAccountService = apprenticeAccountService;
         _apprenticesService = apprenticesService;

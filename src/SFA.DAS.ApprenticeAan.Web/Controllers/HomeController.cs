@@ -9,10 +9,10 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 [Authorize]
 public class HomeController : Controller
 {
-    private readonly IApprenticesService _apprenticeService;
+    private readonly IApprenticeService _apprenticeService;
     private readonly AuthenticatedUser _authenticatedUser;
 
-    public HomeController(IApprenticesService apprenticeService, AuthenticatedUser authenticatedUser)
+    public HomeController(IApprenticeService apprenticeService, AuthenticatedUser authenticatedUser)
     {
         _apprenticeService = apprenticeService;
         _authenticatedUser = authenticatedUser;

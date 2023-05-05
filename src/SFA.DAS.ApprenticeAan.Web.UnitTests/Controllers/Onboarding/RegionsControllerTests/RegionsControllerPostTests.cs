@@ -21,7 +21,7 @@ public class RegionsControllerPostTests
     [MoqAutoData]
     public async Task Post_SetsSelectedRegionInOnBoardingSessionModel(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        [Frozen] Mock<IRegionsService> regionsService,
+        [Frozen] Mock<IRegionService> regionsService,
         [Frozen] Mock<IValidator<RegionsSubmitModel>> validatorMock,
         [Greedy] RegionsController sut,
         RegionsSubmitModel submitmodel)
@@ -62,7 +62,7 @@ public class RegionsControllerPostTests
     [MoqAutoData]
     public async Task Post_IsValidAndHasNotSeenPreview_RedirectsToReasonToJoinView(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        [Frozen] Mock<IRegionsService> regionsService,
+        [Frozen] Mock<IRegionService> regionsService,
         [Frozen] Mock<IValidator<RegionsSubmitModel>> validatorMock,
         [Frozen] RegionsSubmitModel submitmodel,
         [Greedy] RegionsController sut,
@@ -93,7 +93,7 @@ public class RegionsControllerPostTests
     [MoqAutoData]
     public async Task Post_IsValidAndHasSeenPreview_RedirectsToCheckYourAnswers(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        [Frozen] Mock<IRegionsService> regionsService,
+        [Frozen] Mock<IRegionService> regionsService,
         [Frozen] Mock<IValidator<RegionsSubmitModel>> validatorMock,
         [Frozen] RegionsSubmitModel submitmodel,
         [Greedy] RegionsController sut,

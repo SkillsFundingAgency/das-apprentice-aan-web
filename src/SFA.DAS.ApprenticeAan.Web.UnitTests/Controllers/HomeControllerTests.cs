@@ -16,7 +16,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers
         public async Task Index_ApprenticeIsMember_RedirectsToNetworkHub()
         {
             AuthenticatedUser user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerified;
-            Mock<IApprenticesService> apprenticesServiceMock = new();
+            Mock<IApprenticeService> apprenticesServiceMock = new();
             apprenticesServiceMock.Setup(a => a.GetApprentice(user.ApprenticeId)).ReturnsAsync(new Domain.OuterApi.Responses.Apprentice());
             var controller = new HomeController(apprenticesServiceMock.Object, user);
 
@@ -29,7 +29,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers
         public async Task Index_ApprenticeIsMember_RedirectsToOnboardingBeforeYouStart()
         {
             AuthenticatedUser user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerified;
-            Mock<IApprenticesService> apprenticesServiceMock = new();
+            Mock<IApprenticeService> apprenticesServiceMock = new();
             apprenticesServiceMock.Setup(a => a.GetApprentice(user.ApprenticeId)).ReturnsAsync(() => null);
             var controller = new HomeController(apprenticesServiceMock.Object, user);
 

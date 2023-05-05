@@ -10,12 +10,12 @@ using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Application.UnitTests.Services;
 
-public class ApprenticesServiceTests
+public class ApprenticeServiceTests
 {
     [Test, MoqAutoData]
     public async Task GetApprentice_InvokesApiClient(
         [Frozen] Mock<IOuterApiClient> clientMock,
-        ApprenticesService sut,
+        ApprenticeService sut,
         Guid apprenticeId,
         Response<Apprentice?> apprenticeResponse)
     {
@@ -30,7 +30,7 @@ public class ApprenticesServiceTests
     [Test, MoqAutoData]
     public async Task GetApprentice_FoundApprentice_ReturnsApprentice(
         [Frozen] Mock<IOuterApiClient> clientMock,
-        ApprenticesService sut,
+        ApprenticeService sut,
         Guid apprenticeId,
         Response<Apprentice?> apprenticeResponse)
     {
@@ -45,7 +45,7 @@ public class ApprenticesServiceTests
     [Test, MoqAutoData]
     public async Task GetApprentice_NotFound_ReturnsNull(
         [Frozen] Mock<IOuterApiClient> clientMock,
-        ApprenticesService sut,
+        ApprenticeService sut,
         Guid apprenticeId,
         Response<Apprentice?> apprenticeResponse)
     {
@@ -59,7 +59,7 @@ public class ApprenticesServiceTests
 
     [Test, MoqAutoData]
     public async Task GetApprentice_OuterApiUnsuccessfulResponse_ThrowsInvalidOperationException(
-        ApprenticesService sut)
+        ApprenticeService sut)
     {
         Func<Task> action = () => sut.GetApprentice(Guid.NewGuid());
 

@@ -4,11 +4,11 @@ using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 
 namespace SFA.DAS.ApprenticeAan.Application.Services;
 
-public class ApprenticesService : IApprenticesService
+public class ApprenticeService : IApprenticeService
 {
     private readonly IOuterApiClient _client;
 
-    public ApprenticesService(IOuterApiClient client)
+    public ApprenticeService(IOuterApiClient client)
     {
         _client = client;
     }
