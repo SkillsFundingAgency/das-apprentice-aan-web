@@ -53,3 +53,179 @@
 .js-enabled .das-show-hide__button {
     display: inline-block;
 }
+
+
+
+.app-calendar {
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin: 20px 0;
+    color: #0b0c0c;
+}
+
+.app-calendar__header,
+.app-calendar__day {
+    font-family: "GDS Transport",arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+}
+
+.app-calendar__header {
+    background: #2C7298;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    padding: 10px 0;
+}
+
+
+.app-calendar__day {
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    min-height: 130px;
+}
+
+.app-calendar__day--last-month,
+.app-calendar__day--next-month {
+    background: #eee;
+}
+
+.app-calendar__date {
+    display: block;
+    text-align: right;
+    margin: 5px;
+}
+
+.app-calendar__date-day {
+    padding: 5px;
+    display: inline-block;
+}
+
+.app-calendar__date--today .app-calendar__date-day {
+    background-color: #505a5f;
+    color: #fff;
+    min-width: 1.2em;
+    border-radius: 50%;
+    min-height: 1.2em;
+    text-align: center;
+}
+
+.app-calendar__date-month {
+    display: none;
+}
+
+.app-calendar__event {
+    border-left: 8px solid #b1b4b6;
+    background: #F3F2F1;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 7px;
+    display: block;
+    margin-top: 3px;
+}
+
+.app-calendar__event--hybrid { border-color: #85994B;}
+.app-calendar__event--inperson { border-color: #6F72AF;}
+.app-calendar__event--online { border-color: #912B88;}
+
+a.app-calendar__event {
+    text-decoration: none;
+    color: #0b0c0c;
+}
+
+a.app-calendar__event:hover {
+    color: #0b0c0c;
+    background-color: #ddd;
+}
+
+a.app-calendar__event:focus {
+    background-color: #fd0;
+    color: #0b0c0c;
+    border-color: #0b0c0c;
+}
+
+.app-calendar-legend {
+    border-radius: 5px;
+    max-width: 240px;
+    padding: 10px 20px;
+    border: 1px solid #b1b4b6;
+    font-family: "GDS Transport",arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color: #0b0c0c;
+}
+
+.app-calendar-legend__key {
+    display: flex;
+    margin: 10px 0;
+    align-items: center;
+}
+
+.app-calendar-legend__colour {
+    display: block;
+    width: 80px;
+    height: 11px;
+    margin-right: 10px;
+}
+
+.app-calendar-legend__colour--hybrid { background-color: #85994B;}
+.app-calendar-legend__colour--inperson { background-color: #6F72AF;}
+.app-calendar-legend__colour--online { background-color: #912B88;}
+
+.app-calendar-nav {
+    float: right;
+    display: flex;
+    gap: 5px;
+}
+
+.app-calendar-nav__link {
+    display: block;
+    background: #F3F2F1;
+    padding: 10px;
+}
+
+.app-calendar-nav__icon {
+    fill: #666;
+}
+
+
+.app-calendar-nav__link:hover {
+    color: #0b0c0c;
+    background-color: #ddd;
+}
+
+.app-calendar-nav__link:focus {
+    background-color: #fd0;
+    box-shadow: 0 4px #0b0c0c;
+}
+
+.app-calendar-nav__link:focus .app-calendar-nav__icon {
+    fill: #000
+}
+
+.app-calendar-nav__link-title {
+    display: none;
+}
+
+.app-icon-list {
+    border-top: 1px solid #b1b4b6;
+    margin-top: 40px;
+}
+
+.app-icon-list > li {
+    border-bottom: 1px solid #b1b4b6;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    padding-right: 100px;
+    position: relative;
+}
+
+.app-icon-list__icon {
+    position: absolute;
+    width: 60px;
+    top: 50%;
+    right: 0;
+    margin-top: -30px;
+    color: #1D3150;
+}
