@@ -79,7 +79,9 @@ public class EmployerSearchControllerPostTests
                 new ProfileModel { Id = ProfileDataId.AddressLine2 },
                 new ProfileModel { Id = ProfileDataId.County },
                 new ProfileModel { Id = ProfileDataId.Town },
-                new ProfileModel { Id = ProfileDataId.Postcode }
+                new ProfileModel { Id = ProfileDataId.Postcode },
+                new ProfileModel { Id = ProfileDataId.Longitude },
+                new ProfileModel { Id = ProfileDataId.Latitude }
             }
         };
 }

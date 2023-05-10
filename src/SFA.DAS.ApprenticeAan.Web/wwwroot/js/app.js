@@ -25,12 +25,14 @@ AutoComplete.prototype.getSuggestions = function(query, updateResults) {
 
 AutoComplete.prototype.onConfirm = function(option) {
   // Populate form fields with selected option
-  document.getElementById("OrganisationName").value = option.organisationName
-  document.getElementById("AddressLine1").value = option.addressLine1
-  document.getElementById("AddressLine2").value = option.addressLine2
-  document.getElementById("Town").value = option.town
-  document.getElementById("County").value = option.county
-  document.getElementById("Postcode").value = option.postcode
+    document.getElementById("OrganisationName").value = option.organisationName
+    document.getElementById("AddressLine1").value = option.addressLine1
+    document.getElementById("AddressLine2").value = option.addressLine2
+    document.getElementById("Town").value = option.town
+    document.getElementById("County").value = option.county
+    document.getElementById("Postcode").value = option.postcode
+    document.getElementById("Longitude").value = option.longitude
+    document.getElementById("Latitude").value = option.latitude
 
 }
 

@@ -15,4 +15,7 @@ public class EmployerSearchSubmitModel
     public string? Postcode { get; set; }
     public string? AddressLine1 { get; set; }
     public string? AddressLine2 { get; set; }
+    public double? Longitude { get; set; }
+    public double? Latitude { get; set; }
+
 }

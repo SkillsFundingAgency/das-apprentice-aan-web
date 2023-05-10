@@ -49,6 +49,8 @@ public class EmployerSearchController : Controller
         sessionModel.SetProfileValue(ProfileDataId.County, submitModel.County!);
         sessionModel.SetProfileValue(ProfileDataId.Town, submitModel.Town!);
         sessionModel.SetProfileValue(ProfileDataId.Postcode, submitModel.Postcode!);
+        sessionModel.SetProfileValue(ProfileDataId.Longitude, submitModel.Longitude.ToString()!);
+        sessionModel.SetProfileValue(ProfileDataId.Latitude, submitModel.Latitude.ToString()!);
 
         _sessionService.Set(sessionModel);
 
