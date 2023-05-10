@@ -62,7 +62,7 @@ public class Startup
 
         services.AddSession(options =>
         {
-            options.IdleTimeout = TimeSpan.FromMinutes(10);
+            options.IdleTimeout = TimeSpan.FromMinutes(30);
             options.Cookie.HttpOnly = true;
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             options.Cookie.IsEssential = true;
