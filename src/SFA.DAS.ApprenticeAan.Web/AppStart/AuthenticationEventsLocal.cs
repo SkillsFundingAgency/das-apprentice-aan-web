@@ -10,10 +10,12 @@ namespace SFA.DAS.ApprenticeAan.Web.AppStart;
 public class AuthenticationEventsLocal : OpenIdConnectEvents
 {
     private readonly IApprenticeAccountService _apprenticeAccountService;
+    private readonly IApprenticeService _apprenticesService;
 
-    public AuthenticationEventsLocal(IApprenticeAccountService apprenticeAccountService)
+    public AuthenticationEventsLocal(IApprenticeAccountService apprenticeAccountService, IApprenticeService apprenticesService)
     {
         _apprenticeAccountService = apprenticeAccountService;
+        _apprenticesService = apprenticesService;
     }
 
     public override async Task TokenValidated(TokenValidatedContext context)
@@ -24,28 +26,18 @@ public class AuthenticationEventsLocal : OpenIdConnectEvents
 
     public async Task AddClaims(ClaimsPrincipal principal)
     {
-        var claim = principal.ApprenticeIdClaim();
+        AuthenticatedUser user = new(principal);
 
-        if (!Guid.TryParse(claim?.Value, out var apprenticeId)) return;
+        await AddApprenticeAccountClaims(principal, user.ApprenticeId);
+        await AddAanMemberClaims(principal, user.ApprenticeId);
+    }
 
+    private async Task AddApprenticeAccountClaims(ClaimsPrincipal principal, Guid apprenticeId)
+    {
         var apprentice = await _apprenticeAccountService.GetApprenticeAccountDetails(apprenticeId);
 
         if (apprentice == null) return;
 
-        AddApprenticeAccountClaims(principal, apprentice);
-    }
-
-    private static void AddNameClaims(ClaimsPrincipal principal, IApprenticeAccount apprentice)
-    {
-        principal.AddIdentity(new ClaimsIdentity(new[]
-        {
-                new Claim(IdentityClaims.GivenName, apprentice.FirstName),
-                new Claim(IdentityClaims.FamilyName, apprentice.LastName),
-            }));
-    }
-
-    private static void AddApprenticeAccountClaims(ClaimsPrincipal principal, IApprenticeAccount apprentice)
-    {
         principal.AddAccountCreatedClaim();
 
         AddNameClaims(principal, apprentice);
@@ -53,4 +45,28 @@ public class AuthenticationEventsLocal : OpenIdConnectEvents
         if (apprentice.TermsOfUseAccepted)
             principal.AddTermsOfUseAcceptedClaim();
     }
+
+    private async Task AddAanMemberClaims(ClaimsPrincipal principal, Guid apprenticeId)
+    {
+        var apprentice = await _apprenticesService.GetApprentice(apprenticeId);
+        if (apprentice == null) return;
+
+        principal.AddIdentity(new ClaimsIdentity(new[] { new Claim(LocalIdentityClaims.AanMemberId, apprentice.MemberId.ToString()) }));
+    }
+
+    private static void AddNameClaims(ClaimsPrincipal principal, IApprenticeAccount apprentice)
+    {
+        principal.AddIdentity(new ClaimsIdentity(new[]
+        {
+            new Claim(IdentityClaims.GivenName, apprentice.FirstName),
+            new Claim(IdentityClaims.FamilyName, apprentice.LastName),
+        }));
+    }
+}
+
+public static class LocalIdentityClaims
+{
+    public const string AanMemberId = nameof(AanMemberId);
+
+    public static Guid? GetAanMemberId(this ClaimsPrincipal principal) => Guid.TryParse(principal.Claims.FirstOrDefault(c => c.Type == AanMemberId)?.Value, out Guid value) ? value : null;
 }

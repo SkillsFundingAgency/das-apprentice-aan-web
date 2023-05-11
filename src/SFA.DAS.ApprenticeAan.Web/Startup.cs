@@ -62,7 +62,7 @@ public class Startup
 
         services.AddSession(options =>
         {
-            options.IdleTimeout = TimeSpan.FromMinutes(10);
+            options.IdleTimeout = TimeSpan.FromMinutes(30);
             options.Cookie.HttpOnly = true;
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             options.Cookie.IsEssential = true;
@@ -72,7 +72,8 @@ public class Startup
             .Configure<RouteOptions>(options => { options.LowercaseUrls = true; })
             .AddMvc(options =>
             {
-                options.Filters.Add(new RequiredSessionModelAttribute());
+                options.Filters.Add(new RequiresExistingMemberAttribute());
+                options.Filters.Add(new RequiresSessionModelAttribute());
                 options.Filters.Add<RequiresRegistrationAuthorizationFilter>();
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             })
