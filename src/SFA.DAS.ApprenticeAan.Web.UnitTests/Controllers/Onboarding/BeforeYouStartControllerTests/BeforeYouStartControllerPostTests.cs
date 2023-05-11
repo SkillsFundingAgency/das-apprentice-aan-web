@@ -7,10 +7,9 @@ using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.BeforeYouStartControllerTests;
 
-[TestFixture]
 public class BeforeYouStartControllerPostTests
 {
-    [MoqAutoData]
+    [Test, MoqAutoData]
     public void Post_SessionModel_RedirectsRouteToTermsAndConditions(
          [Greedy] BeforeYouStartController sut)
     {

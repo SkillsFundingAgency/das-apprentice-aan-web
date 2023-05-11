@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
-using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
@@ -12,21 +10,10 @@ public class BeforeYouStartController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/BeforeYouStart.cshtml";
 
-    private readonly ApplicationConfiguration _applicationConfiguration;
-
-    public BeforeYouStartController(ApplicationConfiguration applicationConfiguration)
-    {
-        _applicationConfiguration = applicationConfiguration;
-    }
-
     [HttpGet]
     public IActionResult Get()
     {
-        var model = new BeforeYouStartViewModel()
-        {
-            BackLink = _applicationConfiguration.ApplicationUrls.ApprenticeHomeUrl.ToString()
-        };
-        return View(ViewPath, model);
+        return View(ViewPath);
     }
 
     [HttpPost]
