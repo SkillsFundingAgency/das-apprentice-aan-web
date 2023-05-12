@@ -23,6 +23,7 @@ The following repos need to be set up and running:
 - [das-location-api](https://github.com/SkillsFundingAgency/das-location-api)
 - [das-courses-api](https://github.com/SkillsFundingAgency/das-courses-api)
 - [das-apprentice-accounts-api](https://github.com/SkillsFundingAgency/das-apprentice-accounts-api)
+- [das-apprentice-accounts-web](https://github.com/SkillsFundingAgency/das-apprentice-accounts-web)
 - [das-apprentice-login-service](https://github.com/SkillsFundingAgency/das-apprentice-login-service)
 
 _Add the pre-requisites needed to successfully run the project so that new developers know how they are to setup their development environment_
