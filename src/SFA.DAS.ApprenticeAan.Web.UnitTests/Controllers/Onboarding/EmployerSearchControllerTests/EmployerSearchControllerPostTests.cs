@@ -48,7 +48,9 @@ public class EmployerSearchControllerPostTests
             m.GetProfileValue(ProfileDataId.AddressLine2) == submitModel.AddressLine2 &&
             m.GetProfileValue(ProfileDataId.County) == submitModel.County &&
             m.GetProfileValue(ProfileDataId.Town) == submitModel.Town &&
-            m.GetProfileValue(ProfileDataId.Postcode) == submitModel.Postcode
+            m.GetProfileValue(ProfileDataId.Postcode) == submitModel.Postcode &&
+            m.GetProfileValue(ProfileDataId.Longitude) == submitModel.Longitude.ToString() &&
+            m.GetProfileValue(ProfileDataId.Latitude) == submitModel.Latitude.ToString()
         )));
     }
 

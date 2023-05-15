@@ -18,12 +18,16 @@ public class EmployerDetailsController : Controller
 
     private readonly ISessionService _sessionService;
     private readonly IValidator<EmployerDetailsSubmitModel> _validator;
+    private readonly IOuterApiClient _outerApiClient;
 
-    public EmployerDetailsController(ISessionService sessionService,
-        IValidator<EmployerDetailsSubmitModel> validator)
+    public EmployerDetailsController(
+        ISessionService sessionService,
+        IValidator<EmployerDetailsSubmitModel> validator,
+        IOuterApiClient outerApiClient)
     {
         _validator = validator;
         _sessionService = sessionService;
+        _outerApiClient = outerApiClient;
     }
 
     [HttpGet]
@@ -39,6 +43,8 @@ public class EmployerDetailsController : Controller
             Town = sessionModel.GetProfileValue(ProfileDataId.Town),
             County = sessionModel.GetProfileValue(ProfileDataId.County),
             Postcode = sessionModel.GetProfileValue(ProfileDataId.Postcode),
+            Longitude = sessionModel.GetProfileValue(ProfileDataId.Longitude) != null ? Convert.ToDouble(sessionModel.GetProfileValue(ProfileDataId.Longitude)) : null,
+            Latitude = sessionModel.GetProfileValue(ProfileDataId.Latitude) != null ? Convert.ToDouble(sessionModel.GetProfileValue(ProfileDataId.Latitude)) : null,
 
             BackLink = Url.RouteUrl(@RouteNames.Onboarding.EmployerSearch)!
         };
@@ -46,7 +52,7 @@ public class EmployerDetailsController : Controller
     }
 
     [HttpPost]
-    public IActionResult PostEmployerDetails(EmployerDetailsSubmitModel submitmodel)
+    public async Task<IActionResult> PostEmployerDetails(EmployerDetailsSubmitModel submitmodel)
     {
         var model = new EmployerDetailsViewModel()
         {
@@ -60,6 +66,7 @@ public class EmployerDetailsController : Controller
             return View(ViewPath, model);
         }
 
+        var apiResponse = await _outerApiClient.GetCoordinates(submitmodel.Postcode!);
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
 
         sessionModel.SetProfileValue(ProfileDataId.EmployerName, submitmodel.EmployerName!);
@@ -68,6 +75,18 @@ public class EmployerDetailsController : Controller
         sessionModel.SetProfileValue(ProfileDataId.County, submitmodel.County!);
         sessionModel.SetProfileValue(ProfileDataId.Town, submitmodel.Town!);
         sessionModel.SetProfileValue(ProfileDataId.Postcode, submitmodel.Postcode!);
+
+        if (apiResponse.ResponseMessage.StatusCode == System.Net.HttpStatusCode.OK)
+        {
+            var coordinates = apiResponse.GetContent();
+            sessionModel.SetProfileValue(ProfileDataId.Longitude, coordinates.Longitude.ToString());
+            sessionModel.SetProfileValue(ProfileDataId.Latitude, coordinates.Latitude.ToString());
+        }
+        else
+        {
+            sessionModel.ClearProfileValue(ProfileDataId.Longitude);
+            sessionModel.ClearProfileValue(ProfileDataId.Latitude);
+        }
 
         _sessionService.Set(sessionModel);
 
