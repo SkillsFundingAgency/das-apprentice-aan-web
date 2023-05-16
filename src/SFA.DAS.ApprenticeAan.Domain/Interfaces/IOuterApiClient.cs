@@ -18,6 +18,10 @@ public interface IOuterApiClient
     [Get("/locations")]
     Task<GetAddressesResult> GetAddresses([Query] string query);
 
+    [Get("/locations/{postcode}")]
+    [AllowAnyStatusCode]
+    Task<Response<GetCoordinatesResult>> GetCoordinates([Path] string postcode);
+
     [Get("/apprentices/{apprenticeId}")]
     [AllowAnyStatusCode]
     Task<Response<Apprentice?>> GetApprentice([Path] Guid apprenticeId);

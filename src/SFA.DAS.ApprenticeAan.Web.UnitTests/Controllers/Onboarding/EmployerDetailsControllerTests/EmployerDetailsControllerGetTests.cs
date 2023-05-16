@@ -21,6 +21,8 @@ public class EmployerDetailsControllerGetTests
     private const string AddressLine1 = "20 Great Smith St";
     private const string Town = "London";
     private const string Postcode = "SW1P 3BT";
+    private const double Longitude = double.MinValue;
+    private const double Latitude = double.MinValue;
 
     private readonly List<ProfileModel> profileData = new()
     {
@@ -29,7 +31,9 @@ public class EmployerDetailsControllerGetTests
         new() { Id = ProfileDataId.AddressLine2, Category = Category},
         new() { Id = ProfileDataId.Town, Category = Category, Value = Town},
         new() { Id = ProfileDataId.County, Category = Category, },
-        new() { Id = ProfileDataId.Postcode, Category = Category, Value = Postcode}
+        new() { Id = ProfileDataId.Postcode, Category = Category, Value = Postcode},
+        new() { Id = ProfileDataId.Longitude, Category = Category, Value = Longitude.ToString()},
+        new() { Id = ProfileDataId.Latitude, Category = Category, Value = Latitude.ToString()}
     };
 
     [MoqAutoData]
@@ -99,5 +103,7 @@ public class EmployerDetailsControllerGetTests
         result.Town.Should().Be(Town);
         result.County.Should().BeNull();
         result.Postcode.Should().Be(Postcode);
+        result.Longitude.Should().Be(Longitude);
+        result.Latitude.Should().Be(Latitude);
     }
 }

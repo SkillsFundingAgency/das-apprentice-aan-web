@@ -16,4 +16,7 @@ public class EmployerDetailsSubmitModel
     public string? County { get; set; }
     public string? Town { get; set; }
     public string? Postcode { get; set; }
+    public double? Longitude { get; set; }
+    public double? Latitude { get; set; }
+
 }

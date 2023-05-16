@@ -10,4 +10,6 @@ public static class ProfileDataId
     public const int Town = 33;
     public const int County = 34;
     public const int Postcode = 35;
+    public const int Longitude = 36;
+    public const int Latitude = 37;
 }
