@@ -1,145 +1,193 @@
-﻿using FluentAssertions;
+﻿using AutoFixture;
+using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
+using SFA.DAS.ApprenticePortal.Authentication;
+using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.CheckYourAnswersControllerTests.WhenGetIsInvoked;
 
 public class AndSessionModelIsPopulated
 {
-    OnboardingSessionModel sessionModel;
-    CheckYourAnswersController sut;
-    ViewResult getResult;
-    CheckYourAnswersViewModel viewModel;
-
-    static readonly string? JobTitle = Guid.NewGuid().ToString();
     static readonly string JobTitleUrl = Guid.NewGuid().ToString();
-    static readonly string? RegionName = Guid.NewGuid().ToString();
     static readonly string RegionUrl = Guid.NewGuid().ToString();
-    static readonly string? ReasonForJoiningTheNetwork = Guid.NewGuid().ToString();
     static readonly string ReasonForJoiningTheNetworkUrl = Guid.NewGuid().ToString();
-    static readonly List<ProfileModel> AreasOfInterest = new List<ProfileModel>() {
-        new ProfileModel { Id = 1, Category = Category.Events, Value = Guid.NewGuid().ToString() },
-        new ProfileModel { Id = 2, Category = Category.Events, Value = Guid.NewGuid().ToString() },
-        new ProfileModel { Id = 3, Category = Category.Events, Value = null },
-        new ProfileModel { Id = 4, Category = Category.Promotions, Value = Guid.NewGuid().ToString() },
-        new ProfileModel { Id = 5, Category = Category.Promotions, Value = Guid.NewGuid().ToString() },
-        new ProfileModel { Id = 6, Category = Category.Promotions, Value = null }
-    };
     static readonly string AreasOfInterestUrl = Guid.NewGuid().ToString();
-    static readonly string? IsPreviouslyEngagedWithNetwork = "true";
     static readonly string PreviousEngagementUrl = Guid.NewGuid().ToString();
-    static readonly string EmployerName = Guid.NewGuid().ToString();
-    static readonly string AddressLine1 = Guid.NewGuid().ToString();
-    static readonly string AddressLine2 = Guid.NewGuid().ToString();
-    static readonly string Town = Guid.NewGuid().ToString();
-    static readonly string County = Guid.NewGuid().ToString();
-    static readonly string Postcode = Guid.NewGuid().ToString();
     static readonly string EmployerSearchUrl = Guid.NewGuid().ToString();
+    static readonly IEnumerable<int> AddressIds = Enumerable.Range(31, 5);
+
+
+    private readonly Fixture _fixture = new();
+    private CheckYourAnswersViewModel _actualViewModel;
+    private CheckYourAnswersController _sut;
+    private ViewResult _actualViewResult;
+    private OnboardingSessionModel _sessionModel;
+    private MyApprenticeship _myApprenticeship;
+
+    private List<ProfileModel> GetProfileData()
+    {
+        int[] profileIds = new[] { 20, 30 };
+        var profileData = _fixture.Build<ProfileModel>().WithValues(p => p.Id, profileIds).CreateMany(profileIds.Length).ToList();
+
+        var i = 0;
+        profileData.AddRange(_fixture.Build<ProfileModel>().WithValues(p => p.Id, AddressIds.ToArray()).CreateMany(AddressIds.Count()));
+
+        profileData
+            .Add(_fixture.Build<ProfileModel>()
+            .With(p => p.Id, ProfileDataId.HasPreviousEngagement)
+            .With(p => p.Value, "true")
+            .Create());
+
+        string[] areasOfInterestCategories = new[] { Category.Promotions, Category.Events };
+        profileData.AddRange(_fixture.Build<ProfileModel>().WithValues(p => p.Id, 1, 2).WithValues(p => p.Category, areasOfInterestCategories).CreateMany(areasOfInterestCategories.Length));
+        // Add null values for the same categories for exclusion
+        profileData.AddRange(_fixture.Build<ProfileModel>().WithValues(p => p.Id, 3, 4).WithValues(p => p.Category, areasOfInterestCategories).Without(p => p.Value).CreateMany(areasOfInterestCategories.Length));
+        return profileData;
+    }
 
     [SetUp]
-    public void Init()
+    public async Task SetUp()
     {
-        sessionModel = new();
+        // Arrange
+        _sessionModel = _fixture
+            .Build<OnboardingSessionModel>()
+            .With(m => m.ProfileData, GetProfileData())
+            .Create();
+
         Mock<ISessionService> sessionServiceMock = new();
-        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
-        sut = new(sessionServiceMock.Object);
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(_sessionModel);
 
-        sut.AddUrlHelperMock()
-        .AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle, JobTitleUrl)
-        .AddUrlForRoute(RouteNames.Onboarding.Regions, RegionUrl)
-        .AddUrlForRoute(RouteNames.Onboarding.ReasonToJoin, ReasonForJoiningTheNetworkUrl)
-        .AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest, AreasOfInterestUrl)
-        .AddUrlForRoute(RouteNames.Onboarding.PreviousEngagement, PreviousEngagementUrl)
-        .AddUrlForRoute(RouteNames.Onboarding.EmployerSearch, EmployerSearchUrl);
+        var apprenticeId = _fixture.Create<Guid>();
 
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = JobTitle });
-        sessionModel.RegionName = RegionName;
-        sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork = ReasonForJoiningTheNetwork;
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = IsPreviouslyEngagedWithNetwork });
-        sessionModel.ProfileData.AddRange(AreasOfInterest);
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EmployerName, Value = EmployerName });
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.AddressLine1, Value = AddressLine1 });
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.AddressLine2, Value = AddressLine2 });
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.Town, Value = Town });
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.County, Value = County });
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.Postcode, Value = Postcode });
+        _myApprenticeship = _fixture.Create<MyApprenticeship>();
+        Mock<IOuterApiClient> outerApiClientMock = new();
+        outerApiClientMock.Setup(o => o.GetMyApprenticeship(apprenticeId)).ReturnsAsync(_myApprenticeship);
 
-        getResult = sut.Get().As<ViewResult>();
-        viewModel = getResult.Model.As<CheckYourAnswersViewModel>();
+        _sut = new(sessionServiceMock.Object, outerApiClientMock.Object);
+        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
+        _sut.ControllerContext = new() { HttpContext = new DefaultHttpContext() { User = user } };
+
+        _sut.AddUrlHelperMock()
+            .AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle, JobTitleUrl)
+            .AddUrlForRoute(RouteNames.Onboarding.Regions, RegionUrl)
+            .AddUrlForRoute(RouteNames.Onboarding.ReasonToJoin, ReasonForJoiningTheNetworkUrl)
+            .AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest, AreasOfInterestUrl)
+            .AddUrlForRoute(RouteNames.Onboarding.PreviousEngagement, PreviousEngagementUrl)
+            .AddUrlForRoute(RouteNames.Onboarding.EmployerSearch, EmployerSearchUrl);
+
+        // Action
+        var result = await _sut.Get();
+
+        _actualViewResult = result.As<ViewResult>();
+        _actualViewModel = _actualViewResult.Model.As<CheckYourAnswersViewModel>();
     }
 
     [Test]
     public void ThenReturnsViewResults()
     {
-        getResult.Should().NotBeNull();
-        getResult.ViewName.Should().Be(CheckYourAnswersController.ViewPath);
+        _actualViewResult.Should().NotBeNull();
+        _actualViewResult.ViewName.Should().Be(CheckYourAnswersController.ViewPath);
     }
 
     [Test]
     public void ThenSetsJobTitleInViewModel()
     {
-        viewModel.JobTitle.Should().Be(JobTitle);
-        viewModel.JobTitleChangeLink.Should().Be(JobTitleUrl);
+        _actualViewModel.JobTitle.Should().Be(_sessionModel.ProfileData.First(p => p.Id == ProfileDataId.JobTitle).Value);
+        _actualViewModel.JobTitleChangeLink.Should().Be(JobTitleUrl);
     }
 
     [Test]
     public void ThenSetsRegionInViewModel()
     {
-        viewModel.Region.Should().Be(RegionName);
-        viewModel.RegionChangeLink.Should().Be(RegionUrl);
+        _actualViewModel.Region.Should().Be(_sessionModel.RegionName);
+        _actualViewModel.RegionChangeLink.Should().Be(RegionUrl);
     }
 
     [Test]
     public void ThenSetsReasonToJoinTheNetworkInViewModel()
     {
-        viewModel.ReasonForJoiningTheNetwork.Should().Be(ReasonForJoiningTheNetwork);
-        viewModel.ReasonForJoiningTheNetworkChangeLink.Should().Be(ReasonForJoiningTheNetworkUrl);
+        _actualViewModel.ReasonForJoiningTheNetwork.Should().Be(_sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork);
+        _actualViewModel.ReasonForJoiningTheNetworkChangeLink.Should().Be(ReasonForJoiningTheNetworkUrl);
     }
 
     [Test]
     public void ThenSetsAreaOfInterestsInViewModel()
     {
-        viewModel.AreasOfInterest.Should().Equal(AreasOfInterest.Where(x => (x.Category == Category.Events || x.Category == Category.Promotions) && x.Value != null).Select(x => x.Description).ToList());
-        viewModel.AreasOfInterestChangeLink.Should().Be(AreasOfInterestUrl);
+        _actualViewModel.AreasOfInterest.Should().Equal(_sessionModel.ProfileData.Where(x => (x.Category == Category.Events || x.Category == Category.Promotions) && x.Value != null).Select(x => x.Description).ToList());
+        _actualViewModel.AreasOfInterestChangeLink.Should().Be(AreasOfInterestUrl);
     }
 
-    [TestCase("true")]
-    [TestCase("false")]
-    [TestCase(null)]
-    public void ThenSetsPreviousEngagementInViewModel(string isPreviouslyEngagged)
+    [TestCase("true", "Yes")]
+    [TestCase("false", "No")]
+    [TestCase(null, null)]
+    public async Task ThenSetsPreviousEngagementInViewModel(string? isPreviouslyEngaged, string? expectedValue)
     {
-        sessionModel.SetProfileValue(ProfileDataId.HasPreviousEngagement, isPreviouslyEngagged);
-        getResult = sut.Get().As<ViewResult>();
-        viewModel = getResult.Model.As<CheckYourAnswersViewModel>();
+        _sessionModel.SetProfileValue(ProfileDataId.HasPreviousEngagement, isPreviouslyEngaged!);
+        var actualResult = await _sut.Get();
+        var actualViewModel = actualResult.As<ViewResult>().Model.As<CheckYourAnswersViewModel>();
 
-        viewModel.PreviousEngagement.Should().Be(CheckYourAnswersViewModel.GetPreviousEngagementValue(isPreviouslyEngagged));
-        viewModel.PreviousEngagementChangeLink.Should().Be(PreviousEngagementUrl);
+        actualViewModel.PreviousEngagement.Should().Be(expectedValue);
+        actualViewModel.PreviousEngagementChangeLink.Should().Be(PreviousEngagementUrl);
     }
 
     [Test]
-    public void ThenSetsEmployerNameAndAddressInViewModel()
+    public void ThenSetsEmployerNameInViewModel()
     {
-        viewModel.CurrentEmployerName.Should().Be(EmployerName);
-        viewModel.CurrentEmployerChangeLink.Should().Be(EmployerSearchUrl);
-
-        var addressFields = new[] { AddressLine1, AddressLine2, Town, County, Postcode };
-        string completeAddress = string.Join(", ", addressFields.Where(s => !string.IsNullOrEmpty(s)));
-        viewModel.CurrentEmployerAddress.Should().Be(completeAddress);
+        _actualViewModel.CurrentEmployerName.Should().Be(_sessionModel.ProfileData.First(p => p.Id == ProfileDataId.EmployerName).Value);
+        _actualViewModel.CurrentEmployerChangeLink.Should().Be(EmployerSearchUrl);
     }
 
-    [TearDown]
-    public void Dispose()
+    [Test]
+    public void ThenSetsAddressInViewModel()
     {
-        sessionModel = null!;
-        sut = null!;
-        getResult = null!;
-        viewModel = null!;
+        string completeAddress = string.Join(", ", _sessionModel.ProfileData.Where(p => AddressIds.Contains(p.Id)).OrderBy(p => p.Id).Select(p => p.Value));
+        _actualViewModel.CurrentEmployerAddress.Should().Be(completeAddress);
+    }
+
+    [Test]
+    public void ThenSetsApprenticesFullName()
+    {
+        _actualViewModel.FullName.Should().Be(_sut.User.FullName());
+    }
+
+    [Test]
+    public void ThenSetsApprenticesEmail()
+    {
+        _actualViewModel.Email.Should().Be(_sut.User.EmailAddressClaim()!.Value);
+    }
+
+    [Test]
+    public void ThenSetsApprenticeshipDuration()
+    {
+        _actualViewModel.ApprenticeshipDuration.Should().Contain(_myApprenticeship.StartDate.GetValueOrDefault().Date.ToString("dd-MM-yyyy"));
+        _actualViewModel.ApprenticeshipDuration.Should().Contain(_myApprenticeship.EndDate.GetValueOrDefault().Date.ToString("dd-MM-yyyy"));
+    }
+
+    [Test]
+    public void ThenSetsApprenticeshipSector()
+    {
+        _actualViewModel.ApprenticeshipSector.Should().Be(_myApprenticeship.TrainingCourse.Sector);
+    }
+
+    [Test]
+    public void ThenSetsApprenticeshipProgram()
+    {
+        _actualViewModel.ApprenticeshipProgram.Should().Be(_myApprenticeship.TrainingCourse.Name);
+    }
+
+    [Test]
+    public void ThenSetsApprenticeshipLevel()
+    {
+        _actualViewModel.ApprenticeshipLevel.Should().Be($"Level {_myApprenticeship.TrainingCourse.Level}");
     }
 }

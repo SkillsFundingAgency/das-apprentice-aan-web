@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
+using SFA.DAS.ApprenticePortal.Authentication;
 
 namespace SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 
@@ -19,7 +22,14 @@ public class CheckYourAnswersViewModel
     public List<string> AreasOfInterest { get; }
     public string PreviousEngagementChangeLink { get; }
     public string? PreviousEngagement { get; }
-    public CheckYourAnswersViewModel(IUrlHelper url, OnboardingSessionModel sessionModel)
+    public string FullName { get; }
+    public string Email { get; }
+    public string ApprenticeshipDuration { get; }
+    public string ApprenticeshipSector { get; }
+    public string ApprenticeshipProgram { get; }
+    public string ApprenticeshipLevel { get; }
+
+    public CheckYourAnswersViewModel(IUrlHelper url, OnboardingSessionModel sessionModel, ClaimsPrincipal user, MyApprenticeship myApprenticeship)
     {
         CurrentEmployerChangeLink = url.RouteUrl(@RouteNames.Onboarding.EmployerSearch)!;
         CurrentEmployerName = sessionModel.GetProfileValue(ProfileDataId.EmployerName)!;
@@ -39,9 +49,19 @@ public class CheckYourAnswersViewModel
 
         PreviousEngagementChangeLink = url.RouteUrl(@RouteNames.Onboarding.PreviousEngagement)!;
         PreviousEngagement = GetPreviousEngagementValue(sessionModel.GetProfileValue(ProfileDataId.HasPreviousEngagement))!;
+
+        /// Apprentice's details
+        FullName = user.FullName();
+        Email = user.EmailAddressClaim()!.Value;
+
+        /// Apprenticeship details
+        ApprenticeshipDuration = $"From {myApprenticeship.StartDate.GetValueOrDefault().Date:dd-MM-yyyy} to {myApprenticeship.EndDate.GetValueOrDefault().Date:dd-MM-yyyy}";
+        ApprenticeshipSector = myApprenticeship.TrainingCourse.Sector;
+        ApprenticeshipProgram = myApprenticeship.TrainingCourse.Name;
+        ApprenticeshipLevel = $"Level {myApprenticeship.TrainingCourse.Level}";
     }
 
-    public static string? GetPreviousEngagementValue(string? previousEngagementValue)
+    private static string? GetPreviousEngagementValue(string? previousEngagementValue)
     {
         string? resultValue = null;
 
