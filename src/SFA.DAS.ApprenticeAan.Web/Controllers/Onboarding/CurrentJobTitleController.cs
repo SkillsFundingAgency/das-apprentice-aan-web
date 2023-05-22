@@ -38,11 +38,11 @@ public class CurrentJobTitleController : Controller
     }
 
     [HttpPost]
-    public IActionResult Post(CurrentJobTitleSubmitModel submitmodel)
+    public IActionResult Post(CurrentJobTitleSubmitModel submitModel)
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
 
-        ValidationResult result = _validator.Validate(submitmodel);
+        ValidationResult result = _validator.Validate(submitModel);
 
         if (!result.IsValid)
         {
@@ -51,7 +51,7 @@ public class CurrentJobTitleController : Controller
             return View(ViewPath, model);
         }
 
-        sessionModel.SetProfileValue(ProfileDataId.JobTitle, submitmodel.JobTitle!);
+        sessionModel.SetProfileValue(ProfileDataId.JobTitle, submitModel.JobTitle!.Trim());
         _sessionService.Set(sessionModel);
 
         return RedirectToRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.Regions);
