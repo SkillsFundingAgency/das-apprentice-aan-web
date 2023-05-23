@@ -21,13 +21,11 @@ public class CheckYourAnswersController : Controller
     public const string ApplicationSubmittedViewPath = "~/Views/Onboarding/ApplicationSubmitted.cshtml";
     private readonly ISessionService _sessionService;
     private readonly IOuterApiClient _outerApiClient;
-    private readonly IApprenticeService _apprenticeService;
 
-    public CheckYourAnswersController(ISessionService sessionService, IOuterApiClient outerApiClient, IApprenticeService apprenticeService)
+    public CheckYourAnswersController(ISessionService sessionService, IOuterApiClient outerApiClient)
     {
         _sessionService = sessionService;
         _outerApiClient = outerApiClient;
-        _apprenticeService = apprenticeService;
     }
 
     [HttpGet]
@@ -50,7 +48,7 @@ public class CheckYourAnswersController : Controller
     public async Task<IActionResult> Post()
     {
         var onboardingSessionModel = _sessionService.Get<OnboardingSessionModel>();
-        var result = await _apprenticeService.PostApprenticeship(GetRequest(onboardingSessionModel));
+        var result = await _outerApiClient.PostApprenticeMember(GenerateCreateApprenticeMemberRequest(onboardingSessionModel));
 
         User.AddAanMemberIdClaim(result.MemberId);
 
@@ -59,7 +57,7 @@ public class CheckYourAnswersController : Controller
         return View(ApplicationSubmittedViewPath);
     }
 
-    private CreateApprenticeMemberRequest GetRequest(OnboardingSessionModel source)
+    private CreateApprenticeMemberRequest GenerateCreateApprenticeMemberRequest(OnboardingSessionModel source)
     {
         CreateApprenticeMemberRequest request = new()
         {

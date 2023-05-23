@@ -9,7 +9,7 @@ using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.CheckYourAnswersControllerTests.WhenGetIsInvoked;
-public class CheckYourAnswersControllerGetTests : CheckYourAnswersControllerGetTestsBase
+public class CheckYourAnswersControllerGetTests : CheckYourAnswersControllerTestsBase
 {
     [Test, MoqAutoData]
     public async Task Get_HasSeenPreview_DoesNotRequestMyApprenticeshipData(

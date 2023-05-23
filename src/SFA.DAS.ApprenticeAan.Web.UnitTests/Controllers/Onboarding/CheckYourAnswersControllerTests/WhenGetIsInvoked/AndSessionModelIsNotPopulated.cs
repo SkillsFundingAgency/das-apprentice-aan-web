@@ -28,13 +28,12 @@ public class AndSessionModelIsNotPopulated
         OnboardingSessionModel sessionModel = new();
         Mock<ISessionService> sessionServiceMock = new();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
-        Mock<IApprenticeService> apprenticeServiceMock = new();
-        apprenticeServiceMock.Setup(a => a.PostApprenticeship(It.IsAny<CreateApprenticeMemberRequest>())).ReturnsAsync(fixture.Create<CreateApprenticeMemberResponse>());
 
         Mock<IOuterApiClient> outerApiClientMock = new();
         outerApiClientMock.Setup(o => o.GetMyApprenticeship(apprenticeId)).ReturnsAsync(fixture.Create<MyApprenticeship>());
+        outerApiClientMock.Setup(a => a.PostApprenticeMember(It.IsAny<CreateApprenticeMemberRequest>())).ReturnsAsync(new CreateApprenticeMemberResponse(Guid.NewGuid()));
 
-        CheckYourAnswersController sut = new(sessionServiceMock.Object, outerApiClientMock.Object, apprenticeServiceMock.Object);
+        CheckYourAnswersController sut = new(sessionServiceMock.Object, outerApiClientMock.Object);
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
         sut.ControllerContext = new() { HttpContext = new DefaultHttpContext() { User = user } };
 

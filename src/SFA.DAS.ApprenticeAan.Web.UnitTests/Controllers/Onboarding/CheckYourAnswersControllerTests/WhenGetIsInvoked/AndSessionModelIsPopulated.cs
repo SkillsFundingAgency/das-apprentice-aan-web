@@ -17,7 +17,7 @@ using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.CheckYourAnswersControllerTests.WhenGetIsInvoked;
 
-public class AndSessionModelIsPopulated : CheckYourAnswersControllerGetTestsBase
+public class AndSessionModelIsPopulated : CheckYourAnswersControllerTestsBase
 {
     static readonly string JobTitleUrl = Guid.NewGuid().ToString();
     static readonly string RegionUrl = Guid.NewGuid().ToString();
@@ -48,16 +48,15 @@ public class AndSessionModelIsPopulated : CheckYourAnswersControllerGetTestsBase
         Mock<ISessionService> sessionServiceMock = new();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(_sessionModel);
 
-        Mock<IApprenticeService> apprenticeServiceMock = new();
-        apprenticeServiceMock.Setup(a => a.PostApprenticeship(It.IsAny<CreateApprenticeMemberRequest>())).ReturnsAsync(new CreateApprenticeMemberResponse(Guid.NewGuid()));
 
         var apprenticeId = _fixture.Create<Guid>();
 
         _myApprenticeship = _fixture.Create<MyApprenticeship>();
         Mock<IOuterApiClient> outerApiClientMock = new();
         outerApiClientMock.Setup(o => o.GetMyApprenticeship(apprenticeId)).ReturnsAsync(_myApprenticeship);
+        outerApiClientMock.Setup(a => a.PostApprenticeMember(It.IsAny<CreateApprenticeMemberRequest>())).ReturnsAsync(new CreateApprenticeMemberResponse(Guid.NewGuid()));
 
-        _sut = new(sessionServiceMock.Object, outerApiClientMock.Object, apprenticeServiceMock.Object);
+        _sut = new(sessionServiceMock.Object, outerApiClientMock.Object);
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
         _sut.ControllerContext = new() { HttpContext = new DefaultHttpContext() { User = user } };
 

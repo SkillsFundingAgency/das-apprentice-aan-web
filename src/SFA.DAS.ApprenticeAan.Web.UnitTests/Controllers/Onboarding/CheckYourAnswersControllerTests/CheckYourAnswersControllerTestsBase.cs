@@ -5,7 +5,7 @@ using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.CheckYourAnswersControllerTests;
 
-public abstract class CheckYourAnswersControllerGetTestsBase
+public abstract class CheckYourAnswersControllerTestsBase
 {
     internal static readonly IEnumerable<int> AddressIds = Enumerable.Range(31, 5);
     internal static List<ProfileModel> GetProfileData()
