@@ -17,7 +17,7 @@ using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.CheckYourAnswersControllerTests.WhenGetIsInvoked;
 
-public class AndSessionModelIsPopulated
+public class AndSessionModelIsPopulated : CheckYourAnswersControllerGetTestsBase
 {
     static readonly string JobTitleUrl = Guid.NewGuid().ToString();
     static readonly string RegionUrl = Guid.NewGuid().ToString();
@@ -25,7 +25,7 @@ public class AndSessionModelIsPopulated
     static readonly string AreasOfInterestUrl = Guid.NewGuid().ToString();
     static readonly string PreviousEngagementUrl = Guid.NewGuid().ToString();
     static readonly string EmployerSearchUrl = Guid.NewGuid().ToString();
-    static readonly IEnumerable<int> AddressIds = Enumerable.Range(31, 5);
+
 
 
     private readonly Fixture _fixture = new();
@@ -175,23 +175,5 @@ public class AndSessionModelIsPopulated
         _actualViewModel.ApprenticeshipLevel.Should().Be($"Level {_myApprenticeship.TrainingCourse.Level}");
     }
 
-    private List<ProfileModel> GetProfileData()
-    {
-        int[] profileIds = new[] { 20, 30 };
-        var profileData = _fixture.Build<ProfileModel>().WithValues(p => p.Id, profileIds).CreateMany(profileIds.Length).ToList();
 
-        profileData.AddRange(_fixture.Build<ProfileModel>().WithValues(p => p.Id, AddressIds.ToArray()).CreateMany(AddressIds.Count()));
-
-        profileData
-            .Add(_fixture.Build<ProfileModel>()
-            .With(p => p.Id, ProfileDataId.HasPreviousEngagement)
-            .With(p => p.Value, "true")
-            .Create());
-
-        string[] areasOfInterestCategories = new[] { Category.Promotions, Category.Events };
-        profileData.AddRange(_fixture.Build<ProfileModel>().WithValues(p => p.Id, 1, 2).WithValues(p => p.Category, areasOfInterestCategories).CreateMany(areasOfInterestCategories.Length));
-        // Add null values for the same categories for exclusion
-        profileData.AddRange(_fixture.Build<ProfileModel>().WithValues(p => p.Id, 3, 4).WithValues(p => p.Category, areasOfInterestCategories).Without(p => p.Value).CreateMany(areasOfInterestCategories.Length));
-        return profileData;
-    }
 }
