@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
@@ -62,10 +63,14 @@ public class AndSessionModelIsPopulated
         _sessionModel = _fixture
             .Build<OnboardingSessionModel>()
             .With(m => m.ProfileData, GetProfileData())
+            .With(m => m.HasSeenPreview, false)
             .Create();
 
         Mock<ISessionService> sessionServiceMock = new();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(_sessionModel);
+
+        Mock<IApprenticeService> apprenticeServiceMock = new();
+        apprenticeServiceMock.Setup(a => a.PostApprenticeship(It.IsAny<CreateApprenticeMemberRequest>())).ReturnsAsync(new CreateApprenticeMemberResponse(Guid.NewGuid()));
 
         var apprenticeId = _fixture.Create<Guid>();
 
@@ -73,7 +78,7 @@ public class AndSessionModelIsPopulated
         Mock<IOuterApiClient> outerApiClientMock = new();
         outerApiClientMock.Setup(o => o.GetMyApprenticeship(apprenticeId)).ReturnsAsync(_myApprenticeship);
 
-        _sut = new(sessionServiceMock.Object, outerApiClientMock.Object);
+        _sut = new(sessionServiceMock.Object, outerApiClientMock.Object, apprenticeServiceMock.Object);
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
         _sut.ControllerContext = new() { HttpContext = new DefaultHttpContext() { User = user } };
 

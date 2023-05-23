@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
-using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticePortal.Authentication;
 
@@ -29,7 +28,7 @@ public class CheckYourAnswersViewModel
     public string ApprenticeshipProgram { get; }
     public string ApprenticeshipLevel { get; }
 
-    public CheckYourAnswersViewModel(IUrlHelper url, OnboardingSessionModel sessionModel, ClaimsPrincipal user, MyApprenticeship myApprenticeship)
+    public CheckYourAnswersViewModel(IUrlHelper url, OnboardingSessionModel sessionModel, ClaimsPrincipal user)
     {
         CurrentEmployerChangeLink = url.RouteUrl(@RouteNames.Onboarding.EmployerSearch)!;
         CurrentEmployerName = sessionModel.GetProfileValue(ProfileDataId.EmployerName)!;
@@ -55,6 +54,7 @@ public class CheckYourAnswersViewModel
         Email = user.EmailAddressClaim()!.Value;
 
         /// Apprenticeship details
+        var myApprenticeship = sessionModel.MyApprenticeship;
         ApprenticeshipDuration = $"From {myApprenticeship.StartDate.GetValueOrDefault().Date:dd-MM-yyyy} to {myApprenticeship.EndDate.GetValueOrDefault().Date:dd-MM-yyyy}";
         ApprenticeshipSector = myApprenticeship.TrainingCourse.Sector;
         ApprenticeshipProgram = myApprenticeship.TrainingCourse.Name;

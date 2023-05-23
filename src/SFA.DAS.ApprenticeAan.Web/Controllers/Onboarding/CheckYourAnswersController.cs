@@ -1,10 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
+using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticePortal.Authentication;
+using static SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests.CreateApprenticeMemberRequest;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
@@ -13,40 +18,60 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 public class CheckYourAnswersController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/CheckYourAnswers.cshtml";
+    public const string ApplicationSubmittedViewPath = "~/Views/Onboarding/ApplicationSubmitted.cshtml";
     private readonly ISessionService _sessionService;
     private readonly IOuterApiClient _outerApiClient;
+    private readonly IApprenticeService _apprenticeService;
 
-    public CheckYourAnswersController(ISessionService sessionService, IOuterApiClient outerApiClient)
+    public CheckYourAnswersController(ISessionService sessionService, IOuterApiClient outerApiClient, IApprenticeService apprenticeService)
     {
         _sessionService = sessionService;
         _outerApiClient = outerApiClient;
+        _apprenticeService = apprenticeService;
     }
 
     [HttpGet]
     public async Task<IActionResult> Get()
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-        sessionModel.HasSeenPreview = true;
-        _sessionService.Set(sessionModel);
+        if (!sessionModel.HasSeenPreview)
+        {
+            sessionModel.HasSeenPreview = true;
+            sessionModel.ApprenticeId = Guid.Parse(User.ApprenticeIdClaim()!.Value);
+            sessionModel.MyApprenticeship = await _outerApiClient.GetMyApprenticeship(sessionModel.ApprenticeId);
+            _sessionService.Set(sessionModel);
+        }
 
-        var myApprenticeship = await _outerApiClient.GetMyApprenticeship(Guid.Parse(User.ApprenticeIdClaim()!.Value));
-
-        CheckYourAnswersViewModel model = new(Url, sessionModel, User, myApprenticeship);
+        CheckYourAnswersViewModel model = new(Url, sessionModel, User);
         return View(ViewPath, model);
     }
 
     [HttpPost]
-    public IActionResult Post(CheckYourAnswersViewModel model)
+    public async Task<IActionResult> Post()
     {
-        var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-        /// CheckYourAnswersViewModel model = new(Url, sessionModel, User, myApprenticeship);
-        /// Transform OnboardinSessionModel to create apprentice request model
-        /// validate create apprentice request model (or forward validations from inner api) 
-        /// Show validation errors
-        /// Post and navigate to complete page 
-        /// Trim all user inputs
+        var onboardingSessionModel = _sessionService.Get<OnboardingSessionModel>();
+        var result = await _apprenticeService.PostApprenticeship(GetRequest(onboardingSessionModel));
 
-        return RedirectToRoute(RouteNames.NetworkHub);
+        User.AddAanMemberIdClaim(result.MemberId);
+
+        await HttpContext.SignInAsync(User);
+
+        return View(ApplicationSubmittedViewPath);
     }
 
+    private CreateApprenticeMemberRequest GetRequest(OnboardingSessionModel source)
+    {
+        CreateApprenticeMemberRequest request = new()
+        {
+            ApprenticeId = source.ApprenticeId,
+            JoinedDate = DateTime.UtcNow,
+            OrganisationName = source.GetProfileValue(ProfileDataId.EmployerName)!,
+            RegionId = source.RegionId.GetValueOrDefault()
+        };
+        request.ProfileValues.AddRange(source.ProfileData.Where(p => !string.IsNullOrWhiteSpace(p.Value)).Select(p => new ProfileValue(p.Id, p.Value!)));
+        request.Email = User.EmailAddressClaim()!.Value;
+        request.FirstName = User.Claims.FirstOrDefault(c => c.Type == IdentityClaims.GivenName)!.Value;
+        request.LastName = User.Claims.FirstOrDefault(c => c.Type == IdentityClaims.FamilyName)!.Value;
+        return request;
+    }
 }

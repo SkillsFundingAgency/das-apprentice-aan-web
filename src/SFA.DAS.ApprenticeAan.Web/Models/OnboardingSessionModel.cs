@@ -1,7 +1,11 @@
-﻿namespace SFA.DAS.ApprenticeAan.Web.Models;
+﻿using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+
+namespace SFA.DAS.ApprenticeAan.Web.Models;
 
 public class OnboardingSessionModel
 {
+    public Guid ApprenticeId { get; set; }
+    public MyApprenticeship MyApprenticeship { get; set; } = null!;
     public bool HasSeenPreview { get; set; }
     public ApprenticeDetailsModel ApprenticeDetails { get; set; } = new ApprenticeDetailsModel();
     public bool HasAcceptedTerms { get; set; } = false;

@@ -1,12 +1,17 @@
-﻿using FluentAssertions;
+﻿using AutoFixture;
+using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
+using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.CheckYourAnswersControllerTests.WhenGetIsInvoked;
 
@@ -14,16 +19,24 @@ public class AndSessionModelIsNotPopulated
 {
     ViewResult getResult;
     CheckYourAnswersViewModel viewModel;
-    CheckYourAnswersController sut;
-    OnboardingSessionModel sessionModel;
 
     [SetUp]
-    public void Init()
+    public async Task Init()
     {
-        sessionModel = new();
+        var fixture = new Fixture();
+        var apprenticeId = Guid.NewGuid();
+        OnboardingSessionModel sessionModel = new();
         Mock<ISessionService> sessionServiceMock = new();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
-        //sut = new(sessionServiceMock.Object);
+        Mock<IApprenticeService> apprenticeServiceMock = new();
+        apprenticeServiceMock.Setup(a => a.PostApprenticeship(It.IsAny<CreateApprenticeMemberRequest>())).ReturnsAsync(fixture.Create<CreateApprenticeMemberResponse>());
+
+        Mock<IOuterApiClient> outerApiClientMock = new();
+        outerApiClientMock.Setup(o => o.GetMyApprenticeship(apprenticeId)).ReturnsAsync(fixture.Create<MyApprenticeship>());
+
+        CheckYourAnswersController sut = new(sessionServiceMock.Object, outerApiClientMock.Object, apprenticeServiceMock.Object);
+        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
+        sut.ControllerContext = new() { HttpContext = new DefaultHttpContext() { User = user } };
 
         sut.AddUrlHelperMock();
 
@@ -38,7 +51,8 @@ public class AndSessionModelIsNotPopulated
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.County, Value = null });
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.Postcode, Value = null });
 
-        getResult = sut.Get().As<ViewResult>();
+        var response = await sut.Get();
+        getResult = response.As<ViewResult>();
         viewModel = getResult.Model.As<CheckYourAnswersViewModel>();
     }
 
@@ -78,13 +92,5 @@ public class AndSessionModelIsNotPopulated
     {
         viewModel.CurrentEmployerName.Should().BeNull();
         viewModel.CurrentEmployerAddress.Should().BeNull();
-    }
-
-    [TearDown]
-    public void Dispose()
-    {
-        sut = null!;
-        getResult = null!;
-        viewModel = null!;
     }
 }
