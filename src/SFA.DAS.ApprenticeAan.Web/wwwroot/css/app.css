@@ -169,9 +169,9 @@ a.app-calendar__event:focus {
     margin-right: 10px;
 }
 
-.app-calendar-legend__colour--hybrid { background-color: #85994B;}
-.app-calendar-legend__colour--inperson { background-color: #6F72AF;}
-.app-calendar-legend__colour--online { background-color: #912B88;}
+.app-calendar-legend__colour--hybrid { background-color: #85994b;}
+.app-calendar-legend__colour--inperson { background-color: #6f72af;}
+.app-calendar-legend__colour--online { background-color: #912b88;}
 
 .app-calendar-nav {
     float: right;
@@ -228,4 +228,68 @@ a.app-calendar__event:focus {
     right: 0;
     margin-top: -30px;
     color: #1D3150;
+}
+
+.app-tag {
+    text-transform: none;
+    text-align: center;
+    letter-spacing: 0;
+}
+
+@media (min-width: 40.0625em) {
+    .app-tag {
+        display: block;
+    }
+}
+
+.app-tag--hybrid { background-color: #85994b;}
+.app-tag--inperson { background-color: #6f72af;}
+.app-tag--online { background-color: #912b88;}
+
+.app-date {
+    clear: both;
+    font-weight: 700;
+    line-height: 1;
+}
+
+@media (min-width: 40.0625em) {
+    .app-date {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    .app-date__year {
+        display: none;
+    }
+    .app-date__day,
+    .app-date__month {
+        display: block;
+    }
+    .app-date__day {
+        font-size: 36px;
+    }
+    .app-date__month {
+        text-transform: uppercase;
+    }
+}
+
+.app-green-tick {
+    font-size: 16px;
+    position: relative;
+    padding-left: 20px;
+    margin: 15px 0 0;
+}
+
+@media (min-width: 40.0625em) {
+    .app-green-tick {
+        display: flex;
+        text-align: center;
+        align-items: center;
+        gap: 5px;
+    }
+    .das-icon-list__icon {
+        display: flex;
+        position: relative;
+        width: 1.2em;
+        height: 1.2em;
+    }
 }
