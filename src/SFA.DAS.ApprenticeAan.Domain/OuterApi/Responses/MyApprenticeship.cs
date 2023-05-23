@@ -15,8 +15,8 @@ public class MyApprenticeship
 
 public class TrainingCourse
 {
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
     public int Level { get; set; }
     public int Duration { get; set; }
-    public string Sector { get; set; }
+    public string Sector { get; set; } = null!;
 }

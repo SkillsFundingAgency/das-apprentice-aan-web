@@ -35,27 +35,6 @@ public class AndSessionModelIsPopulated
     private OnboardingSessionModel _sessionModel;
     private MyApprenticeship _myApprenticeship;
 
-    private List<ProfileModel> GetProfileData()
-    {
-        int[] profileIds = new[] { 20, 30 };
-        var profileData = _fixture.Build<ProfileModel>().WithValues(p => p.Id, profileIds).CreateMany(profileIds.Length).ToList();
-
-        var i = 0;
-        profileData.AddRange(_fixture.Build<ProfileModel>().WithValues(p => p.Id, AddressIds.ToArray()).CreateMany(AddressIds.Count()));
-
-        profileData
-            .Add(_fixture.Build<ProfileModel>()
-            .With(p => p.Id, ProfileDataId.HasPreviousEngagement)
-            .With(p => p.Value, "true")
-            .Create());
-
-        string[] areasOfInterestCategories = new[] { Category.Promotions, Category.Events };
-        profileData.AddRange(_fixture.Build<ProfileModel>().WithValues(p => p.Id, 1, 2).WithValues(p => p.Category, areasOfInterestCategories).CreateMany(areasOfInterestCategories.Length));
-        // Add null values for the same categories for exclusion
-        profileData.AddRange(_fixture.Build<ProfileModel>().WithValues(p => p.Id, 3, 4).WithValues(p => p.Category, areasOfInterestCategories).Without(p => p.Value).CreateMany(areasOfInterestCategories.Length));
-        return profileData;
-    }
-
     [SetUp]
     public async Task SetUp()
     {
@@ -194,5 +173,25 @@ public class AndSessionModelIsPopulated
     public void ThenSetsApprenticeshipLevel()
     {
         _actualViewModel.ApprenticeshipLevel.Should().Be($"Level {_myApprenticeship.TrainingCourse.Level}");
+    }
+
+    private List<ProfileModel> GetProfileData()
+    {
+        int[] profileIds = new[] { 20, 30 };
+        var profileData = _fixture.Build<ProfileModel>().WithValues(p => p.Id, profileIds).CreateMany(profileIds.Length).ToList();
+
+        profileData.AddRange(_fixture.Build<ProfileModel>().WithValues(p => p.Id, AddressIds.ToArray()).CreateMany(AddressIds.Count()));
+
+        profileData
+            .Add(_fixture.Build<ProfileModel>()
+            .With(p => p.Id, ProfileDataId.HasPreviousEngagement)
+            .With(p => p.Value, "true")
+            .Create());
+
+        string[] areasOfInterestCategories = new[] { Category.Promotions, Category.Events };
+        profileData.AddRange(_fixture.Build<ProfileModel>().WithValues(p => p.Id, 1, 2).WithValues(p => p.Category, areasOfInterestCategories).CreateMany(areasOfInterestCategories.Length));
+        // Add null values for the same categories for exclusion
+        profileData.AddRange(_fixture.Build<ProfileModel>().WithValues(p => p.Id, 3, 4).WithValues(p => p.Category, areasOfInterestCategories).Without(p => p.Value).CreateMany(areasOfInterestCategories.Length));
+        return profileData;
     }
 }
