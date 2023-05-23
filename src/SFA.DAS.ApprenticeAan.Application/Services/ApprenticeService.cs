@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 
 namespace SFA.DAS.ApprenticeAan.Application.Services;
@@ -23,4 +24,6 @@ public class ApprenticeService : IApprenticeService
             _ => throw new InvalidOperationException($"Outer api came back with unsuccessful response. StatusCode:{response.ResponseMessage.StatusCode}")
         };
     }
+
+    public Task<CreateApprenticeMemberResponse> PostApprenticeship(CreateApprenticeMemberRequest request) => _client.PostApprenticeMember(request);
 }

@@ -1,4 +1,5 @@
 ﻿using RestEase;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 
 namespace SFA.DAS.ApprenticeAan.Domain.Interfaces;
@@ -28,4 +29,7 @@ public interface IOuterApiClient
 
     [Get("/myapprenticeship/{apprenticeId}")]
     Task<MyApprenticeship> GetMyApprenticeship([Path] Guid apprenticeId);
+
+    [Post("/apprentices")]
+    Task<CreateApprenticeMemberResponse> PostApprenticeMember([Body] CreateApprenticeMemberRequest request);
 }
