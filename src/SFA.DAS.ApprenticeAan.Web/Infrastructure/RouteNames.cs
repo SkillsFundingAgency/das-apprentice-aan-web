@@ -6,6 +6,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Infrastructure;
 public static class RouteNames
 {
     public const string NetworkHub = nameof(NetworkHub);
+    public const string SearchNetworkEvents = nameof(SearchNetworkEvents);
 
     public static class Onboarding
     {

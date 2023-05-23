@@ -1,0 +1,195 @@
+﻿@model SearchNetworkEventsViewModel
+@{
+    ViewData["Title"] = "Search Network Events";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">Search network events</h1>
+        <p>All events listed on this page are relevant to your profile preferences. You can use filters to narrow your search parameters further and find the most suitable events from within your preferred options. </p>
+        <form method="POST" role="search" aria-label="On this page">
+            <div class="govuk-form-group govuk-!-margin-bottom-9">
+                <label for="searchTerm" class="govuk-label govuk-visually-hidden">
+                    Search for events
+                </label>
+                <div class="das-search-form__group">
+                    <input id="searchTerm" name="searchTerm" title="Search" class="govuk-input das-search-form__input" type="text" value="" placeholder="Search" />
+                    <div class="das-search-form__button-wrap">
+                        <button class="govuk-button das-search-form__button" type="submit">Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+        <div class="das-show-hide" data-module="das-show-hide">
+            <div class="das-filter das-!-show--from-tablet das-show-hide__section" id="events-filter" tabindex="0">
+                <div class="das-filter__header">
+                    <h2 class="das-filter__heading">Filter</h2>
+                </div>
+                <div class="das-filter__body das-!-show--from-tablet" id="events-filter-options">
+                    <form method="GET" action="URL">
+
+                        <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    Event date
+                                </legend>
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label" for="from-date">
+                                        From date
+                                    </label>
+                                    <input class="govuk-input" id="from-date" name="from-date" type="date">
+                                </div>
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label" for="to-date">
+                                        To date
+                                    </label>
+                                    <input class="govuk-input" id="to-date" name="to-date" type="date">
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    Event format
+                                </legend>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input" id="format-person" name="format" type="checkbox" value="person">
+                                        <label class="govuk-label govuk-checkboxes__label" for="format-person">
+                                            In person
+                                        </label>
+                                    </div>
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input" id="format-online" name="format" type="checkbox" value="online">
+                                        <label class="govuk-label govuk-checkboxes__label" for="format-online">
+                                            Online
+                                        </label>
+                                    </div>
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input" id="format-hybrid" name="format" type="checkbox" value="hybrid">
+                                        <label class="govuk-label govuk-checkboxes__label" for="format-hybrid">
+                                            Hybrid
+                                        </label>
+                                    </div>
+
+                                </div>
+                            </fieldset>
+                        </div>
+
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    Event type
+                                </legend>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input" id="type-employer" name="type" type="checkbox" value="employer">
+                                        <label class="govuk-label govuk-checkboxes__label" for="type-employer">
+                                            Employer engagement events
+                                        </label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    Region
+                                </legend>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input" id="region-national" name="region" type="checkbox" value="national">
+                                        <label class="govuk-label govuk-checkboxes__label" for="region-national">
+                                            Employer engagement events
+                                        </label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <button type="submit" class="govuk-button" id="filters-submit-second">Apply filters</button>
+                    </form>
+                </div>
+            </div>
+            <button class="govuk-button das-filter__toggle das-show-hide__button" data-button-string="filter " data-aria-controls="events-filter" aria-expanded="true">Show filter </button>
+        </div>
+    </div>
+    <div class="govuk-grid-column-two-thirds">
+        <h2 class="govuk-heading-m">2 results</h2>
+        <p class="govuk-body govuk-!-margin-bottom-6">
+            Sorted by:
+            <span class="govuk-!-font-weight-bold">Name</span>
+        </p>
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 ">
+        <div class="das-search-results">
+
+            <ol class="das-search-results__list">
+
+                <li class="das-search-results__list-item">
+                    <div class="govuk-grid-row">
+                        <div class="govuk-grid-column-three-quarters das-!-float-right">
+                            <h2 class="govuk-heading-m das-search-results__heading">
+                                <a class="das-search-results__link" href="URL">
+                                    Manchester AAN regional meet-up
+                                </a>
+                            </h2>
+                            <p class="govuk-body das-search-results__body">Join regional colleagues at Manchester Town Hall to share your recent activity within the network.</p>
+                            <dl class="das-definition-list das-definition-list--inline">
+                                <dt class="das-definition-list__title">Date</dt>
+                                <dd class="das-definition-list__definition">7 February 2023</dd>
+                                <dt class="das-definition-list__title">Time</dt>
+                                <dd class="das-definition-list__definition">9:00am - 10:00am</dd>
+                                <dt class="das-definition-list__title">Where</dt>
+                                <dd class="das-definition-list__definition">Manchester, Manchester Town Hall, M2 5DB <a href="LINKTOMAP" class="govuk-link">(view map in a new window)</a></dd>
+                                <dt class="das-definition-list__title">Event type</dt>
+                                <dd class="das-definition-list__definition">AAN organised or sponsored event</dd>
+                            </dl>
+                        </div>
+                        <div class="govuk-grid-column-one-quarter">
+                            <p>7 February 2023</p>
+                            <strong class="govuk-tag">In person</strong>
+                        </div>
+                    </div>
+                </li>
+
+
+
+                <li class="das-search-results__list-item">
+                    <div class="govuk-grid-row">
+                        <div class="govuk-grid-column-three-quarters das-!-float-right">
+                            <h2 class="govuk-heading-m das-search-results__heading">
+                                <a class="das-search-results__link" href="URL">
+                                    Manchester AAN regional meet-up
+                                </a>
+                            </h2>
+                            <p class="govuk-body das-search-results__body">Join regional colleagues at Manchester Town Hall to share your recent activity within the network.</p>
+                            <dl class="das-definition-list das-definition-list--inline">
+                                <dt class="das-definition-list__title">Date</dt>
+                                <dd class="das-definition-list__definition">7 February 2023</dd>
+                                <dt class="das-definition-list__title">Time</dt>
+                                <dd class="das-definition-list__definition">9:00am - 10:00am</dd>
+                                <dt class="das-definition-list__title">Where</dt>
+                                <dd class="das-definition-list__definition">Manchester, Manchester Town Hall, M2 5DB <a href="LINKTOMAP" class="govuk-link">(view map in a new window)</a></dd>
+                                <dt class="das-definition-list__title">Event type</dt>
+                                <dd class="das-definition-list__definition">AAN organised or sponsored event</dd>
+                            </dl>
+                        </div>
+                        <div class="govuk-grid-column-one-quarter">
+                            <p>7 February 2023</p>
+                            <strong class="govuk-tag">In person</strong>
+                        </div>
+                    </div>
+                </li>
+
+
+
+            </ol>
+
+
+        </div>
+    </div>
+</div>
