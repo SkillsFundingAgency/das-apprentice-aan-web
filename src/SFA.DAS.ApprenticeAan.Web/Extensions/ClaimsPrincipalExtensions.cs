@@ -6,7 +6,6 @@ namespace SFA.DAS.ApprenticeAan.Web.Extensions;
 [ExcludeFromCodeCoverage]
 public static class ClaimsPrincipalExtensions
 {
-    //MFCMFC remove this and rebase once CSP-493 and 494 are merged into main
     public const string AanMemberId = nameof(AanMemberId);
 
     public static void AddAanMemberIdClaim(this ClaimsPrincipal principal, Guid memberId)
@@ -20,6 +19,5 @@ public static class ClaimsPrincipalExtensions
         var claim = principal.Claims.FirstOrDefault(c => c.Type == AanMemberId);
         var hasParsed = Guid.TryParse(claim?.Value, out Guid value);
         return hasParsed ? value : Guid.Empty;
-        // return new Guid("453a563c-de5f-4307-8daf-022244c4c355");
     }
 }
