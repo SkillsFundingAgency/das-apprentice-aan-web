@@ -3,9 +3,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
-using SFA.DAS.ApprenticePortal.Authentication;
+
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
@@ -14,23 +15,16 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 public class SearchNetworkEventsController : Controller
 {
     private readonly IOuterApiClient _outerApiClient;
-    private readonly AuthenticatedUser _authenticatedUser;
 
-    public SearchNetworkEventsController(IOuterApiClient outerApiClient, AuthenticatedUser authenticatedUser)
+    public SearchNetworkEventsController(IOuterApiClient outerApiClient)
     {
         _outerApiClient = outerApiClient;
-        _authenticatedUser = authenticatedUser;
     }
     [HttpGet]
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
-        var apprentice = await _outerApiClient.GetApprentice(_authenticatedUser.ApprenticeId);
-        var calendarEventsResponse = await _outerApiClient.GetCalendarEvents(apprentice.GetContent()!.MemberId.ToString(), cancellationToken);
-
-
-        var model = new SearchNetworkEventsViewModel();
-
-
+        var calendarEventsResponse = await _outerApiClient.GetCalendarEvents(User.GetAanMemberId().ToString(), cancellationToken);
+        var model = (SearchNetworkEventsViewModel)calendarEventsResponse;
         return View(model);
     }
 }

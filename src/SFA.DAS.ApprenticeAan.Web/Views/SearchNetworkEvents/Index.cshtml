@@ -1,6 +1,18 @@
-﻿@model SearchNetworkEventsViewModel
+﻿@using SFA.DAS.ApprenticeAan.Domain.Constants
+@model SearchNetworkEventsViewModel
 @{
     ViewData["Title"] = "Search Network Events";
+   
+    var hideSearchElements = "govuk-visually-hidden";
+    hideSearchElements = "";
+    var hideFilterElements = "govuk-visually-hidden";
+    hideFilterElements = "";
+
+    var totalCountDescription = $"{Model.TotalCount} results";
+    if (Model.TotalCount == 1)
+    {
+        totalCountDescription = "1 result";
+    }
 }
 
 <div class="govuk-grid-row">
@@ -8,8 +20,8 @@
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">Search network events</h1>
         <p>All events listed on this page are relevant to your profile preferences. You can use filters to narrow your search parameters further and find the most suitable events from within your preferred options. </p>
         <form method="POST" role="search" aria-label="On this page">
-            <div class="govuk-form-group govuk-!-margin-bottom-9">
-                <label for="searchTerm" class="govuk-label govuk-visually-hidden">
+            <div class="govuk-form-group govuk-!-margin-bottom-9  @hideSearchElements">
+                <label for="searchTerm" class="govuk-label">
                     Search for events
                 </label>
                 <div class="das-search-form__group">
@@ -25,7 +37,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
         <div class="das-show-hide" data-module="das-show-hide">
-            <div class="das-filter das-!-show--from-tablet das-show-hide__section" id="events-filter" tabindex="0">
+            <div class="das-filter das-!-show--from-tablet das-show-hide__section @hideFilterElements" id="events-filter" tabindex="0">
                 <div class="das-filter__header">
                     <h2 class="das-filter__heading">Filter</h2>
                 </div>
@@ -115,125 +127,65 @@
                     </form>
                 </div>
             </div>
-            <button class="govuk-button das-filter__toggle das-show-hide__button" data-button-string="filter " data-aria-controls="events-filter" aria-expanded="true">Show filter </button>
+            <button class="govuk-button das-filter__toggle das-show-hide__button govuk-visually-hidden" data-button-string="filter " data-aria-controls="events-filter" aria-expanded="true">Show filter </button>
         </div>
     </div>
     <div class="govuk-grid-column-two-thirds">
-        <h2 class="govuk-heading-m">2 results</h2>
-        <p class="govuk-body govuk-!-margin-bottom-6">
+        <h2 class="govuk-heading-m">@totalCountDescription</h2>
+        <p class="govuk-body govuk-!-margin-bottom-6  govuk-visually-hidden">
             Sorted by:
             <span class="govuk-!-font-weight-bold">Name</span>
         </p>
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 ">
         <div class="das-search-results">
 
-             <ol class="das-search-results__list">
-
+            <ol class="das-search-results__list">
+                
+                @foreach(var calendarEvent in Model.CalendarEvents)
+                {
                 <li class="das-search-results__list-item">
                     <div class="govuk-grid-row">
                         <div class="govuk-grid-column-three-quarters das-!-float-right">
                             <h2 class="govuk-heading-m das-search-results__heading">
-                                <a class="das-search-results__link" href="URL">
-                                    Manchester AAN regional meet-up
+                                    <a class="das-search-results__link" href="#">
+                                    @calendarEvent.Summary
                                 </a>
                             </h2>
-                            <p class="govuk-body das-search-results__body">Join regional colleagues at Manchester Town Hall to share your recent activity within the network.</p>
+                            <p class="govuk-body das-search-results__body">@calendarEvent.Description</p>
                             <dl class="das-definition-list das-definition-list--inline">
                                 <dt class="das-definition-list__title">Date</dt>
-                                <dd class="das-definition-list__definition">7 February 2023</dd>
+                                <dd class="das-definition-list__definition">@calendarEvent.Start.Date.ToString("d MMMM yyyy")</dd>
                                 <dt class="das-definition-list__title">Time</dt>
-                                <dd class="das-definition-list__definition">9:00am - 10:00am</dd>
+                                <dd class="das-definition-list__definition">@calendarEvent.Start.ToString("h:mmtt").ToLower() - @calendarEvent.End.ToString("h:mmtt").ToLower()</dd>
                                 <dt class="das-definition-list__title">Where</dt>
-                                <dd class="das-definition-list__definition">Manchester, Manchester Town Hall, M2 5DB <a href="LINKTOMAP" class="govuk-link">(view map in a new window)</a></dd>
+                                <dd class="das-definition-list__definition">@calendarEvent.Location 
+                                    @if (calendarEvent.EventFormat != EventFormat.Online && calendarEvent.Latitude != null && calendarEvent.Longitude != null)
+                                    {
+                                        <a href="https://www.google.com/maps/dir/@calendarEvent.Latitude,@calendarEvent.Longitude" target="_blank" class="govuk-link">(view map in a new window)</a>
+                                    }
+                                </dd>
+                                @if (calendarEvent.EventFormat != EventFormat.Online && calendarEvent.Distance != null)
+                                {
+                                    <dt class="das-definition-list__title">Distance</dt>
+                                    <dd class="das-definition-list__definition">@calendarEvent.Distance?.ToString("0.0") miles</dd>
+
+                                }
                                 <dt class="das-definition-list__title">Event type</dt>
-                                <dd class="das-definition-list__definition">AAN organised or sponsored event</dd>
+                                <dd class="das-definition-list__definition">@calendarEvent.CalendarName</dd>
                             </dl>
                         </div>
                         <div class="govuk-grid-column-one-quarter">
                             <div class="govuk-body app-date">
-                                <span class="app-date__day">12</span>
-                                <span class="app-date__month">Jun</span>
-                                <span class="app-date__year">2023</span>
+                                <span class="app-date__day">@calendarEvent.Start.Date.Day.ToString("0")</span>
+                                <span class="app-date__month">@calendarEvent.Start.Date.ToString("MMM")</span>
                             </div>
-                            <strong class="govuk-tag app-tag app-tag--inperson">In person</strong>
-
-                                <p class="app-green-tick">
-                                    <span class="das-icon-list__icon das-icon-list__icon--tick">Yes: </span>Signed up
-                                </p>
-
+                            <partial name="_EventFormat" model=calendarEvent.EventFormat />
+                            <partial name="_IsAttending" model=calendarEvent.IsAttending />
                         </div>
                     </div>
                 </li>
-
-
-
-                <li class="das-search-results__list-item">
-                    <div class="govuk-grid-row">
-                        <div class="govuk-grid-column-three-quarters das-!-float-right">
-                            <h2 class="govuk-heading-m das-search-results__heading">
-                                <a class="das-search-results__link" href="URL">
-                                    Manchester AAN regional meet-up
-                                </a>
-                            </h2>
-                            <p class="govuk-body das-search-results__body">Join regional colleagues at Manchester Town Hall to share your recent activity within the network.</p>
-                            <dl class="das-definition-list das-definition-list--inline">
-                                <dt class="das-definition-list__title">Date</dt>
-                                <dd class="das-definition-list__definition">7 February 2023</dd>
-                                <dt class="das-definition-list__title">Time</dt>
-                                <dd class="das-definition-list__definition">9:00am - 10:00am</dd>
-                                <dt class="das-definition-list__title">Where</dt>
-                                <dd class="das-definition-list__definition">Manchester, Manchester Town Hall, M2 5DB <a href="LINKTOMAP" class="govuk-link">(view map in a new window)</a></dd>
-                                <dt class="das-definition-list__title">Event type</dt>
-                                <dd class="das-definition-list__definition">AAN organised or sponsored event</dd>
-                            </dl>
-                        </div>
-                        <div class="govuk-grid-column-one-quarter">
-                            <div class="govuk-body app-date">
-                                <span class="app-date__day">7</span>
-                                <span class="app-date__month">Feb</span>
-                                <span class="app-date__year">2023</span>
-                            </div>
-                            <strong class="govuk-tag app-tag app-tag--online">Online</strong>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="das-search-results__list-item">
-                    <div class="govuk-grid-row">
-                        <div class="govuk-grid-column-three-quarters das-!-float-right">
-                            <h2 class="govuk-heading-m das-search-results__heading">
-                                <a class="das-search-results__link" href="URL">
-                                    Manchester AAN regional meet-up
-                                </a>
-                            </h2>
-                            <p class="govuk-body das-search-results__body">Join regional colleagues at Manchester Town Hall to share your recent activity within the network.</p>
-                            <dl class="das-definition-list das-definition-list--inline">
-                                <dt class="das-definition-list__title">Date</dt>
-                                <dd class="das-definition-list__definition">7 February 2023</dd>
-                                <dt class="das-definition-list__title">Time</dt>
-                                <dd class="das-definition-list__definition">9:00am - 10:00am</dd>
-                                <dt class="das-definition-list__title">Where</dt>
-                                <dd class="das-definition-list__definition">Manchester, Manchester Town Hall, M2 5DB <a href="LINKTOMAP" class="govuk-link">(view map in a new window)</a></dd>
-                                <dt class="das-definition-list__title">Event type</dt>
-                                <dd class="das-definition-list__definition">AAN organised or sponsored event</dd>
-                            </dl>
-                        </div>
-                        <div class="govuk-grid-column-one-quarter">
-                            <div class="govuk-body app-date">
-                                <span class="app-date__day">31</span>
-                                <span class="app-date__month">Oct</span>
-                                <span class="app-date__year">2023</span>
-                            </div>
-                            <strong class="govuk-tag app-tag app-tag--hybrid">Hybrid</strong>
-                        </div>
-                    </div>
-                </li>
-
-
-
+                }
             </ol>
-
-
         </div>
     </div>
 </div>
