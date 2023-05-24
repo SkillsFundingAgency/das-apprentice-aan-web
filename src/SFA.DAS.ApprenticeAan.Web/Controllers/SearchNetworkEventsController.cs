@@ -23,7 +23,7 @@ public class SearchNetworkEventsController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
-        var calendarEventsResponse = await _outerApiClient.GetCalendarEvents(User.GetAanMemberId().ToString(), cancellationToken);
+        var calendarEventsResponse = await _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), cancellationToken);
         var model = (SearchNetworkEventsViewModel)calendarEventsResponse;
         return View(model);
     }
