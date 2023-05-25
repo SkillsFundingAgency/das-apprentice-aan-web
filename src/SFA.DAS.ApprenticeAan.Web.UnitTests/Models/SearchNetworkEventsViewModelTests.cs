@@ -11,7 +11,7 @@ public class SearchNetworkEventsViewModelTests
     [MoqAutoData]
     public void SearchNetworkEventsViewModel_From_GetCalendarEventsQueryResult(GetCalendarEventsQueryResult result)
     {
-        var viewModel = (SearchNetworkEventsViewModel)result;
+        var viewModel = (NetworkEventsViewModel)result;
 
         Assert.Multiple(() =>
         {

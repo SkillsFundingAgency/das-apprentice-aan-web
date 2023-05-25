@@ -10,12 +10,12 @@ using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
-public class SearchNetworkEventsControllerTests
+public class NetworkEventsControllerTests
 {
     [Test, MoqAutoData]
     public void GetCalendarEvents_ReturnsApiResponse(
         [Frozen] Mock<IOuterApiClient> outerApiMock,
-        [Greedy] SearchNetworkEventsController sut,
+        [Greedy] NetworkEventsController sut,
         GetCalendarEventsQueryResult expectedResult,
         Guid apprenticeId)
     {

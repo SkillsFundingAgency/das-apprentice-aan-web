@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.ApprenticeAan.Web.Models;
 
-public class SearchNetworkEventsViewModel
+public class NetworkEventsViewModel
 {
     public int Page { get; set; }
     public int PageSize { get; set; }
@@ -10,7 +10,7 @@ public class SearchNetworkEventsViewModel
     public int TotalCount { get; set; }
     public List<CalendarEventSummary> CalendarEvents { get; set; } = new List<CalendarEventSummary>();
 
-    public static implicit operator SearchNetworkEventsViewModel(GetCalendarEventsQueryResult result) => new()
+    public static implicit operator NetworkEventsViewModel(GetCalendarEventsQueryResult result) => new()
     {
         Page = result.Page,
         PageSize = result.PageSize,

@@ -7,16 +7,15 @@ using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 
-
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
-[Route("search-network-events", Name = RouteNames.SearchNetworkEvents)]
-public class SearchNetworkEventsController : Controller
+[Route("network-events", Name = RouteNames.NetworkEvents)]
+public class NetworkEventsController : Controller
 {
     private readonly IOuterApiClient _outerApiClient;
 
-    public SearchNetworkEventsController(IOuterApiClient outerApiClient)
+    public NetworkEventsController(IOuterApiClient outerApiClient)
     {
         _outerApiClient = outerApiClient;
     }
@@ -24,7 +23,7 @@ public class SearchNetworkEventsController : Controller
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
         var calendarEventsResponse = await _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), cancellationToken);
-        var model = (SearchNetworkEventsViewModel)calendarEventsResponse;
+        var model = (NetworkEventsViewModel)calendarEventsResponse;
         return View(model);
     }
 }
