@@ -1,6 +1,6 @@
 ﻿namespace SFA.DAS.ApprenticeAan.Web.HtmlHelpers;
 
-public class DateTimeHelper
+public static class DateTimeHelper
 {
     public static string? ToScreenFormat(DateTime? dateTime)
     {
