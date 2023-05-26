@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ApprenticeAan.Appli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ApprenticeAan.Domain", "SFA.DAS.ApprenticeAan.Domain\SFA.DAS.ApprenticeAan.Domain.csproj", "{4A6B7F51-7DF4-465C-AF37-2BC96573AE33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ApprenticeAan.Api.MockServer", "SFA.DAS.ApprenticeAan.Api.MockServer\SFA.DAS.ApprenticeAan.Api.MockServer.csproj", "{6C335DA2-0E25-4795-BFFB-F35B2F037BD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ApprenticeAan.Api.MockServer", "SFA.DAS.ApprenticeAan.Api.MockServer\SFA.DAS.ApprenticeAan.Api.MockServer.csproj", "{6C335DA2-0E25-4795-BFFB-F35B2F037BD4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

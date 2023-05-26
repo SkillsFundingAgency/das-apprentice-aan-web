@@ -6,88 +6,91 @@
 }
 
 <div class="govuk-grid-row">
+  <form method="post" asp-route="@RouteNames.Onboarding.CheckYourAnswers" enctype="multipart/form-data" novalidate>
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">Check the information you have provided before submitting your application</h1>
-        <div class="govuk-hint">
-            Here are the details you have provided.
+        <div>
+          <div class="govuk-hint">
+              Here are the details you have provided.
+          </div>
+          <dl class="govuk-summary-list">
+              <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">
+                      Current employer
+                  </dt>
+                  <dd class="govuk-summary-list__value">
+                      @Model.CurrentEmployerName
+                      <br />
+                      @Model.CurrentEmployerAddress
+                  </dd>
+                  <dd class="govuk-summary-list__actions">
+                      <a href=@Url.RouteUrl(RouteNames.Onboarding.EmployerSearch) class="govuk-link govuk-link--no-visited-state">Change</a>
+                  </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Current job title</dt>
+                  <dd class="govuk-summary-list__value">@Model.JobTitle</dd>
+                  <dd class="govuk-summary-list__actions">
+                      <a href=@Url.RouteUrl(RouteNames.Onboarding.CurrentJobTitle) class="govuk-link govuk-link--no-visited-state">Change</a>
+                  </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">
+                      Region you are active in
+                  </dt>
+                  <dd class="govuk-summary-list__value">
+                      @Model.Region
+                  </dd>
+                  <dd class="govuk-summary-list__actions">
+                      <a href=@Url.RouteUrl(RouteNames.Onboarding.Regions) class="govuk-link govuk-link--no-visited-state">Change</a>
+                  </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">
+                      Reasons for applying
+                  </dt>
+                  <dd class="govuk-summary-list__value">
+                      @Model.ReasonForJoiningTheNetwork
+                  </dd>
+                  <dd class="govuk-summary-list__actions">
+                      <a href=@Url.RouteUrl(RouteNames.Onboarding.ReasonToJoin) class="govuk-link govuk-link--no-visited-state">Change</a>
+                  </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Areas of interest in your role</dt>
+                  <dd class="govuk-summary-list__value">
+                      <ul class="govuk-list govuk-list--bullet">
+                          @{
+                              foreach (var aoi in Model.AreasOfInterest)
+                              {
+                                  <li>@aoi</li>
+                              }
+                          }
+                      </ul>
+                  </dd>
+                  <dd class="govuk-summary-list__actions">
+                      <a href=@Url.RouteUrl(RouteNames.Onboarding.AreasOfInterest) class="govuk-link govuk-link--no-visited-state">Change</a>
+                  </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">
+                      Previous engagement with network ambassadors
+                  </dt>
+                  <dd class="govuk-summary-list__value">
+                      @Model.PreviousEngagement
+                  </dd>
+                  <dd class="govuk-summary-list__actions">
+                      <a href=@Url.RouteUrl(RouteNames.Onboarding.PreviousEngagement) class="govuk-link govuk-link--no-visited-state">Change</a>
+                  </dd>
+              </div>
+          </dl>
         </div>
-        <dl class="govuk-summary-list">
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    Current employer
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    @Model.CurrentEmployerName
-                    <br />
-                    @Model.CurrentEmployerAddress
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                    <a href=@Url.RouteUrl(RouteNames.Onboarding.EmployerSearch) class="govuk-link govuk-link--no-visited-state">Change</a>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Current job title</dt>
-                <dd class="govuk-summary-list__value">@Model.JobTitle</dd>
-                <dd class="govuk-summary-list__actions">
-                    <a href=@Url.RouteUrl(RouteNames.Onboarding.CurrentJobTitle) class="govuk-link govuk-link--no-visited-state">Change</a>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    Region you are active in
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    @Model.Region
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                    <a href=@Url.RouteUrl(RouteNames.Onboarding.Regions) class="govuk-link govuk-link--no-visited-state">Change</a>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    Reasons for applying
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    @Model.ReasonForJoiningTheNetwork
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                    <a href=@Url.RouteUrl(RouteNames.Onboarding.ReasonToJoin) class="govuk-link govuk-link--no-visited-state">Change</a>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Areas of interest in your role</dt>
-                <dd class="govuk-summary-list__value">
-                    <ul class="govuk-list govuk-list--bullet">
-                        @{
-                            foreach (var aoi in Model.AreasOfInterest)
-                            {
-                                <li>@aoi</li>
-                            }
-                        }
-                    </ul>
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                    <a href=@Url.RouteUrl(RouteNames.Onboarding.AreasOfInterest) class="govuk-link govuk-link--no-visited-state">Change</a>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    Previous engagement with network ambassadors
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    @Model.PreviousEngagement
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                    <a href=@Url.RouteUrl(RouteNames.Onboarding.PreviousEngagement) class="govuk-link govuk-link--no-visited-state">Change</a>
-                </dd>
-            </div>
-        </dl>
-        <div style="visibility:hidden">
+        <div>
             <h2 class="govuk-heading-m">
                 Here are your existing details from your Apprenticeship account.
             </h2>
             <div class="govuk-hint">
-                The information will be included in your application and shared with your regional chair so they can welcome you into network. If any of these details are incorrect. Please log in to your account and update them.
+                The information will be included in your application and shared with your regional chair so they can welcome you into the network. If any of these details are incorrect, please log in to your account and update them.
             </div>
             <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
@@ -95,7 +98,7 @@
                         Full name
                     </dt>
                     <dd class="govuk-summary-list__value">
-
+                        @Model.FullName
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -103,7 +106,7 @@
                         Email
                     </dt>
                     <dd class="govuk-summary-list__value">
-
+                        @Model.Email
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -111,7 +114,7 @@
                         Start and end date of apprenticeship
                     </dt>
                     <dd class="govuk-summary-list__value">
-
+                        @Model.ApprenticeshipDuration
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -119,7 +122,7 @@
                         Apprenticeship sector
                     </dt>
                     <dd class="govuk-summary-list__value">
-
+                        @Model.ApprenticeshipSector
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -127,7 +130,7 @@
                         Apprenticeship programme
                     </dt>
                     <dd class="govuk-summary-list__value">
-
+                        @Model.ApprenticeshipProgram
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -135,21 +138,24 @@
                         Apprenticeship level
                     </dt>
                     <dd class="govuk-summary-list__value">
-
+                        @Model.ApprenticeshipLevel
                     </dd>
                 </div>
             </dl>
+        </div>
+        <div>
             <h2 class="govuk-heading-m">
                 Now send your application
             </h2>
             <div class="govuk-hint">
                 By submitting this application you are confirming that all the details you are providing are correct.
             </div>
-            <div class="govuk-button-group">
-                <button id="continue-button" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true" asp-page-handler="Submit">
-                    Accept and submit
-                </button>
-            </div>
+        </div>
+        <div class="govuk-button-group">
+            <button id="continue-button" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true" asp-page-handler="Submit">
+                Accept and submit
+            </button>
         </div>
     </div>
+  </form>
 </div>

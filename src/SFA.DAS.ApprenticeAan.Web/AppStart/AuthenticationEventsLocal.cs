@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticePortal.Authentication;
 
 namespace SFA.DAS.ApprenticeAan.Web.AppStart;
@@ -49,9 +50,10 @@ public class AuthenticationEventsLocal : OpenIdConnectEvents
     private async Task AddAanMemberClaims(ClaimsPrincipal principal, Guid apprenticeId)
     {
         var apprentice = await _apprenticesService.GetApprentice(apprenticeId);
+
         if (apprentice == null) return;
 
-        principal.AddIdentity(new ClaimsIdentity(new[] { new Claim(LocalIdentityClaims.AanMemberId, apprentice.MemberId.ToString()) }));
+        principal.AddAanMemberIdClaim(apprentice.MemberId);
     }
 
     private static void AddNameClaims(ClaimsPrincipal principal, IApprenticeAccount apprentice)
@@ -62,11 +64,4 @@ public class AuthenticationEventsLocal : OpenIdConnectEvents
             new Claim(IdentityClaims.FamilyName, apprentice.LastName),
         }));
     }
-}
-
-public static class LocalIdentityClaims
-{
-    public const string AanMemberId = nameof(AanMemberId);
-
-    public static Guid? GetAanMemberId(this ClaimsPrincipal principal) => Guid.TryParse(principal.Claims.FirstOrDefault(c => c.Type == AanMemberId)?.Value, out Guid value) ? value : null;
 }

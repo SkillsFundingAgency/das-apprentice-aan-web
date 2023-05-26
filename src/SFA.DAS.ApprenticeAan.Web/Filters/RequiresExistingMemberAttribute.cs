@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
-using SFA.DAS.ApprenticeAan.Web.AppStart;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
+using SFA.DAS.ApprenticeAan.Web.Extensions;
 
 namespace SFA.DAS.ApprenticeAan.Web.Filters;
 
@@ -15,7 +15,7 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
 
         if (BypassCheck(controllerActionDescriptor)) return;
 
-        if (IsInvalidRequest(context, controllerActionDescriptor))
+        if (!IsValidRequest(context, controllerActionDescriptor))
         {
             context.Result = RedirectToHome;
         }
@@ -28,12 +28,12 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
         return controllersToByPass.Any(c => c == controllerActionDescriptor.ControllerTypeInfo.Name);
     }
 
-    private static bool IsInvalidRequest(ActionExecutingContext context, ControllerActionDescriptor controllerActionDescriptor)
+    private static bool IsValidRequest(ActionExecutingContext context, ControllerActionDescriptor controllerActionDescriptor)
     {
-        var isMember = context.HttpContext.User.GetAanMemberId() != null;
+        var isMember = context.HttpContext.User.GetAanMemberId() != Guid.Empty;
 
         var isRequestingOnboardingPage = IsRequestForOnboardingAction(controllerActionDescriptor);
 
-        return (isMember && isRequestingOnboardingPage) || (!isMember && !isRequestingOnboardingPage);
+        return (isMember && !isRequestingOnboardingPage) || (!isMember && isRequestingOnboardingPage);
     }
 }

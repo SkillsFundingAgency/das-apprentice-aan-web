@@ -52,30 +52,30 @@ public class EmployerDetailsController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> PostEmployerDetails(EmployerDetailsSubmitModel submitmodel)
+    public async Task<IActionResult> PostEmployerDetails(EmployerDetailsSubmitModel submitModel)
     {
         var model = new EmployerDetailsViewModel()
         {
             BackLink = Url.RouteUrl(RouteNames.Onboarding.EmployerSearch)!
         };
 
-        FluentValidation.Results.ValidationResult result = _validator.Validate(submitmodel);
+        FluentValidation.Results.ValidationResult result = _validator.Validate(submitModel);
         if (!result.IsValid)
         {
             result.AddToModelState(this.ModelState);
             return View(ViewPath, model);
         }
 
-        var apiResponse = await _outerApiClient.GetCoordinates(submitmodel.Postcode!);
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
 
-        sessionModel.SetProfileValue(ProfileDataId.EmployerName, submitmodel.EmployerName!);
-        sessionModel.SetProfileValue(ProfileDataId.AddressLine1, submitmodel.AddressLine1!);
-        sessionModel.SetProfileValue(ProfileDataId.AddressLine2, submitmodel.AddressLine2!);
-        sessionModel.SetProfileValue(ProfileDataId.County, submitmodel.County!);
-        sessionModel.SetProfileValue(ProfileDataId.Town, submitmodel.Town!);
-        sessionModel.SetProfileValue(ProfileDataId.Postcode, submitmodel.Postcode!);
+        sessionModel.SetProfileValue(ProfileDataId.EmployerName, submitModel.EmployerName?.Trim()!);
+        sessionModel.SetProfileValue(ProfileDataId.AddressLine1, submitModel.AddressLine1?.Trim()!);
+        sessionModel.SetProfileValue(ProfileDataId.AddressLine2, submitModel.AddressLine2?.Trim()!);
+        sessionModel.SetProfileValue(ProfileDataId.County, submitModel.County?.Trim()!);
+        sessionModel.SetProfileValue(ProfileDataId.Town, submitModel.Town?.Trim()!);
+        sessionModel.SetProfileValue(ProfileDataId.Postcode, submitModel.Postcode?.Trim()!);
 
+        var apiResponse = await _outerApiClient.GetCoordinates(submitModel.Postcode!);
         if (apiResponse.ResponseMessage.StatusCode == System.Net.HttpStatusCode.OK)
         {
             var coordinates = apiResponse.GetContent();
