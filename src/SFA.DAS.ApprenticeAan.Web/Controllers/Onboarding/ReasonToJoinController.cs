@@ -35,18 +35,18 @@ public class ReasonToJoinController : Controller
     }
 
     [HttpPost]
-    public IActionResult Post(ReasonToJoinSubmitModel submitmodel)
+    public IActionResult Post(ReasonToJoinSubmitModel submitModel)
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
 
-        ValidationResult result = _validator.Validate(submitmodel);
+        ValidationResult result = _validator.Validate(submitModel);
         if (!result.IsValid)
         {
             result.AddToModelState(ModelState);
             return View(ViewPath, GetViewModel(sessionModel));
         }
 
-        sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork = submitmodel.ReasonForJoiningTheNetwork!;
+        sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork = submitModel.ReasonForJoiningTheNetwork!.Trim();
         _sessionService.Set(sessionModel);
 
         return RedirectToRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.AreasOfInterest);

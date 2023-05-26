@@ -72,10 +72,10 @@ public class Startup
             .Configure<RouteOptions>(options => { options.LowercaseUrls = true; })
             .AddMvc(options =>
             {
-                options.Filters.Add(new RequiresExistingMemberAttribute());
-                options.Filters.Add(new RequiresSessionModelAttribute());
+                options.Filters.Add<RequiresExistingMemberAttribute>();
+                options.Filters.Add<RequiresSessionModelAttribute>();
                 options.Filters.Add<RequiresRegistrationAuthorizationFilter>();
-                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
             })
             .AddSessionStateTempDataProvider();
 
