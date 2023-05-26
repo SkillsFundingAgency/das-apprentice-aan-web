@@ -20,10 +20,13 @@ public class NetworkEventsController : Controller
         _outerApiClient = outerApiClient;
     }
     [HttpGet]
-    public async Task<IActionResult> Index(CancellationToken cancellationToken)
+    public async Task<IActionResult> Index(GetNetworkEventsRequest request, CancellationToken cancellationToken)
     {
-        var calendarEventsResponse = await _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), cancellationToken);
+
+        var calendarEventsResponse = await _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), request.StartDate?.ToString("yyyy-MM-dd"), request.EndDate?.ToString("yyyy-MM-dd"), cancellationToken);
         var model = (NetworkEventsViewModel)calendarEventsResponse;
+        model.StartDate = request.StartDate;
+        model.EndDate = request.EndDate;
         return View(model);
     }
 }
