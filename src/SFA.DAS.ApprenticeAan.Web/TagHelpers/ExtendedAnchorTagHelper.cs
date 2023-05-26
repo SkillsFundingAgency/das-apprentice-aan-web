@@ -8,7 +8,7 @@ namespace SFA.DAS.ApprenticeAan.Web.TagHelpers;
 public class ExtendedAnchorTagHelper : AnchorTagHelper
 {
     [HtmlAttributeName("asp-querystring")]
-    public string QueryString { get; set; }
+    public string QueryString { get; set; } = null!;
 
 
     public override void Process(TagHelperContext context, TagHelperOutput output)

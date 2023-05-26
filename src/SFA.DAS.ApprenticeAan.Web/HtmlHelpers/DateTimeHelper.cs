@@ -4,7 +4,7 @@ public class DateTimeHelper
 {
     public static string? ToScreenFormat(DateTime? dateTime)
     {
-        return dateTime?.ToString("d/MM/yyyy");
+        return dateTime?.ToString("dd/MM/yyyy");
     }
 
     public static string? ToUrlFormat(DateTime? dateTime)

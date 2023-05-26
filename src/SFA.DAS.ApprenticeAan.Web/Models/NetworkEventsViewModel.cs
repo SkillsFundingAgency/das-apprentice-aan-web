@@ -25,22 +25,18 @@ public class NetworkEventsViewModel
         CalendarEvents = result.CalendarEvents.ToList()
     };
 
-    public string RebuildQueryRemoveField(RemoveField removeField)
+    public string RebuildQueryRemoveField(FieldToRemove fieldToRemove)
     {
         var query = "?";
 
-        if (removeField != RemoveField.StartDate)
+        if (fieldToRemove != FieldToRemove.StartDate && StartDate != null)
         {
-            if (StartDate != null)
-                query += $"startDate={DateTimeHelper.ToUrlFormat(StartDate)}&";
+            query += $"startDate={DateTimeHelper.ToUrlFormat(StartDate)}&";
         }
 
-        if (removeField != RemoveField.EndDate)
+        if (fieldToRemove != FieldToRemove.EndDate && EndDate != null)
         {
-            if (EndDate != null)
-            {
-                query += $"endDate={DateTimeHelper.ToUrlFormat(EndDate)}&";
-            }
+            query += $"endDate={DateTimeHelper.ToUrlFormat(EndDate)}&";
         }
 
         if (query.Last() == '&')
@@ -51,7 +47,7 @@ public class NetworkEventsViewModel
         return query == "?" ? string.Empty : query;
     }
 
-    public enum RemoveField
+    public enum FieldToRemove
     {
         StartDate,
         EndDate
