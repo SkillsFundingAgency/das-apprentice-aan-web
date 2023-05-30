@@ -2,6 +2,7 @@
 @using SFA.DAS.ApprenticeAan.Web.HtmlHelpers
 @using SFA.DAS.ApprenticeAan.Web.TagHelpers
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.ApprenticeAan.Web.Extensions
 @model NetworkEventsViewModel
 @{
     ViewData["Title"] = "Search Network Events";
@@ -322,8 +323,8 @@
                                 <span class="app-date__day">@calendarEvent.Start.Date.Day.ToString("0")</span>
                                 <span class="app-date__month">@calendarEvent.Start.Date.ToString("MMM")</span>
                             </div>
-                            <partial name="_EventFormat" model=calendarEvent.EventFormat />
-                            <partial name="_IsAttending" model=calendarEvent.IsAttending />
+                                <strong class="govuk-tag app-tag app-tag--@calendarEvent.EventFormat.ToLower()">@calendarEvent.EventFormat.GetDescription()</strong>
+                                <partial name="_IsAttending" model=calendarEvent.IsAttending />
                         </div>
                     </div>
                 </li>
