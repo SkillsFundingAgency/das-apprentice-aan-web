@@ -1,19 +1,11 @@
-﻿
-using System.ComponentModel;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace SFA.DAS.ApprenticeAan.Domain.Constants;
 
-//[ExcludeFromCodeCoverage]
-// public static class EventFormat
-// {
-//     public const string Hybrid = "Hybrid";
-//     public const string InPerson = "In person";
-//     public const string Online = "Online";
-// }
-public enum EventFormat
+[ExcludeFromCodeCoverage]
+public static class EventFormat
 {
-    [Description("In person")]
-    InPerson,
-    Online,
-    Hybrid
+    public const string Hybrid = "Hybrid";
+    public const string InPerson = "In person";
+    public const string Online = "Online";
 }
