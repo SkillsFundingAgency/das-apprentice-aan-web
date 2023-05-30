@@ -7,9 +7,9 @@
     ViewData["Title"] = "Search Network Events";
    
     var hideSearchElements = "govuk-visually-hidden";
-    hideSearchElements = "";
+    //hideSearchElements = "";
     var hideFilterElements = "govuk-visually-hidden";
-    hideFilterElements = "";
+    //hideFilterElements = "";
 
     var totalCountDescription = $"{Model.TotalCount} results";
     if (Model.TotalCount == 1)
@@ -40,7 +40,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
         <div class="das-show-hide" data-module="das-show-hide">
-            <div class="das-filter das-!-show--from-tablet das-show-hide__section @hideFilterElements" id="events-filter" tabindex="0">
+            <div class="das-filter das-!-show--from-tablet das-show-hide__section" id="events-filter" tabindex="0">
             <div class="das-filter__header">
                 <h2 class="das-filter__heading">Filter</h2>
             </div>
@@ -87,7 +87,7 @@
                     </div>
                 </fieldset>
             </div>
-            <div class="govuk-form-group">
+            <div class="govuk-form-group  @hideFilterElements">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         Event format
@@ -116,7 +116,7 @@
                 </fieldset>
             </div>
 
-            <div class="govuk-form-group">
+            <div class="govuk-form-group  @hideFilterElements">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         Event type
@@ -179,7 +179,7 @@
                     </div>
                 </fieldset>
             </div>
-            <div class="govuk-form-group">
+            <div class="govuk-form-group  @hideFilterElements">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                         Region
