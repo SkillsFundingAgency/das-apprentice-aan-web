@@ -1,8 +1,4 @@
-﻿using RestEase;
-using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
-using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
-
-namespace SFA.DAS.ApprenticeAan.Domain.Interfaces;
+﻿namespace SFA.DAS.ApprenticeAan.Domain.Interfaces;
 
 public interface IOuterApiClient
 {
@@ -39,6 +35,11 @@ public interface IOuterApiClient
 
     [Post("/apprentices")]
     Task<CreateApprenticeMemberResponse> PostApprenticeMember([Body] CreateApprenticeMemberRequest request);
+
+    [Get("/calendarevents/{calendarEventId}")]
+    Task<CalendarEvent> GetEventDetails([Path] Guid calendarEventId,
+        [Header(Constants.ApiHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId,
+        CancellationToken cancellationToken);
 
     [Get("/stagedapprentices")]
     [AllowAnyStatusCode]
