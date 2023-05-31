@@ -21,11 +21,11 @@ public class GetStagedApprenticeTests
         CancellationToken cancellationToken)
     {
         stagedApprenticeResponse.ResponseMessage.StatusCode = HttpStatusCode.OK;
-        clientMock.Setup(c => c.GetStagedApprentice(lastName, dateOfBirth, email, cancellationToken)).ReturnsAsync(stagedApprenticeResponse);
+        clientMock.Setup(c => c.GetStagedApprentice(lastName, dateOfBirth.ToString("yyyy-MM-dd"), email, cancellationToken)).ReturnsAsync(stagedApprenticeResponse);
 
         await sut.GetStagedApprentice(lastName, dateOfBirth, email, cancellationToken);
 
-        clientMock.Verify(c => c.GetStagedApprentice(lastName, dateOfBirth, email, cancellationToken));
+        clientMock.Verify(c => c.GetStagedApprentice(lastName, dateOfBirth.ToString("yyyy-MM-dd"), email, cancellationToken));
     }
 
     [Test, MoqAutoData]
@@ -37,7 +37,7 @@ public class GetStagedApprenticeTests
         CancellationToken cancellationToken)
     {
         stagedApprenticeResponse.ResponseMessage.StatusCode = HttpStatusCode.OK;
-        clientMock.Setup(c => c.GetStagedApprentice(lastName, dateOfBirth, email, cancellationToken)).ReturnsAsync(stagedApprenticeResponse);
+        clientMock.Setup(c => c.GetStagedApprentice(lastName, dateOfBirth.ToString("yyyy-MM-dd"), email, cancellationToken)).ReturnsAsync(stagedApprenticeResponse);
 
         var result = await sut.GetStagedApprentice(lastName, dateOfBirth, email, cancellationToken);
 
@@ -53,7 +53,7 @@ public class GetStagedApprenticeTests
         CancellationToken cancellationToken)
     {
         stagedApprenticeResponse.ResponseMessage.StatusCode = HttpStatusCode.NotFound;
-        clientMock.Setup(c => c.GetStagedApprentice(lastName, dateOfBirth, email, cancellationToken)).ReturnsAsync(stagedApprenticeResponse);
+        clientMock.Setup(c => c.GetStagedApprentice(lastName, dateOfBirth.ToString("yyyy-MM-dd"), email, cancellationToken)).ReturnsAsync(stagedApprenticeResponse);
 
         var result = await sut.GetStagedApprentice(lastName, dateOfBirth, email, cancellationToken);
 

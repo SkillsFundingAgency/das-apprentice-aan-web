@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticePortal.Authentication;
 
@@ -27,30 +28,28 @@ public class AuthenticationEventsLocal : OpenIdConnectEvents
 
     public async Task AddClaims(ClaimsPrincipal principal)
     {
-        AuthenticatedUser user = new(principal);
-
-        await AddApprenticeAccountClaims(principal, user.ApprenticeId);
-        await AddAanMemberClaims(principal, user.ApprenticeId);
-    }
-
-    private async Task AddApprenticeAccountClaims(ClaimsPrincipal principal, Guid apprenticeId)
-    {
+        // ApprenticeId is generated in login service so this should be present if user is authenticated
+        var apprenticeId = principal.GetApprenticeId();
         var apprentice = await _apprenticeAccountService.GetApprenticeAccountDetails(apprenticeId);
-
+        // user has not been through account registration
+        // authorization filter will navigate user to accounts page
         if (apprentice == null) return;
 
+        AddApprenticeAccountClaims(principal, apprentice);
+        await Task.WhenAll(AddAanMemberClaims(principal, apprenticeId), AddStagedApprenticeClaim(principal, apprentice));
+    }
+
+    private void AddApprenticeAccountClaims(ClaimsPrincipal principal, ApprenticeAccount apprentice)
+    {
         principal.AddAccountCreatedClaim();
 
         AddNameClaims(principal, apprentice);
-
-        if (apprentice.TermsOfUseAccepted)
-            principal.AddTermsOfUseAcceptedClaim();
     }
 
     private async Task AddAanMemberClaims(ClaimsPrincipal principal, Guid apprenticeId)
     {
         var apprentice = await _apprenticesService.GetApprentice(apprenticeId);
-
+        // User has registered but not been through on-boarding journey
         if (apprentice == null) return;
 
         principal.AddAanMemberIdClaim(apprentice.MemberId);
@@ -63,5 +62,13 @@ public class AuthenticationEventsLocal : OpenIdConnectEvents
             new Claim(IdentityClaims.GivenName, apprentice.FirstName),
             new Claim(IdentityClaims.FamilyName, apprentice.LastName),
         }));
+    }
+
+    private async Task AddStagedApprenticeClaim(ClaimsPrincipal principal, ApprenticeAccount apprentice)
+    {
+        // add claim to indicate the user was found in staged apprentice table
+        // this is to restrict users on private beta only and should not be required after public release
+        var myApprenticeship = await _apprenticesService.GetStagedApprentice(apprentice.LastName, apprentice.DateOfBirth, apprentice.Email);
+        if (myApprenticeship != null) principal.AddStagedApprenticeClaim();
     }
 }

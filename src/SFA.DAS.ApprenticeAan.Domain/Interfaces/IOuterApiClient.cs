@@ -38,5 +38,5 @@ public interface IOuterApiClient
 
     [Get("/stagedapprentices")]
     [AllowAnyStatusCode]
-    Task<Response<StagedApprentice?>> GetStagedApprentice([Query] string lastName, DateTime dateOfBirth, string email, CancellationToken cancellationToken);
+    Task<Response<StagedApprentice?>> GetStagedApprentice([Query] string lastName, string dateOfBirth, string email, CancellationToken cancellationToken);
 }

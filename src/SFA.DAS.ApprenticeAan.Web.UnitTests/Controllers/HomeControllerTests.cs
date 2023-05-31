@@ -13,7 +13,7 @@ public class HomeControllerTests
     public void Index_ApprenticeIsMember_RedirectsToNetworkHub()
     {
         var sut = new HomeController();
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.AanMemberId, Guid.NewGuid().ToString());
+        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, Guid.NewGuid().ToString());
 
         var result = sut.Index();
 
@@ -24,7 +24,7 @@ public class HomeControllerTests
     public void Index_ApprenticeIsMember_RedirectsToOnboardingBeforeYouStart()
     {
         var sut = new HomeController();
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.AanMemberId, Guid.Empty.ToString());
+        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, Guid.Empty.ToString());
 
         var result = sut.Index();
 

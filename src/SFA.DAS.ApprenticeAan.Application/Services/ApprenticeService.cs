@@ -26,7 +26,7 @@ public class ApprenticeService : IApprenticeService
 
     public async Task<StagedApprentice?> GetStagedApprentice(string lastName, DateTime dateOfBirth, string email, CancellationToken cancellationToken = new())
     {
-        var response = await _client.GetStagedApprentice(lastName, dateOfBirth, email, cancellationToken);
+        var response = await _client.GetStagedApprentice(lastName, dateOfBirth.ToString("yyyy-MM-dd"), email, cancellationToken);
         return response.ResponseMessage.StatusCode switch
         {
             HttpStatusCode.NotFound => null,
