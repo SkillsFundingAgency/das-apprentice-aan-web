@@ -10,9 +10,9 @@ public class CalendarEventDetailsViewModel
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public string Description { get; set; } = string.Empty;
-    public string Summary { get; set; } = null!;
-    public string Location { get; set; } = null!;
-    public string Postcode { get; set; } = null!;
+    public string? Summary { get; set; } = null!;
+    public string? Location { get; set; } = null!;
+    public string? Postcode { get; set; } = null!;
     public double? Longitude { get; set; }
     public double? Latitude { get; set; }
     public double? Distance { get; set; }
@@ -21,7 +21,6 @@ public class CalendarEventDetailsViewModel
     public string ContactEmail { get; set; } = string.Empty;
     public bool IsAttending { get; set; }
     public string? CancelReason { get; set; } = null!;
-    public string PartialViewName => GetPartialViewName();
     public IEnumerable<Attendee> Attendees { get; set; } = null!;
     public IEnumerable<EventGuest> EventGuests { get; set; } = null!;
 
@@ -37,15 +36,19 @@ public class CalendarEventDetailsViewModel
         Summary = source.Summary,
         Location = source.Location,
         Postcode = source.Postcode,
+        Longitude = source.Longitude,
         Latitude = source.Latitude,
         Distance = source.Distance,
+        EventLink = source.EventLink,
+        ContactName = source.ContactName,
+        ContactEmail = source.ContactEmail,
         IsAttending = source.IsActive,
         CancelReason = source.CancelReason,
         Attendees = source.Attendees,
         EventGuests = source.EventGuests,
     };
 
-    private string GetPartialViewName()
+    public string GetPartialViewName()
     {
         return EventFormat.ToLower().Trim() switch
         {
