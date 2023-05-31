@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace SFA.DAS.ApprenticeAan.Web.Extensions;
+namespace SFA.DAS.ApprenticeAan.Domain.Extensions;
 
 public static class EnumExtensions
 {
@@ -16,7 +16,7 @@ public static class EnumExtensions
         {
             return attr.Description;
         }
-        return null;
+        return value.ToString();
     }
 
     public static string? ToLower(this Enum value)
