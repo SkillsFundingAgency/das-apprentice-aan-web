@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 
-namespace SFA.DAS.ApprenticeAan.Web.AppStart;
+namespace SFA.DAS.ApprenticeAan.Web.Authentication;
 
 public class StagedApprenticeRequirement : IAuthorizationRequirement { }
 

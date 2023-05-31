@@ -6,7 +6,7 @@ using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticePortal.Authentication;
 
-namespace SFA.DAS.ApprenticeAan.Web.AppStart;
+namespace SFA.DAS.ApprenticeAan.Web.Authentication;
 
 [ExcludeFromCodeCoverage]
 public class AuthenticationEventsLocal : OpenIdConnectEvents

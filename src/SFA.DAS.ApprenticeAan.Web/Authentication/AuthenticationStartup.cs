@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
+using SFA.DAS.ApprenticeAan.Web.Authentication;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticePortal.Authentication;
 
-namespace SFA.DAS.ApprenticeAan.Web.AppStart;
+namespace SFA.DAS.ApprenticeAan.Web.Authentication;
 
 [ExcludeFromCodeCoverage]
 public static class AuthenticationStartup
@@ -16,7 +17,7 @@ public static class AuthenticationStartup
         IWebHostEnvironment environment)
     {
         AddApplicationAuthentication(services, config, environment);
-        AddApplicationAuthorisation(services);
+        services.AddApplicationAuthorisation();
         return services;
     }
 
@@ -34,7 +35,7 @@ public static class AuthenticationStartup
                 options.Cookie.Name = ".Apprenticeships.Application";
                 options.Cookie.HttpOnly = true;
                 options.SlidingExpiration = true;
-                options.ExpireTimeSpan = System.TimeSpan.FromHours(1);
+                options.ExpireTimeSpan = TimeSpan.FromHours(1);
                 if (environment.EnvironmentName != "Development")
                     options.Cookie.Domain = ".apprenticeships.education.gov.uk";
             })
