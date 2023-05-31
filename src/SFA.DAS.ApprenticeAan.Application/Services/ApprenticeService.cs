@@ -20,7 +20,18 @@ public class ApprenticeService : IApprenticeService
         {
             HttpStatusCode.NotFound => null,
             HttpStatusCode.OK => response.GetContent(),
-            _ => throw new InvalidOperationException($"Outer api came back with unsuccessful response. StatusCode:{response.ResponseMessage.StatusCode}")
+            _ => throw new InvalidOperationException($"Get Apprentice outer api came back with unsuccessful response. StatusCode:{response.ResponseMessage.StatusCode}")
+        };
+    }
+
+    public async Task<StagedApprentice?> GetStagedApprentice(string lastName, DateTime dateOfBirth, string email, CancellationToken cancellationToken = new())
+    {
+        var response = await _client.GetStagedApprentice(lastName, dateOfBirth.ToString("yyyy-MM-dd"), email, cancellationToken);
+        return response.ResponseMessage.StatusCode switch
+        {
+            HttpStatusCode.NotFound => null,
+            HttpStatusCode.OK => response.GetContent(),
+            _ => throw new InvalidOperationException($"Get staged apprentice outer api came back with unsuccessful response. StatusCode:{response.ResponseMessage.StatusCode}")
         };
     }
 }

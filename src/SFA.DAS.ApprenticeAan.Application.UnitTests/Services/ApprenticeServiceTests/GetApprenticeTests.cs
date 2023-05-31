@@ -8,9 +8,9 @@ using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.Testing.AutoFixture;
 
-namespace SFA.DAS.ApprenticeAan.Application.UnitTests.Services;
+namespace SFA.DAS.ApprenticeAan.Application.UnitTests.Services.ApprenticeServiceTests;
 
-public class ApprenticeServiceTests
+public class GetApprenticeTests
 {
     [Test, MoqAutoData]
     public async Task GetApprentice_InvokesApiClient(

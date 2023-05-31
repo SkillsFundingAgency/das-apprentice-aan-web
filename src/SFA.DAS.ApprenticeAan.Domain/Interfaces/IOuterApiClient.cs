@@ -35,4 +35,8 @@ public interface IOuterApiClient
 
     [Post("/apprentices")]
     Task<CreateApprenticeMemberResponse> PostApprenticeMember([Body] CreateApprenticeMemberRequest request);
+
+    [Get("/stagedapprentices")]
+    [AllowAnyStatusCode]
+    Task<Response<StagedApprentice?>> GetStagedApprentice([Query] string lastName, string dateOfBirth, string email, CancellationToken cancellationToken);
 }
