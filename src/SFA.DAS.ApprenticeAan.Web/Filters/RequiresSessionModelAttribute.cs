@@ -28,7 +28,7 @@ public class RequiresSessionModelAttribute : ApplicationFilterAttribute
 
         if (!IsRequestForOnboardingAction(controllerActionDescriptor)) return true;
 
-        if (controllersToByPass.Any(c => c == controllerActionDescriptor.ControllerTypeInfo.Name)) return true;
+        if (controllersToByPass.Contains(controllerActionDescriptor.ControllerTypeInfo.Name)) return true;
 
         return false;
     }
