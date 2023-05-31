@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
-using SFA.DAS.ApprenticeAan.Web.Controllers;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Models;
 
@@ -25,7 +24,7 @@ public class RequiresSessionModelAttribute : ApplicationFilterAttribute
 
     private bool BypassCheck(ControllerActionDescriptor controllerActionDescriptor)
     {
-        var controllersToByPass = new[] { nameof(BeforeYouStartController), nameof(TermsAndConditionsController), nameof(LineManagerController), nameof(HomeController) };
+        var controllersToByPass = new[] { nameof(BeforeYouStartController), nameof(TermsAndConditionsController), nameof(LineManagerController) };
 
         if (!IsRequestForOnboardingAction(controllerActionDescriptor)) return true;
 

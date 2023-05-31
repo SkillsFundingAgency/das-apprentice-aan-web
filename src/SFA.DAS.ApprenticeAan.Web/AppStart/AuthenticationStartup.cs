@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticePortal.Authentication;
 
@@ -55,12 +56,20 @@ public static class AuthenticationStartup
             });
 
         services.AddScoped<AuthenticationEventsLocal>();
+        services.AddSingleton<IAuthorizationHandler, StagedApprenticeAuthorizationHandler>();
     }
 
     private static void AddApplicationAuthorisation(
         this IServiceCollection services)
     {
-        services.AddAuthorization();
+        services.AddAuthorization(options =>
+        {
+            var builder = new AuthorizationPolicyBuilder();
+            builder.RequireAuthenticatedUser();
+            builder.Requirements.Add(new StagedApprenticeRequirement());
+            options.DefaultPolicy = builder.Build();
+        });
+
         services.AddScoped<AuthenticatedUser>();
         services.AddScoped(s => s.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? new());
     }

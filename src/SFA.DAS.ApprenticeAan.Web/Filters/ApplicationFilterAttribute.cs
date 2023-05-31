@@ -14,5 +14,5 @@ public abstract class ApplicationFilterAttribute : ActionFilterAttribute
 
     protected readonly static RedirectToActionResult RedirectToHome = new(DefaultActionName, DefaultControllerName, null);
 
-    protected static bool IsRequestForOnboardingAction(ControllerActionDescriptor action) => action.ControllerTypeInfo.FullName!.Contains(OnboardingFilter) || action.ControllerTypeInfo.FullName!.Contains("Locations");
+    protected static bool IsRequestForOnboardingAction(ControllerActionDescriptor action) => action.ControllerTypeInfo.FullName!.Contains(OnboardingFilter);
 }

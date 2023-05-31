@@ -36,7 +36,8 @@ public class AuthenticationEventsLocal : OpenIdConnectEvents
         if (apprentice == null) return;
 
         AddApprenticeAccountClaims(principal, apprentice);
-        await Task.WhenAll(AddAanMemberClaims(principal, apprenticeId), AddStagedApprenticeClaim(principal, apprentice));
+        var isMember = await AddAanMemberClaims(principal, apprenticeId);
+        await AddStagedApprenticeClaim(principal, apprentice, isMember);
     }
 
     private void AddApprenticeAccountClaims(ClaimsPrincipal principal, ApprenticeAccount apprentice)
@@ -46,13 +47,14 @@ public class AuthenticationEventsLocal : OpenIdConnectEvents
         AddNameClaims(principal, apprentice);
     }
 
-    private async Task AddAanMemberClaims(ClaimsPrincipal principal, Guid apprenticeId)
+    private async Task<bool> AddAanMemberClaims(ClaimsPrincipal principal, Guid apprenticeId)
     {
         var apprentice = await _apprenticesService.GetApprentice(apprenticeId);
         // User has registered but not been through on-boarding journey
-        if (apprentice == null) return;
+        if (apprentice == null) return false;
 
         principal.AddAanMemberIdClaim(apprentice.MemberId);
+        return true;
     }
 
     private static void AddNameClaims(ClaimsPrincipal principal, IApprenticeAccount apprentice)
@@ -64,11 +66,17 @@ public class AuthenticationEventsLocal : OpenIdConnectEvents
         }));
     }
 
-    private async Task AddStagedApprenticeClaim(ClaimsPrincipal principal, ApprenticeAccount apprentice)
+    private async Task AddStagedApprenticeClaim(ClaimsPrincipal principal, ApprenticeAccount apprentice, bool isMember)
     {
+        if (isMember)
+        {
+            principal.AddStagedApprenticeClaim();
+            return;
+        }
+
         // add claim to indicate the user was found in staged apprentice table
         // this is to restrict users on private beta only and should not be required after public release
-        var myApprenticeship = await _apprenticesService.GetStagedApprentice(apprentice.LastName, apprentice.DateOfBirth, apprentice.Email);
-        if (myApprenticeship != null) principal.AddStagedApprenticeClaim();
+        var stagedApprentice = await _apprenticesService.GetStagedApprentice(apprentice.LastName, apprentice.DateOfBirth, apprentice.Email);
+        if (stagedApprentice != null) principal.AddStagedApprenticeClaim();
     }
 }

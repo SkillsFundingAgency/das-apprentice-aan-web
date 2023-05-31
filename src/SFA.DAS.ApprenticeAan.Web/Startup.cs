@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Diagnostics.CodeAnalysis;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Web.AppStart;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
@@ -7,7 +8,6 @@ using SFA.DAS.ApprenticeAan.Web.Filters;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticePortal.SharedUi.Startup;
 using SFA.DAS.Configuration.AzureTableStorage;
-using System.Diagnostics.CodeAnalysis;
 
 namespace SFA.DAS.ApprenticeAan.Web;
 
@@ -72,9 +72,9 @@ public class Startup
             .Configure<RouteOptions>(options => { options.LowercaseUrls = true; })
             .AddMvc(options =>
             {
+                options.Filters.Add<RequiresRegistrationAuthorizationFilter>();
                 options.Filters.Add<RequiresExistingMemberAttribute>();
                 options.Filters.Add<RequiresSessionModelAttribute>();
-                options.Filters.Add<RequiresRegistrationAuthorizationFilter>();
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
             })
             .AddSessionStateTempDataProvider();
