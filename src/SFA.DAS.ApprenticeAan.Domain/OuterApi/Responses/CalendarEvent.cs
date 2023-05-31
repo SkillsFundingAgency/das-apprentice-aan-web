@@ -1,6 +1,4 @@
-﻿using SFA.DAS.ApprenticeAan.Domain.Constants;
-
-namespace SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+﻿namespace SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 
 public class CalendarEvent
 {
