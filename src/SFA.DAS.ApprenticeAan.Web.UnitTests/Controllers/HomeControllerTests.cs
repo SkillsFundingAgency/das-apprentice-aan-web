@@ -1,41 +1,33 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
+using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
-using SFA.DAS.ApprenticePortal.Authentication;
-using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
-using SFA.DAS.Testing.AutoFixture;
+using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 
-namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers
+namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
+
+public class HomeControllerTests
 {
-    public class HomeControllerTests
+    [Test]
+    public void Index_ApprenticeIsMember_RedirectsToNetworkHub()
     {
-        [Test, MoqAutoData]
-        public async Task Index_ApprenticeIsMember_RedirectsToNetworkHub()
-        {
-            AuthenticatedUser user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerified;
-            Mock<IApprenticeService> apprenticesServiceMock = new();
-            apprenticesServiceMock.Setup(a => a.GetApprentice(user.ApprenticeId)).ReturnsAsync(new Domain.OuterApi.Responses.Apprentice());
-            var controller = new HomeController(apprenticesServiceMock.Object, user);
+        var sut = new HomeController();
+        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, Guid.NewGuid().ToString());
 
-            var result = await controller.Index();
+        var result = sut.Index();
 
-            result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.NetworkHub);
-        }
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.NetworkHub);
+    }
 
-        [Test, MoqAutoData]
-        public async Task Index_ApprenticeIsMember_RedirectsToOnboardingBeforeYouStart()
-        {
-            AuthenticatedUser user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerified;
-            Mock<IApprenticeService> apprenticesServiceMock = new();
-            apprenticesServiceMock.Setup(a => a.GetApprentice(user.ApprenticeId)).ReturnsAsync(() => null);
-            var controller = new HomeController(apprenticesServiceMock.Object, user);
+    [Test]
+    public void Index_ApprenticeIsMember_RedirectsToOnboardingBeforeYouStart()
+    {
+        var sut = new HomeController();
+        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, Guid.Empty.ToString());
 
-            var result = await controller.Index();
+        var result = sut.Index();
 
-            result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.BeforeYouStart);
-        }
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.BeforeYouStart);
     }
 }

@@ -9,7 +9,7 @@ public class ControllerAuthorizeAttributeTests
 {
     private readonly List<string> _controllersThatDoNotRequireAuthorize = new()
     {
-        "ErrorController"
+        "AccessDeniedController"
     };
 
     [Test]
