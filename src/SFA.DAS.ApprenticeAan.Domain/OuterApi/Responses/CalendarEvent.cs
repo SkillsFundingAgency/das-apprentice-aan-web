@@ -20,6 +20,7 @@ public class CalendarEvent
     public string ContactEmail { get; set; } = string.Empty;
     public bool IsActive { get; set; }
     public string? CancelReason { get; set; } = null!;
+
     public IEnumerable<Attendee> Attendees { get; set; } = null!;
     public IEnumerable<EventGuest> EventGuests { get; set; } = null!;
 }
