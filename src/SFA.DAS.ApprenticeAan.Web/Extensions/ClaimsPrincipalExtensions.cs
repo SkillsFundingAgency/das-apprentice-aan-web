@@ -16,8 +16,8 @@ public static class ClaimsPrincipalExtensions
 
     public static Guid GetAanMemberId(this ClaimsPrincipal principal)
     {
-        var claim = principal.Claims.FirstOrDefault(c => c.Type == AanMemberId);
-        var hasParsed = Guid.TryParse(claim?.Value, out Guid value);
+        var memberId = principal.FindFirstValue(AanMemberId);
+        var hasParsed = Guid.TryParse(memberId, out Guid value);
         return hasParsed ? value : Guid.Empty;
     }
 }
