@@ -28,7 +28,7 @@ public interface IOuterApiClient
     Task<Response<Apprentice?>> GetApprentice([Path] Guid apprenticeId);
 
     [Get("calendarEvents")]
-    Task<GetCalendarEventsQueryResult> GetCalendarEvents([Header(Constants.RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId, CancellationToken cancellationToken);
+    Task<GetCalendarEventsQueryResult> GetCalendarEvents([Header(Constants.RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId, [Query] string startDate, [Query] string endDate, CancellationToken cancellationToken);
 
     [Get("/myapprenticeship/{apprenticeId}")]
     Task<MyApprenticeship> GetMyApprenticeship([Path] Guid apprenticeId);

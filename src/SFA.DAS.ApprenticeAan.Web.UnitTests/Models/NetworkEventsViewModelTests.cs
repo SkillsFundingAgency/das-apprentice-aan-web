@@ -1,4 +1,5 @@
-﻿using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+﻿using FluentAssertions;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -22,5 +23,39 @@ public class NetworkEventsViewModelTests
             Assert.That(sut.TotalCount, Is.EqualTo(result.TotalCount));
             Assert.That(sut.CalendarEvents, Is.EquivalentTo(result.CalendarEvents));
         });
+    }
+
+    [TestCase(null, null, false)]
+    [TestCase("2023-05-26", null, true)]
+    [TestCase(null, "2024-01-01", true)]
+    [TestCase("2023-05-26", "2024-01-01", true)]
+    public void ShowFilterOptions_ReturningExpectedValueFromParameters(DateTime? startDate, DateTime? endDate, bool expected)
+    {
+        var model = new NetworkEventsViewModel
+        {
+            StartDate = startDate,
+            EndDate = endDate
+        };
+        var actual = model.ShowFilterOptions;
+        actual.Should().Be(expected);
+    }
+
+    [TestCase(NetworkEventsViewModel.FieldToRemove.StartDate, "2023-05-31", "2024-01-01", "?endDate=2024-01-01")]
+    [TestCase(NetworkEventsViewModel.FieldToRemove.EndDate, "2023-05-31", "2024-01-01", "?startDate=2023-05-31")]
+    [TestCase(NetworkEventsViewModel.FieldToRemove.StartDate, null, null, "")]
+    [TestCase(NetworkEventsViewModel.FieldToRemove.EndDate, null, null, "")]
+    [TestCase(NetworkEventsViewModel.FieldToRemove.StartDate, "2023-05-31", null, "")]
+    [TestCase(NetworkEventsViewModel.FieldToRemove.StartDate, null, "2024-01-01", "?endDate=2024-01-01")]
+    [TestCase(NetworkEventsViewModel.FieldToRemove.EndDate, null, "2024-01-01", "")]
+    [TestCase(NetworkEventsViewModel.FieldToRemove.EndDate, "2023-05-31", "2024-01-01", "?startDate=2023-05-31")]
+    public void QueryStringWhenParameterRemoved(NetworkEventsViewModel.FieldToRemove field, DateTime? startDate, DateTime? endDate, string expected)
+    {
+        var model = new NetworkEventsViewModel
+        {
+            StartDate = startDate,
+            EndDate = endDate
+        };
+        var actual = model.RebuildQueryRemoveField(field);
+        actual.Should().Be(expected);
     }
 }

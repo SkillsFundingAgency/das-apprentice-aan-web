@@ -1,4 +1,5 @@
 ﻿using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+using SFA.DAS.ApprenticeAan.Web.HtmlHelpers;
 
 namespace SFA.DAS.ApprenticeAan.Web.Models;
 
@@ -8,6 +9,11 @@ public class NetworkEventsViewModel
     public int PageSize { get; set; }
     public int TotalPages { get; set; }
     public int TotalCount { get; set; }
+
+    public DateTime? StartDate { get; set; }
+    public DateTime? EndDate { get; set; }
+
+    public bool ShowFilterOptions => StartDate.HasValue || EndDate.HasValue;
     public List<CalendarEventSummary> CalendarEvents { get; set; } = new List<CalendarEventSummary>();
 
     public static implicit operator NetworkEventsViewModel(GetCalendarEventsQueryResult result) => new()
@@ -19,4 +25,31 @@ public class NetworkEventsViewModel
         CalendarEvents = result.CalendarEvents.ToList()
     };
 
+    public string RebuildQueryRemoveField(FieldToRemove fieldToRemove)
+    {
+        var query = "?";
+
+        if (fieldToRemove != FieldToRemove.StartDate && StartDate != null)
+        {
+            query += $"startDate={DateTimeHelper.ToUrlFormat(StartDate)}&";
+        }
+
+        if (fieldToRemove != FieldToRemove.EndDate && EndDate != null)
+        {
+            query += $"endDate={DateTimeHelper.ToUrlFormat(EndDate)}&";
+        }
+
+        if (query.Last() == '&')
+        {
+            query = query.Remove(query.Length - 1);
+        }
+
+        return query == "?" ? string.Empty : query;
+    }
+
+    public enum FieldToRemove
+    {
+        StartDate,
+        EndDate
+    }
 }
