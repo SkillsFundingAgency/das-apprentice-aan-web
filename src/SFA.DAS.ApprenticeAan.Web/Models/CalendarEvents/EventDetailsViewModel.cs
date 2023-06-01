@@ -1,4 +1,5 @@
-﻿using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+﻿using SFA.DAS.ApprenticeAan.Domain.Constants;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 
 namespace SFA.DAS.ApprenticeAan.Web.Models.CalendarEvents;
 
@@ -6,7 +7,7 @@ public class EventDetailsViewModel
 {
     public Guid CalendarEventId { get; set; }
     public string CalendarName { get; set; } = string.Empty;
-    public string EventFormat { get; set; } = string.Empty;
+    public EventFormat EventFormat { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public string Description { get; set; } = string.Empty;
@@ -16,7 +17,6 @@ public class EventDetailsViewModel
     public string? EventLink { get; set; }
     public string ContactName { get; set; } = string.Empty;
     public string ContactEmail { get; set; } = string.Empty;
-    public bool IsAttending { get; set; }
     public string? CancelReason { get; set; } = null!;
     public virtual string PartialViewName => GetPartialViewName();
 
@@ -32,16 +32,14 @@ public class EventDetailsViewModel
         EndDate = source.EndDate;
         Description = source.Description;
         Summary = source.Summary;
-        Distance = source.Distance;
         EventLink = source.EventLink;
         ContactName = source.ContactName;
         ContactEmail = source.ContactEmail;
-        IsAttending = source.IsActive;
         CancelReason = source.CancelReason;
         Attendees = source.Attendees;
         EventGuests = source.EventGuests;
 
-        if (source.EventFormat.Trim().ToLower() != "online")
+        if (EventFormat != EventFormat.Online)
         {
             LocationDetails = new LocationDetails()
             {
@@ -49,17 +47,18 @@ public class EventDetailsViewModel
                 Postcode = source.Postcode,
                 Longitude = source.Longitude,
                 Latitude = source.Latitude,
+                Distance = source.Distance,
             };
         }
     }
 
     private string GetPartialViewName()
     {
-        return EventFormat.Trim().ToLower() switch
+        return EventFormat switch
         {
-            "online" => "OnlineEventDetailsPartial.cshtml",
-            "in person" => "InPersonEventDetailsPartial.cshtml",
-            "hybrid" => "HybridEventDetailsPartial.cshtml",
+            EventFormat.Online => "OnlineEventDetailsPartial.cshtml",
+            EventFormat.InPerson => "InPersonEventDetailsPartial.cshtml",
+            EventFormat.Hybrid => "HybridEventDetailsPartial.cshtml",
             _ => throw new NotImplementedException($"Failed to find a matching partial view for event format \"{EventFormat}\""),
         };
     }

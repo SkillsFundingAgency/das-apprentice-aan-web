@@ -1,10 +1,12 @@
-﻿namespace SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+﻿using SFA.DAS.ApprenticeAan.Domain.Constants;
+
+namespace SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 
 public class CalendarEvent
 {
     public Guid CalendarEventId { get; set; }
     public string CalendarName { get; set; } = null!;
-    public string EventFormat { get; set; } = string.Empty;
+    public EventFormat EventFormat { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public string Description { get; set; } = string.Empty;
