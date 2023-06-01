@@ -324,7 +324,7 @@
                                     <span class="app-date__day">@calendarEvent.Start.Date.Day.ToString("0")</span>
                                     <span class="app-date__month">@calendarEvent.Start.Date.ToString("MMM")</span>
                                 </div>
-                                <strong class="govuk-tag app-tag app-tag--@calendarEvent.EventFormat.ToLower()">@calendarEvent.EventFormat.GetDescription()</strong>
+                                <strong class="govuk-tag app-tag app-tag--@calendarEvent.EventFormat.ToString()">@calendarEvent.EventFormat.GetDescription()</strong>
                                 <partial name="_IsAttending" model=calendarEvent.IsAttending />
                             </div>
                         </div>

@@ -16,9 +16,4 @@ public static class EnumExtensions
         }
         return value.ToString();
     }
-
-    public static string? ToLower(this Enum value)
-    {
-        return value.ToString().ToLower();
-    }
 }

@@ -15,15 +15,6 @@ public class EnumExtensionsTests
         var actual = enumTested.GetDescription();
         actual.Should().Be(expected);
     }
-
-    [TestCase(TestEnum.Item1, "item1")]
-    [TestCase(TestEnum.Item2, "item2")]
-    [TestCase(TestEnum.Item3, "item3")]
-    public void ToLower_ReturnsExpectedFormat(TestEnum enumTested, string expected)
-    {
-        var actual = enumTested.ToLower();
-        actual.Should().Be(expected);
-    }
 }
 
 
