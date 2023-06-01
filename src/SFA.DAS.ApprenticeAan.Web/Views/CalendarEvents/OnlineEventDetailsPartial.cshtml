@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Mvc.ModelBinding;
+@using SFA.DAS.ApprenticeAan.Web.Models.CalendarEvents;
 
-@model CalendarEventDetailsViewModel
+@model EventDetailsViewModel
 
 @{
     var startTime = @Model.StartDate.ToString("h:mm tt");
@@ -12,12 +13,8 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-half">
         <h2 class="govuk-heading-m">When and where</h2>
-        <p>@Model.StartDate.ToLongDateString()<span class="das-!-display--block">@startTime to @endTime</span> </p>
+        <p>@Model.StartDate.ToString("dddd, d MMMM yyyy")<span class="das-!-display--block">@startTime to @endTime</span> </p>
         <p><strong>Online:</strong> joining details provided on sign up</p>
-        <p>
-            <span class="das-!-display--block">Online</span>
-            @Model.Location.Trim(), <span class="das-no-wrap">@Model.Postcode.ToUpper()</span>
-        </p>
     </div>
     <div class="govuk-grid-column-one-half">
         <img src="https://designshack.net/wp-content/uploads/placeholder-image-368x246.png" alt="Map" class="app-map-image" />

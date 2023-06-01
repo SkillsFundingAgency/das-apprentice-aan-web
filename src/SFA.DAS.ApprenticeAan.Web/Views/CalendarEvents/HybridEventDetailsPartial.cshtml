@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNetCore.Mvc.ModelBinding;
+@using SFA.DAS.ApprenticeAan.Web.Models.CalendarEvents;
+
+@model EventDetailsViewModel
+
+@{
+    var startTime = @Model.StartDate.ToString("h:mm tt");
+    var endTime = @Model.EndDate.ToString("h:mm tt");
+}
+
+<strong class="govuk-tag app-tag app-tag--hybrid">Hybrid</strong> <strong class="govuk-tag app-tag">AAN oragnised or sponsored event</strong>
+<h1 class="govuk-heading-xl govuk-!-margin-top-4">@Model.Description.Trim()</h1>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+        <h2 class="govuk-heading-m">When and where</h2>
+        <p>@Model.StartDate.ToLongDateString()<span class="das-!-display--block">@startTime to @endTime</span> </p>
+        <p>Online joining details provided on sign-up</p>
+        <p>
+            <span class="das-!-display--block">In person</span>
+            @Model.LocationDetails.Location?.Trim(), <span class="das-no-wrap">@Model.LocationDetails.Postcode?.ToUpper()</span>
+        </p>
+    </div>
+    <div class="govuk-grid-column-one-half">
+        <img src="https://designshack.net/wp-content/uploads/placeholder-image-368x246.png" alt="Map" class="app-map-image" />
+    </div>
+</div>

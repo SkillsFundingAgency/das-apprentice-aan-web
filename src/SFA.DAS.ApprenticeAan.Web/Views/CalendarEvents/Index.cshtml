@@ -1,11 +1,14 @@
-﻿@model CalendarEventDetailsViewModel
+﻿@using SFA.DAS.ApprenticeAan.Web.Models.CalendarEvents;
+
+@model EventDetailsViewModel
+
 @{
-    ViewData["Title"] = "Event Page — Online";
+    ViewData["Title"] = $"Event Page — {Model.EventFormat}";
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <partial name=@Model.GetPartialViewName() />
+        <partial name=@Model.PartialViewName />
         <h2 class="govuk-heading-m">Event summary</h2>
         <p>@Model.Summary</p>
         <h2 class="govuk-heading-m">Guest speakers</h2>
@@ -45,8 +48,6 @@
             <p class="app-green-tick-large">
                 <span class="das-icon-list__icon das-icon-list__icon--tick">Yes: </span>You're signed up
             </p>
-            <h3 class="govuk-heading-s">Can't make it</h3>
-            <a href="#" role="button" class="govuk-button govuk-button--warning govuk-!-margin-bottom-0 govuk-!-width-full">Cancel your attendance</a>
         </div>
     </div>
 </div>

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
-using SFA.DAS.ApprenticeAan.Web.Models;
+using SFA.DAS.ApprenticeAan.Web.Models.CalendarEvents;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
@@ -23,7 +23,6 @@ public class CalendarEventsController : Controller
     {
         var memberId = User.GetAanMemberId();
         var eventDetails = await _outerApiClient.GetEventDetails(id, memberId, cancellationToken);
-        CalendarEventDetailsViewModel viewModel = eventDetails;
-        return View(viewModel);
+        return View(new EventDetailsViewModel(eventDetails));
     }
 }
