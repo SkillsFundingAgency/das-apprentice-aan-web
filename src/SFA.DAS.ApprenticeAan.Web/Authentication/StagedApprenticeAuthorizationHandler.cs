@@ -11,11 +11,6 @@ public class StagedApprenticeAuthorizationHandler : AuthorizationHandler<StagedA
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, StagedApprenticeRequirement requirement)
     {
         HttpContext? currentContext;
-        if (context.User.Identity == null || !context.User.Identity.IsAuthenticated)
-        {
-            context.Succeed(requirement);
-            return Task.CompletedTask;
-        }
         switch (context.Resource)
         {
             case HttpContext resource:
