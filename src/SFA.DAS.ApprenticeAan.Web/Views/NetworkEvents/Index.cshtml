@@ -55,12 +55,12 @@
                         @if (Model.StartDate != null)
                         {
                             <h4 class="das-filter__selected-sub-heading">From date</h4>
-                            <a asp-querystring="@Model.RebuildQueryRemoveField(NetworkEventsViewModel.FieldToRemove.StartDate)" title="Clear this filter '@DateTimeHelper.ToScreenFormat(Model.StartDate)'" class="das-filter__tag das-breakable">@DateTimeHelper.ToScreenFormat(Model.StartDate)</a>
+                            <a asp-querystring="@Model.BuildQuery(NetworkEventsViewModel.FilterFields.StartDate)" title="Clear this filter '@DateTimeHelper.ToScreenFormat(Model.StartDate)'" class="das-filter__tag das-breakable">@DateTimeHelper.ToScreenFormat(Model.StartDate)</a>
                         }
                         @if (Model.EndDate != null)
                         {
                             <h4 class="das-filter__selected-sub-heading">To date</h4>
-                            <a asp-querystring="@Model.RebuildQueryRemoveField(NetworkEventsViewModel.FieldToRemove.EndDate)" title="Clear this filter '@DateTimeHelper.ToScreenFormat(Model.EndDate)'" class="das-filter__tag das-breakable">@DateTimeHelper.ToScreenFormat(Model.EndDate)</a>
+                            <a asp-querystring="@Model.BuildQuery(NetworkEventsViewModel.FilterFields.EndDate)" title="Clear this filter '@DateTimeHelper.ToScreenFormat(Model.EndDate)'" class="das-filter__tag das-breakable">@DateTimeHelper.ToScreenFormat(Model.EndDate)</a>
                         }
                     </div>
                 }

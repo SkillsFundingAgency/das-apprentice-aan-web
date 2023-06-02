@@ -40,22 +40,22 @@ public class NetworkEventsViewModelTests
         actual.Should().Be(expected);
     }
 
-    [TestCase(NetworkEventsViewModel.FieldToRemove.StartDate, "2023-05-31", "2024-01-01", "?endDate=2024-01-01")]
-    [TestCase(NetworkEventsViewModel.FieldToRemove.EndDate, "2023-05-31", "2024-01-01", "?startDate=2023-05-31")]
-    [TestCase(NetworkEventsViewModel.FieldToRemove.StartDate, null, null, "")]
-    [TestCase(NetworkEventsViewModel.FieldToRemove.EndDate, null, null, "")]
-    [TestCase(NetworkEventsViewModel.FieldToRemove.StartDate, "2023-05-31", null, "")]
-    [TestCase(NetworkEventsViewModel.FieldToRemove.StartDate, null, "2024-01-01", "?endDate=2024-01-01")]
-    [TestCase(NetworkEventsViewModel.FieldToRemove.EndDate, null, "2024-01-01", "")]
-    [TestCase(NetworkEventsViewModel.FieldToRemove.EndDate, "2023-05-31", "2024-01-01", "?startDate=2023-05-31")]
-    public void QueryStringWhenParameterRemoved(NetworkEventsViewModel.FieldToRemove field, DateTime? startDate, DateTime? endDate, string expected)
+    [TestCase(NetworkEventsViewModel.FilterFields.StartDate, "2023-05-31", "2024-01-01", "?endDate=2024-01-01")]
+    [TestCase(NetworkEventsViewModel.FilterFields.EndDate, "2023-05-31", "2024-01-01", "?startDate=2023-05-31")]
+    [TestCase(NetworkEventsViewModel.FilterFields.StartDate, null, null, "")]
+    [TestCase(NetworkEventsViewModel.FilterFields.EndDate, null, null, "")]
+    [TestCase(NetworkEventsViewModel.FilterFields.StartDate, "2023-05-31", null, "")]
+    [TestCase(NetworkEventsViewModel.FilterFields.StartDate, null, "2024-01-01", "?endDate=2024-01-01")]
+    [TestCase(NetworkEventsViewModel.FilterFields.EndDate, null, "2024-01-01", "")]
+    [TestCase(NetworkEventsViewModel.FilterFields.EndDate, "2023-05-31", "2024-01-01", "?startDate=2023-05-31")]
+    public void QueryStringWhenFilterRemoved(NetworkEventsViewModel.FilterFields filterToRemove, DateTime? startDate, DateTime? endDate, string expected)
     {
         var model = new NetworkEventsViewModel
         {
             StartDate = startDate,
             EndDate = endDate
         };
-        var actual = model.RebuildQueryRemoveField(field);
+        var actual = model.BuildQuery(filterToRemove);
         actual.Should().Be(expected);
     }
 }
