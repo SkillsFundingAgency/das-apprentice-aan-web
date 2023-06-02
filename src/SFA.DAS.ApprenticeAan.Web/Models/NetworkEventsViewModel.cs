@@ -1,4 +1,5 @@
-﻿using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+﻿using SFA.DAS.ApprenticeAan.Domain.Constants;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.HtmlHelpers;
 
 namespace SFA.DAS.ApprenticeAan.Web.Models;
@@ -12,8 +13,10 @@ public class NetworkEventsViewModel
 
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
+    public List<EventFormat>? EventFormats { get; set; }
 
-    public bool ShowFilterOptions => StartDate.HasValue || EndDate.HasValue;
+
+    public bool ShowFilterOptions => StartDate.HasValue || EndDate.HasValue || (EventFormats != null && EventFormats.Any());
     public List<CalendarEventSummary> CalendarEvents { get; set; } = new List<CalendarEventSummary>();
 
     public static implicit operator NetworkEventsViewModel(GetCalendarEventsQueryResult result) => new()
@@ -39,10 +42,28 @@ public class NetworkEventsViewModel
             query += $"endDate={DateTimeHelper.ToUrlFormat(EndDate)}&";
         }
 
+        if (EventFormats != null)
+        {
+            foreach (var eventFormat in EventFormats)
+            {
+                switch (eventFormat)
+                {
+                    case EventFormat.Online when removeFilter == FilterFields.EventFormatOnline:
+                    case EventFormat.Hybrid when removeFilter == FilterFields.EventFormatHybrid:
+                    case EventFormat.InPerson when removeFilter == FilterFields.EventFormatInPerson:
+                        continue;
+                    default:
+                        query += $"eventFormats={eventFormat}&";
+                        break;
+                }
+            }
+        }
+
         if (query.Last() == '&')
         {
             query = query.Remove(query.Length - 1);
         }
+
 
         return query == "?" ? string.Empty : query;
     }
@@ -50,6 +71,9 @@ public class NetworkEventsViewModel
     public enum FilterFields
     {
         StartDate,
-        EndDate
+        EndDate,
+        EventFormatOnline,
+        EventFormatHybrid,
+        EventFormatInPerson
     }
 }

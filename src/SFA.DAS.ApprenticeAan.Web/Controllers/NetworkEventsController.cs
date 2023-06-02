@@ -25,10 +25,11 @@ public class NetworkEventsController : Controller
         var startDateFormatted = DateTimeHelper.ToUrlFormat(request.StartDate)!;
         var endDateFormatted = DateTimeHelper.ToUrlFormat(request.EndDate)!;
         var calendarEventsResponse = await _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), startDateFormatted,
-            endDateFormatted, cancellationToken);
+            endDateFormatted, request.EventFormats, cancellationToken);
         var model = (NetworkEventsViewModel)calendarEventsResponse;
         model.StartDate = request.StartDate;
         model.EndDate = request.EndDate;
+        model.EventFormats = request.EventFormats;
         return View(model);
     }
 }

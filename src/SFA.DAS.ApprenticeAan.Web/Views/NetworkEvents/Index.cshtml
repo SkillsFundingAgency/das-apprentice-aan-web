@@ -17,6 +17,24 @@
     {
         totalCountDescription = "1 result";
     }
+
+    var eventFormatOnlineChecked = "";
+    var eventFormatInPersonChecked = "";
+    var eventFormatHybridChecked = "";
+    if (Model.EventFormats != null && Model.EventFormats.Any(x => x == EventFormat.InPerson))
+    {
+        eventFormatInPersonChecked = "checked='checked'";
+    }
+
+    if (Model.EventFormats != null && Model.EventFormats.Any(x => x == EventFormat.Online))
+    {
+        eventFormatOnlineChecked = "checked='checked'";
+    }
+
+    if (Model.EventFormats != null && Model.EventFormats.Any(x => x == EventFormat.Hybrid))
+    {
+        eventFormatHybridChecked = "checked='checked'";
+    }
 }
 
 <div class="govuk-grid-row">
@@ -62,6 +80,24 @@
                             <h4 class="das-filter__selected-sub-heading">To date</h4>
                             <a asp-querystring="@Model.BuildQueryString(NetworkEventsViewModel.FilterFields.EndDate)" title="Clear this filter '@DateTimeHelper.ToScreenFormat(Model.EndDate)'" class="das-filter__tag das-breakable">@DateTimeHelper.ToScreenFormat(Model.EndDate)</a>
                         }
+                        
+                        @if (Model.EventFormats != null && Model.EventFormats.Any())
+                        {
+                            <h4 class="das-filter__selected-sub-heading">Event Format</h4>
+                            if (Model.EventFormats.Any(x => x == EventFormat.Online))
+                            {
+                                <a asp-querystring="@Model.BuildQuery(NetworkEventsViewModel.FilterFields.EventFormatOnline)" title="Clear this filter '@EventFormat.Online.GetDescription()'" class="das-filter__tag das-breakable">@EventFormat.Online.GetDescription()</a>
+                            }
+
+                            if (Model.EventFormats.Any(x => x == EventFormat.Hybrid))
+                            {
+                                <a asp-querystring="@Model.BuildQuery(NetworkEventsViewModel.FilterFields.EventFormatHybrid)" title="Clear this filter '@EventFormat.Hybrid.GetDescription()'" class="das-filter__tag das-breakable">@EventFormat.Hybrid.GetDescription()</a>
+                            }
+                            if (Model.EventFormats.Any(x => x == EventFormat.InPerson))
+                            {
+                                <a asp-querystring="@Model.BuildQuery(NetworkEventsViewModel.FilterFields.EventFormatInPerson)" title="Clear this filter '@EventFormat.InPerson.GetDescription()'" class="das-filter__tag das-breakable">@EventFormat.InPerson.GetDescription()</a>
+                            }
+                        }
                     </div>
                 }
                 <div class="das-filter__body das-!-show--from-tablet" id="events-filter-options">
@@ -88,26 +124,26 @@
                                 </div>
                             </fieldset>
                         </div>
-                        <div class="govuk-form-group  @hideFilterElements">
+                        <div class="govuk-form-group">
                             <fieldset class="govuk-fieldset">
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                                     Event format
                                 </legend>
                                 <div class="govuk-checkboxes govuk-checkboxes--small">
                                     <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="format-person" name="format" type="checkbox" value="person">
+                                        <input class="govuk-checkboxes__input" id="format-person" name="eventFormats" type="checkbox" value="InPerson" @eventFormatInPersonChecked>
                                         <label class="govuk-label govuk-checkboxes__label" for="format-person">
                                             In person
                                         </label>
                                     </div>
                                     <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="format-online" name="format" type="checkbox" value="online">
+                                        <input class="govuk-checkboxes__input" id="format-online" name="eventFormats" type="checkbox" value="Online" @eventFormatOnlineChecked>
                                         <label class="govuk-label govuk-checkboxes__label" for="format-online">
                                             Online
                                         </label>
                                     </div>
                                     <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="format-hybrid" name="format" type="checkbox" value="hybrid">
+                                        <input class="govuk-checkboxes__input" id="format-hybrid" name="eventFormats" type="checkbox" value="Hybrid" @eventFormatHybridChecked>
                                         <label class="govuk-label govuk-checkboxes__label" for="format-hybrid">
                                             Hybrid
                                         </label>
