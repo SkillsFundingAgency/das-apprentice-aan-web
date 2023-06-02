@@ -86,16 +86,16 @@
                             <h4 class="das-filter__selected-sub-heading">Event Format</h4>
                             if (Model.EventFormats.Any(x => x == EventFormat.Online))
                             {
-                                <a asp-querystring="@Model.BuildQuery(NetworkEventsViewModel.FilterFields.EventFormatOnline)" title="Clear this filter '@EventFormat.Online.GetDescription()'" class="das-filter__tag das-breakable">@EventFormat.Online.GetDescription()</a>
+                                <a asp-querystring="@Model.BuildQueryString(NetworkEventsViewModel.FilterFields.EventFormatOnline)" title="Clear this filter '@EventFormat.Online.GetDescription()'" class="das-filter__tag das-breakable">@EventFormat.Online.GetDescription()</a>
                             }
 
                             if (Model.EventFormats.Any(x => x == EventFormat.Hybrid))
                             {
-                                <a asp-querystring="@Model.BuildQuery(NetworkEventsViewModel.FilterFields.EventFormatHybrid)" title="Clear this filter '@EventFormat.Hybrid.GetDescription()'" class="das-filter__tag das-breakable">@EventFormat.Hybrid.GetDescription()</a>
+                                <a asp-querystring="@Model.BuildQueryString(NetworkEventsViewModel.FilterFields.EventFormatHybrid)" title="Clear this filter '@EventFormat.Hybrid.GetDescription()'" class="das-filter__tag das-breakable">@EventFormat.Hybrid.GetDescription()</a>
                             }
                             if (Model.EventFormats.Any(x => x == EventFormat.InPerson))
                             {
-                                <a asp-querystring="@Model.BuildQuery(NetworkEventsViewModel.FilterFields.EventFormatInPerson)" title="Clear this filter '@EventFormat.InPerson.GetDescription()'" class="das-filter__tag das-breakable">@EventFormat.InPerson.GetDescription()</a>
+                                <a asp-querystring="@Model.BuildQueryString(NetworkEventsViewModel.FilterFields.EventFormatInPerson)" title="Clear this filter '@EventFormat.InPerson.GetDescription()'" class="das-filter__tag das-breakable">@EventFormat.InPerson.GetDescription()</a>
                             }
                         }
                     </div>

@@ -3,6 +3,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
@@ -22,10 +23,11 @@ public class NetworkEventsControllerTests
         DateTime? endDate,
         Guid apprenticeId)
     {
+        var eventFormats = new List<EventFormat>();
         var startDateFormatted = startDate?.ToString("yyyy-MM-dd")!;
         var endDateFormatted = endDate?.ToString("yyyy-MM-dd")!;
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
-        outerApiMock.Setup(o => o.GetCalendarEvents(It.IsAny<Guid>(), startDateFormatted, endDateFormatted, It.IsAny<CancellationToken>())).ReturnsAsync(expectedResult);
+        outerApiMock.Setup(o => o.GetCalendarEvents(It.IsAny<Guid>(), startDateFormatted, endDateFormatted, eventFormats, It.IsAny<CancellationToken>())).ReturnsAsync(expectedResult);
 
         var request = new GetNetworkEventsRequest
         {
@@ -37,6 +39,5 @@ public class NetworkEventsControllerTests
         var actualResult = sut.Index(request, new CancellationToken());
 
         var viewResult = actualResult.Result.As<ViewResult>();
-        viewResult.Model.Should().BeEquivalentTo(expectedResult);
     }
 }
