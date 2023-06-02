@@ -55,7 +55,7 @@ public class NetworkEventsViewModelTests
             StartDate = startDate,
             EndDate = endDate
         };
-        var actual = model.BuildQuery(filterToRemove);
+        var actual = model.BuildQueryString(filterToRemove);
         actual.Should().Be(expected);
     }
 }

@@ -25,7 +25,7 @@ public class NetworkEventsViewModel
         CalendarEvents = result.CalendarEvents.ToList()
     };
 
-    public string BuildQuery(FilterFields removeFilter)
+    public string BuildQueryString(FilterFields removeFilter)
     {
         var query = "?";
 
