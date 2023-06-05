@@ -1,9 +1,4 @@
-﻿using SFA.DAS.ApprenticeAan.Domain.Constants;
-using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
-using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
-using SFA.DAS.Testing.AutoFixture;
-
-namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models.CalendarEvents;
+﻿namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models.CalendarEvents;
 
 public class NetworkEventDetailsViewModelTests
 {
@@ -127,6 +122,14 @@ public class NetworkEventDetailsViewModelTests
         var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid());
 
         Assert.That(sut.PartialViewName, Is.EqualTo("_OnlineEventPartial.cshtml"));
+    }
+
+    public void GetPartialViewName_EventFormatIsInPerson_RetrievesInPersonPartialView()
+    {
+        var source = new CalendarEvent() { EventFormat = EventFormat.InPerson };
+        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid());
+
+        Assert.That(sut.PartialViewName, Is.EqualTo("_InPersonEventPartial.cshtml"));
     }
 
     [Test]

@@ -1,12 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ApprenticeAan.Domain.Interfaces;
-using SFA.DAS.ApprenticeAan.Web.Extensions;
-using SFA.DAS.ApprenticeAan.Web.Infrastructure;
-using SFA.DAS.ApprenticeAan.Web.Models;
-using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
-
-namespace SFA.DAS.ApprenticeAan.Web.Controllers;
+﻿namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
 [Route("network-events")]
