@@ -1,5 +1,7 @@
 ﻿using AutoFixture.NUnit3;
+using FluentAssertions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
@@ -12,16 +14,14 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.CheckYourAn
 public class CheckYourAnswersControllerGetTests : CheckYourAnswersControllerTestsBase
 {
     [Test, MoqAutoData]
-    public async Task Get_HasSeenPreview_DoesNotRequestMyApprenticeshipData(
+    public void Get_HasSeenPreview_DoesNotRequestMyApprenticeshipData(
         [Frozen] Mock<ISessionService> sessionServiceMock,
-        [Frozen] Mock<IOuterApiClient> apiClientMock,
         [Greedy] CheckYourAnswersController sut,
         OnboardingSessionModel onboardingSessionModel,
         Guid apprenticeId)
     {
         //Arrange
         onboardingSessionModel.ProfileData = GetProfileData();
-        onboardingSessionModel.HasSeenPreview = true;
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(onboardingSessionModel);
 
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
@@ -30,32 +30,9 @@ public class CheckYourAnswersControllerGetTests : CheckYourAnswersControllerTest
         sut.AddUrlHelperMock();
 
         //Action
-        await sut.Get();
+        var result = sut.Get();
 
-        apiClientMock.Verify(c => c.GetMyApprenticeship(It.IsAny<Guid>()), Times.Never);
-    }
-
-    [Test, MoqAutoData]
-    public async Task Get_HasNotSeenPreview_RequestsMyApprenticeshipData(
-        [Frozen] Mock<ISessionService> sessionServiceMock,
-        [Frozen] Mock<IOuterApiClient> apiClientMock,
-        [Greedy] CheckYourAnswersController sut,
-        OnboardingSessionModel onboardingSessionModel,
-        Guid apprenticeId)
-    {
-        //Arrange
-        onboardingSessionModel.ProfileData = GetProfileData();
-        onboardingSessionModel.HasSeenPreview = false;
-        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(onboardingSessionModel);
-
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
-        sut.ControllerContext = new() { HttpContext = new DefaultHttpContext() { User = user } };
-
-        sut.AddUrlHelperMock();
-
-        //Action
-        await sut.Get();
-
-        apiClientMock.Verify(c => c.GetMyApprenticeship(apprenticeId));
+        //Assert
+        result.As<ViewResult>().ViewName.Should().Be(CheckYourAnswersController.ViewPath);
     }
 }
