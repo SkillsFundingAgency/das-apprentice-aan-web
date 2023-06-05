@@ -41,13 +41,17 @@
     </div>
     <div class="govuk-grid-column-one-third">
         <div class="das-highlight govuk-!-margin-top-0">
-            <h3 class="govuk-heading-m">Want to be involved in this event?</h3>
-            <a href="#" role="button" class="govuk-button govuk-!-margin-bottom-0 govuk-!-width-full">Sign up</a>
-        </div>
-        <div class="das-highlight govuk-!-margin-top-0">
-            <p class="app-green-tick-large">
-                <span class="das-icon-list__icon das-icon-list__icon--tick">Yes: </span>You're signed up
-            </p>
+            @if (Model.IsSignedUp)
+            {
+                <p class="app-green-tick-large">
+                    <span class="das-icon-list__icon das-icon-list__icon--tick">Yes: </span>You're signed up
+                </p>
+            }
+            else
+            {
+                <h3 class="govuk-heading-m">Want to be involved in this event?</h3>
+                <a href="#" role="button" class="govuk-button govuk-!-margin-bottom-0 govuk-!-width-full">Sign up</a>
+            }
         </div>
     </div>
 </div>

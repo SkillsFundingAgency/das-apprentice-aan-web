@@ -5,25 +5,25 @@ namespace SFA.DAS.ApprenticeAan.Web.Models.CalendarEvents;
 
 public class EventDetailsViewModel
 {
-    public Guid CalendarEventId { get; set; }
-    public string CalendarName { get; set; } = string.Empty;
-    public EventFormat EventFormat { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
-    public string Description { get; set; } = string.Empty;
-    public string? Summary { get; set; } = null!;
-    public LocationDetails LocationDetails { get; set; }
-    public double? Distance { get; set; }
-    public string? EventLink { get; set; }
-    public string ContactName { get; set; } = string.Empty;
-    public string ContactEmail { get; set; } = string.Empty;
-    public string? CancelReason { get; set; } = null!;
+    public Guid CalendarEventId { get; init; }
+    public string CalendarName { get; init; } = string.Empty;
+    public EventFormat EventFormat { get; init; }
+    public DateTime StartDate { get; init; }
+    public DateTime EndDate { get; init; }
+    public string Description { get; init; } = string.Empty;
+    public string? Summary { get; init; } = null!;
+    public LocationDetails LocationDetails { get; init; }
+    public double? Distance { get; init; }
+    public string? EventLink { get; init; }
+    public string ContactName { get; init; } = string.Empty;
+    public string ContactEmail { get; init; } = string.Empty;
+    public string? CancelReason { get; init; } = null!;
     public virtual string PartialViewName => GetPartialViewName();
+    public IReadOnlyList<Attendee> Attendees { get; } = new List<Attendee>();
+    public IReadOnlyList<EventGuest> EventGuests { get; } = new List<EventGuest>();
+    public bool IsSignedUp { get; init; }
 
-    public IEnumerable<Attendee> Attendees { get; set; } = null!;
-    public IEnumerable<EventGuest> EventGuests { get; set; } = null!;
-
-    public EventDetailsViewModel(CalendarEvent source)
+    public EventDetailsViewModel(CalendarEvent source, Guid memberId)
     {
         CalendarEventId = source.CalendarEventId;
         CalendarName = source.CalendarName;
@@ -38,6 +38,8 @@ public class EventDetailsViewModel
         CancelReason = source.CancelReason;
         Attendees = source.Attendees;
         EventGuests = source.EventGuests;
+
+        IsSignedUp = Attendees.Any(a => a.MemberId == memberId);
 
         if (EventFormat != EventFormat.Online)
         {

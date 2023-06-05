@@ -12,7 +12,7 @@ public class EventDetailsViewModelTests
     {
         source.EventFormat = EventFormat.Online;
 
-        var sut = new EventDetailsViewModel(source);
+        var sut = new EventDetailsViewModel(source, Guid.NewGuid());
 
         Assert.Multiple(() =>
         {
@@ -42,7 +42,7 @@ public class EventDetailsViewModelTests
     {
         source.EventFormat = EventFormat.Hybrid;
 
-        var sut = new EventDetailsViewModel(source);
+        var sut = new EventDetailsViewModel(source, Guid.NewGuid());
 
         Assert.Multiple(() =>
         {
@@ -72,7 +72,7 @@ public class EventDetailsViewModelTests
     {
         source.EventFormat = EventFormat.InPerson;
 
-        var sut = new EventDetailsViewModel(source);
+        var sut = new EventDetailsViewModel(source, Guid.NewGuid());
 
         Assert.Multiple(() =>
         {
@@ -97,11 +97,38 @@ public class EventDetailsViewModelTests
         });
     }
 
+    [TestCase(EventFormat.Online)]
+    [TestCase(EventFormat.InPerson)]
+    [TestCase(EventFormat.Hybrid)]
+    public void AttendeesContainsCurrentMemberId_IsSignedUpIsTrue(EventFormat eventFormat)
+    {
+        var memberId = Guid.NewGuid();
+        var source = new CalendarEvent() { EventFormat = eventFormat };
+        source.Attendees.Add(new Attendee() { MemberId = memberId });
+
+        var sut = new EventDetailsViewModel(source, memberId);
+
+        Assert.That(sut.IsSignedUp, Is.True);
+    }
+
+    [TestCase(EventFormat.Online)]
+    [TestCase(EventFormat.InPerson)]
+    [TestCase(EventFormat.Hybrid)]
+    public void AttendeesDoesNotContainCurrentMemberId_IsSignedUpIsFalse(EventFormat eventFormat)
+    {
+        var memberId = Guid.NewGuid();
+        var source = new CalendarEvent() { EventFormat = eventFormat };
+
+        var sut = new EventDetailsViewModel(source, memberId);
+
+        Assert.That(sut.IsSignedUp, Is.False);
+    }
+
     [Test]
     public void GetPartialViewName_EventFormatIsOnline_RetrievesOnlinePartialView()
     {
         var source = new CalendarEvent() { EventFormat = EventFormat.Online };
-        var sut = new EventDetailsViewModel(source);
+        var sut = new EventDetailsViewModel(source, Guid.NewGuid());
 
         Assert.That(sut.PartialViewName, Is.EqualTo("OnlineEventDetailsPartial.cshtml"));
     }
@@ -110,7 +137,7 @@ public class EventDetailsViewModelTests
     public void GetPartialViewName_EventFormatIsInPerson_RetrievesInPersonPartialView()
     {
         var source = new CalendarEvent() { EventFormat = EventFormat.InPerson };
-        var sut = new EventDetailsViewModel(source);
+        var sut = new EventDetailsViewModel(source, Guid.NewGuid());
 
         Assert.That(sut.PartialViewName, Is.EqualTo("InPersonEventDetailsPartial.cshtml"));
     }
@@ -119,7 +146,7 @@ public class EventDetailsViewModelTests
     public void GetPartialViewName_EventFormatIsHybrid_RetrievesHybridPartialView()
     {
         var source = new CalendarEvent() { EventFormat = EventFormat.Hybrid };
-        var sut = new EventDetailsViewModel(source);
+        var sut = new EventDetailsViewModel(source, Guid.NewGuid());
 
         Assert.That(sut.PartialViewName, Is.EqualTo("HybridEventDetailsPartial.cshtml"));
     }

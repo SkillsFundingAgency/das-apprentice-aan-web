@@ -23,6 +23,6 @@ public class CalendarEvent
     public bool IsActive { get; set; }
     public string? CancelReason { get; set; } = null!;
 
-    public IEnumerable<Attendee> Attendees { get; set; } = null!;
-    public IEnumerable<EventGuest> EventGuests { get; set; } = null!;
+    public List<Attendee> Attendees { get; set; } = new();
+    public List<EventGuest> EventGuests { get; set; } = new();
 }

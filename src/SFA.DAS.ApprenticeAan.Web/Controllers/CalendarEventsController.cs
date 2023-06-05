@@ -23,6 +23,6 @@ public class CalendarEventsController : Controller
     {
         var memberId = User.GetAanMemberId();
         var eventDetails = await _outerApiClient.GetEventDetails(id, memberId, cancellationToken);
-        return View(new EventDetailsViewModel(eventDetails));
+        return View(new EventDetailsViewModel(eventDetails, memberId));
     }
 }
