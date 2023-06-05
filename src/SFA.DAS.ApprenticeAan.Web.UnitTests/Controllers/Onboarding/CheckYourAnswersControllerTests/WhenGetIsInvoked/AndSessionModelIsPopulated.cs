@@ -12,7 +12,6 @@ using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
-using SFA.DAS.ApprenticePortal.Authentication;
 using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.CheckYourAnswersControllerTests.WhenGetIsInvoked;
@@ -33,10 +32,9 @@ public class AndSessionModelIsPopulated : CheckYourAnswersControllerTestsBase
     private CheckYourAnswersController _sut;
     private ViewResult _actualViewResult;
     private OnboardingSessionModel _sessionModel;
-    private MyApprenticeship _myApprenticeship;
 
     [SetUp]
-    public async Task SetUp()
+    public void SetUp()
     {
         // Arrange
         _sessionModel = _fixture
@@ -48,12 +46,9 @@ public class AndSessionModelIsPopulated : CheckYourAnswersControllerTestsBase
         Mock<ISessionService> sessionServiceMock = new();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(_sessionModel);
 
-
         var apprenticeId = _fixture.Create<Guid>();
 
-        _myApprenticeship = _fixture.Create<MyApprenticeship>();
         Mock<IOuterApiClient> outerApiClientMock = new();
-        outerApiClientMock.Setup(o => o.GetMyApprenticeship(apprenticeId)).ReturnsAsync(_myApprenticeship);
         outerApiClientMock.Setup(a => a.PostApprenticeMember(It.IsAny<CreateApprenticeMemberRequest>())).ReturnsAsync(new CreateApprenticeMemberResponse(Guid.NewGuid()));
 
         _sut = new(sessionServiceMock.Object, outerApiClientMock.Object);
@@ -69,7 +64,7 @@ public class AndSessionModelIsPopulated : CheckYourAnswersControllerTestsBase
             .AddUrlForRoute(RouteNames.Onboarding.EmployerSearch, EmployerSearchUrl);
 
         // Action
-        var result = await _sut.Get();
+        var result = _sut.Get();
 
         _actualViewResult = result.As<ViewResult>();
         _actualViewModel = _actualViewResult.Model.As<CheckYourAnswersViewModel>();
@@ -116,7 +111,7 @@ public class AndSessionModelIsPopulated : CheckYourAnswersControllerTestsBase
     public async Task ThenSetsPreviousEngagementInViewModel(string? isPreviouslyEngaged, string? expectedValue)
     {
         _sessionModel.SetProfileValue(ProfileDataId.HasPreviousEngagement, isPreviouslyEngaged!);
-        var actualResult = await _sut.Get();
+        var actualResult = _sut.Get();
         var actualViewModel = actualResult.As<ViewResult>().Model.As<CheckYourAnswersViewModel>();
 
         actualViewModel.PreviousEngagement.Should().Be(expectedValue);
@@ -140,38 +135,38 @@ public class AndSessionModelIsPopulated : CheckYourAnswersControllerTestsBase
     [Test]
     public void ThenSetsApprenticesFullName()
     {
-        _actualViewModel.FullName.Should().Be(_sut.User.FullName());
+        _actualViewModel.FullName.Should().Be(_sessionModel.ApprenticeDetails.Name);
     }
 
     [Test]
     public void ThenSetsApprenticesEmail()
     {
-        _actualViewModel.Email.Should().Be(_sut.User.EmailAddressClaim()!.Value);
+        _actualViewModel.Email.Should().Be(_sessionModel.ApprenticeDetails.Email);
     }
 
     [Test]
     public void ThenSetsApprenticeshipDuration()
     {
-        _actualViewModel.ApprenticeshipDuration.Should().Contain(_myApprenticeship.StartDate.GetValueOrDefault().Date.ToString("dd-MM-yyyy"));
-        _actualViewModel.ApprenticeshipDuration.Should().Contain(_myApprenticeship.EndDate.GetValueOrDefault().Date.ToString("dd-MM-yyyy"));
+        _actualViewModel.ApprenticeshipDuration.Should().Contain(_sessionModel.MyApprenticeship.StartDate.GetValueOrDefault().Date.ToString("dd-MM-yyyy"));
+        _actualViewModel.ApprenticeshipDuration.Should().Contain(_sessionModel.MyApprenticeship.EndDate.GetValueOrDefault().Date.ToString("dd-MM-yyyy"));
     }
 
     [Test]
     public void ThenSetsApprenticeshipSector()
     {
-        _actualViewModel.ApprenticeshipSector.Should().Be(_myApprenticeship.TrainingCourse.Sector);
+        _actualViewModel.ApprenticeshipSector.Should().Be(_sessionModel.MyApprenticeship.TrainingCourse.Sector);
     }
 
     [Test]
     public void ThenSetsApprenticeshipProgram()
     {
-        _actualViewModel.ApprenticeshipProgram.Should().Be(_myApprenticeship.TrainingCourse.Name);
+        _actualViewModel.ApprenticeshipProgram.Should().Be(_sessionModel.MyApprenticeship.TrainingCourse.Name);
     }
 
     [Test]
     public void ThenSetsApprenticeshipLevel()
     {
-        _actualViewModel.ApprenticeshipLevel.Should().Be($"Level {_myApprenticeship.TrainingCourse.Level}");
+        _actualViewModel.ApprenticeshipLevel.Should().Be($"Level {_sessionModel.MyApprenticeship.TrainingCourse.Level}");
     }
 
 

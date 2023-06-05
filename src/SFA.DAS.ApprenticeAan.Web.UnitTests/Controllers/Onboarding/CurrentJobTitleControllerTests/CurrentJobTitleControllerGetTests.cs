@@ -67,10 +67,10 @@ public class CurrentJobTitleControllerGetTests
     public void Get_HasNotSeenPreview_RedirectsRouteToEmployerSearch(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] CurrentJobTitleController sut,
-        OnboardingSessionModel sessionModel,
         string employerSearchUrl)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerSearch, employerSearchUrl);
+        OnboardingSessionModel sessionModel = new();
         sessionModel.HasSeenPreview = false;
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);

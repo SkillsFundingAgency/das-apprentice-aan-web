@@ -31,12 +31,16 @@ public interface IOuterApiClient
     Task<GetCalendarEventsQueryResult> GetCalendarEvents([Header(Constants.RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId, CancellationToken cancellationToken);
 
     [Get("/myapprenticeship/{apprenticeId}")]
-    Task<MyApprenticeship> GetMyApprenticeship([Path] Guid apprenticeId);
+    [AllowAnyStatusCode]
+    Task<Response<MyApprenticeship>> GetMyApprenticeship([Path] Guid apprenticeId, CancellationToken cancellationToken);
+
+    [Post("/myapprenticeship")]
+    Task CreateMyApprenticeship([Body] CreateMyApprenticeshipRequest body, CancellationToken cancellationToken);
 
     [Post("/apprentices")]
     Task<CreateApprenticeMemberResponse> PostApprenticeMember([Body] CreateApprenticeMemberRequest request);
 
     [Get("/stagedapprentices")]
     [AllowAnyStatusCode]
-    Task<Response<StagedApprentice?>> GetStagedApprentice([Query] string lastName, string dateOfBirth, string email, CancellationToken cancellationToken);
+    Task<Response<StagedApprentice?>> GetStagedApprentice([Query] string lastName, [Query] string dateOfBirth, [Query] string email, CancellationToken cancellationToken);
 }

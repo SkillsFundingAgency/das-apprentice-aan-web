@@ -1,8 +1,6 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
-using SFA.DAS.ApprenticePortal.Authentication;
 
 namespace SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 
@@ -28,7 +26,7 @@ public class CheckYourAnswersViewModel
     public string ApprenticeshipProgram { get; }
     public string ApprenticeshipLevel { get; }
 
-    public CheckYourAnswersViewModel(IUrlHelper url, OnboardingSessionModel sessionModel, ClaimsPrincipal user)
+    public CheckYourAnswersViewModel(IUrlHelper url, OnboardingSessionModel sessionModel)
     {
         CurrentEmployerChangeLink = url.RouteUrl(@RouteNames.Onboarding.EmployerSearch)!;
         CurrentEmployerName = sessionModel.GetProfileValue(ProfileDataId.EmployerName)!;
@@ -50,8 +48,8 @@ public class CheckYourAnswersViewModel
         PreviousEngagement = GetPreviousEngagementValue(sessionModel.GetProfileValue(ProfileDataId.HasPreviousEngagement))!;
 
         /// Apprentice's details
-        FullName = user.FullName();
-        Email = user.EmailAddressClaim()!.Value;
+        FullName = sessionModel.ApprenticeDetails.Name;
+        Email = sessionModel.ApprenticeDetails.Email;
 
         /// Apprenticeship details
         var myApprenticeship = sessionModel.MyApprenticeship;

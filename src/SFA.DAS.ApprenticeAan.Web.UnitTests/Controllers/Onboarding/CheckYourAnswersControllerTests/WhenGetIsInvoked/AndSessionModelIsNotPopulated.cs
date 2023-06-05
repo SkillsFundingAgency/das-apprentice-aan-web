@@ -21,16 +21,15 @@ public class AndSessionModelIsNotPopulated
     CheckYourAnswersViewModel viewModel;
 
     [SetUp]
-    public async Task Init()
+    public void Init()
     {
         var fixture = new Fixture();
         var apprenticeId = Guid.NewGuid();
-        OnboardingSessionModel sessionModel = new();
+        OnboardingSessionModel sessionModel = new() { MyApprenticeship = fixture.Create<MyApprenticeship>(), ApprenticeDetails = fixture.Create<ApprenticeDetailsModel>() };
         Mock<ISessionService> sessionServiceMock = new();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         Mock<IOuterApiClient> outerApiClientMock = new();
-        outerApiClientMock.Setup(o => o.GetMyApprenticeship(apprenticeId)).ReturnsAsync(fixture.Create<MyApprenticeship>());
         outerApiClientMock.Setup(a => a.PostApprenticeMember(It.IsAny<CreateApprenticeMemberRequest>())).ReturnsAsync(new CreateApprenticeMemberResponse(Guid.NewGuid()));
 
         CheckYourAnswersController sut = new(sessionServiceMock.Object, outerApiClientMock.Object);
@@ -50,7 +49,7 @@ public class AndSessionModelIsNotPopulated
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.County, Value = null });
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.Postcode, Value = null });
 
-        var response = await sut.Get();
+        var response = sut.Get();
         getResult = response.As<ViewResult>();
         viewModel = getResult.Model.As<CheckYourAnswersViewModel>();
     }

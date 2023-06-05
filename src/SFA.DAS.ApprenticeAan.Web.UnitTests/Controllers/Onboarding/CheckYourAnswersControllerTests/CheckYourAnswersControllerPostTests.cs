@@ -11,6 +11,7 @@ using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Models;
+using SFA.DAS.ApprenticePortal.Authentication;
 using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -26,6 +27,7 @@ public class CheckYourAnswersControllerPostTests : CheckYourAnswersControllerTes
         OnboardingSessionModel onboardingSessionModel,
         Guid apprenticeId)
     {
+        //Arrange
         onboardingSessionModel.ProfileData = GetProfileData();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(onboardingSessionModel);
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
@@ -45,9 +47,20 @@ public class CheckYourAnswersControllerPostTests : CheckYourAnswersControllerTes
 
         sut.ControllerContext = new() { HttpContext = new DefaultHttpContext() { User = user, RequestServices = serviceProviderMock.Object } };
 
+        //Act
         var result = await sut.Post();
 
-        outerApiClientMock.Verify(o => o.PostApprenticeMember(It.Is<CreateApprenticeMemberRequest>(r => r.OrganisationName == onboardingSessionModel.GetProfileValue(ProfileDataId.EmployerName))));
+        //Assert
+        outerApiClientMock.Verify(o => o.PostApprenticeMember(It.Is<CreateApprenticeMemberRequest>(r =>
+            r.OrganisationName == onboardingSessionModel.GetProfileValue(ProfileDataId.EmployerName)
+            && r.JoinedDate.Date == DateTime.UtcNow.Date
+            && r.ApprenticeId == onboardingSessionModel.ApprenticeDetails.ApprenticeId
+            && r.RegionId == onboardingSessionModel.RegionId
+            && r.Email == onboardingSessionModel.ApprenticeDetails.Email
+            && r.FirstName == user.FindFirstValue(IdentityClaims.GivenName)
+            && r.LastName == user.FindFirstValue(IdentityClaims.FamilyName)
+        )));
+
         result.As<ViewResult>().ViewName.Should().Be(CheckYourAnswersController.ApplicationSubmittedViewPath);
     }
 }

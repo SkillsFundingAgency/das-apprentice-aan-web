@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
@@ -29,18 +30,10 @@ public class CheckYourAnswersController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public IActionResult Get()
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
-        if (!sessionModel.HasSeenPreview)
-        {
-            sessionModel.HasSeenPreview = true;
-            sessionModel.ApprenticeId = Guid.Parse(User.ApprenticeIdClaim()!.Value);
-            sessionModel.MyApprenticeship = await _outerApiClient.GetMyApprenticeship(sessionModel.ApprenticeId);
-            _sessionService.Set(sessionModel);
-        }
-
-        CheckYourAnswersViewModel model = new(Url, sessionModel, User);
+        CheckYourAnswersViewModel model = new(Url, sessionModel);
         return View(ViewPath, model);
     }
 
@@ -61,15 +54,15 @@ public class CheckYourAnswersController : Controller
     {
         CreateApprenticeMemberRequest request = new()
         {
-            ApprenticeId = source.ApprenticeId,
+            ApprenticeId = source.ApprenticeDetails.ApprenticeId,
             JoinedDate = DateTime.UtcNow,
             OrganisationName = source.GetProfileValue(ProfileDataId.EmployerName)!,
             RegionId = source.RegionId.GetValueOrDefault()
         };
         request.ProfileValues.AddRange(source.ProfileData.Where(p => !string.IsNullOrWhiteSpace(p.Value)).Select(p => new ProfileValue(p.Id, p.Value!)));
-        request.Email = User.EmailAddressClaim()!.Value;
-        request.FirstName = User.Claims.FirstOrDefault(c => c.Type == IdentityClaims.GivenName)!.Value;
-        request.LastName = User.Claims.FirstOrDefault(c => c.Type == IdentityClaims.FamilyName)!.Value;
+        request.Email = source.ApprenticeDetails.Email;
+        request.FirstName = User.FindFirstValue(IdentityClaims.GivenName);
+        request.LastName = User.FindFirstValue(IdentityClaims.FamilyName);
         return request;
     }
 }
