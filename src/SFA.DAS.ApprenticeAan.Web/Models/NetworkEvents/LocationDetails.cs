@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.ApprenticeAan.Web.Models.CalendarEvents;
+﻿namespace SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
 public record struct LocationDetails
 {

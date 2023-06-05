@@ -1,4 +1,6 @@
 ﻿@using SFA.DAS.ApprenticeAan.Domain.Constants
+@using SFA.DAS.ApprenticeAan.Web.Extensions;
+
 @model NetworkEventsViewModel
 @{
     ViewData["Title"] = "Search Network Events";
@@ -267,7 +269,7 @@
                     <div class="govuk-grid-row">
                         <div class="govuk-grid-column-three-quarters das-!-float-right">
                             <h2 class="govuk-heading-m das-search-results__heading">
-                                    <a class="das-search-results__link" href="#">
+                                    <a class="das-search-results__link" href="@calendarEvent.GetEventLink(Url)">
                                     @calendarEvent.Summary
                                 </a>
                             </h2>

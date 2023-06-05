@@ -37,7 +37,7 @@ public interface IOuterApiClient
     Task<CreateApprenticeMemberResponse> PostApprenticeMember([Body] CreateApprenticeMemberRequest request);
 
     [Get("/calendarevents/{calendarEventId}")]
-    Task<CalendarEvent> GetEventDetails([Path] Guid calendarEventId,
+    Task<CalendarEvent> GetCalendarEventDetails([Path] Guid calendarEventId,
         [Header(Constants.ApiHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId,
         CancellationToken cancellationToken);
 

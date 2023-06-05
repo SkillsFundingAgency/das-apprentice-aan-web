@@ -1,6 +1,6 @@
 ﻿using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
-using SFA.DAS.ApprenticeAan.Web.Models.CalendarEvents;
+using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models.CalendarEvents;
@@ -12,7 +12,7 @@ public class EventDetailsViewModelTests
     {
         source.EventFormat = EventFormat.Online;
 
-        var sut = new EventDetailsViewModel(source, Guid.NewGuid());
+        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid());
 
         Assert.Multiple(() =>
         {
@@ -42,7 +42,7 @@ public class EventDetailsViewModelTests
     {
         source.EventFormat = EventFormat.Hybrid;
 
-        var sut = new EventDetailsViewModel(source, Guid.NewGuid());
+        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid());
 
         Assert.Multiple(() =>
         {
@@ -72,7 +72,7 @@ public class EventDetailsViewModelTests
     {
         source.EventFormat = EventFormat.InPerson;
 
-        var sut = new EventDetailsViewModel(source, Guid.NewGuid());
+        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid());
 
         Assert.Multiple(() =>
         {
@@ -106,7 +106,7 @@ public class EventDetailsViewModelTests
         var source = new CalendarEvent() { EventFormat = eventFormat };
         source.Attendees.Add(new Attendee() { MemberId = memberId });
 
-        var sut = new EventDetailsViewModel(source, memberId);
+        var sut = new NetworkEventDetailsViewModel(source, memberId);
 
         Assert.That(sut.IsSignedUp, Is.True);
     }
@@ -119,7 +119,7 @@ public class EventDetailsViewModelTests
         var memberId = Guid.NewGuid();
         var source = new CalendarEvent() { EventFormat = eventFormat };
 
-        var sut = new EventDetailsViewModel(source, memberId);
+        var sut = new NetworkEventDetailsViewModel(source, memberId);
 
         Assert.That(sut.IsSignedUp, Is.False);
     }
@@ -128,7 +128,7 @@ public class EventDetailsViewModelTests
     public void GetPartialViewName_EventFormatIsOnline_RetrievesOnlinePartialView()
     {
         var source = new CalendarEvent() { EventFormat = EventFormat.Online };
-        var sut = new EventDetailsViewModel(source, Guid.NewGuid());
+        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid());
 
         Assert.That(sut.PartialViewName, Is.EqualTo("_OnlineEventPartial.cshtml"));
     }
@@ -137,7 +137,7 @@ public class EventDetailsViewModelTests
     public void GetPartialViewName_EventFormatIsInPerson_RetrievesInPersonPartialView()
     {
         var source = new CalendarEvent() { EventFormat = EventFormat.InPerson };
-        var sut = new EventDetailsViewModel(source, Guid.NewGuid());
+        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid());
 
         Assert.That(sut.PartialViewName, Is.EqualTo("_InPersonEventPartial.cshtml"));
     }
@@ -146,7 +146,7 @@ public class EventDetailsViewModelTests
     public void GetPartialViewName_EventFormatIsHybrid_RetrievesHybridPartialView()
     {
         var source = new CalendarEvent() { EventFormat = EventFormat.Hybrid };
-        var sut = new EventDetailsViewModel(source, Guid.NewGuid());
+        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid());
 
         Assert.That(sut.PartialViewName, Is.EqualTo("_HybridEventPartial.cshtml"));
     }

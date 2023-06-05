@@ -1,9 +1,11 @@
-﻿@using SFA.DAS.ApprenticeAan.Web.Models.CalendarEvents;
+﻿@using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
+@using SFA.DAS.ApprenticeAan.Web.UrlUtilities;
 
-@model EventDetailsViewModel
+@model NetworkEventDetailsViewModel
 
 @{
     ViewData["Title"] = $"Event Page — {Model.Description}";
+    var emailLink = MailtoLinkValue.FromAddressAndSubject(Model.ContactEmail, Model.Description);
 }
 
 <div class="govuk-grid-row">
@@ -22,7 +24,7 @@
             }
         </div>
         <h2 class="govuk-heading-m">Event contact</h2>
-        <p>If you have any questions or need to speak about requirements prior to the event, contact the event organiser @Model.ContactName by  email: <a href="#" class="govuk-link">@Model.ContactEmail</a></p>
+        <p>If you have any questions or need to speak about requirements prior to the event, contact the event organiser @Model.ContactName by email: <a href=@emailLink class="govuk-link">@Model.ContactEmail</a></p>
         <h2 class="govuk-heading-m">Attendees (@Model.Attendees.Count())</h2>
         <details class="govuk-details app-details" data-module="govuk-details">
             <summary class="govuk-details__summary">

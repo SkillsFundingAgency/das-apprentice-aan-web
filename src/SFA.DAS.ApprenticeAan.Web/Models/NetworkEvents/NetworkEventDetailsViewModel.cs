@@ -1,9 +1,9 @@
 ﻿using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 
-namespace SFA.DAS.ApprenticeAan.Web.Models.CalendarEvents;
+namespace SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
-public class EventDetailsViewModel
+public class NetworkEventDetailsViewModel
 {
     public Guid CalendarEventId { get; init; }
     public string CalendarName { get; init; } = string.Empty;
@@ -23,7 +23,7 @@ public class EventDetailsViewModel
     public IReadOnlyList<EventGuest> EventGuests { get; } = new List<EventGuest>();
     public bool IsSignedUp { get; init; }
 
-    public EventDetailsViewModel(CalendarEvent source, Guid memberId)
+    public NetworkEventDetailsViewModel(CalendarEvent source, Guid memberId)
     {
         CalendarEventId = source.CalendarEventId;
         CalendarName = source.CalendarName;
