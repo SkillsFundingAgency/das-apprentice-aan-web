@@ -130,7 +130,7 @@ public class EventDetailsViewModelTests
         var source = new CalendarEvent() { EventFormat = EventFormat.Online };
         var sut = new EventDetailsViewModel(source, Guid.NewGuid());
 
-        Assert.That(sut.PartialViewName, Is.EqualTo("OnlineEventDetailsPartial.cshtml"));
+        Assert.That(sut.PartialViewName, Is.EqualTo("_OnlineEventPartial.cshtml"));
     }
 
     [Test]
@@ -139,7 +139,7 @@ public class EventDetailsViewModelTests
         var source = new CalendarEvent() { EventFormat = EventFormat.InPerson };
         var sut = new EventDetailsViewModel(source, Guid.NewGuid());
 
-        Assert.That(sut.PartialViewName, Is.EqualTo("InPersonEventDetailsPartial.cshtml"));
+        Assert.That(sut.PartialViewName, Is.EqualTo("_InPersonEventPartial.cshtml"));
     }
 
     [Test]
@@ -148,6 +148,6 @@ public class EventDetailsViewModelTests
         var source = new CalendarEvent() { EventFormat = EventFormat.Hybrid };
         var sut = new EventDetailsViewModel(source, Guid.NewGuid());
 
-        Assert.That(sut.PartialViewName, Is.EqualTo("HybridEventDetailsPartial.cshtml"));
+        Assert.That(sut.PartialViewName, Is.EqualTo("_HybridEventPartial.cshtml"));
     }
 }
