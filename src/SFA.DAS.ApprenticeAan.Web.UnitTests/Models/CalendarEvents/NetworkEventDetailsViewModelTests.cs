@@ -5,7 +5,7 @@ using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models.CalendarEvents;
 
-public class EventDetailsViewModelTests
+public class NetworkEventDetailsViewModelTests
 {
     [Test, RecursiveMoqAutoData]
     public void Constructor_ReceivesOnlineEvent_SetsAllPropertiesExceptLocationDetails(CalendarEvent source)
@@ -149,5 +149,14 @@ public class EventDetailsViewModelTests
         var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid());
 
         Assert.That(sut.PartialViewName, Is.EqualTo("_HybridEventPartial.cshtml"));
+    }
+
+    [Test]
+    public void GetPartialViewName_EventFormatIsUnknown_Throws()
+    {
+        var source = new CalendarEvent() { EventFormat = (EventFormat)3 };
+        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid());
+
+        Assert.That(() => sut.PartialViewName, Throws.InstanceOf<NotImplementedException>());
     }
 }

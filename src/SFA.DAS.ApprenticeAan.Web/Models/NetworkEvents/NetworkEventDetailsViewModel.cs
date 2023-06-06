@@ -6,21 +6,20 @@ namespace SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 public class NetworkEventDetailsViewModel
 {
     public Guid CalendarEventId { get; init; }
-    public string CalendarName { get; init; } = string.Empty;
+    public string CalendarName { get; init; }
     public EventFormat EventFormat { get; init; }
     public DateTime StartDate { get; init; }
     public DateTime EndDate { get; init; }
-    public string Description { get; init; } = string.Empty;
+    public string Description { get; init; }
     public string? Summary { get; init; } = null!;
     public LocationDetails LocationDetails { get; init; }
-    public double? Distance { get; init; }
     public string? EventLink { get; init; }
-    public string ContactName { get; init; } = string.Empty;
-    public string ContactEmail { get; init; } = string.Empty;
-    public string? CancelReason { get; init; } = null!;
+    public string ContactName { get; init; }
+    public string ContactEmail { get; init; }
+    public string? CancelReason { get; init; }
     public virtual string PartialViewName => GetPartialViewName();
-    public IReadOnlyList<Attendee> Attendees { get; } = new List<Attendee>();
-    public IReadOnlyList<EventGuest> EventGuests { get; } = new List<EventGuest>();
+    public IReadOnlyList<Attendee> Attendees { get; }
+    public IReadOnlyList<EventGuest> EventGuests { get; }
     public bool IsSignedUp { get; init; }
 
     public NetworkEventDetailsViewModel(CalendarEvent source, Guid memberId)
