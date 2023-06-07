@@ -9,7 +9,14 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <partial name=@Model.PartialViewName />
+        <strong class="govuk-tag app-tag app-tag--online">Online</strong> <strong class="govuk-tag app-tag">Conference</strong>
+        <h1 class="govuk-heading-xl govuk-!-margin-top-4">@Model.Description.Trim()</h1>
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-half">
+                <h2 class="govuk-heading-m">When and where</h2>
+                <partial name=@Model.PartialViewName />
+            </div>
+        </div>
         <h2 class="govuk-heading-m">Event summary</h2>
         <p>@Model.Summary</p>
         <h2 class="govuk-heading-m">Guest speakers</h2>
