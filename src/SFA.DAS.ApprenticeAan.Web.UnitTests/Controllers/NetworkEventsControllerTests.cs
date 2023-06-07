@@ -32,7 +32,7 @@ public class NetworkEventsControllerTests
 
     [Test]
     [MoqAutoData]
-    public void Index_ReturnsEventDetailsViewModel(
+    public void Details_ReturnsEventDetailsViewModel(
        [Greedy] NetworkEventsController sut,
        Guid eventId)
     {
@@ -46,7 +46,7 @@ public class NetworkEventsControllerTests
 
     [Test]
     [MoqAutoData]
-    public void Index_InvokesOuterApiClientGetEventDetails(
+    public void Details_InvokesOuterApiClientGetEventDetails(
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         [Greedy] NetworkEventsController sut,
         Guid eventId,
@@ -58,5 +58,23 @@ public class NetworkEventsControllerTests
         var result = sut.Details(eventId, cancellationToken);
 
         outerApiMock.Verify(o => o.GetCalendarEventDetails(eventId, It.IsAny<Guid>(), cancellationToken), Times.Once());
+    }
+
+    [Test]
+    [MoqAutoData]
+    public void Details_RedirectsToNetworkEvents_IfCalendarEventIdIsNotFound(
+     [Frozen] Mock<IOuterApiClient> outerApiMock,
+     [Greedy] NetworkEventsController sut,
+     Guid eventId,
+     CancellationToken cancellationToken)
+    {
+        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(eventId);
+        outerApiMock.Setup(o => o.GetCalendarEventDetails(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(new CalendarEvent() { CalendarEventId = Guid.Empty });
+
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        var result = sut.Details(eventId, cancellationToken).Result;
+
+        Assert.That(result as RedirectToRouteResult, Is.Not.Null);
     }
 }

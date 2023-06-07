@@ -34,6 +34,8 @@ public class NetworkEventsController : Controller
     {
         var memberId = User.GetAanMemberId();
         var eventDetails = await _outerApiClient.GetCalendarEventDetails(id, memberId, cancellationToken);
-        return View(new NetworkEventDetailsViewModel(eventDetails, memberId));
+        return eventDetails.CalendarEventId != Guid.Empty
+            ? View(new NetworkEventDetailsViewModel(eventDetails, memberId))
+            : RedirectToRoute(RouteNames.NetworkEvents);
     }
 }

@@ -23,11 +23,11 @@ public class NetworkEventDetailsViewModelTests
             Assert.That(sut.EndDate, Is.EqualTo(source.EndDate));
             Assert.That(sut.Description, Is.EqualTo(source.Description));
             Assert.That(sut.Summary, Is.EqualTo(source.Summary));
-            Assert.That(sut.LocationDetails.Location, Is.Null);
-            Assert.That(sut.LocationDetails.Postcode, Is.Null);
-            Assert.That(sut.LocationDetails.Longitude, Is.Null);
-            Assert.That(sut.LocationDetails.Latitude, Is.Null);
-            Assert.That(sut.LocationDetails.Distance, Is.Null);
+            Assert.That(sut.LocationDetails?.Location, Is.Null);
+            Assert.That(sut.LocationDetails?.Postcode, Is.Null);
+            Assert.That(sut.LocationDetails?.Longitude, Is.Null);
+            Assert.That(sut.LocationDetails?.Latitude, Is.Null);
+            Assert.That(sut.LocationDetails?.Distance, Is.Null);
             Assert.That(sut.EventLink, Is.EqualTo(source.EventLink));
             Assert.That(sut.ContactName, Is.EqualTo(source.ContactName));
             Assert.That(sut.ContactEmail, Is.EqualTo(source.ContactEmail));
@@ -53,11 +53,11 @@ public class NetworkEventDetailsViewModelTests
             Assert.That(sut.EndDate, Is.EqualTo(source.EndDate));
             Assert.That(sut.Description, Is.EqualTo(source.Description));
             Assert.That(sut.Summary, Is.EqualTo(source.Summary));
-            Assert.That(sut.LocationDetails.Location, Is.EqualTo(source.Location));
-            Assert.That(sut.LocationDetails.Postcode, Is.EqualTo(source.Postcode));
-            Assert.That(sut.LocationDetails.Longitude, Is.EqualTo(source.Longitude));
-            Assert.That(sut.LocationDetails.Latitude, Is.EqualTo(source.Latitude));
-            Assert.That(sut.LocationDetails.Distance, Is.EqualTo(source.Distance));
+            Assert.That(sut.LocationDetails?.Location, Is.EqualTo(source.Location));
+            Assert.That(sut.LocationDetails?.Postcode, Is.EqualTo(source.Postcode));
+            Assert.That(sut.LocationDetails?.Longitude, Is.EqualTo(source.Longitude));
+            Assert.That(sut.LocationDetails?.Latitude, Is.EqualTo(source.Latitude));
+            Assert.That(sut.LocationDetails?.Distance, Is.EqualTo(source.Distance));
             Assert.That(sut.EventLink, Is.EqualTo(source.EventLink));
             Assert.That(sut.ContactName, Is.EqualTo(source.ContactName));
             Assert.That(sut.ContactEmail, Is.EqualTo(source.ContactEmail));
@@ -83,11 +83,11 @@ public class NetworkEventDetailsViewModelTests
             Assert.That(sut.EndDate, Is.EqualTo(source.EndDate));
             Assert.That(sut.Description, Is.EqualTo(source.Description));
             Assert.That(sut.Summary, Is.EqualTo(source.Summary));
-            Assert.That(sut.LocationDetails.Location, Is.EqualTo(source.Location));
-            Assert.That(sut.LocationDetails.Postcode, Is.EqualTo(source.Postcode));
-            Assert.That(sut.LocationDetails.Longitude, Is.EqualTo(source.Longitude));
-            Assert.That(sut.LocationDetails.Latitude, Is.EqualTo(source.Latitude));
-            Assert.That(sut.LocationDetails.Distance, Is.EqualTo(source.Distance));
+            Assert.That(sut.LocationDetails?.Location, Is.EqualTo(source.Location));
+            Assert.That(sut.LocationDetails?.Postcode, Is.EqualTo(source.Postcode));
+            Assert.That(sut.LocationDetails?.Longitude, Is.EqualTo(source.Longitude));
+            Assert.That(sut.LocationDetails?.Latitude, Is.EqualTo(source.Latitude));
+            Assert.That(sut.LocationDetails?.Distance, Is.EqualTo(source.Distance));
             Assert.That(sut.EventLink, Is.EqualTo(source.EventLink));
             Assert.That(sut.ContactName, Is.EqualTo(source.ContactName));
             Assert.That(sut.ContactEmail, Is.EqualTo(source.ContactEmail));
@@ -140,5 +140,34 @@ public class NetworkEventDetailsViewModelTests
         var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid());
 
         Assert.That(() => sut.PartialViewName, Throws.InstanceOf<NotImplementedException>());
+    }
+
+    [Test, MoqAutoData]
+    public void StartTime_ReturnsTimePortionOfStartDate(CalendarEvent calendarEvent)
+    {
+        var sut = new NetworkEventDetailsViewModel(calendarEvent, Guid.NewGuid());
+
+        Assert.That(sut.StartTime, Is.EqualTo(sut.StartDate.ToString("h:mm tt")));
+    }
+
+    [Test, MoqAutoData]
+    public void EndTime_ReturnsTimePortionOfEndDate(CalendarEvent calendarEvent)
+    {
+        var sut = new NetworkEventDetailsViewModel(calendarEvent, Guid.NewGuid());
+
+        Assert.That(sut.EndTime, Is.EqualTo(sut.EndDate.ToString("h:mm tt")));
+    }
+
+    [Test, MoqAutoData]
+    public void EmailLink_ReturnsUrlEscapedMailtoLink(CalendarEvent calendarEvent)
+    {
+        calendarEvent.ContactEmail = "me@email.com";
+        calendarEvent.Description = "This Is A Description";
+
+        string expected = $"mailto:{calendarEvent.ContactEmail}?subject=This%20Is%20A%20Description";
+
+        var sut = new NetworkEventDetailsViewModel(calendarEvent, Guid.NewGuid());
+
+        Assert.That(sut.EmailLink, Is.EqualTo(expected));
     }
 }

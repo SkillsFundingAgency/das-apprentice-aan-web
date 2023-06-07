@@ -5,7 +5,6 @@
 
 @{
     ViewData["Title"] = $"Event Page — {Model.Description}";
-    var emailLink = MailtoLinkValue.FromAddressAndSubject(Model.ContactEmail, Model.Description);
 }
 
 <div class="govuk-grid-row">
@@ -24,7 +23,7 @@
             }
         </div>
         <h2 class="govuk-heading-m">Event contact</h2>
-        <p>If you have any questions or need to speak about requirements prior to the event, contact the event organiser @Model.ContactName by email: <a href=@emailLink class="govuk-link">@Model.ContactEmail</a></p>
+        <p>If you have any questions or need to speak about requirements prior to the event, contact the event organiser @Model.ContactName by email: <a href=@Model.EmailLink class="govuk-link">@Model.ContactEmail</a></p>
         <h2 class="govuk-heading-m">Attendees (@Model.Attendees.Count())</h2>
         <div data-module="das-show-hide">
             <a class="govuk-link govuk-body das-show-hide__button govuk-!-margin-bottom-0" href="#event-attendee-list" data-aria-controls="event-attendee-list" data-button-string="all attendees">Show/hide</a>

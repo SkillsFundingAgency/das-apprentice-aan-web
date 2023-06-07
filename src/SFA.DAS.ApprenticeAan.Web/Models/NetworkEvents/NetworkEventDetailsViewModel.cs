@@ -1,5 +1,6 @@
 ﻿using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+using SFA.DAS.ApprenticeAan.Web.UrlHelpers;
 
 namespace SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
@@ -10,17 +11,20 @@ public class NetworkEventDetailsViewModel
     public EventFormat EventFormat { get; init; }
     public DateTime StartDate { get; init; }
     public DateTime EndDate { get; init; }
+    public string StartTime => StartDate.ToString("h:mm tt");
+    public string EndTime => EndDate.ToString("h:mm tt");
     public string Description { get; init; }
     public string? Summary { get; init; }
-    public LocationDetails LocationDetails { get; init; }
+    public LocationDetails? LocationDetails { get; init; }
     public string? EventLink { get; init; }
     public string ContactName { get; init; }
     public string ContactEmail { get; init; }
     public string? CancelReason { get; init; }
-    public virtual string PartialViewName => GetPartialViewName();
+    public string PartialViewName => GetPartialViewName();
     public IReadOnlyList<Attendee> Attendees { get; }
     public IReadOnlyList<EventGuest> EventGuests { get; }
     public bool IsSignedUp { get; init; }
+    public string EmailLink => MailtoLinkValue.FromAddressAndSubject(ContactEmail, Description);
 
     public NetworkEventDetailsViewModel(CalendarEvent source, Guid memberId)
     {
