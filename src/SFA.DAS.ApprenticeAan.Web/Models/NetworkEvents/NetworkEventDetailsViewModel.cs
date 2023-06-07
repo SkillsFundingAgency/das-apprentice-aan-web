@@ -1,8 +1,4 @@
-﻿using SFA.DAS.ApprenticeAan.Domain.Constants;
-using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
-using SFA.DAS.ApprenticeAan.Web.UrlHelpers;
-
-namespace SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
+﻿namespace SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
 public class NetworkEventDetailsViewModel
 {
@@ -27,7 +23,7 @@ public class NetworkEventDetailsViewModel
     public bool IsSignedUp { get; init; }
     public string EmailLink => MailtoLinkValue.FromAddressAndSubject(ContactEmail, Description);
 
-    public NetworkEventDetailsViewModel(CalendarEvent source, Guid memberId)
+    public NetworkEventDetailsViewModel(CalendarEvent source, Guid memberId, string googleMapsApiKey)
     {
         CalendarEventId = source.CalendarEventId;
         CalendarName = source.CalendarName;
@@ -47,6 +43,8 @@ public class NetworkEventDetailsViewModel
 
         IsSignedUp = Attendees.Any(a => a.MemberId == memberId);
 
+        GoogleMapsApiKey = googleMapsApiKey;
+
         if (EventFormat != EventFormat.Online)
         {
             LocationDetails = new LocationDetails()
@@ -65,6 +63,7 @@ public class NetworkEventDetailsViewModel
         return EventFormat switch
         {
             EventFormat.Online => "_OnlineEventPartial.cshtml",
+            EventFormat.Hybrid => "_HybridEventPartial.cshtml",
             _ => throw new NotImplementedException($"Failed to find a matching partial view for event format \"{EventFormat}\""),
         };
     }

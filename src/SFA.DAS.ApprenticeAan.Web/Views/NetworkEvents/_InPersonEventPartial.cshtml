@@ -1,9 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Mvc.ModelBinding;
 @using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
+@using SFA.DAS.ApprenticeAan.Web.UrlHelpers;
 
 @model NetworkEventDetailsViewModel
 
 @{
+    var startDate = @Model.StartDate.ToString("dddd dd-MM-yy");
     var startTime = @Model.StartDate.ToString("h:mm tt");
     var endTime = @Model.EndDate.ToString("h:mm tt");
 }
@@ -13,12 +15,18 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-half">
         <h2 class="govuk-heading-m">When and where</h2>
-        <p>@Model.StartDate.ToString("dddd dd-MM-yy")<span class="das-!-display--block">@startTime to @endTime</span> </p>
+        <p><span class="das-!-display--block">@startTime to @endTime</span> </p>
         <p>
             @Model.LocationDetails?.Location!.Trim(), <span class="das-no-wrap">@Model.LocationDetails?.Postcode!.ToUpper()</span>
         </p>
     </div>
     <div class="govuk-grid-column-one-half">
-        <img src="https://designshack.net/wp-content/uploads/placeholder-image-368x246.png" alt="Map" class="app-map-image" />
+        <iframe width="329"
+                height="250"
+                frameborder="0" style="border:0"
+                referrerpolicy="no-referrer-when-downgrade"
+                src=@MapLink.FromLocation(Model.LocationDetails.Location!, Model.GoogleMapsApiKey)
+                allowfullscreen>
+        </iframe>
     </div>
 </div>

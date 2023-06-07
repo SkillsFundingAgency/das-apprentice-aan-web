@@ -21,6 +21,13 @@ public class ApplicationConfiguration : ISharedUiConfiguration
     public AuthenticationConfiguration Authentication { get; set; } = new();
 
     public OuterApiConfiguration ApprenticeAanOuterApi { get; set; } = new();
+
+    public ApplicationSettingsConfiguration ApplicationSettings { get; set; } = new();
+}
+
+public class ApplicationSettingsConfiguration
+{
+    public string GoogleMapsApiKey { get; set; } = null!;
 }
 
 public class ConnectionStringsConfiguration
