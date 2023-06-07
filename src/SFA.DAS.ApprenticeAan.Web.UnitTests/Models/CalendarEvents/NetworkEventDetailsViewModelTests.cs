@@ -7,7 +7,7 @@ public class NetworkEventDetailsViewModelTests
     {
         source.EventFormat = EventFormat.Online;
 
-        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid());
+        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid(), "", "");
 
         Assert.Multiple(() =>
         {
@@ -37,7 +37,7 @@ public class NetworkEventDetailsViewModelTests
     {
         source.EventFormat = EventFormat.Hybrid;
 
-        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid());
+        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid(), "", "");
 
         Assert.Multiple(() =>
         {
@@ -67,7 +67,7 @@ public class NetworkEventDetailsViewModelTests
     {
         source.EventFormat = EventFormat.InPerson;
 
-        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid());
+        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid(), "", "");
 
         Assert.Multiple(() =>
         {
@@ -99,7 +99,7 @@ public class NetworkEventDetailsViewModelTests
         var source = new CalendarEvent();
         source.Attendees.Add(new Attendee() { MemberId = memberId });
 
-        var sut = new NetworkEventDetailsViewModel(source, memberId);
+        var sut = new NetworkEventDetailsViewModel(source, memberId, "", "");
 
         Assert.That(sut.IsSignedUp, Is.True);
     }
@@ -110,7 +110,7 @@ public class NetworkEventDetailsViewModelTests
         var memberId = Guid.NewGuid();
         var source = new CalendarEvent();
 
-        var sut = new NetworkEventDetailsViewModel(source, memberId);
+        var sut = new NetworkEventDetailsViewModel(source, memberId, "", "");
 
         Assert.That(sut.IsSignedUp, Is.False);
     }
@@ -127,7 +127,7 @@ public class NetworkEventDetailsViewModelTests
     public void GetPartialViewName_EventFormatIsInPerson_RetrievesInPersonPartialView()
     {
         var source = new CalendarEvent() { EventFormat = EventFormat.InPerson };
-        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid());
+        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid(), "", "");
 
         Assert.That(sut.PartialViewName, Is.EqualTo("_InPersonEventPartial.cshtml"));
     }

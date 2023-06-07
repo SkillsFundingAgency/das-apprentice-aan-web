@@ -6,7 +6,6 @@
 @{
     ViewData["Title"] = $"Event Page — {Model.Description}";
     var emailLink = MailtoLinkValue.FromAddressAndSubject(Model.ContactEmail, Model.Description);
->>>>>>>> 9bdd44a (CSP-749 Route, mailto, and lots of refactors):src/SFA.DAS.ApprenticeAan.Web/Views/NetworkEvents/Details.cshtml
 }
 
 <div class="govuk-grid-row">
@@ -31,10 +30,6 @@
                 </div>
             }
         </div>
-<<<<<<<< HEAD:src/SFA.DAS.ApprenticeAan.Web/Views/CalendarEvents/Index.cshtml
-        <h2 class="govuk-heading-m">@Model.ContactName</h2>
-        <p>If you have any questions or need to speak about requirements prior to the event, contact the event organiser @Model.ContactName by  email: <a href="#" class="govuk-link">@Model.ContactEmail</a></p>
-========
         <h2 class="govuk-heading-m">Event contact</h2>
         <p>If you have any questions or need to speak about requirements prior to the event, contact the event organiser @Model.ContactName by email: <a href=@Model.EmailLink class="govuk-link">@Model.ContactEmail</a></p>
         <h2 class="govuk-heading-m">Attendees (@Model.AttendeeCount)</h2>

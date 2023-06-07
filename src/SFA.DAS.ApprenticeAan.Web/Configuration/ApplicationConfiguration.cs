@@ -28,6 +28,7 @@ public class ApplicationConfiguration : ISharedUiConfiguration
 public class ApplicationSettingsConfiguration
 {
     public string GoogleMapsApiKey { get; set; } = null!;
+    public string GoogleMapsPrivateKey { get; set; } = null!;
 }
 
 public class ConnectionStringsConfiguration

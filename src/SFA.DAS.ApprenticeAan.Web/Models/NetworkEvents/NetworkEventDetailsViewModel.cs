@@ -23,7 +23,7 @@ public class NetworkEventDetailsViewModel
     public bool IsSignedUp { get; init; }
     public string EmailLink => MailtoLinkValue.FromAddressAndSubject(ContactEmail, Description);
 
-    public NetworkEventDetailsViewModel(CalendarEvent source, Guid memberId, string googleMapsApiKey)
+    public NetworkEventDetailsViewModel(CalendarEvent source, Guid memberId, string googleMapsApiKey, string googleMapsPrivateKey)
     {
         CalendarEventId = source.CalendarEventId;
         CalendarName = source.CalendarName;
@@ -44,6 +44,7 @@ public class NetworkEventDetailsViewModel
         IsSignedUp = Attendees.Any(a => a.MemberId == memberId);
 
         GoogleMapsApiKey = googleMapsApiKey;
+        GoogleMapsPrivateKey = googleMapsPrivateKey;
 
         if (EventFormat != EventFormat.Online)
         {

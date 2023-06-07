@@ -6,11 +6,13 @@ public class NetworkEventsController : Controller
 {
     private readonly IOuterApiClient _outerApiClient;
     private readonly string _googleMapsApiKey;
+    private readonly string _googleMapsPrivateKey;
 
     public NetworkEventsController(IOuterApiClient outerApiClient, ApplicationConfiguration config)
     {
         _outerApiClient = outerApiClient;
         _googleMapsApiKey = config.ApplicationSettings.GoogleMapsApiKey;
+        _googleMapsPrivateKey = config.ApplicationSettings.GoogleMapsPrivateKey;
     }
 
     [HttpGet]
