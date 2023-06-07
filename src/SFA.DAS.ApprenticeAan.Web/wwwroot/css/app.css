@@ -359,3 +359,38 @@ a.app-calendar__event:focus {
     transform: rotate(135deg);
     top: 10px
 }
+
+a.das-show-hide__button {
+    position: relative;
+    padding-left: 25px;
+}
+
+a.das-show-hide__button:before{
+    content: "";
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    width: 17px;
+    height: 17px;
+    clip-path: none;
+    position: absolute;
+    left: 0;
+    top: 3px;
+}
+
+a.das-show-hide__button:after {
+    content: "";
+    display: block;
+    width: 5px;
+    height: 5px;
+    position: absolute;
+    top: 8px;
+    left: 6px;
+    border-left: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(-45deg)
+}
+
+a.das-show-hide__button[aria-expanded="false"]:after {
+    transform: rotate(135deg);
+    top: 10px
+}
