@@ -29,12 +29,12 @@
         <div data-module="das-show-hide">
             <a class="govuk-link govuk-body das-show-hide__button govuk-!-margin-bottom-0" href="#event-attendee-list" data-aria-controls="event-attendee-list" data-button-string="all attendees">Show/hide</a>
             <div id="event-attendee-list">
-                    <ul class="govuk-list app-attendee-list">
-                        @foreach (var person in Model.Attendees)
-                        {
-                            <li>@person.MemberName</li>
-                        }
-                    </ul>
+                <ul class="govuk-list app-attendee-list">
+                    @foreach (var person in Model.Attendees.OrderBy(a => a.MemberName))
+                    {
+                        <li>@person.MemberName</li>
+                    }
+                </ul>
             </div>
         </div>
 
@@ -55,3 +55,10 @@
         </div>
     </div>
 </div>
+
+@if (!Model.IsSignedUp)
+{
+    <button class="govuk-button" data-module="govuk-button">
+        Sign up
+    </button>
+}
