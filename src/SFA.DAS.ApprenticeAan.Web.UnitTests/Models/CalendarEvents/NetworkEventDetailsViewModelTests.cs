@@ -134,24 +134,6 @@ public class NetworkEventDetailsViewModelTests
     }
 
     [Test]
-    public void GetPartialViewName_EventFormatIsInPerson_RetrievesInPersonPartialView()
-    {
-        var source = new CalendarEvent() { EventFormat = EventFormat.InPerson };
-        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid());
-
-        Assert.That(sut.PartialViewName, Is.EqualTo("_InPersonEventPartial.cshtml"));
-    }
-
-    [Test]
-    public void GetPartialViewName_EventFormatIsHybrid_RetrievesHybridPartialView()
-    {
-        var source = new CalendarEvent() { EventFormat = EventFormat.Hybrid };
-        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid());
-
-        Assert.That(sut.PartialViewName, Is.EqualTo("_HybridEventPartial.cshtml"));
-    }
-
-    [Test]
     public void GetPartialViewName_EventFormatIsUnknown_Throws()
     {
         var source = new CalendarEvent() { EventFormat = (EventFormat)3 };

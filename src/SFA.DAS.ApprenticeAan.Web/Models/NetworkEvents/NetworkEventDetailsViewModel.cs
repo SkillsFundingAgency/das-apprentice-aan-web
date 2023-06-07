@@ -58,8 +58,6 @@ public class NetworkEventDetailsViewModel
         return EventFormat switch
         {
             EventFormat.Online => "_OnlineEventPartial.cshtml",
-            EventFormat.InPerson => "_InPersonEventPartial.cshtml",
-            EventFormat.Hybrid => "_HybridEventPartial.cshtml",
             _ => throw new NotImplementedException($"Failed to find a matching partial view for event format \"{EventFormat}\""),
         };
     }
