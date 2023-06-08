@@ -8,15 +8,11 @@ public static class MapLinkGenerator
     public static string GetStaticImagePreviewLink(LocationDetails locationDetails, string privateApiKey, string signature)
     {
         string location = HttpUtility.UrlEncode(locationDetails.Location!);
-        return $"https://maps.googleapis.com/maps/api/staticmap?center={location}&size=250x250&maptype=roadmap&zoom=13&&markers=color:red|label:C|{locationDetails.Longitude},{locationDetails.Latitude}&key=AIzaSyDUm26s3x5fDIxnply07hN5egKZ5qTQDY0";
+        return $"https://maps.googleapis.com/maps/api/staticmap?center={location}&size=300x235&maptype=roadmap&zoom=13&markers=color:red|{locationDetails.Latitude},{locationDetails.Longitude}&key=AIzaSyDUm26s3x5fDIxnply07hN5egKZ5qTQDY0";
     }
 
-    public static string GetLinkToFullMap(
-        double latitude,
-        double longitude,
-        string privateApiKey,
-        string signature)
+    public static string GetLinkToFullMap(double latitude, double longitude)
     {
-        return $"https://www.google.com/maps/dir/{latitude},{longitude}";
+        return $"https://www.google.com/maps/dir//{latitude},{longitude}";
     }
 }
