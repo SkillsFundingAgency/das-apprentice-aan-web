@@ -9,10 +9,10 @@ public class NetworkEventDetailsViewModel
     public Guid CalendarEventId { get; init; }
     public string CalendarName { get; init; }
     public EventFormat EventFormat { get; init; }
-    public DateTime StartDate { get; init; }
-    public DateTime EndDate { get; init; }
-    public string StartTime => StartDate.ToString("h:mm tt");
-    public string EndTime => EndDate.ToString("h:mm tt");
+    public string StartDate { get; init; }
+    public string EndDate { get; init; }
+    public string StartTime { get; init; }
+    public string EndTime { get; init; }
     public string Description { get; init; }
     public string? Summary { get; init; }
     public LocationDetails? LocationDetails { get; init; }
@@ -22,6 +22,7 @@ public class NetworkEventDetailsViewModel
     public string? CancelReason { get; init; }
     public string PartialViewName => GetPartialViewName();
     public IReadOnlyList<Attendee> Attendees { get; }
+    public int AttendeeCount => Attendees.Count;
     public IReadOnlyList<EventGuest> EventGuests { get; }
     public bool IsSignedUp { get; init; }
     public string EmailLink => MailtoLinkValue.FromAddressAndSubject(ContactEmail, Description);
@@ -31,8 +32,10 @@ public class NetworkEventDetailsViewModel
         CalendarEventId = source.CalendarEventId;
         CalendarName = source.CalendarName;
         EventFormat = source.EventFormat;
-        StartDate = source.StartDate;
-        EndDate = source.EndDate;
+        StartDate = source.StartDate.ToString("dddd, d MMMM yyyy");
+        EndDate = source.EndDate.ToString("dddd, d MMMM yyyy");
+        StartTime = source.StartDate.ToString("h:mm tt");
+        EndTime = source.EndDate.ToString("h:mm tt");
         Description = source.Description;
         Summary = source.Summary;
         EventLink = source.EventLink;
