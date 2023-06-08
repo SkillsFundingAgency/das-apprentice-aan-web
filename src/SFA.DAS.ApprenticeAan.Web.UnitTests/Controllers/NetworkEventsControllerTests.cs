@@ -73,8 +73,7 @@ public class NetworkEventsControllerTests
                     .ReturnsAsync(new CalendarEvent() { CalendarEventId = Guid.Empty });
 
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        var result = sut.Details(eventId, cancellationToken).Result;
 
-        Assert.That(result as RedirectToRouteResult, Is.Not.Null);
+        Assert.That(() => sut.Details(eventId, cancellationToken), Throws.InvalidOperationException);
     }
 }
