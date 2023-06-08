@@ -74,14 +74,13 @@ app
     .UseRouting()
     .UseAuthentication()
     .UseAuthorization()
-    .UseSession();
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        "default",
-        "{controller=Home}/{action=Index}/{id?}");
-});
+    .UseSession()
+    .UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllerRoute(
+            "default",
+            "{controller=Home}/{action=Index}/{id?}");
+    });
 
 app.Run();
 
