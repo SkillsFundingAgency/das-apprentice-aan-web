@@ -36,6 +36,6 @@ public class NetworkEventsController : Controller
         var eventDetails = await _outerApiClient.GetCalendarEventDetails(id, memberId, cancellationToken);
         return eventDetails.CalendarEventId != Guid.Empty
             ? View(new NetworkEventDetailsViewModel(eventDetails, memberId))
-            : RedirectToRoute(RouteNames.NetworkEvents);
+            : throw new InvalidOperationException($"An event with ID {id} was not found."); //TODO: Navigate to 404
     }
 }
