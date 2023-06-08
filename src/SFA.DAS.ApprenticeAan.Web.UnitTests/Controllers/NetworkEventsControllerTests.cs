@@ -35,12 +35,19 @@ public class NetworkEventsControllerTests
     [Test]
     [MoqAutoData]
     public void Details_ReturnsEventDetailsViewModel(
-       [Greedy] NetworkEventsController sut,
-       Guid eventId)
+        [Frozen] Mock<IOuterApiClient> outerApiMock,
+        [Greedy] NetworkEventsController sut,
+        CalendarEvent calendarEvent,
+        Guid eventId)
     {
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(eventId);
 
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+
+        var response = new Response<CalendarEvent>(string.Empty, new(HttpStatusCode.OK), () => calendarEvent);
+        outerApiMock.Setup(o => o.GetCalendarEventDetails(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(response);
+
         var result = (ViewResult)sut.Details(eventId, new CancellationToken()).Result;
 
         Assert.That(result.Model, Is.TypeOf<NetworkEventDetailsViewModel>());
