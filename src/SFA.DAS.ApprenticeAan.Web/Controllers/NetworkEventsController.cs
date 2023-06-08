@@ -33,9 +33,13 @@ public class NetworkEventsController : Controller
     public async Task<IActionResult> Details([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var memberId = User.GetAanMemberId();
-        var eventDetails = await _outerApiClient.GetCalendarEventDetails(id, memberId, cancellationToken);
-        return eventDetails.CalendarEventId != Guid.Empty
-            ? View(new NetworkEventDetailsViewModel(eventDetails, memberId))
-            : throw new InvalidOperationException($"An event with ID {id} was not found."); //TODO: Navigate to 404
+        var eventDetailsResponse = await _outerApiClient.GetCalendarEventDetails(id, memberId, cancellationToken);
+
+        if (eventDetailsResponse.ResponseMessage.IsSuccessStatusCode)
+        {
+            return View(new NetworkEventDetailsViewModel(eventDetailsResponse.GetContent(), memberId));
+        }
+
+        throw new InvalidOperationException($"An event with ID {id} was not found."); //TODO: Navigate to 404
     }
 }

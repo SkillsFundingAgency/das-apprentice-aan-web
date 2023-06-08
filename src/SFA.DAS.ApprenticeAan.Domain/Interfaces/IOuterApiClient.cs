@@ -42,7 +42,7 @@ public interface IOuterApiClient
 
     [Get("/calendarevents/{calendarEventId}")]
     [AllowAnyStatusCode]
-    Task<CalendarEvent> GetCalendarEventDetails([Path] Guid calendarEventId,
+    Task<Response<CalendarEvent>> GetCalendarEventDetails([Path] Guid calendarEventId,
         [Header(Constants.RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId,
         CancellationToken cancellationToken);
 
