@@ -1,0 +1,21 @@
+﻿@model EventsHubViewModel
+@{
+    ViewData["Title"] = "Events hub";
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">Events hub</h1>
+            <div>
+                <ul class="govuk-list app-icon-list">
+                    <li>
+                    <h2 class="govuk-heading-m">
+                      <a href="@Model.AllNetworksUrl" class="govuk-link govuk-link--no-visited-state"> All network events</a>
+                    </h2>
+
+                    <p>Manage your upcoming events and give feedback about events you have attended.</p>
+                    <svg class="app-icon-list__icon"><use href="/img/sprite.svg#icon-calendar" /></svg>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
