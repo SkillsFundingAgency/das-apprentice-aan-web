@@ -12,7 +12,7 @@ public static class MapLinkGenerator
 
         return new StringBuilder()
             .Append($"https://maps.googleapis.com/maps/api/staticmap?center={location}")
-            .Append("&size=300")
+            .Append("&size=300x235")
             .Append("&maptype=roadmap")
             .Append("&zoom=13")
             .Append("&markers=color:red")
