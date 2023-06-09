@@ -224,6 +224,7 @@ a.app-calendar__event:focus {
 .app-icon-list__icon {
     position: absolute;
     width: 60px;
+    height: 60px;
     top: 50%;
     right: 0;
     margin-top: -30px;
