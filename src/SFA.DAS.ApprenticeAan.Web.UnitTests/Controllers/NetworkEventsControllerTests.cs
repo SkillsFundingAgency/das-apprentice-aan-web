@@ -1,4 +1,18 @@
-﻿namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
+﻿using System.Net;
+using AutoFixture.NUnit3;
+using FluentAssertions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using RestEase;
+using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+using SFA.DAS.ApprenticeAan.Web.Controllers;
+using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
+using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
+using SFA.DAS.Testing.AutoFixture;
+
+namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
 
 public class NetworkEventsControllerTests
 {
