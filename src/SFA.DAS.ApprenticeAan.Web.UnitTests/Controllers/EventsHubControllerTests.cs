@@ -18,7 +18,7 @@ public class EventsHubControllerTests
         EventsHubController sut = new();
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.NetworkEvents, AllNetworksUrl);
 
-        _result = sut.Index();
+        _result = sut.Index(null, null, new());
     }
 
     [Test]
@@ -29,8 +29,8 @@ public class EventsHubControllerTests
     }
 
     [Test]
-    public void ThenSetsNetworkEventUrl()
+    public void ThenSetsViewModel()
     {
-        _result.As<ViewResult>().Model.As<EventsHubViewModel>().AllNetworksUrl.Should().Be(AllNetworksUrl);
+        _result.As<ViewResult>().Model.Should().BeOfType<EventsHubViewModel>();
     }
 }

@@ -1,0 +1,122 @@
+﻿@model CalendarViewModel
+
+<div>
+    @{
+        int Month = DateTime.Now.Month;
+        int Year = DateTime.Now.Year;
+
+        DateTime today = DateTime.Now;
+
+        int DaysInMonth = DateTime.DaysInMonth(Year, Month);
+
+        DateTime firstDayOfTheMonthDate = new DateTime(Year, Month, 1);
+        DayOfWeek firstDayOfTheMonthName = firstDayOfTheMonthDate.DayOfWeek;
+        int firstDayOfTheMonthNo;
+        firstDayOfTheMonthNo = (int)firstDayOfTheMonthName;
+
+        int noOfDaysNeededFromLastMonth = (firstDayOfTheMonthNo + 6) % 7;
+        int noOfDaysNeededFromNextMonth = 7 - ((noOfDaysNeededFromLastMonth + DaysInMonth) % 7);
+
+        if (noOfDaysNeededFromNextMonth == 7)
+            noOfDaysNeededFromNextMonth = 0;
+    }
+
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-half">
+            <p></p>
+        </div>
+        <div class="govuk-grid-column-one-half">
+            <ul class="app-calendar-legend">
+                <li class="app-calendar-legend__key"><span class="app-calendar-legend__colour app-calendar-legend__colour--inperson"></span>In person event</li>
+                <li class="app-calendar-legend__key"><span class="app-calendar-legend__colour app-calendar-legend__colour--online"></span>Online event</li>
+                <li class="app-calendar-legend__key"><span class="app-calendar-legend__colour app-calendar-legend__colour--hybrid"></span>Hybrid event</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-half">
+            <h2 class="govuk-heading-m">Your events</h2>
+            <h3 class="govuk-heading-m govuk-!-margin-0">@Model.FirstDayOfCurrentMonth.ToString("MMMM yyyy")</h3>
+        </div>
+        <div class="govuk-grid-column-one-half">
+            <nav class="app-calendar-nav" role="navigation">
+                <div class="app-calendar-nav__prev">
+                    <a class="app-calendar-nav__link" href="@Model.PreviousMonthLink" rel="prev">
+                        <svg class="app-calendar-nav__icon app-calendar-nav__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                            <path d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z"></path>
+                        </svg>
+                        <span class="app-calendar-nav__link-title">Previous month</span>
+                    </a>
+                </div>
+                <div class="app-calendar-nav__next">
+                    <a class="app-calendar-nav__link" href="@Model.NextMonthLink" rel="next">
+                        <svg class="app-calendar-nav__icon app-calendar-nav__icon--next" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                            <path d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z"></path>
+                        </svg>
+                        <span class="app-calendar-nav__link-title">Next month</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <div class="app-calendar">
+        <div class="app-calendar__header">Mon</div>
+        <div class="app-calendar__header">Tue</div>
+        <div class="app-calendar__header">Wed</div>
+        <div class="app-calendar__header">Thu</div>
+        <div class="app-calendar__header">Fri</div>
+        <div class="app-calendar__header">Sat</div>
+        <div class="app-calendar__header">Sun</div>
+        @for (var i = 0; i < noOfDaysNeededFromLastMonth; i++)
+        {
+            <div class="app-calendar__day app-calendar__day--last-month"></div>
+        }
+
+        @for (var i = 1; i <= DaysInMonth; i++)
+        {
+            <div class="app-calendar__day">
+                @{
+                    bool isToday = false;
+                    DateTime day = new DateTime(Year, Month, i);
+                    if (day.ToString("d") == today.ToString("d"))
+                    {
+                        isToday = true;
+                    }
+                }
+                <span class="app-calendar__date @(isToday ? "app-calendar__date--today" : "")">
+                    <span class="app-calendar__date-day">@i</span>
+                    <span class="app-calendar__date-month">@day.ToString("MMMM")</span>
+                </span>
+
+                @{
+                    if (i == 3)
+                    {
+                        <a class="app-calendar__event app-calendar__event--hybrid" href="event-details">Clifton High School apprenticeship event</a>
+                    }
+                }
+                @{
+                    if (i == 7)
+                    {
+                        <a class="app-calendar__event app-calendar__event--inperson" href="event-details">Manchester AAN regional meet-up</a>
+                    }
+                }
+                @{
+                    if (i == 7)
+                    {
+                        <a class="app-calendar__event app-calendar__event--online" href="event-details">AAN online case study session</a>
+                    }
+                }
+
+            </div>
+        }
+
+        @for (var i = 0; i < noOfDaysNeededFromNextMonth; i++)
+        {
+            <div class="app-calendar__day app-calendar__day--next-month"></div>
+        }
+
+    </div>
+</div>
