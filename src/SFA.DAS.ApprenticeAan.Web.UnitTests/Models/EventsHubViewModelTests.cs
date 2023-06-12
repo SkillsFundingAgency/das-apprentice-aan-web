@@ -9,20 +9,22 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models;
 
 public class EventsHubViewModelTests
 {
+    private readonly static DateOnly _date = new(2024, 1, 1);
+
     [Test]
     public void Constructor_SetsMonth()
     {
-        EventsHubViewModel sut = new(10, 1, Mock.Of<IUrlHelper>());
+        EventsHubViewModel sut = new(_date, Mock.Of<IUrlHelper>());
 
-        sut.Calendar.FirstDayOfCurrentMonth.Month.Should().Be(10);
+        sut.Calendar.FirstDayOfCurrentMonth.Month.Should().Be(_date.Day);
     }
 
     [Test]
     public void Constructor_SetsYear()
     {
-        EventsHubViewModel sut = new(10, 2001, Mock.Of<IUrlHelper>());
+        EventsHubViewModel sut = new(_date, Mock.Of<IUrlHelper>());
 
-        sut.Calendar.FirstDayOfCurrentMonth.Year.Should().Be(2001);
+        sut.Calendar.FirstDayOfCurrentMonth.Year.Should().Be(_date.Year);
     }
 
     [Test]
@@ -31,7 +33,7 @@ public class EventsHubViewModelTests
         const string route = "route";
         Mock<IUrlHelper> urlHelperMock = new();
         urlHelperMock.Setup(h => h.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName == RouteNames.NetworkEvents))).Returns(route);
-        EventsHubViewModel sut = new(10, 1, urlHelperMock.Object);
+        EventsHubViewModel sut = new(_date, urlHelperMock.Object);
 
         sut.AllNetworksUrl.Should().Be(route);
     }

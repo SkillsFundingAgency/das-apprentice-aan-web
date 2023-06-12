@@ -19,11 +19,11 @@ public class CalendarViewModel
 
     public string NextMonthLink => _urlHelper.RouteUrl(RouteNames.EventsHub, new { FirstDayOfCurrentMonth.AddMonths(1).Month, FirstDayOfCurrentMonth.AddMonths(1).Year })!;
 
-    public CalendarViewModel(int month, int year, IUrlHelper urlHelper, DateOnly today)
+    public CalendarViewModel(DateOnly firstDayOfTheMonth, IUrlHelper urlHelper, DateOnly today)
     {
         _urlHelper = urlHelper;
         _today = today;
-        FirstDayOfCurrentMonth = new DateOnly(year, month, 1);
+        FirstDayOfCurrentMonth = firstDayOfTheMonth;
         CalendarItems = RenderCalendarItems();
     }
 

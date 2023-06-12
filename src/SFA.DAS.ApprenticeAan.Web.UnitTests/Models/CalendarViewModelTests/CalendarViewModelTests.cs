@@ -9,8 +9,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models.CalendarViewModelTests;
 
 public class CalendarViewModelTests
 {
-    private const int Month = 6;
-    private const int Year = 2023;
+    private static readonly DateOnly _date = new DateOnly(2023, 6, 1);
     private const string EventsHubRoute = "EventsHubRoute";
 
     private Mock<IUrlHelper> _urlHelperMock = null!;
@@ -23,12 +22,12 @@ public class CalendarViewModelTests
         _urlHelperMock.Setup(h => h.RouteUrl(It.Is<UrlRouteContext>(c
             => c.RouteName == RouteNames.NetworkEvents
             ))).Returns(EventsHubRoute);
-        _sut = new(Month, Year, _urlHelperMock.Object, DateOnly.FromDateTime(DateTime.Today));
+        _sut = new(_date, _urlHelperMock.Object, DateOnly.FromDateTime(DateTime.Today));
     }
 
     [Test]
     public void ThenFirstDayOfCurrentMonthIsCorrect()
-        => _sut.FirstDayOfCurrentMonth.Should().Be(DateOnly.FromDateTime(new DateTime(Year, Month, 1)));
+        => _sut.FirstDayOfCurrentMonth.Should().Be(_date);
 
     [Test]
     public void ThenPreviousMonthLinkIsSet()
