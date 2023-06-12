@@ -11,7 +11,6 @@ public class NetworkEventDetailsViewModel
     public Guid CalendarEventId { get; init; }
     public string CalendarName { get; init; }
     public EventFormat EventFormat { get; init; }
-    public string EventFormatAppTag => EventFormat.ToString().ToLower();
     public string StartDate { get; init; }
     public string EndDate { get; init; }
     public string StartTime { get; init; }
