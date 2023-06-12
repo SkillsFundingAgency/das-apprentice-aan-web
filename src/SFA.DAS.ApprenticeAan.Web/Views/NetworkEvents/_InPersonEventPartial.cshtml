@@ -9,9 +9,9 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-half">
         <h2 class="govuk-heading-m">When and where</h2>
-        <p><span class="das-!-display--block">@Model.StartTime to @Model.EndTime</span> </p>
+        <p>@Model.StartDate<span class="das-!-display--block">@Model.StartTime to @Model.EndTime</span> </p>
         <p>
-            @Model.LocationDetails?.Location!.Trim(), <span class="das-no-wrap">@Model.LocationDetails?.Postcode!.ToUpper()</span>
+            In person <br />@Model.LocationDetails?.Location!.Trim(), <span class="das-no-wrap">@Model.LocationDetails?.Postcode!.ToUpper()</span>
         </p>
     </div>
     <div class="column-one-third map-container hide-nojs sfa-small-bottom-margin toggle-content--mob">
