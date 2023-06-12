@@ -12,6 +12,6 @@ public class EventsHubViewModel
     public EventsHubViewModel(int month, int year, IUrlHelper urlHelper)
     {
         AllNetworksUrl = urlHelper.RouteUrl(RouteNames.NetworkEvents)!;
-        Calendar = new(month, year, urlHelper);
+        Calendar = new(month, year, urlHelper, DateOnly.FromDateTime(DateTime.Today));
     }
 }

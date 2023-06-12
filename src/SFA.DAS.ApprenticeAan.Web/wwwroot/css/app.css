@@ -87,8 +87,7 @@
     min-height: 130px;
 }
 
-.app-calendar__day--last-month,
-.app-calendar__day--next-month {
+.app-calendar__day--empty {
     background: #eee;
 }
 

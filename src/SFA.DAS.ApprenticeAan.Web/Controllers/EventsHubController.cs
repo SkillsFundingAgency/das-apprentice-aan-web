@@ -9,10 +9,14 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 [Route("events-hub", Name = RouteNames.EventsHub)]
 public class EventsHubController : Controller
 {
-    public IActionResult Index([FromQuery] int? month, [FromQuery] int? year, CancellationToken cancellation)
+    public IActionResult Index([FromQuery] int? month, [FromQuery] int? year, CancellationToken cancellationToken)
     {
+        month = month ?? DateTime.Today.Month;
+        year = year ?? DateTime.Today.Year;
 
-        EventsHubViewModel model = new(month ?? DateTime.Today.Month, year ?? DateTime.Today.Year, Url);
+        var d = new DateOnly(year.GetValueOrDefault(), month.GetValueOrDefault(), 1);
+
+        EventsHubViewModel model = new(d.Month, d.Year, Url);
         return View(model);
     }
 }

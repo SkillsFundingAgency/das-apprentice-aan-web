@@ -5,11 +5,11 @@ using Moq;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 
-namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models;
+namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models.CalendarViewModelTests;
 
 public class CalendarViewModelTests
 {
-    private const int Month = 1;
+    private const int Month = 6;
     private const int Year = 2023;
     private const string EventsHubRoute = "EventsHubRoute";
 
@@ -23,16 +23,8 @@ public class CalendarViewModelTests
         _urlHelperMock.Setup(h => h.RouteUrl(It.Is<UrlRouteContext>(c
             => c.RouteName == RouteNames.NetworkEvents
             ))).Returns(EventsHubRoute);
-        _sut = new(Month, Year, _urlHelperMock.Object);
+        _sut = new(Month, Year, _urlHelperMock.Object, DateOnly.FromDateTime(DateTime.Today));
     }
-
-    [Test]
-    public void ThenSetsCurrentMonth()
-        => _sut.CurrentMonth.Should().Be(Month);
-
-    [Test]
-    public void ThenSetCurrentYear()
-        => _sut.CurrentYear.Should().Be(Year);
 
     [Test]
     public void ThenFirstDayOfCurrentMonthIsCorrect()
@@ -45,5 +37,4 @@ public class CalendarViewModelTests
     [Test]
     public void ThenNextMonthLinkIsSet()
         => _sut.NextMonthLink.Should().NotBeEmpty();
-
 }

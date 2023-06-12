@@ -33,4 +33,12 @@ public class EventsHubControllerTests
     {
         _result.As<ViewResult>().Model.Should().BeOfType<EventsHubViewModel>();
     }
+
+    [Test]
+    public void InvalidValue_ThenThrowsArgumentOutOfRangeException()
+    {
+        EventsHubController sut = new();
+        Action action = () => sut.Index(13, null, new());
+        action.Should().Throw<ArgumentOutOfRangeException>();
+    }
 }

@@ -14,15 +14,15 @@ public class EventsHubViewModelTests
     {
         EventsHubViewModel sut = new(10, 1, Mock.Of<IUrlHelper>());
 
-        sut.Calendar.CurrentMonth.Should().Be(10);
+        sut.Calendar.FirstDayOfCurrentMonth.Month.Should().Be(10);
     }
 
     [Test]
     public void Constructor_SetsYear()
     {
-        EventsHubViewModel sut = new(10, 1, Mock.Of<IUrlHelper>());
+        EventsHubViewModel sut = new(10, 2001, Mock.Of<IUrlHelper>());
 
-        sut.Calendar.CurrentYear.Should().Be(1);
+        sut.Calendar.FirstDayOfCurrentMonth.Year.Should().Be(2001);
     }
 
     [Test]

@@ -1,27 +1,6 @@
 ﻿@model CalendarViewModel
 
 <div>
-    @{
-        int Month = DateTime.Now.Month;
-        int Year = DateTime.Now.Year;
-
-        DateTime today = DateTime.Now;
-
-        int DaysInMonth = DateTime.DaysInMonth(Year, Month);
-
-        DateTime firstDayOfTheMonthDate = new DateTime(Year, Month, 1);
-        DayOfWeek firstDayOfTheMonthName = firstDayOfTheMonthDate.DayOfWeek;
-        int firstDayOfTheMonthNo;
-        firstDayOfTheMonthNo = (int)firstDayOfTheMonthName;
-
-        int noOfDaysNeededFromLastMonth = (firstDayOfTheMonthNo + 6) % 7;
-        int noOfDaysNeededFromNextMonth = 7 - ((noOfDaysNeededFromLastMonth + DaysInMonth) % 7);
-
-        if (noOfDaysNeededFromNextMonth == 7)
-            noOfDaysNeededFromNextMonth = 0;
-    }
-
-
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-one-half">
             <p></p>
@@ -70,53 +49,44 @@
         <div class="app-calendar__header">Fri</div>
         <div class="app-calendar__header">Sat</div>
         <div class="app-calendar__header">Sun</div>
-        @for (var i = 0; i < noOfDaysNeededFromLastMonth; i++)
-        {
-            <div class="app-calendar__day app-calendar__day--last-month"></div>
-        }
 
-        @for (var i = 1; i <= DaysInMonth; i++)
+        @foreach (var calendarDay in Model.CalendarItems)
         {
+            if (calendarDay.Day == null)
+            {
+                <div class="app-calendar__day app-calendar__day--empty"></div>
+                continue;
+            }
+
             <div class="app-calendar__day">
-                @{
-                    bool isToday = false;
-                    DateTime day = new DateTime(Year, Month, i);
-                    if (day.ToString("d") == today.ToString("d"))
-                    {
-                        isToday = true;
-                    }
-                }
-                <span class="app-calendar__date @(isToday ? "app-calendar__date--today" : "")">
-                    <span class="app-calendar__date-day">@i</span>
-                    <span class="app-calendar__date-month">@day.ToString("MMMM")</span>
+                <span class="app-calendar__date @(calendarDay.IsToday ? "app-calendar__date--today" : "")">
+                    <span class="app-calendar__date-day">@calendarDay.Day?.Day</span>
                 </span>
-
-                @{
-                    if (i == 3)
-                    {
-                        <a class="app-calendar__event app-calendar__event--hybrid" href="event-details">Clifton High School apprenticeship event</a>
-                    }
-                }
-                @{
-                    if (i == 7)
-                    {
-                        <a class="app-calendar__event app-calendar__event--inperson" href="event-details">Manchester AAN regional meet-up</a>
-                    }
-                }
-                @{
-                    if (i == 7)
-                    {
-                        <a class="app-calendar__event app-calendar__event--online" href="event-details">AAN online case study session</a>
-                    }
-                }
-
             </div>
-        }
 
-        @for (var i = 0; i < noOfDaysNeededFromNextMonth; i++)
-        {
-            <div class="app-calendar__day app-calendar__day--next-month"></div>
-        }
+            //<div class="app-calendar__day">
+            //   
 
+            //    //@{
+            //    //    if (i == 3)
+            //    //    {
+            //    //        <a class="app-calendar__event app-calendar__event--hybrid" href="event-details">Clifton High School apprenticeship event</a>
+            //    //    }
+            //    //}
+            //    //@{
+            //    //    if (i == 7)
+            //    //    {
+            //    //        <a class="app-calendar__event app-calendar__event--inperson" href="event-details">Manchester AAN regional meet-up</a>
+            //    //    }
+            //    //}
+            //    //@{
+            //    //    if (i == 7)
+            //    //    {
+            //    //        <a class="app-calendar__event app-calendar__event--online" href="event-details">AAN online case study session</a>
+            //    //    }
+            //    //}
+
+            //</div>
+        }
     </div>
 </div>
