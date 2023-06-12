@@ -49,4 +49,7 @@ public interface IOuterApiClient
     [Get("/stagedapprentices")]
     [AllowAnyStatusCode]
     Task<Response<StagedApprentice?>> GetStagedApprentice([Query] string lastName, [Query] string dateOfBirth, [Query] string email, CancellationToken cancellationToken);
+
+    [Get("/attendances")]
+    Task<GetAttendancesResponse> GetAttendances([Header(Constants.RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId, string fromDate, string toDate, CancellationToken cancellationToken);
 }

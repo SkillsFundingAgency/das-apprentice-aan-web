@@ -22,7 +22,7 @@ public class CalendarViewModelTests
         _urlHelperMock.Setup(h => h.RouteUrl(It.Is<UrlRouteContext>(c
             => c.RouteName == RouteNames.NetworkEvents
             ))).Returns(EventsHubRoute);
-        _sut = new(_date, _urlHelperMock.Object, DateOnly.FromDateTime(DateTime.Today));
+        _sut = new(_date, _urlHelperMock.Object, DateOnly.FromDateTime(DateTime.Today), Enumerable.Empty<Appointment>());
     }
 
     [Test]

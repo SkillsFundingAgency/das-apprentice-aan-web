@@ -19,38 +19,38 @@ public class CalendarViewModel
 
     public string NextMonthLink => _urlHelper.RouteUrl(RouteNames.EventsHub, new { FirstDayOfCurrentMonth.AddMonths(1).Month, FirstDayOfCurrentMonth.AddMonths(1).Year })!;
 
-    public CalendarViewModel(DateOnly firstDayOfTheMonth, IUrlHelper urlHelper, DateOnly today)
+    public CalendarViewModel(DateOnly firstDayOfTheMonth, IUrlHelper urlHelper, DateOnly today, IEnumerable<Appointment> appointments)
     {
         _urlHelper = urlHelper;
         _today = today;
         FirstDayOfCurrentMonth = firstDayOfTheMonth;
-        CalendarItems = RenderCalendarItems();
+        CalendarItems = RenderCalendarItems(appointments);
     }
 
-    private List<CalendarItem> RenderCalendarItems()
+    private List<CalendarItem> RenderCalendarItems(IEnumerable<Appointment> appointments)
     {
         List<CalendarItem> calendar = new();
 
         int firstDayOfTheWeek = (int)FirstDayOfCurrentMonth.DayOfWeek;
         var startIndex = firstDayOfTheWeek == 0 ? 6 : firstDayOfTheWeek - 1;
         var currentRenderingDay = FirstDayOfCurrentMonth;
-        var noOfDaysToRender = GetNumberOfDaysToRender(startIndex);
+        var noOfItemsToRender = GetNumberOfItemsToRender(startIndex);
 
-        for (int i = 0; i < noOfDaysToRender; i++)
+        for (int i = 0; i < noOfItemsToRender; i++)
         {
             if (i < startIndex || currentRenderingDay.Month != FirstDayOfCurrentMonth.Month)
             {
-                calendar.Add(new(i, null, false));
+                calendar.Add(new(i, null, false, new()));
                 continue;
             }
 
-            calendar.Add(new(i, currentRenderingDay, currentRenderingDay == _today));
+            calendar.Add(new(i, currentRenderingDay, currentRenderingDay == _today, appointments.Where(a => a.Date == currentRenderingDay).ToList()));
             currentRenderingDay = currentRenderingDay.AddDays(1);
         }
         return calendar;
     }
 
-    private int GetNumberOfDaysToRender(int firstDayOfTheWeek)
+    private int GetNumberOfItemsToRender(int firstDayOfTheWeek)
     {
         var daysInMonth = DateTime.DaysInMonth(FirstDayOfCurrentMonth.Year, FirstDayOfCurrentMonth.Month);
         var totalDays = (firstDayOfTheWeek + daysInMonth);
@@ -58,4 +58,6 @@ public class CalendarViewModel
     }
 }
 
-public record CalendarItem(int Index, DateOnly? Day, bool IsToday);
+public record CalendarItem(int Index, DateOnly? Day, bool IsToday, List<Appointment> Appointments);
+
+public record Appointment(string Title, string Url, DateOnly Date, string Format);

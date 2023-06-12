@@ -62,31 +62,13 @@
                 <span class="app-calendar__date @(calendarDay.IsToday ? "app-calendar__date--today" : "")">
                     <span class="app-calendar__date-day">@calendarDay.Day?.Day</span>
                 </span>
+            
+
+                @foreach (var appointment in calendarDay.Appointments)
+                {
+                    <a class="@appointment.Format" href="@appointment.Url">@appointment.Title</a>
+                }
             </div>
-
-            //<div class="app-calendar__day">
-            //   
-
-            //    //@{
-            //    //    if (i == 3)
-            //    //    {
-            //    //        <a class="app-calendar__event app-calendar__event--hybrid" href="event-details">Clifton High School apprenticeship event</a>
-            //    //    }
-            //    //}
-            //    //@{
-            //    //    if (i == 7)
-            //    //    {
-            //    //        <a class="app-calendar__event app-calendar__event--inperson" href="event-details">Manchester AAN regional meet-up</a>
-            //    //    }
-            //    //}
-            //    //@{
-            //    //    if (i == 7)
-            //    //    {
-            //    //        <a class="app-calendar__event app-calendar__event--online" href="event-details">AAN online case study session</a>
-            //    //    }
-            //    //}
-
-            //</div>
         }
     </div>
 </div>
