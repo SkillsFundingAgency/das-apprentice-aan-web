@@ -138,6 +138,33 @@ public class NetworkEventDetailsViewModelTests
         Assert.That(sut.EmailLink, Is.EqualTo(expected));
     }
 
+    [TestCase(EventFormat.Online)]
+    [TestCase(EventFormat.InPerson)]
+    [TestCase(EventFormat.Hybrid)]
+    public void EventFormatAppTagSuffix_ReturnsLowerCaseStringInterpretation(EventFormat format)
+    {
+        var sut = new NetworkEventDetailsViewModel(new CalendarEvent() { EventFormat = format }, Guid.NewGuid(), "", "");
+        Assert.That(sut.EventFormatAppTagSuffix, Is.EqualTo(format.ToString().ToLower()));
+    }
+
+    public void EventFormatIsOnline_EventFormatAppTagValueReturnsExpectedString()
+    {
+        var sut = new NetworkEventDetailsViewModel(new CalendarEvent() { EventFormat = EventFormat.Online }, Guid.NewGuid(), "", "");
+        Assert.That(sut.EventFormatAppTagSuffix, Is.EqualTo(EventFormat.Online.ToString()));
+    }
+
+    public void EventFormatIsInPerson_EventFormatAppTagValueReturnsExpectedString()
+    {
+        var sut = new NetworkEventDetailsViewModel(new CalendarEvent() { EventFormat = EventFormat.Online }, Guid.NewGuid(), "", "");
+        Assert.That(sut.EventFormatAppTagSuffix, Is.EqualTo("In person"));
+    }
+
+    public void EventFormatIsHybrid_EventFormatAppTagValueReturnsExpectedString()
+    {
+        var sut = new NetworkEventDetailsViewModel(new CalendarEvent() { EventFormat = EventFormat.Online }, Guid.NewGuid(), "", "");
+        Assert.That(sut.EventFormatAppTagSuffix, Is.EqualTo(EventFormat.Hybrid.ToString()));
+    }
+
     private static void DoAssertsForInPersonAndHybridEvents(CalendarEvent source, NetworkEventDetailsViewModel sut)
     {
         Assert.Multiple(() =>
