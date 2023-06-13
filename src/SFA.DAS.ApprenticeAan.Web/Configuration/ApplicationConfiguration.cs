@@ -22,10 +22,10 @@ public class ApplicationConfiguration : ISharedUiConfiguration
 
     public OuterApiConfiguration ApprenticeAanOuterApi { get; set; } = new();
 
-    public ApplicationSettingsConfiguration ApplicationSettings { get; set; } = new();
+    public ApplicationSettings ApplicationSettings { get; set; } = new();
 }
 
-public class ApplicationSettingsConfiguration
+public class ApplicationSettings
 {
     public string GoogleMapsApiKey { get; set; } = null!;
     public string GoogleMapsPrivateKey { get; set; } = null!;

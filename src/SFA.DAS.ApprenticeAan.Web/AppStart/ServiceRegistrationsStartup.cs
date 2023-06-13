@@ -22,6 +22,7 @@ public static class ServiceRegistrationsStartup
         services.AddTransient<IApprenticeAccountService, ApprenticeAccountService>();
         services.AddTransient<IApprenticeService, ApprenticeService>();
         services.AddTransient<IMyApprenticeshipService, MyApprenticeshipService>();
+        services.AddTransient<IGoogleMapsService, GoogleMapsService>();
         return services;
     }
 

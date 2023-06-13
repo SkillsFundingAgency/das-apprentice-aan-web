@@ -1,4 +1,5 @@
 ﻿using SFA.DAS.ApprenticeAan.Domain.Constants;
+using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.UrlHelpers;
 
@@ -6,8 +7,6 @@ namespace SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
 public class NetworkEventDetailsViewModel
 {
-    public string GoogleMapsApiKey { get; init; }
-    public string GoogleMapsPrivateKey { get; init; }
     public Guid CalendarEventId { get; init; }
     public string CalendarName { get; init; }
     public EventFormat EventFormat { get; init; }
@@ -30,13 +29,13 @@ public class NetworkEventDetailsViewModel
     public IReadOnlyList<EventGuest> EventGuests { get; }
     public bool IsSignedUp { get; init; }
     public string EmailLink => MailtoLinkValue.FromAddressAndSubject(ContactEmail, Description);
-    public string StaticMapImageLink => MapLinkGenerator.GetStaticImagePreviewLink(LocationDetails!.Value, GoogleMapsApiKey, GoogleMapsPrivateKey);
-    public string FullMapLink => MapLinkGenerator.GetLinkToFullMap(LocationDetails!.Value.Latitude!.Value, LocationDetails!.Value.Longitude!.Value);
 
-    public NetworkEventDetailsViewModel(CalendarEvent source, Guid memberId, string googleMapsApiKey, string googleMapsPrivateKey)
+    public bool ShowMap { get; init; }
+    public string? StaticMapImageUrl { get; }
+    public string? FullMapUrl { get; }
+
+    public NetworkEventDetailsViewModel(CalendarEvent source, Guid memberId, IGoogleMapsService googleMapsService)
     {
-        GoogleMapsApiKey = googleMapsApiKey;
-        GoogleMapsPrivateKey = googleMapsPrivateKey;
         CalendarEventId = source.CalendarEventId;
         CalendarName = source.CalendarName;
         EventFormat = source.EventFormat;
@@ -61,10 +60,14 @@ public class NetworkEventDetailsViewModel
             {
                 Location = source.Location,
                 Postcode = source.Postcode,
-                Longitude = source.Longitude,
-                Latitude = source.Latitude,
                 Distance = source.Distance,
             };
+            ShowMap = source.Latitude.HasValue && source.Longitude.HasValue;
+            if (ShowMap)
+            {
+                StaticMapImageUrl = googleMapsService.GetStaticMapUrl(source.Latitude.GetValueOrDefault(), source.Longitude.GetValueOrDefault());
+                FullMapUrl = googleMapsService.GetFullMapUrl(source.Latitude.GetValueOrDefault(), source.Longitude.GetValueOrDefault());
+            }
         }
     }
 
