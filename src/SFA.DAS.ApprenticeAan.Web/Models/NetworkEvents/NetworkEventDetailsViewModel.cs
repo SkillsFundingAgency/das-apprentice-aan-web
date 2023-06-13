@@ -17,6 +17,7 @@ public class NetworkEventDetailsViewModel
     public string EndDate { get; init; }
     public string StartTime { get; init; }
     public string EndTime { get; init; }
+    public string Title { get; init; }
     public string Description { get; init; }
     public string? Summary { get; init; }
     public LocationDetails? LocationDetails { get; init; }
@@ -44,6 +45,7 @@ public class NetworkEventDetailsViewModel
         EndDate = source.EndDate.ToString("dddd, d MMMM yyyy");
         StartTime = source.StartDate.ToString("h:mm tt");
         EndTime = source.EndDate.ToString("h:mm tt");
+        Title = source.Title;
         Description = source.Description;
         Summary = source.Summary;
         EventLink = source.EventLink;
