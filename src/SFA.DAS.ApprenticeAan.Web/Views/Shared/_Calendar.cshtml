@@ -2,10 +2,7 @@
 
 <div>
     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-one-half">
-            <p></p>
-        </div>
-        <div class="govuk-grid-column-one-half">
+        <div class="govuk-grid-column-full">
             <ul class="app-calendar-legend">
                 <li class="app-calendar-legend__key"><span class="app-calendar-legend__colour app-calendar-legend__colour--inperson"></span>In person event</li>
                 <li class="app-calendar-legend__key"><span class="app-calendar-legend__colour app-calendar-legend__colour--online"></span>Online event</li>
@@ -17,7 +14,7 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-one-half">
             <h2 class="govuk-heading-m">Your events</h2>
-            <h3 class="govuk-heading-m govuk-!-margin-0">@Model.FirstDayOfCurrentMonth.ToString("MMMM yyyy")</h3>
+            <h3 class="govuk-heading-s govuk-!-margin-0">@Model.FirstDayOfCurrentMonth.ToString("MMMM yyyy")</h3>
         </div>
         <div class="govuk-grid-column-one-half">
             <nav class="app-calendar-nav" role="navigation">

@@ -84,7 +84,7 @@
 .app-calendar__day {
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
-    min-height: 130px;
+    min-height: 90px;
 }
 
 .app-calendar__day--empty {
@@ -153,6 +153,7 @@ a.app-calendar__event:focus {
     font-family: "GDS Transport",arial,sans-serif;
     -webkit-font-smoothing: antialiased;
     color: #0b0c0c;
+    float: right;
 }
 
 .app-calendar-legend__key {
