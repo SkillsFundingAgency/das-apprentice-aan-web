@@ -12,6 +12,7 @@ using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
+[Route("network-events")]
 public class NetworkEventsController : Controller
 {
     private readonly IOuterApiClient _outerApiClient;
@@ -25,7 +26,7 @@ public class NetworkEventsController : Controller
     }
 
     [HttpGet]
-    [Route("network-events", Name = RouteNames.NetworkEvents)]
+    [Route("", Name = RouteNames.NetworkEvents)]
     public async Task<IActionResult> Index(GetNetworkEventsRequest request, CancellationToken cancellationToken)
     {
         var fromDateFormatted = DateTimeHelper.ToUrlFormat(request.FromDate)!;
@@ -43,7 +44,7 @@ public class NetworkEventsController : Controller
     }
 
     [HttpGet]
-    [Route("network-events/{id}", Name = RouteNames.NetworkEventDetails)]
+    [Route("{id}", Name = RouteNames.NetworkEventDetails)]
     public async Task<IActionResult> Details([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var memberId = User.GetAanMemberId();
