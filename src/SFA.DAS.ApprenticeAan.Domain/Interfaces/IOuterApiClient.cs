@@ -40,6 +40,12 @@ public interface IOuterApiClient
     [Post("/apprentices")]
     Task<CreateApprenticeMemberResponse> PostApprenticeMember([Body] CreateApprenticeMemberRequest request);
 
+    [Get("/calendarevents/{calendarEventId}")]
+    [AllowAnyStatusCode]
+    Task<Response<CalendarEvent>> GetCalendarEventDetails([Path] Guid calendarEventId,
+        [Header(Constants.RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId,
+        CancellationToken cancellationToken);
+
     [Get("/stagedapprentices")]
     [AllowAnyStatusCode]
     Task<Response<StagedApprentice?>> GetStagedApprentice([Query] string lastName, [Query] string dateOfBirth, [Query] string email, CancellationToken cancellationToken);
