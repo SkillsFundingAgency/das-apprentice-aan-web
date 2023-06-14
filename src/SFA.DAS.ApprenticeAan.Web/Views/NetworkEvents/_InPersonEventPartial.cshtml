@@ -1,0 +1,16 @@
+﻿@using Microsoft.AspNetCore.Mvc.ModelBinding;
+@using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
+@using SFA.DAS.ApprenticeAan.Web.UrlHelpers;
+
+@model NetworkEventDetailsViewModel
+
+<div class="govuk-grid-column-one-half">
+    <h2 class="govuk-heading-m">When and where</h2>
+    <p>@Model.StartDate<span class="das-!-display--block">@Model.StartTime to @Model.EndTime</span> </p>
+    <p>
+        In person <br />@Model.LocationDetails?.Location!.Trim(), <span class="das-no-wrap">@Model.LocationDetails?.Postcode!.ToUpper()</span>
+    </p>
+</div>
+<div class="column-one-third map-container hide-nojs sfa-small-bottom-margin toggle-content--mob">
+    <a href="@Model.FullMapLink" target="_blank"><img class="static-map" src="@Model.StaticMapImageLink" class="map-links fake-link font-xxsmall view-googlemaps" alt="static map" /></a>
+</div>
