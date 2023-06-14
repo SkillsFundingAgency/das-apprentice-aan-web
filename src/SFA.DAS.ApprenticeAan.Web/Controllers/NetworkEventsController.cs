@@ -22,8 +22,8 @@ public class NetworkEventsController : Controller
     public NetworkEventsController(IOuterApiClient outerApiClient, IEventSearchQueryStringBuilder builder, ApplicationConfiguration applicationConfiguration)
     {
         _outerApiClient = outerApiClient;
-        _applicationConfiguration = applicationConfiguration;
         _builder = builder;
+        _applicationConfiguration = applicationConfiguration;
     }
 
     [HttpGet]
