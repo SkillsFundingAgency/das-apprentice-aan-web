@@ -3,5 +3,8 @@
 public enum FilterFields
 {
     FromDate,
-    ToDate
+    ToDate,
+    EventFormatOnline,
+    EventFormatHybrid,
+    EventFormatInPerson
 }

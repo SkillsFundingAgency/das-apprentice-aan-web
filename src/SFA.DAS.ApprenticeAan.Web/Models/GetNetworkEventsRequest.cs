@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ApprenticeAan.Domain.Constants;
 
 namespace SFA.DAS.ApprenticeAan.Web.Models;
 
@@ -9,4 +10,6 @@ public class GetNetworkEventsRequest
 
     [FromQuery]
     public DateTime? ToDate { get; set; }
+    [FromQuery]
+    public List<EventFormat>? EventFormat { get; set; }
 }

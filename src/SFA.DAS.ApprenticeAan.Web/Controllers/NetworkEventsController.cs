@@ -41,6 +41,7 @@ public class NetworkEventsController : Controller
 
         model.SearchFilters = _builder.BuildEventSearchFilters(model.EventFilters, Url);
 
+
         return View(model);
     }
 
