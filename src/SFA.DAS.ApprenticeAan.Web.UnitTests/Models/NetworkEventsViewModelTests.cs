@@ -1,4 +1,6 @@
-﻿using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+﻿using FluentAssertions;
+using SFA.DAS.ApprenticeAan.Domain.Models;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -22,5 +24,23 @@ public class NetworkEventsViewModelTests
             Assert.That(sut.TotalCount, Is.EqualTo(result.TotalCount));
             Assert.That(sut.CalendarEvents, Is.EquivalentTo(result.CalendarEvents));
         });
+    }
+
+    [TestCase(true, true)]
+    [TestCase(false, false)]
+    public void ShowFilterOptions_ReturningExpectedValueFromParameters(bool searchFilterAdded, bool expected)
+    {
+        var model = new NetworkEventsViewModel
+        {
+            SearchFilters = new List<SelectedFilter>()
+        };
+
+        if (searchFilterAdded)
+        {
+            model.SearchFilters.Add(new SelectedFilter());
+        }
+
+        var actual = model.ShowFilterOptions;
+        actual.Should().Be(expected);
     }
 }

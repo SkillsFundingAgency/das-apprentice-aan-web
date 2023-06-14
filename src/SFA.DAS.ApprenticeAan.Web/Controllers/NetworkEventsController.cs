@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
+using SFA.DAS.ApprenticeAan.Web.HtmlHelpers;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
+
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
@@ -15,8 +17,9 @@ public class NetworkEventsController : Controller
 {
     private readonly IOuterApiClient _outerApiClient;
     private readonly ApplicationConfiguration _applicationConfiguration;
+    private readonly IEventSearchQueryStringBuilder _builder;
 
-    public NetworkEventsController(IOuterApiClient outerApiClient, ApplicationConfiguration applicationConfiguration)
+    public NetworkEventsController(IOuterApiClient outerApiClient, IEventSearchQueryStringBuilder builder, ApplicationConfiguration applicationConfiguration)
     {
         _outerApiClient = outerApiClient;
         _applicationConfiguration = applicationConfiguration;
@@ -24,10 +27,19 @@ public class NetworkEventsController : Controller
 
     [HttpGet]
     [Route("", Name = RouteNames.NetworkEvents)]
-    public async Task<IActionResult> Index(CancellationToken cancellationToken)
+    public async Task<IActionResult> Index(GetNetworkEventsRequest request, CancellationToken cancellationToken)
     {
-        var calendarEventsResponse = await _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), cancellationToken);
+        var fromDateFormatted = DateTimeHelper.ToUrlFormat(request.FromDate)!;
+        var toDateFormatted = DateTimeHelper.ToUrlFormat(request.ToDate)!;
+        var calendarEventsResponse = await _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), fromDateFormatted,
+            toDateFormatted, cancellationToken);
         var model = (NetworkEventsViewModel)calendarEventsResponse;
+
+        model.EventFilters.FromDate = request.FromDate;
+        model.EventFilters.ToDate = request.ToDate;
+
+        model.SearchFilters = _builder.BuildEventSearchFilters(model.EventFilters, Url);
+
         return View(model);
     }
 

@@ -9,7 +9,8 @@ public static class EnumExtensions
         var type = value.GetType();
         var name = Enum.GetName(type, value);
         var field = type.GetField(name!);
-        if (Attribute.GetCustomAttribute(field!, typeof(DescriptionAttribute)) is DescriptionAttribute attr)
+        if (Attribute.GetCustomAttribute(field!,
+                typeof(DescriptionAttribute)) is DescriptionAttribute attr)
         {
             return attr.Description;
         }
