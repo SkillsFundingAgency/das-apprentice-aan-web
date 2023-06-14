@@ -1,5 +1,6 @@
 ﻿@using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 @using SFA.DAS.ApprenticeAan.Web.UrlHelpers;
+@using SFA.DAS.ApprenticeAan.Domain.Extensions;
 
 @model NetworkEventDetailsViewModel
 
@@ -9,7 +10,7 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <strong class="govuk-tag app-tag app-tag--@Model.EventFormatAppTagSuffix">@Model.EventFormatAppTagValue</strong> <strong class="govuk-tag app-tag">@Model.CalendarName</strong>
+        <strong class="govuk-tag app-tag app-tag--@Model.EventFormat.ToString()">@Model.EventFormat.GetDescription()</strong> <strong class="govuk-tag app-tag">@Model.CalendarName</strong>
         <h1 class="govuk-heading-xl govuk-!-margin-top-4">@Model.Title.Trim()</h1>
         <div class="govuk-grid-row">
             <partial name=@Model.PartialViewName />

@@ -11,8 +11,6 @@ public class NetworkEventDetailsViewModel
     public Guid CalendarEventId { get; init; }
     public string CalendarName { get; init; }
     public EventFormat EventFormat { get; init; }
-    public string EventFormatAppTagSuffix => EventFormat.ToString().ToLower();
-    public string EventFormatAppTagValue => GetEventFormatAppTagValue();
     public string StartDate { get; init; }
     public string EndDate { get; init; }
     public string StartTime { get; init; }
@@ -78,17 +76,6 @@ public class NetworkEventDetailsViewModel
             EventFormat.InPerson => "_InPersonEventPartial.cshtml",
             EventFormat.Hybrid => "_HybridEventPartial.cshtml",
             _ => throw new NotImplementedException($"Failed to find a matching partial view for event format \"{EventFormat}\""),
-        };
-    }
-
-    private string GetEventFormatAppTagValue()
-    {
-        return EventFormat switch
-        {
-            EventFormat.Online => EventFormat.Online.ToString(),
-            EventFormat.Hybrid => EventFormat.Hybrid.ToString(),
-            EventFormat.InPerson => "In person",
-            _ => throw new NotImplementedException($"Failed to find a matching app tag value for event format \"{EventFormat}\""),
         };
     }
 }

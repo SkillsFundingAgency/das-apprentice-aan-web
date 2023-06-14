@@ -22,6 +22,7 @@ public class NetworkEventDetailsViewModelTests
             Assert.That(sut.EventFormat, Is.EqualTo(source.EventFormat));
             Assert.That(sut.StartDate, Is.EqualTo(source.StartDate.ToString("dddd, d MMMM yyyy")));
             Assert.That(sut.EndDate, Is.EqualTo(source.EndDate.ToString("dddd, d MMMM yyyy")));
+            Assert.That(sut.Title, Is.EqualTo(source.Title));
             Assert.That(sut.Description, Is.EqualTo(source.Description));
             Assert.That(sut.Summary, Is.EqualTo(source.Summary));
             Assert.That(sut.LocationDetails?.Location, Is.Null);
@@ -101,6 +102,15 @@ public class NetworkEventDetailsViewModelTests
     }
 
     [Test]
+    public void GetPartialViewName_EventFormatIsHybrid_RetrievesInPersonPartialView()
+    {
+        var source = new CalendarEvent() { EventFormat = EventFormat.Hybrid };
+        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid(), "someapikey", "someprivatesignature");
+
+        Assert.That(sut.PartialViewName, Is.EqualTo("_HybridEventPartial.cshtml"));
+    }
+
+    [Test]
     public void GetPartialViewName_EventFormatIsUnknown_Throws()
     {
         var source = new CalendarEvent() { EventFormat = (EventFormat)3 };
@@ -138,33 +148,6 @@ public class NetworkEventDetailsViewModelTests
         Assert.That(sut.EmailLink, Is.EqualTo(expected));
     }
 
-    [TestCase(EventFormat.Online)]
-    [TestCase(EventFormat.InPerson)]
-    [TestCase(EventFormat.Hybrid)]
-    public void EventFormatAppTagSuffix_ReturnsLowerCaseStringInterpretation(EventFormat format)
-    {
-        var sut = new NetworkEventDetailsViewModel(new CalendarEvent() { EventFormat = format }, Guid.NewGuid(), "", "");
-        Assert.That(sut.EventFormatAppTagSuffix, Is.EqualTo(format.ToString().ToLower()));
-    }
-
-    public void EventFormatIsOnline_EventFormatAppTagValueReturnsExpectedString()
-    {
-        var sut = new NetworkEventDetailsViewModel(new CalendarEvent() { EventFormat = EventFormat.Online }, Guid.NewGuid(), "", "");
-        Assert.That(sut.EventFormatAppTagSuffix, Is.EqualTo(EventFormat.Online.ToString()));
-    }
-
-    public void EventFormatIsInPerson_EventFormatAppTagValueReturnsExpectedString()
-    {
-        var sut = new NetworkEventDetailsViewModel(new CalendarEvent() { EventFormat = EventFormat.Online }, Guid.NewGuid(), "", "");
-        Assert.That(sut.EventFormatAppTagSuffix, Is.EqualTo("In person"));
-    }
-
-    public void EventFormatIsHybrid_EventFormatAppTagValueReturnsExpectedString()
-    {
-        var sut = new NetworkEventDetailsViewModel(new CalendarEvent() { EventFormat = EventFormat.Online }, Guid.NewGuid(), "", "");
-        Assert.That(sut.EventFormatAppTagSuffix, Is.EqualTo(EventFormat.Hybrid.ToString()));
-    }
-
     private static void DoAssertsForInPersonAndHybridEvents(CalendarEvent source, NetworkEventDetailsViewModel sut)
     {
         Assert.Multiple(() =>
@@ -174,6 +157,7 @@ public class NetworkEventDetailsViewModelTests
             Assert.That(sut.EventFormat, Is.EqualTo(source.EventFormat));
             Assert.That(sut.StartDate, Is.EqualTo(source.StartDate.ToString("dddd, d MMMM yyyy")));
             Assert.That(sut.EndDate, Is.EqualTo(source.EndDate.ToString("dddd, d MMMM yyyy")));
+            Assert.That(sut.Title, Is.EqualTo(source.Title));
             Assert.That(sut.Description, Is.EqualTo(source.Description));
             Assert.That(sut.Summary, Is.EqualTo(source.Summary));
             Assert.That(sut.LocationDetails?.Location, Is.EqualTo(source.Location));
