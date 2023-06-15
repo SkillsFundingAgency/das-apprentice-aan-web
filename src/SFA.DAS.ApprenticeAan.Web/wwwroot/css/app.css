@@ -125,9 +125,9 @@
     margin-top: 3px;
 }
 
-.app-calendar__event--hybrid { border-color: #85994B;}
-.app-calendar__event--inperson { border-color: #6F72AF;}
-.app-calendar__event--online { border-color: #912B88;}
+.app-calendar__event--Hybrid { border-color: #85994B;}
+.app-calendar__event--InPerson { border-color: #6F72AF;}
+.app-calendar__event--Online { border-color: #912B88;}
 
 a.app-calendar__event {
     text-decoration: none;

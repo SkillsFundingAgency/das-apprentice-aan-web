@@ -33,10 +33,4 @@ public class EventsHubController : Controller
         EventsHubViewModel model = new(firstDayOfTheMonth, Url, response.Attendances);
         return View(model);
     }
-
-    [Route("event-details", Name = RouteNames.NetworkEventDetails)]
-    public IActionResult GetDetails(Guid id)
-    {
-        return Ok(new { id });
-    }
 }
