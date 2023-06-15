@@ -71,7 +71,26 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
             queryParameters.Add("toDate=" + DateTimeHelper.ToUrlFormat(eventFilters.ToDate));
         }
 
-        return queryParameters;
+        if (eventFilters.EventFormats != null)
+        {
+            foreach (var eventFormat in eventFilters.EventFormats)
+            {
+                if (removeFilter != FilterFields.EventFormatOnline && eventFormat == EventFormat.Online)
+                {
+                    queryParameters.Add("eventFormat=" + eventFormat);
+                }
+                if (removeFilter != FilterFields.EventFormatInPerson && eventFormat == EventFormat.InPerson)
+                {
+                    queryParameters.Add("eventFormat=" + eventFormat);
+                }
+                if (removeFilter != FilterFields.EventFormatHybrid && eventFormat == EventFormat.Hybrid)
+                {
+                    queryParameters.Add("eventFormat=" + eventFormat);
+                }
+            }
+        }
+
+        return queryParameters.Any() ? $"{url.RouteUrl(RouteNames.NetworkEvents)}?{string.Join('&', queryParameters)}" : url.RouteUrl(RouteNames.NetworkEvents);
     }
 
     private static void AddFilterDateTime(string fieldName, FilterFields filterFields, DateTime? eventFilter, ICollection<SelectedFilter> filters, EventFilters eventFilters, IUrlHelper url)
