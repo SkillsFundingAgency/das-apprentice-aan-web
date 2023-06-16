@@ -1,10 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Mvc.ModelBinding;
 @using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
+@using SFA.DAS.ApprenticeAan.Web.UrlHelpers;
 
 @model NetworkEventDetailsViewModel
 
 <div class="govuk-grid-column-one-half">
     <h2 class="govuk-heading-m">When and where</h2>
     <p>@Model.StartDate<span class="das-!-display--block">@Model.StartTime to @Model.EndTime</span> </p>
-    <p>Online: joining details provided on sign up</p>
+    <p>
+        In person <br />@Model.LocationDetails?.Location!.Trim(), <span class="das-no-wrap">@Model.LocationDetails?.Postcode!.ToUpper()</span>
+    </p>
 </div>

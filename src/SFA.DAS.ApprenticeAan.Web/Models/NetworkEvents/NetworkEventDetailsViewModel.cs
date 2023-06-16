@@ -6,6 +6,8 @@ namespace SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
 public class NetworkEventDetailsViewModel
 {
+    public string GoogleMapsApiKey { get; init; }
+    public string GoogleMapsPrivateKey { get; init; }
     public Guid CalendarEventId { get; init; }
     public string CalendarName { get; init; }
     public EventFormat EventFormat { get; init; }
@@ -13,6 +15,7 @@ public class NetworkEventDetailsViewModel
     public string EndDate { get; init; }
     public string StartTime { get; init; }
     public string EndTime { get; init; }
+    public string Title { get; init; }
     public string Description { get; init; }
     public string? Summary { get; init; }
     public LocationDetails? LocationDetails { get; init; }
@@ -26,9 +29,13 @@ public class NetworkEventDetailsViewModel
     public IReadOnlyList<EventGuest> EventGuests { get; }
     public bool IsSignedUp { get; init; }
     public string EmailLink => MailtoLinkValue.FromAddressAndSubject(ContactEmail, Description);
+    public string StaticMapImageLink => MapLinkGenerator.GetStaticImagePreviewLink(LocationDetails!.Value, GoogleMapsApiKey, GoogleMapsPrivateKey);
+    public string FullMapLink => MapLinkGenerator.GetLinkToFullMap(LocationDetails!.Value.Latitude!.Value, LocationDetails!.Value.Longitude!.Value);
 
-    public NetworkEventDetailsViewModel(CalendarEvent source, Guid memberId)
+    public NetworkEventDetailsViewModel(CalendarEvent source, Guid memberId, string googleMapsApiKey, string googleMapsPrivateKey)
     {
+        GoogleMapsApiKey = googleMapsApiKey;
+        GoogleMapsPrivateKey = googleMapsPrivateKey;
         CalendarEventId = source.CalendarEventId;
         CalendarName = source.CalendarName;
         EventFormat = source.EventFormat;
@@ -36,6 +43,7 @@ public class NetworkEventDetailsViewModel
         EndDate = source.EndDate.ToString("dddd, d MMMM yyyy");
         StartTime = source.StartDate.ToString("h:mm tt");
         EndTime = source.EndDate.ToString("h:mm tt");
+        Title = source.Title;
         Description = source.Description;
         Summary = source.Summary;
         EventLink = source.EventLink;
@@ -65,6 +73,8 @@ public class NetworkEventDetailsViewModel
         return EventFormat switch
         {
             EventFormat.Online => "_OnlineEventPartial.cshtml",
+            EventFormat.InPerson => "_InPersonEventPartial.cshtml",
+            EventFormat.Hybrid => "_HybridEventPartial.cshtml",
             _ => throw new NotImplementedException($"Failed to find a matching partial view for event format \"{EventFormat}\""),
         };
     }

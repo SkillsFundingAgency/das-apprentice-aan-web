@@ -243,9 +243,9 @@ a.app-calendar__event:focus {
     }
 }
 
-.app-tag--hybrid { background-color: #85994b;}
-.app-tag--inperson { background-color: #6f72af;}
-.app-tag--online { background-color: #912b88;}
+.app-tag--Hybrid { background-color: #85994b;}
+.app-tag--InPerson { background-color: #6f72af;}
+.app-tag--Online { background-color: #912b88;}
 
 .app-date {
     clear: both;

@@ -13,6 +13,7 @@ using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
+
 public class NetworkEventsControllerTests
 {
     [Test, MoqAutoData]

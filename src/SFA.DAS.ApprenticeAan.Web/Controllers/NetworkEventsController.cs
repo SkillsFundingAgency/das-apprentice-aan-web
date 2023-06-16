@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
@@ -13,10 +14,12 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 public class NetworkEventsController : Controller
 {
     private readonly IOuterApiClient _outerApiClient;
+    private readonly ApplicationConfiguration _applicationConfiguration;
 
-    public NetworkEventsController(IOuterApiClient outerApiClient)
+    public NetworkEventsController(IOuterApiClient outerApiClient, ApplicationConfiguration applicationConfiguration)
     {
         _outerApiClient = outerApiClient;
+        _applicationConfiguration = applicationConfiguration;
     }
 
     [HttpGet]
@@ -37,7 +40,11 @@ public class NetworkEventsController : Controller
 
         if (eventDetailsResponse.ResponseMessage.IsSuccessStatusCode)
         {
-            return View(new NetworkEventDetailsViewModel(eventDetailsResponse.GetContent(), memberId));
+            return View(new NetworkEventDetailsViewModel(
+                eventDetailsResponse.GetContent(),
+                memberId,
+                _applicationConfiguration.ApplicationSettings.GoogleMapsApiKey,
+                _applicationConfiguration.ApplicationSettings.GoogleMapsPrivateKey));
         }
 
         throw new InvalidOperationException($"An event with ID {id} was not found."); //TODO: Navigate to 404
