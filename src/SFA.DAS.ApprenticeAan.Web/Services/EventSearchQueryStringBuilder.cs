@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.Models;
 using SFA.DAS.ApprenticeAan.Web.HtmlHelpers;
+using SFA.DAS.ApprenticeAan.Web.Infrastructure;
+using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
 namespace SFA.DAS.ApprenticeAan.Web.Services;
 
@@ -14,9 +17,29 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
 
         var filters = new List<SelectedFilter>();
 
-        // var filterFromDate = AddFilterDateTime("From date", FilterFields.FromDate, eventFilterChoices.FromDate, 1, eventFilterChoices, url);
-        // if (filterFromDate != null)
-        //     filters.Add(filterFromDate);
+        var filterFromDate = AddFilterDateTime("From date", FilterFields.FromDate, eventFilterChoices.FromDate, queryParameters, 1, eventFilterChoices, url);
+        if (filterFromDate != null) filters.Add(filterFromDate);
+
+        var filterToDate = AddFilterDateTime("To date", FilterFields.ToDate, eventFilterChoices.ToDate, queryParameters, 2, eventFilterChoices, url);
+        if (filterToDate != null) filters.Add(filterToDate);
+
+
+
+
+
+        if (eventFilterChoices.EventFormats != null && eventFilterChoices.EventFormats.Any())
+        {
+            var eventFormatsCheckList = new List<ChecklistLookup>();
+            eventFormatsCheckList.Add(new ChecklistLookup("In person", EventFormat.InPerson.ToString()));
+            eventFormatsCheckList.Add(new ChecklistLookup("Online", EventFormat.Online.ToString()));
+            eventFormatsCheckList.Add(new ChecklistLookup("Hybrid", EventFormat.Hybrid.ToString()));
+
+            var filterEventFormat = AddFilterChecklist("Event format", FilterFields.EventFormat, eventFormatsCheckList,
+                queryParameters, 2, eventFilterChoices, url);
+            if (filterEventFormat != null) filters.Add(filterEventFormat);
+        }
+
+
         //
         // var filterToDate = AddFilterDateTime("To date", FilterFields.ToDate, eventFilterChoices.ToDate, 2, eventFilterChoices, url);
         // if (filterToDate != null)
@@ -32,25 +55,67 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
         return filters;
     }
 
-    // private static SelectedFilter? AddFilterDateTime(string fieldName, FilterFields filterFields, DateTime? eventFilter, int filterFieldOrder, EventFilterChoices eventFilterChoices, IUrlHelper url)
-    // {
-    //     if (eventFilter == null) return null;
-    //
-    //     return
-    //          new SelectedFilter
-    //          {
-    //              FieldName = fieldName,
-    //              FieldOrder = filterFieldOrder,
-    //              Filters = new List<FilterItem>
-    //              {
-    //                 new()
-    //                 {
-    //                     ClearFilterLink = BuildQueryString(filterFields, eventFilterChoices,url), Order = 1,
-    //                     Value = DateTimeHelper.ToScreenFormat(eventFilter)
-    //                 }
-    //              }
-    //          };
-    // }
+    private static SelectedFilter? AddFilterDateTime(string fieldName, FilterFields filterToRemove, DateTime? eventFilter, List<string> queryParameters, int filterFieldOrder, EventFilterChoices eventFilterChoices, IUrlHelper url)
+    {
+        if (eventFilter == null) return null;
+
+        return
+             new SelectedFilter
+             {
+                 FieldName = fieldName,
+                 FieldOrder = filterFieldOrder,
+                 Filters = new List<FilterItem>
+                 {
+                    new()
+                    {
+                        ClearFilterLink = BuildQueryString(queryParameters, filterToRemove, eventFilterChoices,null,url), Order = 1,
+                        Value = DateTimeHelper.ToScreenFormat(eventFilter)
+                    }
+                 }
+             };
+    }
+
+
+    private static SelectedFilter? AddFilterChecklist(string fieldName, FilterFields filterToRemove, List<ChecklistLookup>? filterValues, List<string> queryParameters, int filterFieldOrder, EventFilterChoices eventFilterChoices, IUrlHelper url)
+    {
+        if (filterValues == null || !filterValues.Any()) return null;
+
+        var order = 0;
+        var selectedFilter =
+            new SelectedFilter
+            {
+                FieldName = fieldName,
+                FieldOrder = filterFieldOrder,
+                Filters = new List<FilterItem> { }
+            };
+
+        var filtersToAdd = new List<FilterItem>();
+
+        if (filterToRemove == FilterFields.EventFormat)
+        {
+            foreach (var filterValue in filterValues)
+            {
+                order++;
+                filtersToAdd.Add(new FilterItem
+                {
+                    ClearFilterLink = BuildQueryString(queryParameters, filterToRemove, eventFilterChoices, filterValue, url),
+                    Order = order,
+                    Value = filterValue.Name
+                });
+            }
+        }
+        selectedFilter.Filters = filtersToAdd;
+
+
+        // new()
+        // {
+        //     ClearFilterLink = BuildQueryString(queryParameters, filterToRemove, eventFilterChoices, url),
+        //     Order = 1,
+        //     Value = DateTimeHelper.ToScreenFormat(eventFilter)
+        // }
+
+        return selectedFilter;
+    }
 
     // private static SelectedFilter? AddFilterEventFormats(List<EventFormat>? eventFormats, int filterFieldOrder, EventFilterChoices eventFilterChoices, IUrlHelper url)
     // {
@@ -134,13 +199,58 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
     //     return selectedFilter;
     // }
 
-    // private static string? BuildQueryString(FilterFields removeFilter, EventFilterChoices eventFilterChoices, IUrlHelper url, List<ChecklistLookup> eventTypesLookp)
-    // {
-    //     var queryParameters = BuildQueryParametersForDates(removeFilter, eventFilterChoices);
-    //     queryParameters.AddRange(BuildQueryParametersForEventFormats(removeFilter, eventFilterChoices));
-    //
-    //     return queryParameters.Any() ? $"{url.RouteUrl(RouteNames.NetworkEvents)}?{string.Join('&', queryParameters)}" : url.RouteUrl(RouteNames.NetworkEvents);
-    // }
+    private static string? BuildQueryString(List<string> queryParameters, FilterFields filterToRemove, EventFilterChoices? eventFilterChoices, ChecklistLookup? filterValue, IUrlHelper url) //, List<ChecklistLookup> eventTypeLookp)
+    {
+        //var queryParameters = BuildQueryParametersForDates(queryParameters, eventFilterChoices);
+        //queryParameters.AddRange(BuildQueryParametersForEventFormats(removeFilter, eventFilterChoices));
+
+        if (eventFilterChoices == null)
+            return string.Join('&', queryParameters);
+
+        var queryParametersToBuild = new List<string>();
+
+        foreach (var p in queryParameters)
+        {
+            switch (filterToRemove)
+            {
+                case FilterFields.FromDate
+                    when p == "fromDate=" + DateTimeHelper.ToUrlFormat(eventFilterChoices.FromDate):
+                case FilterFields.ToDate when p == "toDate=" + DateTimeHelper.ToUrlFormat(eventFilterChoices.ToDate):
+                    continue;
+                case FilterFields.EventFormat:
+                    if (eventFilterChoices?.EventFormats == null || !eventFilterChoices.EventFormats.Any() ||
+                        filterValue == null)
+                    {
+                        continue;
+                    }
+
+                    var addParameter = true;
+                    foreach (var choice in eventFilterChoices.EventFormats)
+                    {
+                        if (choice.ToString() == filterValue.Name)
+                        {
+                            if (p == "eventFormat=" + filterValue.Value)
+                            {
+                                addParameter = false;
+                            }
+                        }
+
+
+                    }
+
+                    if (addParameter)
+                    {
+                        queryParametersToBuild.Add(p);
+                    }
+
+                    break;
+                default:
+                    queryParametersToBuild.Add(p);
+                    break;
+            }
+        }
+        return queryParametersToBuild.Any() ? $"{url.RouteUrl(RouteNames.NetworkEvents)}?{string.Join('&', queryParametersToBuild)}" : url.RouteUrl(RouteNames.NetworkEvents);
+    }
 
     // private static IEnumerable<string> BuildQueryParametersForEventFormats(FilterFields removeFilter, EventFilterChoices eventFilterChoices)
     // {
@@ -169,11 +279,11 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
     //     return queryParameters;
     // }
 
-    // private static List<string> BuildQueryParametersForDates(FilterFields removeFilter, EventFilterChoices eventFilterChoices)
+    // private static List<string> BuildQueryParametersForDates(List<string> queryParameters, EventFilterChoices eventFilterChoices)
     // {
-    //     var queryParameters = new List<string>();
+    //   //  var queryParameters = new List<string>();
     //
-    //     if (removeFilter != FilterFields.FromDate && eventFilterChoices.FromDate != null)
+    //     if (eventFilterChoices.FromDate != null)
     //     {
     //         queryParameters.Add("fromDate=" + DateTimeHelper.ToUrlFormat(eventFilterChoices.FromDate));
     //     }

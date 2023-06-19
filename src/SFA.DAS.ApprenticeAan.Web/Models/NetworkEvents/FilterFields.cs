@@ -4,8 +4,9 @@ public enum FilterFields
 {
     FromDate,
     ToDate,
-    EventFormatOnline,
-    EventFormatHybrid,
-    EventFormatInPerson,
+    // EventFormatOnline,
+    // EventFormatHybrid,
+    // EventFormatInPerson,
+    EventFormat,
     EventType
 }
