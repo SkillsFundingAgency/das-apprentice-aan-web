@@ -23,31 +23,20 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
         var filterToDate = AddFilterDateTime("To date", FilterFields.ToDate, eventFilterChoices.ToDate, queryParameters, 2, eventFilterChoices, url);
         if (filterToDate != null) filters.Add(filterToDate);
 
-
-
-
-
         if (eventFilterChoices.EventFormats != null && eventFilterChoices.EventFormats.Any())
         {
-            var eventFormatsCheckList = new List<ChecklistLookup>();
-            eventFormatsCheckList.Add(new ChecklistLookup("In person", EventFormat.InPerson.ToString()));
-            eventFormatsCheckList.Add(new ChecklistLookup("Online", EventFormat.Online.ToString()));
-            eventFormatsCheckList.Add(new ChecklistLookup("Hybrid", EventFormat.Hybrid.ToString()));
+            var eventFormatsCheckList = new List<ChecklistLookup>
+            {
+                new ChecklistLookup("In person", EventFormat.InPerson.ToString()),
+                new ChecklistLookup("Online", EventFormat.Online.ToString()),
+                new ChecklistLookup("Hybrid", EventFormat.Hybrid.ToString())
+            };
 
             var filterEventFormat = AddFilterChecklist("Event format", FilterFields.EventFormat, eventFormatsCheckList,
-                queryParameters, 2, eventFilterChoices, url);
+                queryParameters, 3, eventFilterChoices, url);
             if (filterEventFormat != null) filters.Add(filterEventFormat);
         }
 
-
-        //
-        // var filterToDate = AddFilterDateTime("To date", FilterFields.ToDate, eventFilterChoices.ToDate, 2, eventFilterChoices, url);
-        // if (filterToDate != null)
-        //     filters.Add(filterToDate);
-        //
-        // var filterEventFormats = AddFilterEventFormats(eventFilterChoices.EventFormats, 3, eventFilterChoices, url);
-        // if (filterEventFormats != null)
-        //     filters.Add(filterEventFormats);
         //
         // var filterEventTypes = AddFilterEventTypes(eventFilterChoices.CalendarIds, 4, eventFilterChoices, eventTypesLookup, url);
         // if (filterEventTypes != null)
