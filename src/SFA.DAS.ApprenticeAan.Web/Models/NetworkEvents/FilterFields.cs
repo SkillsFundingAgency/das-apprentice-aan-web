@@ -6,5 +6,6 @@ public enum FilterFields
     ToDate,
     EventFormatOnline,
     EventFormatHybrid,
-    EventFormatInPerson
+    EventFormatInPerson,
+    EventType
 }

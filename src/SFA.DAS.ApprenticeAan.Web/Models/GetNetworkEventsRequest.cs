@@ -12,4 +12,6 @@ public class GetNetworkEventsRequest
     public DateTime? ToDate { get; set; }
     [FromQuery]
     public List<EventFormat>? EventFormat { get; set; }
+    [FromQuery]
+    public List<int>? CalendarId { get; set; }
 }

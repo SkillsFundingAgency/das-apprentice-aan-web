@@ -27,13 +27,13 @@
                                     <div>Online</div>
                                     break;
                                 case EventFormat.InPerson:
-                                    <div>@calendarEvent.Location</div>
+                                    <div>@calendarEvent.Location, @calendarEvent.Postcode</div>
                                     break;
                                 case EventFormat.Hybrid:
                                     <div>
                                         Online<br/> 
                                         <b>and</b><br/> 
-                                        @calendarEvent.Location
+                                        @calendarEvent.Location, @calendarEvent.Postcode
                                     </div>
                                     break;
                             }

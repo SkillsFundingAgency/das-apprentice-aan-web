@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
-using SFA.DAS.ApprenticeAan.Web.Configuration;
+using SFA.DAS.ApprenticeAan.Domain.Models;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.HtmlHelpers;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
-
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
@@ -33,16 +32,19 @@ public class NetworkEventsController : Controller
         var fromDateFormatted = DateTimeHelper.ToUrlFormat(request.FromDate)!;
         var toDateFormatted = DateTimeHelper.ToUrlFormat(request.ToDate)!;
         var calendarEventsResponse = await _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), fromDateFormatted,
-            toDateFormatted, request.EventFormat, cancellationToken);
+            toDateFormatted, request.EventFormat, request.CalendarId, cancellationToken);
         var model = (NetworkEventsViewModel)calendarEventsResponse;
 
+        model.EventFilterChoices.FromDate = request.FromDate;
+        model.EventFilterChoices.ToDate = request.ToDate;
+        model.EventFilterChoices.EventFormats = request.EventFormat;
+        model.EventFilterChoices.CalendarIds = request.CalendarId;
 
-        model.EventFilters.FromDate = request.FromDate;
-        model.EventFilters.ToDate = request.ToDate;
-        model.EventFilters.EventFormats = request.EventFormat;
+        model.Calendars = await _outerApiClient.GetCalendars();
 
-        model.SearchFilters = _builder.BuildEventSearchFilters(model.EventFilters, Url);
+        var eventTypesLookup = model.Calendars.OrderBy(x => x.Ordering).Select(cal => new ChecklistLookup(cal.CalendarName, cal.Id.ToString())).ToList();
 
+        model.SearchFilters = _builder.BuildEventSearchFilters(model.EventFilterChoices, eventTypesLookup, Url);
 
         return View(model);
     }

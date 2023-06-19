@@ -10,9 +10,9 @@ public class NetworkEventsViewModel
     public int TotalPages { get; set; }
     public int TotalCount { get; set; }
 
-    public EventFilters EventFilters { get; set; } = new EventFilters();
+    public EventFilterChoices EventFilterChoices { get; set; } = new EventFilterChoices();
 
-
+    public List<Calendar> Calendars { get; set; } = new List<Calendar>();
     public bool ShowFilterOptions => SearchFilters.Any();
     public List<CalendarEventSummary> CalendarEvents { get; set; } = new List<CalendarEventSummary>();
 

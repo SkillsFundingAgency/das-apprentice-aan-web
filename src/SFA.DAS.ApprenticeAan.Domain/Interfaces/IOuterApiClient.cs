@@ -10,6 +10,9 @@ public interface IOuterApiClient
     [Get("/regions")]
     Task<GetRegionsResult> GetRegions();
 
+    [Get("/calendars")]
+    Task<List<Calendar>> GetCalendars();
+
     [Get("/profiles/{userType}")]
     Task<GetProfilesResult> GetProfilesByUserType([Path("userType")] string userType);
 
@@ -29,7 +32,7 @@ public interface IOuterApiClient
     Task<Response<Apprentice?>> GetApprentice([Path] Guid apprenticeId);
 
     [Get("calendarEvents")]
-    Task<GetCalendarEventsQueryResult> GetCalendarEvents([Header(Constants.RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId, [Query] string fromDate, [Query] string toDate, [Query] List<EventFormat>? eventFormat, CancellationToken cancellationToken);
+    Task<GetCalendarEventsQueryResult> GetCalendarEvents([Header(Constants.RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId, [Query] string fromDate, [Query] string toDate, [Query] List<EventFormat>? eventFormat, [Query] List<int>? calendarId, CancellationToken cancellationToken);
 
     [Get("/myapprenticeship/{apprenticeId}")]
     [AllowAnyStatusCode]

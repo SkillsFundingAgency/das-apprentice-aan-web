@@ -26,7 +26,7 @@ public class EventSearchQueryStringBuilderServiceTests
 
         var service = new EventSearchQueryStringBuilder();
 
-        var eventFilters = new EventFilters
+        var eventFilters = new EventFilterChoices
         {
             FromDate = fromDate,
             ToDate = toDate
@@ -85,7 +85,7 @@ public class EventSearchQueryStringBuilderServiceTests
 
         var service = new EventSearchQueryStringBuilder();
 
-        var eventFilters = new EventFilters
+        var eventFilters = new EventFilterChoices
         {
             EventFormats = new List<EventFormat>()
         };

@@ -2,9 +2,10 @@
 
 namespace SFA.DAS.ApprenticeAan.Domain.Models;
 
-public class EventFilters
+public class EventFilterChoices
 {
     public DateTime? FromDate { get; set; }
     public DateTime? ToDate { get; set; }
     public List<EventFormat>? EventFormats { get; set; }
+    public List<int>? CalendarIds { get; set; }
 }
