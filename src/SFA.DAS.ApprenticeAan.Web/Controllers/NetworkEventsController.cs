@@ -23,6 +23,7 @@ public class NetworkEventsController : Controller
     {
         _outerApiClient = outerApiClient;
         _applicationConfiguration = applicationConfiguration;
+        _builder = builder;
     }
 
     [HttpGet]
