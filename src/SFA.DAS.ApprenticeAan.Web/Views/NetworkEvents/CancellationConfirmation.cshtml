@@ -1,0 +1,33 @@
+﻿@using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
+
+@{
+    ViewData["Title"] = $"Confirmation Page — Cancel attendance";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-panel govuk-panel--confirmation">
+            <h1 class="govuk-panel__title">
+                You have successfully cancelled your attendance at this event
+            </h1>
+        </div>
+
+        <h2 class="govuk-heading-m">What happens next</h2>
+
+        <p class="govuk-body">
+            You have successfully cancelled your attendance at this event and it has been removed from your network profile calendar.
+            <a href="@Url.RouteUrl(RouteNames.NetworkEvents)"> Find more information on upcoming network events that may suit your preferences.</a>
+        </p>
+
+        <ul class="govuk-list app-icon-list">
+            <li>
+                <h2 class="govuk-heading-m"><a href="#" class="govuk-link govuk-link--no-visited-state">Events hub</a></h2>
+                <p>Discover suitable events, manage your upcoming events and give feedback about events you have attended.</p>
+                <svg width="50" height="58" viewBox="0 0 50 58" fill="none" xmlns="http://www.w3.org/2000/svg" class="app-icon-list__icon">
+                    <path d="M14.2857 0C16.2612 0 17.8571 1.59598 17.8571 3.57143V7.14286H32.1429V3.57143C32.1429 1.59598 33.7388 0 35.7143 0C37.6897 0 39.2857 1.59598 39.2857 3.57143V7.14286H44.6429C47.6004 7.14286 50 9.54241 50 12.5V17.8571H0V12.5C0 9.54241 2.39955 7.14286 5.35714 7.14286H10.7143V3.57143C10.7143 1.59598 12.3103 0 14.2857 0ZM0 21.4286H50V51.7857C50 54.7433 47.6004 57.1429 44.6429 57.1429H5.35714C2.39955 57.1429 0 54.7433 0 51.7857V21.4286ZM7.14286 30.3571V33.9286C7.14286 34.9107 7.94643 35.7143 8.92857 35.7143H12.5C13.4821 35.7143 14.2857 34.9107 14.2857 33.9286V30.3571C14.2857 29.375 13.4821 28.5714 12.5 28.5714H8.92857C7.94643 28.5714 7.14286 29.375 7.14286 30.3571ZM21.4286 30.3571V33.9286C21.4286 34.9107 22.2321 35.7143 23.2143 35.7143H26.7857C27.7679 35.7143 28.5714 34.9107 28.5714 33.9286V30.3571C28.5714 29.375 27.7679 28.5714 26.7857 28.5714H23.2143C22.2321 28.5714 21.4286 29.375 21.4286 30.3571ZM37.5 28.5714C36.5179 28.5714 35.7143 29.375 35.7143 30.3571V33.9286C35.7143 34.9107 36.5179 35.7143 37.5 35.7143H41.0714C42.0536 35.7143 42.8571 34.9107 42.8571 33.9286V30.3571C42.8571 29.375 42.0536 28.5714 41.0714 28.5714H37.5ZM7.14286 44.6429V48.2143C7.14286 49.1964 7.94643 50 8.92857 50H12.5C13.4821 50 14.2857 49.1964 14.2857 48.2143V44.6429C14.2857 43.6607 13.4821 42.8571 12.5 42.8571H8.92857C7.94643 42.8571 7.14286 43.6607 7.14286 44.6429ZM23.2143 42.8571C22.2321 42.8571 21.4286 43.6607 21.4286 44.6429V48.2143C21.4286 49.1964 22.2321 50 23.2143 50H26.7857C27.7679 50 28.5714 49.1964 28.5714 48.2143V44.6429C28.5714 43.6607 27.7679 42.8571 26.7857 42.8571H23.2143ZM35.7143 44.6429V48.2143C35.7143 49.1964 36.5179 50 37.5 50H41.0714C42.0536 50 42.8571 49.1964 42.8571 48.2143V44.6429C42.8571 43.6607 42.0536 42.8571 41.0714 42.8571H37.5C36.5179 42.8571 35.7143 43.6607 35.7143 44.6429Z" fill="currentColor" />
+                </svg>
+            </li>
+        </ul>
+    </div>
+</div>
+

@@ -31,6 +31,7 @@ public class NetworkEventDetailsViewModel
     public string EmailLink => MailtoLinkValue.FromAddressAndSubject(ContactEmail, Description);
     public string StaticMapImageLink => MapLinkGenerator.GetStaticImagePreviewLink(LocationDetails!.Value, GoogleMapsApiKey, GoogleMapsPrivateKey);
     public string FullMapLink => MapLinkGenerator.GetLinkToFullMap(LocationDetails!.Value.Latitude!.Value, LocationDetails!.Value.Longitude!.Value);
+    public string EventsHubUrl { get; set; } = "#";
 
     public NetworkEventDetailsViewModel(CalendarEvent source, Guid memberId, string googleMapsApiKey, string googleMapsPrivateKey)
     {

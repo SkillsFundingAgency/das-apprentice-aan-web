@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.HtmlHelpers;
@@ -15,6 +16,8 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 [Route("network-events")]
 public class NetworkEventsController : Controller
 {
+    private const string SignUpConfirmationViewPath = "~/Views/NetworkEvents/SignUpConfirmation.cshtml";
+    private const string CancellationConfirmationViewPath = "~/Views/NetworkEvents/CancellationConfirmation.cshtml";
     private readonly IOuterApiClient _outerApiClient;
     private readonly ApplicationConfiguration _applicationConfiguration;
     private readonly IEventSearchQueryStringBuilder _builder;
@@ -61,5 +64,27 @@ public class NetworkEventsController : Controller
         }
 
         throw new InvalidOperationException($"An event with ID {id} was not found."); //TODO: Navigate to 404
+    }
+
+    [HttpGet]
+    [Route("signup-confirmation", Name = RouteNames.AttendanceConfirmations.SignUpConfirmation)]
+    public IActionResult SignUpConfirmation()
+    {
+        return View(SignUpConfirmationViewPath);
+    }
+
+    [HttpGet]
+    [Route("cancellation-confirmation", Name = RouteNames.AttendanceConfirmations.CancellationConfirmation)]
+    public IActionResult CancellationConfirmation()
+    {
+        return View(CancellationConfirmationViewPath);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> SetAttendanceStatus(Guid calendarEventId, bool newStatus)
+    {
+        var memberId = User.GetAanMemberId();
+        await _outerApiClient.PutAttendance(calendarEventId, memberId, new AttendanceStatus(newStatus), new CancellationToken());
+        return newStatus == true ? RedirectToAction("SignUpConfirmation") : RedirectToAction("CancellationConfirmation");
     }
 }

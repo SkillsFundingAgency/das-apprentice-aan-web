@@ -7,8 +7,11 @@
 <div class="govuk-grid-column-one-half">
     <h2 class="govuk-heading-m">When and where</h2>
     <p>@Model.StartDate<span class="das-!-display--block">@Model.StartTime to @Model.EndTime</span> </p>
-    <p>Online: joining details provided on sign up</p>
+    <partial name="_OnlineJoiningDetails" />
     <p>
-        In person <br />@Model.LocationDetails?.Location!.Trim(), <span class="das-no-wrap">@Model.LocationDetails?.Postcode!.ToUpper()</span>
+        In person <br />@Model.LocationDetails?.Location, <span class="das-no-wrap">@Model.LocationDetails?.Postcode</span>
     </p>
+</div>
+<div hidden class="column-one-third map-container hide-nojs sfa-small-bottom-margin toggle-content--mob">
+    <a href="@Model.FullMapLink" target="_blank"><img class="static-map" src="@Model.StaticMapImageLink" class="map-links fake-link font-xxsmall view-googlemaps" alt="static map" /></a>
 </div>
