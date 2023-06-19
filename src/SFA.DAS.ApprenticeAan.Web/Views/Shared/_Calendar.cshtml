@@ -1,0 +1,71 @@
+﻿@model CalendarViewModel
+
+<div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <ul class="app-calendar-legend">
+                <li class="app-calendar-legend__key"><span class="app-calendar-legend__colour app-calendar-legend__colour--inperson"></span>In person event</li>
+                <li class="app-calendar-legend__key"><span class="app-calendar-legend__colour app-calendar-legend__colour--online"></span>Online event</li>
+                <li class="app-calendar-legend__key"><span class="app-calendar-legend__colour app-calendar-legend__colour--hybrid"></span>Hybrid event</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-half">
+            <h2 class="govuk-heading-m">Your events</h2>
+            <h3 class="govuk-heading-s govuk-!-margin-0">@Model.FirstDayOfCurrentMonth.ToString("MMMM yyyy")</h3>
+        </div>
+        <div class="govuk-grid-column-one-half">
+            <nav class="app-calendar-nav" role="navigation">
+                <div class="app-calendar-nav__prev">
+                    <a class="app-calendar-nav__link" href="@Model.PreviousMonthLink" rel="prev">
+                        <svg class="app-calendar-nav__icon app-calendar-nav__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                            <path d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z"></path>
+                        </svg>
+                        <span class="app-calendar-nav__link-title">Previous month</span>
+                    </a>
+                </div>
+                <div class="app-calendar-nav__next">
+                    <a class="app-calendar-nav__link" href="@Model.NextMonthLink" rel="next">
+                        <svg class="app-calendar-nav__icon app-calendar-nav__icon--next" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                            <path d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z"></path>
+                        </svg>
+                        <span class="app-calendar-nav__link-title">Next month</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <div class="app-calendar">
+        <div class="app-calendar__header">Mon</div>
+        <div class="app-calendar__header">Tue</div>
+        <div class="app-calendar__header">Wed</div>
+        <div class="app-calendar__header">Thu</div>
+        <div class="app-calendar__header">Fri</div>
+        <div class="app-calendar__header">Sat</div>
+        <div class="app-calendar__header">Sun</div>
+
+        @foreach (var calendarDay in Model.CalendarItems)
+        {
+            if (calendarDay.Day == null)
+            {
+                <div class="app-calendar__day app-calendar__day--empty"></div>
+                continue;
+            }
+
+            <div class="app-calendar__day">
+                <span class="app-calendar__date @(calendarDay.IsToday ? "app-calendar__date--today" : "")">
+                    <span class="app-calendar__date-day">@calendarDay.Day?.Day</span>
+                </span>
+            
+
+                @foreach (var appointment in calendarDay.Appointments)
+                {
+                    <a class="@appointment.Format" href="@appointment.Url">@appointment.Title</a>
+                }
+            </div>
+        }
+    </div>
+</div>

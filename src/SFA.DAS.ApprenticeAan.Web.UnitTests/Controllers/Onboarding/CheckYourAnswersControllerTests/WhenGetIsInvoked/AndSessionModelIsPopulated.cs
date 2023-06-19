@@ -108,7 +108,7 @@ public class AndSessionModelIsPopulated : CheckYourAnswersControllerTestsBase
     [TestCase("true", "Yes")]
     [TestCase("false", "No")]
     [TestCase(null, null)]
-    public async Task ThenSetsPreviousEngagementInViewModel(string? isPreviouslyEngaged, string? expectedValue)
+    public void ThenSetsPreviousEngagementInViewModel(string? isPreviouslyEngaged, string? expectedValue)
     {
         _sessionModel.SetProfileValue(ProfileDataId.HasPreviousEngagement, isPreviouslyEngaged!);
         var actualResult = _sut.Get();

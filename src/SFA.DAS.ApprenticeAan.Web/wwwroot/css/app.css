@@ -84,11 +84,10 @@
 .app-calendar__day {
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
-    min-height: 130px;
+    min-height: 90px;
 }
 
-.app-calendar__day--last-month,
-.app-calendar__day--next-month {
+.app-calendar__day--empty {
     background: #eee;
 }
 
@@ -126,9 +125,9 @@
     margin-top: 3px;
 }
 
-.app-calendar__event--hybrid { border-color: #85994B;}
-.app-calendar__event--inperson { border-color: #6F72AF;}
-.app-calendar__event--online { border-color: #912B88;}
+.app-calendar__event--Hybrid { border-color: #85994B;}
+.app-calendar__event--InPerson { border-color: #6F72AF;}
+.app-calendar__event--Online { border-color: #912B88;}
 
 a.app-calendar__event {
     text-decoration: none;
@@ -154,6 +153,7 @@ a.app-calendar__event:focus {
     font-family: "GDS Transport",arial,sans-serif;
     -webkit-font-smoothing: antialiased;
     color: #0b0c0c;
+    float: right;
 }
 
 .app-calendar-legend__key {
@@ -224,6 +224,7 @@ a.app-calendar__event:focus {
 .app-icon-list__icon {
     position: absolute;
     width: 60px;
+    height: 60px;
     top: 50%;
     right: 0;
     margin-top: -30px;

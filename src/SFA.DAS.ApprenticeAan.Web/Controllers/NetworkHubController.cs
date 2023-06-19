@@ -12,6 +12,10 @@ public class NetworkHubController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        return View(new NetworkHubViewModel());
+        NetworkHubViewModel model = new()
+        {
+            EventsHubUrl = Url.RouteUrl(RouteNames.EventsHub)!
+        };
+        return View(model);
     }
 }
