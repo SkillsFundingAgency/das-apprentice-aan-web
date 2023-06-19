@@ -1,0 +1,13 @@
+﻿@using SFA.DAS.ApprenticeAan.Web.HtmlHelpers
+<div class="govuk-form-group">
+    <label class="govuk-label" for="fromDate">
+        From date
+    </label>
+    <input class="govuk-input" id="fromDate" name="fromDate" type="date" value="@DateTimeHelper.ToUrlFormat(Model.EventFilters.FromDate)">
+</div>  
+<div class="govuk-form-group">
+    <label class="govuk-label" for="toDate">
+        To date
+    </label>
+    <input class="govuk-input" id="toDate" name="toDate" type="date" value=@DateTimeHelper.ToUrlFormat(Model.EventFilters.ToDate)>
+</div>

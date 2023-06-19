@@ -1,14 +1,12 @@
-﻿@using SFA.DAS.ApprenticeAan.Domain.Constants
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using SFA.DAS.ApprenticeAan.Web.Extensions;
 
 @model NetworkEventsViewModel
 @{
     ViewData["Title"] = "Search Network Events";
-   
+
     var hideSearchElements = "govuk-visually-hidden";
-    hideSearchElements = "";
-    var hideFilterElements = "govuk-visually-hidden";
-    hideFilterElements = "";
+    //hideSearchElements = "";
 
     var totalCountDescription = $"{Model.TotalCount} results";
     if (Model.TotalCount == 1)
@@ -39,212 +37,23 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
         <div class="das-show-hide" data-module="das-show-hide">
-            <div class="das-filter das-!-show--from-tablet das-show-hide__section @hideFilterElements" id="events-filter" tabindex="0">
+            <div class="das-filter das-!-show--from-tablet das-show-hide__section" id="events-filter" tabindex="0">
                 <div class="das-filter__header">
                     <h2 class="das-filter__heading">Filter</h2>
                 </div>
+                <partial name="_SelectedEventFilters" />
                 <div class="das-filter__body das-!-show--from-tablet" id="events-filter-options">
-                    <form method="GET" action="URL">
-
-                        <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
+                    <form asp-route="@RouteNames.NetworkEvents" method="GET">
+                    <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
                         <div class="govuk-form-group">
                             <fieldset class="govuk-fieldset">
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                                     Event date
                                 </legend>
-                                <div class="govuk-form-group">
-                                    <label class="govuk-label" for="from-date">
-                                        From date
-                                    </label>
-                                    <input class="govuk-input" id="from-date" name="from-date" type="date">
-                                </div>
-                                <div class="govuk-form-group">
-                                    <label class="govuk-label" for="to-date">
-                                        To date
-                                    </label>
-                                    <input class="govuk-input" id="to-date" name="to-date" type="date">
-                                </div>
+                                <partial name="_FilterEventDates"/>
                             </fieldset>
                         </div>
-                        <div class="govuk-form-group">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                    Event format
-                                </legend>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="format-person" name="format" type="checkbox" value="person">
-                                        <label class="govuk-label govuk-checkboxes__label" for="format-person">
-                                            In person
-                                        </label>
-                                    </div>
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="format-online" name="format" type="checkbox" value="online">
-                                        <label class="govuk-label govuk-checkboxes__label" for="format-online">
-                                            Online
-                                        </label>
-                                    </div>
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="format-hybrid" name="format" type="checkbox" value="hybrid">
-                                        <label class="govuk-label govuk-checkboxes__label" for="format-hybrid">
-                                            Hybrid
-                                        </label>
-                                    </div>
-
-                                </div>
-                            </fieldset>
-                        </div>
-
-                        <div class="govuk-form-group">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                    Event type
-                                </legend>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="type-employer" name="type" type="checkbox" value="employer">
-                                        <label class="govuk-label govuk-checkboxes__label" for="type-employer">
-                                            Employer engagement events
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="type-national" name="type" type="checkbox" value="national">
-                                        <label class="govuk-label govuk-checkboxes__label" for="type-national">
-                                            National/Regional meetings
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="type-school" name="type" type="checkbox" value="school">
-                                        <label class="govuk-label govuk-checkboxes__label" for="type-school">
-                                            School and College events
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="type-careers" name="type" type="checkbox" value="careers">
-                                        <label class="govuk-label govuk-checkboxes__label" for="type-careers">
-                                            Careers events
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="type-social" name="type" type="checkbox" value="social">
-                                        <label class="govuk-label govuk-checkboxes__label" for="type-social">
-                                            Social/Networking activity
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="type-training" name="type" type="checkbox" value="training">
-                                        <label class="govuk-label govuk-checkboxes__label" for="type-training">
-                                            Training events
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="type-other" name="type" type="checkbox" value="other">
-                                        <label class="govuk-label govuk-checkboxes__label" for="type-other">
-                                            Other
-                                        </label>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-                        <div class="govuk-form-group">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                    Region
-                                </legend>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="region-national" name="region" type="checkbox" value="national">
-                                        <label class="govuk-label govuk-checkboxes__label" for="region-national">
-                                            National
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="region-national" name="region" type="checkbox" value="national">
-                                        <label class="govuk-label govuk-checkboxes__label" for="region-national">
-                                            East Midlands
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="region-national" name="region" type="checkbox" value="national">
-                                        <label class="govuk-label govuk-checkboxes__label" for="region-national">
-                                            East of England
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="region-national" name="region" type="checkbox" value="national">
-                                        <label class="govuk-label govuk-checkboxes__label" for="region-national">
-                                            London
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="region-national" name="region" type="checkbox" value="national">
-                                        <label class="govuk-label govuk-checkboxes__label" for="region-national">
-                                            North East
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="region-national" name="region" type="checkbox" value="national">
-                                        <label class="govuk-label govuk-checkboxes__label" for="region-national">
-                                            North West
-                                        </label>
-                                    </div>
-                                </div>                               
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="region-national" name="region" type="checkbox" value="national">
-                                        <label class="govuk-label govuk-checkboxes__label" for="region-national">
-                                            South East
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="region-national" name="region" type="checkbox" value="national">
-                                        <label class="govuk-label govuk-checkboxes__label" for="region-national">
-                                            South West
-                                        </label>
-                                    </div>
-                                </div>                               
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="region-national" name="region" type="checkbox" value="national">
-                                        <label class="govuk-label govuk-checkboxes__label" for="region-national">
-                                            West Midlands
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="region-national" name="region" type="checkbox" value="national">
-                                        <label class="govuk-label govuk-checkboxes__label" for="region-national">
-                                            Yorkshire and the Humber
-                                        </label>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
+                 
                         <button type="submit" class="govuk-button" id="filters-submit-second">Apply filters</button>
                     </form>
                 </div>
@@ -260,54 +69,9 @@
         </p>
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 ">
         <div class="das-search-results">
-
-            <ol class="das-search-results__list">
-                
-                @foreach(var calendarEvent in Model.CalendarEvents)
-                {
-                <li class="das-search-results__list-item">
-                    <div class="govuk-grid-row">
-                        <div class="govuk-grid-column-three-quarters das-!-float-right">
-                            <h2 class="govuk-heading-m das-search-results__heading">
-                                    <a class="das-search-results__link" href="@Url.RouteUrl(RouteNames.NetworkEventDetails, new { id = calendarEvent.CalendarEventId })">
-                                    @calendarEvent.Summary
-                                </a>
-                            </h2>
-                            <p class="govuk-body das-search-results__body">@calendarEvent.Description</p>
-                            <dl class="das-definition-list das-definition-list--inline">
-                                <dt class="das-definition-list__title">Date</dt>
-                                <dd class="das-definition-list__definition">@calendarEvent.Start.Date.ToString("d MMMM yyyy")</dd>
-                                <dt class="das-definition-list__title">Time</dt>
-                                <dd class="das-definition-list__definition">@calendarEvent.Start.ToString("h:mmtt").ToLower() - @calendarEvent.End.ToString("h:mmtt").ToLower()</dd>
-                                <dt class="das-definition-list__title">Where</dt>
-                                <dd class="das-definition-list__definition">@calendarEvent.Location 
-                                    @if (calendarEvent.EventFormat != "Online" && calendarEvent.Latitude != null && calendarEvent.Longitude != null)
-                                    {
-                                        <a href="https://www.google.com/maps/dir/@calendarEvent.Latitude,@calendarEvent.Longitude" rel="noopener" target="_blank" class="govuk-link">(view map in a new window)</a>
-                                    }
-                                </dd>
-                                @if (calendarEvent.EventFormat != "Online" && calendarEvent.Distance != null)
-                                {
-                                    <dt class="das-definition-list__title">Distance</dt>
-                                    <dd class="das-definition-list__definition">@calendarEvent.Distance?.ToString("0.0") miles</dd>
-
-                                }
-                                <dt class="das-definition-list__title">Event type</dt>
-                                <dd class="das-definition-list__definition">@calendarEvent.CalendarName</dd>
-                            </dl>
-                        </div>
-                        <div class="govuk-grid-column-one-quarter">
-                            <div class="govuk-body app-date">
-                                <span class="app-date__day">@calendarEvent.Start.Date.Day.ToString("0")</span>
-                                <span class="app-date__month">@calendarEvent.Start.Date.ToString("MMM")</span>
-                            </div>
-                            <partial name="_EventFormat" model=calendarEvent.EventFormat />
-                            <partial name="_IsAttending" model=calendarEvent.IsAttending />
-                        </div>
-                    </div>
-                </li>
-                }
-            </ol>
+            
+            <partial name="_CalendarEvents"  />
+            
         </div>
     </div>
 </div>
