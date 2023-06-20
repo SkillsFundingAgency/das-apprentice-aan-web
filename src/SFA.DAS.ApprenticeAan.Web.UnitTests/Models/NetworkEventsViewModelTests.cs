@@ -37,7 +37,7 @@ public class NetworkEventsViewModelTests
     [TestCase(false, false)]
     public void ShowFilterOptions_ReturningExpectedValueFromParameters(bool searchFilterAdded, bool expected)
     {
-        var model = new NetworkEventsViewModel(null)
+        var model = new NetworkEventsViewModel(new Mock<IUrlHelper>().Object)
         {
             SearchFilters = new List<SelectedFilter>()
         };

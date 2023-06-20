@@ -7,7 +7,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Models;
 
 public class NetworkEventsViewModel
 {
-    private IUrlHelper _urlHelper;
+    private readonly IUrlHelper _urlHelper;
     public int Page { get; set; }
     public int PageSize { get; set; }
     public int TotalPages { get; set; }
