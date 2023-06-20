@@ -1,4 +1,5 @@
-﻿using SFA.DAS.ApprenticeAan.Domain.Models;
+﻿using SFA.DAS.ApprenticeAan.Domain.Constants;
+using SFA.DAS.ApprenticeAan.Domain.Models;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 
 namespace SFA.DAS.ApprenticeAan.Web.Models;
@@ -13,7 +14,15 @@ public class NetworkEventsViewModel
     public EventFilterChoices EventFilterChoices { get; set; } = new EventFilterChoices();
 
     public List<Calendar> Calendars { get; set; } = new List<Calendar>();
-    public List<ChecklistLookup> EventFormats { get; set; } = new List<ChecklistLookup>();
+
+    public List<ChecklistLookup> EventFormats =>
+        new()
+        {
+            new ChecklistLookup("In person", EventFormat.InPerson.ToString()),
+            new ChecklistLookup("Online", EventFormat.Online.ToString()),
+            new ChecklistLookup("Hybrid", EventFormat.Hybrid.ToString())
+        };
+
     public bool ShowFilterOptions => SearchFilters.Any();
     public List<CalendarEventSummary> CalendarEvents { get; set; } = new List<CalendarEventSummary>();
 
