@@ -37,6 +37,11 @@ public class NetworkEventsController : Controller
             toDateFormatted, request.EventFormat, request.CalendarId, cancellationToken);
         var model = (NetworkEventsViewModel)calendarEventsResponse;
 
+        foreach (var calendarEvent in model.CalendarEvents)
+        {
+            calendarEvent.CalendarEventLink = Url.RouteUrl(RouteNames.NetworkEventDetails, new { id = calendarEvent.CalendarEventId })!;
+        }
+
         model.EventFilterChoices.FromDate = request.FromDate;
         model.EventFilterChoices.ToDate = request.ToDate;
         model.EventFilterChoices.EventFormats = request.EventFormat;

@@ -4,7 +4,6 @@
     var eventFormats = Model.EventFilterChoices.EventFormats as List<EventFormat>;
     var eventFormatLookup = Model.EventFormats as List<ChecklistLookup>;
 }
-}
 <div class="govuk-form-group">
     <fieldset class="govuk-fieldset">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
@@ -16,17 +15,17 @@
                 var checkedValue = string.Empty;
                 @if (eventFormats != null)
                 {
-                    @foreach (var ef in eventFormats.Where(ef => ef.ToString()==eventF.Value))
+                    @foreach (var ef in eventFormats.Where(ef => ef.ToString() == eventF.Value))
                     {
                         checkedValue = " checked ";
                     }
                 }
 
                 <div class="govuk-checkboxes__item">
-                <input class="govuk-checkboxes__input" id="format-person" name="eventFormat" type="checkbox" value="@eventF.Value" @checkedValue> 
-                <label class="govuk-label govuk-checkboxes__label" for="format-person">
-                    @eventF.Name
-                </label>
+                    <input class="govuk-checkboxes__input" id="format-person" name="eventFormat" type="checkbox" value="@eventF.Value" @checkedValue>
+                    <label class="govuk-label govuk-checkboxes__label" for="format-person">
+                        @eventF.Name
+                    </label>
                 </div>
             }
         </div>
