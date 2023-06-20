@@ -37,7 +37,7 @@ public class NetworkEventsController : Controller
         var toDateFormatted = DateTimeHelper.ToUrlFormat(request.ToDate)!;
         var calendarEventsResponse = await _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), fromDateFormatted,
             toDateFormatted, cancellationToken);
-        var model = (NetworkEventsViewModel)calendarEventsResponse;
+        var model = new NetworkEventsViewModel(calendarEventsResponse, Url);
 
         model.EventFilters.FromDate = request.FromDate;
         model.EventFilters.ToDate = request.ToDate;
