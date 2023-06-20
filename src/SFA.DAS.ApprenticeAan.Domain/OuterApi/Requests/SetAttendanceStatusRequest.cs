@@ -1,3 +1,3 @@
 ﻿namespace SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 
-public record AttendanceStatus(bool IsAttending);
+public record SetAttendanceStatusRequest(bool IsAttending);

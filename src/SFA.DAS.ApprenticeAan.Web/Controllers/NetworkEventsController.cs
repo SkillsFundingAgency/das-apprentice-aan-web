@@ -9,15 +9,15 @@ using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
-
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
 [Route("network-events")]
 public class NetworkEventsController : Controller
 {
-    private const string SignUpConfirmationViewPath = "~/Views/NetworkEvents/SignUpConfirmation.cshtml";
-    private const string CancellationConfirmationViewPath = "~/Views/NetworkEvents/CancellationConfirmation.cshtml";
+    public const string SignUpConfirmationViewPath = "~/Views/NetworkEvents/SignUpConfirmation.cshtml";
+    public const string CancellationConfirmationViewPath = "~/Views/NetworkEvents/CancellationConfirmation.cshtml";
+
     private readonly IOuterApiClient _outerApiClient;
     private readonly ApplicationConfiguration _applicationConfiguration;
     private readonly IEventSearchQueryStringBuilder _builder;
@@ -84,7 +84,9 @@ public class NetworkEventsController : Controller
     public async Task<IActionResult> SetAttendanceStatus(Guid calendarEventId, bool newStatus)
     {
         var memberId = User.GetAanMemberId();
-        await _outerApiClient.PutAttendance(calendarEventId, memberId, new AttendanceStatus(newStatus), new CancellationToken());
-        return newStatus == true ? RedirectToAction("SignUpConfirmation") : RedirectToAction("CancellationConfirmation");
+        await _outerApiClient.PutAttendance(calendarEventId, memberId, new SetAttendanceStatusRequest(newStatus), new CancellationToken());
+        return newStatus 
+            ? RedirectToAction("SignUpConfirmation") 
+            : RedirectToAction("CancellationConfirmation");
     }
 }

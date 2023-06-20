@@ -53,7 +53,7 @@ public interface IOuterApiClient
     [Put("/calendarevents/{calendarEventId}/attendance")]
     Task PutAttendance([Path] Guid calendarEventId,
                        [Header(Constants.RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId,
-                       [Body] AttendanceStatus newStatus,
+                       [Body] SetAttendanceStatusRequest newStatus,
                        CancellationToken cancellationToken);
 
     [Get("/attendances")]
