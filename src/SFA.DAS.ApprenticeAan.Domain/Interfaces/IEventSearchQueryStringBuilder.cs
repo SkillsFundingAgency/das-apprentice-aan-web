@@ -6,5 +6,5 @@ namespace SFA.DAS.ApprenticeAan.Domain.Interfaces;
 
 public interface IEventSearchQueryStringBuilder
 {
-    List<SelectedFilter> BuildEventSearchFilters(EventFilterChoices eventFilterChoices, List<ChecklistLookup> eventTypesLookup, IUrlHelper url);
+    List<SelectedFilter> BuildEventSearchFilters(EventFilterChoices eventFilterChoices, List<ChecklistLookup> eventFormatsLookup, List<ChecklistLookup> eventTypesLookup, IUrlHelper url);
 }

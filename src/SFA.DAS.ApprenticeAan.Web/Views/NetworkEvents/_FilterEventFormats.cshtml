@@ -1,24 +1,9 @@
 ﻿@using SFA.DAS.ApprenticeAan.Domain.Constants
+@using SFA.DAS.ApprenticeAan.Domain.Models
 @{
     var eventFormats = Model.EventFilterChoices.EventFormats as List<EventFormat>;
-
-    var eventFormatOnlineChecked = "";
-    var eventFormatInPersonChecked = "";
-    var eventFormatHybridChecked = "";
-    if (Model.EventFilterChoices.EventFormats != null && eventFormats!.Any(x => x == EventFormat.InPerson))
-    {
-        eventFormatInPersonChecked = "checked='checked'";
-    }
-
-    if (Model.EventFilterChoices.EventFormats != null && eventFormats!.Any(x => x == EventFormat.Online))
-    {
-        eventFormatOnlineChecked = "checked='checked'";
-    }
-
-    if (Model.EventFilterChoices.EventFormats != null && eventFormats!.Any(x => x == EventFormat.Hybrid))
-    {
-        eventFormatHybridChecked = "checked='checked'";
-    }
+    var eventFormatLookup = Model.EventFormats as List<ChecklistLookup>;
+}
 }
 <div class="govuk-form-group">
     <fieldset class="govuk-fieldset">
@@ -26,24 +11,24 @@
             Event format
         </legend>
         <div class="govuk-checkboxes govuk-checkboxes--small">
-            <div class="govuk-checkboxes__item">
-                <input class="govuk-checkboxes__input" id="format-person" name="eventFormat" type="checkbox" value="InPerson" @eventFormatInPersonChecked>
+            @foreach (var eventF in eventFormatLookup!)
+            {
+                var checkedValue = string.Empty;
+                @if (eventFormats != null)
+                {
+                    @foreach (var ef in eventFormats.Where(ef => ef.ToString()==eventF.Value))
+                    {
+                        checkedValue = " checked ";
+                    }
+                }
+
+                <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input" id="format-person" name="eventFormat" type="checkbox" value="@eventF.Value" @checkedValue> 
                 <label class="govuk-label govuk-checkboxes__label" for="format-person">
-                    In person
+                    @eventF.Name
                 </label>
-            </div>
-            <div class="govuk-checkboxes__item">
-                <input class="govuk-checkboxes__input" id="format-online" name="eventFormat" type="checkbox" value="Online" @eventFormatOnlineChecked>
-                <label class="govuk-label govuk-checkboxes__label" for="format-online">
-                    Online
-                </label>
-            </div>
-            <div class="govuk-checkboxes__item">
-                <input class="govuk-checkboxes__input" id="format-hybrid" name="eventFormat" type="checkbox" value="Hybrid" @eventFormatHybridChecked>
-                <label class="govuk-label govuk-checkboxes__label" for="format-hybrid">
-                    Hybrid
-                </label>
-            </div>
+                </div>
+            }
         </div>
     </fieldset>
 </div>

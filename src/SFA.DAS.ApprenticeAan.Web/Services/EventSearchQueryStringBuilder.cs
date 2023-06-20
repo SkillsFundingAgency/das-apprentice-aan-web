@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.Models;
 using SFA.DAS.ApprenticeAan.Web.HtmlHelpers;
@@ -11,7 +10,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Services;
 public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
 {
     public List<SelectedFilter> BuildEventSearchFilters(EventFilterChoices eventFilterChoices,
-        List<ChecklistLookup> eventTypesLookup, IUrlHelper url)
+        List<ChecklistLookup> eventFormatsLookup, List<ChecklistLookup> eventTypesLookup, IUrlHelper url)
     {
         var queryParameters = BuildQueryParameters(eventFilterChoices);
 
@@ -25,22 +24,36 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
 
         if (eventFilterChoices.EventFormats != null && eventFilterChoices.EventFormats.Any())
         {
-            var eventFormatsCheckList = new List<ChecklistLookup>
+            var eventFormatsChecklistFiltered = new List<ChecklistLookup>();
+            foreach (var a in eventFormatsLookup)
             {
-                new ChecklistLookup("In person", EventFormat.InPerson.ToString()),
-                new ChecklistLookup("Online", EventFormat.Online.ToString()),
-                new ChecklistLookup("Hybrid", EventFormat.Hybrid.ToString())
-            };
+                eventFormatsChecklistFiltered.AddRange(from b in eventFilterChoices.EventFormats where a.Value == b.ToString() select a);
+            }
 
-            var filterEventFormat = AddFilterChecklist("Event format", FilterFields.EventFormat, eventFormatsCheckList,
+            var filterEventFormat = AddFilterChecklist("Event format", FilterFields.EventFormat, eventFormatsChecklistFiltered,
                 queryParameters, 3, eventFilterChoices, url);
             if (filterEventFormat != null) filters.Add(filterEventFormat);
         }
 
-        //
-        // var filterEventTypes = AddFilterEventTypes(eventFilterChoices.CalendarIds, 4, eventFilterChoices, eventTypesLookup, url);
-        // if (filterEventTypes != null)
-        //     filters.Add(filterEventTypes);
+        var eventTypesChecklistFiltered = new List<ChecklistLookup>();
+        if (eventFilterChoices.CalendarIds != null)
+        {
+            foreach (var a in eventTypesLookup)
+            {
+                eventTypesChecklistFiltered.AddRange(from b in eventFilterChoices.CalendarIds
+                                                     where a.Value == b.ToString()
+                                                     select a);
+            }
+        }
+
+
+        if (eventFilterChoices.CalendarIds != null && eventFilterChoices.CalendarIds.Any())
+        {
+            var filterEventType = AddFilterChecklist("Event type", FilterFields.EventType, eventTypesChecklistFiltered,
+                queryParameters, 4, eventFilterChoices, url);
+            if (filterEventType != null) filters.Add(filterEventType);
+        }
+
         return filters;
     }
 
@@ -80,7 +93,7 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
 
         var filtersToAdd = new List<FilterItem>();
 
-        if (filterToRemove == FilterFields.EventFormat)
+        if (filterToRemove is FilterFields.EventFormat or FilterFields.EventType)
         {
             foreach (var filterValue in filterValues)
             {
@@ -93,106 +106,16 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
                 });
             }
         }
+
         selectedFilter.Filters = filtersToAdd;
-
-
-        // new()
-        // {
-        //     ClearFilterLink = BuildQueryString(queryParameters, filterToRemove, eventFilterChoices, url),
-        //     Order = 1,
-        //     Value = DateTimeHelper.ToScreenFormat(eventFilter)
-        // }
 
         return selectedFilter;
     }
 
-    // private static SelectedFilter? AddFilterEventFormats(List<EventFormat>? eventFormats, int filterFieldOrder, EventFilterChoices eventFilterChoices, IUrlHelper url)
-    // {
-    //     if (eventFormats == null || !eventFormats.Any()) return null;
-    //
-    //     var selectedFilter = new SelectedFilter
-    //     {
-    //         FieldName = "Event format",
-    //         FieldOrder = filterFieldOrder
-    //     };
-    //
-    //     var order = 0;
-    //
-    //     var filterItems = new List<FilterItem>();
-    //
-    //     foreach (var eventFormat in eventFormats)
-    //     {
-    //         order++;
-    //
-    //         var filterField = eventFormat switch
-    //         {
-    //             EventFormat.Online => FilterFields.EventFormatOnline,
-    //             EventFormat.Hybrid => FilterFields.EventFormatHybrid,
-    //             EventFormat.InPerson => FilterFields.EventFormatInPerson,
-    //             _ => new FilterFields()
-    //         };
-    //
-    //         var filterItem = new FilterItem
-    //         {
-    //             ClearFilterLink = BuildQueryString(filterField, eventFilterChoices, url),
-    //             Order = order,
-    //             Value = eventFormat.GetDescription()
-    //         };
-    //
-    //         filterItems.Add(filterItem);
-    //     }
-    //
-    //     selectedFilter.Filters = filterItems;
-    //     return selectedFilter;
-    // }
 
-    // private static SelectedFilter? AddFilterEventTypes(List<int>? selectedValues, int filterFieldOrder, EventFilterChoices eventFilterChoices, List<ChecklistLookup> lookup, IUrlHelper url)
-    // {
-    //     // selectedValues = selected items for calendarId
-    //     // filters - growing list of selected filters (all of them so far)
-    //     // eventFilterChoices = all the event filters 
-    //     if (selectedValues == null || !selectedValues.Any()) return null;
-    //     var selectedFilter = new SelectedFilter
-    //     {
-    //         FieldName = "Event type",
-    //         FieldOrder = filterFieldOrder
-    //     };
-    //
-    //     var order = 0;
-    //
-    //     var filterItems = new List<FilterItem>();
-    //
-    //     foreach (var selectedValue in selectedValues)
-    //     {
-    //         order++;
-    //
-    //         // var filterField = eventFormat switch
-    //         // {
-    //         //     EventFormat.Online => FilterFields.EventFormatOnline,
-    //         //     EventFormat.Hybrid => FilterFields.EventFormatHybrid,
-    //         //     EventFormat.InPerson => FilterFields.EventFormatInPerson,
-    //         //     _ => new FilterFields()
-    //         // };
-    //
-    //         var filterItem = new FilterItem
-    //         {
-    //             ClearFilterLink = BuildQueryString(FilterFields.EventType, eventFilterChoices, url, selectedValue),
-    //             Order = order,
-    //             Value = selectedValue.ToString()
-    //         };
-    //
-    //         filterItems.Add(filterItem);
-    //     }
-    //
-    //     selectedFilter.Filters = filterItems;
-    //     return selectedFilter;
-    // }
 
-    private static string? BuildQueryString(List<string> queryParameters, FilterFields filterToRemove, EventFilterChoices? eventFilterChoices, ChecklistLookup? filterValue, IUrlHelper url) //, List<ChecklistLookup> eventTypeLookp)
+    private static string? BuildQueryString(List<string> queryParameters, FilterFields filterToRemove, EventFilterChoices? eventFilterChoices, ChecklistLookup? filterValue, IUrlHelper url)
     {
-        //var queryParameters = BuildQueryParametersForDates(queryParameters, eventFilterChoices);
-        //queryParameters.AddRange(BuildQueryParametersForEventFormats(removeFilter, eventFilterChoices));
-
         if (eventFilterChoices == null)
             return string.Join('&', queryParameters);
 
@@ -202,32 +125,41 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
         {
             switch (filterToRemove)
             {
-                case FilterFields.FromDate
-                    when p == "fromDate=" + DateTimeHelper.ToUrlFormat(eventFilterChoices.FromDate):
-                case FilterFields.ToDate when p == "toDate=" + DateTimeHelper.ToUrlFormat(eventFilterChoices.ToDate):
+                case FilterFields.FromDate when p == "fromDate=" + DateTimeHelper.ToUrlFormat(eventFilterChoices!.FromDate):
+                case FilterFields.ToDate when p == "toDate=" + DateTimeHelper.ToUrlFormat(eventFilterChoices!.ToDate):
                     continue;
                 case FilterFields.EventFormat:
-                    if (eventFilterChoices?.EventFormats == null || !eventFilterChoices.EventFormats.Any() ||
-                        filterValue == null)
+                    if (eventFilterChoices?.EventFormats == null || !eventFilterChoices.EventFormats.Any() || filterValue == null)
                     {
                         continue;
                     }
 
-                    var addParameter = true;
-                    foreach (var choice in eventFilterChoices.EventFormats)
+                    var addEventFormatParameter = true;
+                    foreach (var choice in eventFilterChoices.EventFormats.Where(choice => choice.ToString() == filterValue.Value).Where(choice => p == "eventFormat=" + filterValue.Value))
                     {
-                        if (choice.ToString() == filterValue.Name)
-                        {
-                            if (p == "eventFormat=" + filterValue.Value)
-                            {
-                                addParameter = false;
-                            }
-                        }
-
-
+                        addEventFormatParameter = false;
                     }
 
-                    if (addParameter)
+                    if (addEventFormatParameter)
+                    {
+                        queryParametersToBuild.Add(p);
+                    }
+
+                    break;
+                case FilterFields.EventType:
+                    if (eventFilterChoices?.CalendarIds == null || !eventFilterChoices.CalendarIds.Any() || filterValue == null)
+                    {
+                        continue;
+                    }
+
+                    var addEventTypeParameter = true;
+
+                    foreach (var choice in eventFilterChoices.CalendarIds.Where(choice => choice.ToString() == filterValue.Value).Where(choice => p == "calendarId=" + filterValue.Value))
+                    {
+                        addEventTypeParameter = false;
+                    }
+
+                    if (addEventTypeParameter)
                     {
                         queryParametersToBuild.Add(p);
                     }
@@ -240,51 +172,6 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
         }
         return queryParametersToBuild.Any() ? $"{url.RouteUrl(RouteNames.NetworkEvents)}?{string.Join('&', queryParametersToBuild)}" : url.RouteUrl(RouteNames.NetworkEvents);
     }
-
-    // private static IEnumerable<string> BuildQueryParametersForEventFormats(FilterFields removeFilter, EventFilterChoices eventFilterChoices)
-    // {
-    //     if (eventFilterChoices.EventFormats == null || !eventFilterChoices.EventFormats.Any()) return new List<string>();
-    //
-    //     var queryParameters = new List<string>();
-    //
-    //     foreach (var eventFormat in eventFilterChoices.EventFormats)
-    //     {
-    //         if (removeFilter != FilterFields.EventFormatOnline && eventFormat == EventFormat.Online)
-    //         {
-    //             queryParameters.Add("eventFormat=" + eventFormat);
-    //         }
-    //
-    //         if (removeFilter != FilterFields.EventFormatInPerson && eventFormat == EventFormat.InPerson)
-    //         {
-    //             queryParameters.Add("eventFormat=" + eventFormat);
-    //         }
-    //
-    //         if (removeFilter != FilterFields.EventFormatHybrid && eventFormat == EventFormat.Hybrid)
-    //         {
-    //             queryParameters.Add("eventFormat=" + eventFormat);
-    //         }
-    //     }
-    //
-    //     return queryParameters;
-    // }
-
-    // private static List<string> BuildQueryParametersForDates(List<string> queryParameters, EventFilterChoices eventFilterChoices)
-    // {
-    //   //  var queryParameters = new List<string>();
-    //
-    //     if (eventFilterChoices.FromDate != null)
-    //     {
-    //         queryParameters.Add("fromDate=" + DateTimeHelper.ToUrlFormat(eventFilterChoices.FromDate));
-    //     }
-    //
-    //     if (removeFilter != FilterFields.ToDate && eventFilterChoices.ToDate != null)
-    //     {
-    //         queryParameters.Add("toDate=" + DateTimeHelper.ToUrlFormat(eventFilterChoices.ToDate));
-    //     }
-    //
-    //     return queryParameters;
-    // }
-
 
     private static List<string> BuildQueryParameters(EventFilterChoices eventFilterChoices)
     {

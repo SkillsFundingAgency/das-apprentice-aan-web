@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.Models;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
@@ -42,10 +43,17 @@ public class NetworkEventsController : Controller
         model.EventFilterChoices.CalendarIds = request.CalendarId;
 
         model.Calendars = await _outerApiClient.GetCalendars();
+        model.EventFormats = new List<ChecklistLookup>
+        {
+            new("In person", EventFormat.InPerson.ToString()),
+            new("Online", EventFormat.Online.ToString()),
+            new("Hybrid", EventFormat.Hybrid.ToString())
+        };
 
         var eventTypesLookup = model.Calendars.OrderBy(x => x.Ordering).Select(cal => new ChecklistLookup(cal.CalendarName, cal.Id.ToString())).ToList();
 
-        model.SearchFilters = _builder.BuildEventSearchFilters(model.EventFilterChoices, eventTypesLookup, Url);
+
+        model.SearchFilters = _builder.BuildEventSearchFilters(model.EventFilterChoices, model.EventFormats, eventTypesLookup, Url);
 
         return View(model);
     }

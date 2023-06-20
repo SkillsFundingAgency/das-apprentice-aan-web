@@ -13,6 +13,7 @@ public class NetworkEventsViewModel
     public EventFilterChoices EventFilterChoices { get; set; } = new EventFilterChoices();
 
     public List<Calendar> Calendars { get; set; } = new List<Calendar>();
+    public List<ChecklistLookup> EventFormats { get; set; } = new List<ChecklistLookup>();
     public bool ShowFilterOptions => SearchFilters.Any();
     public List<CalendarEventSummary> CalendarEvents { get; set; } = new List<CalendarEventSummary>();
 

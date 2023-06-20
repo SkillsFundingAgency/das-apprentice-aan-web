@@ -14,23 +14,6 @@
     {
         totalCountDescription = "1 result";
     }
-    var eventFormatOnlineChecked = "";
-    var eventFormatInPersonChecked = "";
-    var eventFormatHybridChecked = "";
-    if (Model.EventFilterChoices.EventFormats != null && Model.EventFilterChoices.EventFormats.Any(x => x == EventFormat.InPerson))
-    {
-        eventFormatInPersonChecked = "checked='checked'";
-    }
-
-    if (Model.EventFilterChoices.EventFormats != null && Model.EventFilterChoices.EventFormats.Any(x => x == EventFormat.Online))
-    {
-        eventFormatOnlineChecked = "checked='checked'";
-    }
-
-    if (Model.EventFilterChoices.EventFormats != null && Model.EventFilterChoices.EventFormats.Any(x => x == EventFormat.Hybrid))
-    {
-        eventFormatHybridChecked = "checked='checked'";
-    }
 }
 
 <div class="govuk-grid-row">
@@ -63,28 +46,10 @@
                 <div class="das-filter__body das-!-show--from-tablet" id="events-filter-options">
                     <form asp-route="@RouteNames.NetworkEvents" method="GET">
                     <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
-                        <partial name="_FilterEventDates"/>
-                        <partial name="_FilterEventFormats"/>
-                        <div class="govuk-form-group">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                    Event type
-                                </legend>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    @foreach (var eventType in Model.Calendars.OrderBy(x=>x.Ordering))
-                                    {
-                           
-                                        <div class="govuk-checkboxes__item">
-                                            <input class="govuk-checkboxes__input" id="type-employer" name="calendarId" type="checkbox" value="@eventType.Id">
-                                            <label class="govuk-label govuk-checkboxes__label" for="type-employer">
-                                                @eventType.CalendarName
-                                            </label>
-                                        </div>
-                                    }
-                                </div>
-                            </fieldset>
-                        </div>
-                        <button type="submit" class="govuk-button" id="filters-submit-second">Apply filters</button>
+                    <partial name="_FilterEventDates"/>
+                    <partial name="_FilterEventFormats"/>
+                    <partial name="_FilterEventTypes" />
+                    <button type="submit" class="govuk-button" id="filters-submit-second">Apply filters</button>
                     </form>
                 </div>
             </div>
