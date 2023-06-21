@@ -44,13 +44,14 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
                                                      where a.Value == b.ToString()
                                                      select a);
             }
-        }
 
-        if (eventFilterChoices.CalendarIds != null && eventFilterChoices.CalendarIds.Any())
-        {
-            var filterEventType = AddFilterChecklist("Event type", FilterFields.EventType, eventTypesChecklistFiltered,
-                queryParameters, 4, eventFilterChoices, url);
-            if (filterEventType != null) filters.Add(filterEventType);
+            if (eventFilterChoices.CalendarIds.Any())
+            {
+                var filterEventType = AddFilterChecklist("Event type", FilterFields.EventType,
+                    eventTypesChecklistFiltered,
+                    queryParameters, 4, eventFilterChoices, url);
+                if (filterEventType != null) filters.Add(filterEventType);
+            }
         }
 
         return filters;

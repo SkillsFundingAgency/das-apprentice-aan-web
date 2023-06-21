@@ -132,4 +132,92 @@ public class EventSearchQueryStringBuilderTests
             filter.Value.Should().Be(thirdValue);
         }
     }
+
+    [TestCase(null, null, null, "", "", "", "", 0)]
+    [TestCase(1, null, null, "", "", "", "Event type", 1)]
+    [TestCase(null, 1, null, "", "", "", "Event type", 1)]
+    [TestCase(null, null, 1, "", "", "", "Event type", 1)]
+    [TestCase(1, 2, null, "?calendarId=2", "?calendarId=1", "", "Event type", 2)]
+    [TestCase(1, null, 3, "?calendarId=3", "?calendarId=1", "", "Event type", 2)]
+    [TestCase(null, 2, 3, "?calendarId=3", "?calendarId=2", "", "Event type", 2)]
+    [TestCase(1, 2, 3, "?calendarId=2&calendarId=3", "?calendarId=1&calendarId=3", "?calendarId=1&calendarId=2", "Event type", 3)]
+    public void BuildEventSearchFiltersForEventTypes(int? calendarId1, int? calendarId2, int? calendarId3,
+        string expectedFirst, string expectedSecond, string expectedThird, string fieldName,
+        int expectedNumberOfFilters)
+    {
+        var parameterName = "calendarId";
+        var eventFilterChoices = new EventFilterChoices { CalendarIds = new List<int>() };
+        var eventTypesLookup = new List<ChecklistLookup>();
+
+        var eventFilters = new EventFilterChoices
+        {
+            CalendarIds = new List<int>()
+        };
+
+        if (calendarId1 != null)
+        {
+            eventTypesLookup.Add(new ChecklistLookup(parameterName, calendarId1.Value.ToString()));
+            eventFilters.CalendarIds.Add(calendarId1.Value);
+            eventFilterChoices.CalendarIds.Add(calendarId1.Value);
+        }
+
+        if (calendarId2 != null)
+        {
+            eventTypesLookup.Add(new ChecklistLookup(parameterName, calendarId2.Value.ToString()));
+            eventFilters.CalendarIds.Add(calendarId2.Value);
+            eventFilterChoices.CalendarIds.Add(calendarId2.Value);
+        }
+
+        if (calendarId3 != null)
+        {
+            eventTypesLookup.Add(new ChecklistLookup(parameterName, calendarId3.Value.ToString()));
+            eventFilters.CalendarIds.Add(calendarId3.Value);
+            eventFilterChoices.CalendarIds.Add(calendarId3.Value);
+        }
+
+        var locationUrl = "network-events";
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(locationUrl);
+
+        var service = new EventSearchQueryStringBuilder();
+
+        var actual = service.BuildEventSearchFilters(eventFilterChoices, new NetworkEventsViewModel().EventFormats, eventTypesLookup, mockUrlHelper.Object);
+
+        if (expectedNumberOfFilters == 0)
+        {
+            actual.Count.Should().Be(0);
+            return;
+        }
+
+        var firstItem = actual.First();
+        firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
+        firstItem.FieldName.Should().Be(fieldName);
+        firstItem.FieldOrder.Should().Be(4);
+        if (firstItem.Filters.Count > 0)
+        {
+            var filter = firstItem.Filters.First();
+            filter.ClearFilterLink.Should().Be(locationUrl + expectedFirst);
+            filter.Order.Should().Be(1);
+            filter.Value.Should().Be(parameterName);
+        }
+
+        if (firstItem.Filters.Count > 1)
+        {
+            var filter = firstItem.Filters.Skip(1).First();
+            filter.ClearFilterLink.Should().Be(locationUrl + expectedSecond);
+            filter.Order.Should().Be(2);
+            filter.Value.Should().Be(parameterName);
+        }
+
+        if (firstItem.Filters.Count > 2)
+        {
+            var filter = firstItem.Filters.Skip(2).First();
+            filter.ClearFilterLink.Should().Be(locationUrl + expectedThird);
+            filter.Order.Should().Be(3);
+            filter.Value.Should().Be(parameterName);
+        }
+    }
+
 }
