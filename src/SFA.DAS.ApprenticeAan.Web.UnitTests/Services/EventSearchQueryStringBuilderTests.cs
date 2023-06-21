@@ -12,6 +12,39 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Services;
 [TestFixture]
 public class EventSearchQueryStringBuilderTests
 {
+    [TestCase(false, false)]
+    [TestCase(true, false)]
+    [TestCase(false, true)]
+    [TestCase(true, true)]
+    public void BuildFilterChoicesForNoFilters(bool eventFormatsNull, bool eventTypesNull)
+    {
+        var locationUrl = "network-events";
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(locationUrl);
+
+        var service = new EventSearchQueryStringBuilder();
+
+        var eventFormats = new List<EventFormat>();
+        var eventTypes = new List<int>();
+        if (eventFormatsNull)
+            eventFormats = null;
+        if (eventTypesNull)
+            eventTypes = null;
+
+        var eventFilters = new EventFilterChoices
+        {
+            FromDate = null,
+            ToDate = null,
+            EventFormats = eventFormats,
+            CalendarIds = eventTypes
+        };
+
+        var actual = service.BuildEventSearchFilters(eventFilters, new List<ChecklistLookup>(), new List<ChecklistLookup>(), mockUrlHelper.Object);
+        actual.Count.Should().Be(0);
+    }
+
     [TestCase(null, null, "", "", "", "", 0, 1)]
     [TestCase("2023-05-31", null, "", "", "From date", "", 1, 1)]
     [TestCase(null, "2024-01-01", "", "", "To date", "", 1, 1)]
