@@ -24,4 +24,10 @@ public static class RouteNames
         public const string CheckYourAnswers = nameof(CheckYourAnswers);
         public const string PreviousEngagement = nameof(PreviousEngagement);
     }
+
+    public static class AttendanceConfirmations
+    {
+        public const string SignUpConfirmation = nameof(SignUpConfirmation);
+        public const string CancellationConfirmation = nameof(CancellationConfirmation);
+    }
 }

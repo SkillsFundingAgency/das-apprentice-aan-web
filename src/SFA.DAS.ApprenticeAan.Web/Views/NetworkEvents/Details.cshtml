@@ -11,7 +11,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <strong class="govuk-tag app-tag app-tag--@Model.EventFormat.ToString()">@Model.EventFormat.GetDescription()</strong> <strong class="govuk-tag app-tag">@Model.CalendarName</strong>
-        <h1 class="govuk-heading-xl govuk-!-margin-top-4">@Model.Title.Trim()</h1>
+        <h1 class="govuk-heading-xl govuk-!-margin-top-4">@Model.Title</h1>
         <div class="govuk-grid-row">
             <partial name=@Model.PartialViewName />
         </div>
@@ -34,7 +34,7 @@
             <a class="govuk-link govuk-body das-show-hide__button govuk-!-margin-bottom-0" href="#event-attendee-list" data-aria-controls="event-attendee-list" data-button-string="all attendees">Show/hide</a>
             <div id="event-attendee-list">
                 <ul class="govuk-list app-attendee-list">
-                    @foreach (var person in Model.Attendees.OrderBy(a => a.MemberName))
+                    @foreach (var person in Model.Attendees.OrderBy(a => a.AddedDate))
                     {
                         <li>@person.MemberName</li>
                     }
@@ -50,19 +50,50 @@
                 <p class="app-green-tick-large">
                     <span class="das-icon-list__icon das-icon-list__icon--tick">Yes: </span>You're signed up
                 </p>
+                <h3 class="govuk-heading-s">Can't make it?</h3>
+                @using (Html.BeginForm("SetAttendanceStatus", "NetworkEvents", FormMethod.Post))
+                {
+                    <input type="hidden" asp-for="@Model.CalendarEventId" />
+                    <input type="hidden" id="newStatus" name="newStatus" value="false" />
+                    <button class="govuk-button govuk-button--warning govuk-!-margin-bottom-0 govuk-!-width-full">Cancel your attendance</button>
+                }
+
             }
             else
             {
                 <h3 class="govuk-heading-m">Want to be involved in this event?</h3>
-                <a href="#" role="button" class="govuk-button govuk-!-margin-bottom-0 govuk-!-width-full">Sign up</a>
+                @using (Html.BeginForm("SetAttendanceStatus", "NetworkEvents", FormMethod.Post))
+                {
+                    <input type="hidden" asp-for="@Model.CalendarEventId" />
+                    <input type="hidden" id="newStatus" name="newStatus" value="true" />
+                    <button class="govuk-button govuk-!-margin-bottom-0 govuk-!-width-full" data-module="govuk-button" type="submit">Sign up</button>
+                }
             }
         </div>
     </div>
 </div>
 
+
 @if (!Model.IsSignedUp)
 {
-    <button class="govuk-button govuk-!-margin-top-4" data-module="govuk-button">
-        Sign up
-    </button>
+    @using (Html.BeginForm("SetAttendanceStatus", "NetworkEvents", FormMethod.Post))
+    {
+        <input type="hidden" asp-for="@Model.CalendarEventId" />
+        <input type="hidden" id="newStatus" name="newStatus" value="true" />
+        <button class="govuk-button govuk-!-margin-top-4" data-module="govuk-button" type="submit">
+            Sign up
+        </button>
+    }
 }
+else
+{
+    @using (Html.BeginForm("SetAttendanceStatus", "NetworkEvents", FormMethod.Post))
+    {
+        <input type="hidden" asp-for="@Model.CalendarEventId" />
+        <input type="hidden" id="newStatus" name="newStatus" value="false" />
+        <button class="govuk-button govuk-!-margin-top-4 govuk-button--warning" data-module="govuk-button" type="submit">
+            Cancel your attendance
+        </button>
+    }
+}
+

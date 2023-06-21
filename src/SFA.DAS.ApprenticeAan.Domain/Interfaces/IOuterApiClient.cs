@@ -50,6 +50,12 @@ public interface IOuterApiClient
     [AllowAnyStatusCode]
     Task<Response<StagedApprentice?>> GetStagedApprentice([Query] string lastName, [Query] string dateOfBirth, [Query] string email, CancellationToken cancellationToken);
 
+    [Put("/calendarevents/{calendarEventId}/attendance")]
+    Task PutAttendance([Path] Guid calendarEventId,
+                       [Header(Constants.RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId,
+                       [Body] SetAttendanceStatusRequest newStatus,
+                       CancellationToken cancellationToken);
+
     [Get("/attendances")]
     Task<GetAttendancesResponse> GetAttendances([Header(Constants.RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId, string fromDate, string toDate, CancellationToken cancellationToken);
 }

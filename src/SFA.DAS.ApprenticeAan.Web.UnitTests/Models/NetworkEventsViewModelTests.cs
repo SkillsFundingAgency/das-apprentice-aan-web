@@ -1,7 +1,14 @@
-﻿using FluentAssertions;
+﻿using AutoFixture.NUnit3;
+using FluentAssertions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.Models;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+using SFA.DAS.ApprenticeAan.Web.Controllers;
 using SFA.DAS.ApprenticeAan.Web.Models;
+using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models;
@@ -11,9 +18,9 @@ public class NetworkEventsViewModelTests
 {
     [Test]
     [MoqAutoData]
-    public void NetworkEventsViewModel_From_GetCalendarEventsQueryResult(GetCalendarEventsQueryResult result)
+    public void NetworkEventsViewModel_From_GetCalendarEventsQueryResult(GetCalendarEventsQueryResult result, IUrlHelper helper)
     {
-        var sut = (NetworkEventsViewModel)result;
+        var sut = new NetworkEventsViewModel(result, helper);
 
         Assert.Multiple(() =>
         {
@@ -30,7 +37,7 @@ public class NetworkEventsViewModelTests
     [TestCase(false, false)]
     public void ShowFilterOptions_ReturningExpectedValueFromParameters(bool searchFilterAdded, bool expected)
     {
-        var model = new NetworkEventsViewModel
+        var model = new NetworkEventsViewModel(new Mock<IUrlHelper>().Object)
         {
             SearchFilters = new List<SelectedFilter>()
         };

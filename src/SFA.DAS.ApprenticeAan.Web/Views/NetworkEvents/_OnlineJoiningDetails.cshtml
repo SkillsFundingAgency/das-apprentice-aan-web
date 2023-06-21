@@ -1,0 +1,12 @@
+﻿@using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
+
+@model NetworkEventDetailsViewModel
+
+@if (Model.IsSignedUp)
+{
+    <p>Online via <a target="_blank" href="//@Model.EventLink">@Model.EventLink</a></p>
+}
+else
+{
+    <p>Online: joining details provided on sign up</p>
+}

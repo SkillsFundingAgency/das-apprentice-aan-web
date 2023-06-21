@@ -1,0 +1,32 @@
+﻿@using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
+
+@{
+    ViewData["Title"] = $"Confirmation Page — Sign up event";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-panel govuk-panel--confirmation">
+            <h1 class="govuk-panel__title">
+                You have successfully signed up to this event
+            </h1>
+        </div>
+
+        <h2 class="govuk-heading-m">What happens next</h2>
+
+        <p class="govuk-body">
+            You have successfully signed up to this event and it has been added to your network profile calendar.
+            You can find more information on the event in the calendar booking, where you can update your details or cancel your attendance.
+            <a href="@Url.RouteUrl(RouteNames.NetworkEvents)"> Find more information on upcoming network events that may suit your preferences.</a>
+        </p>
+
+        <ul class="govuk-list app-icon-list">
+            <li>
+                <h2 class="govuk-heading-m"><a href="@Url.RouteUrl(RouteNames.EventsHub)" class="govuk-link govuk-link--no-visited-state">Events hub</a></h2>
+                <p>Discover suitable events, manage your upcoming events and give feedback about events you have attended.</p>
+                <svg class="app-icon-list__icon"><use href="/img/sprite.svg#icon-calendar" /></svg>
+            </li>
+        </ul>
+    </div>
+</div>
+
