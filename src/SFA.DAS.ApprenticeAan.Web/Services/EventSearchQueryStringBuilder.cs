@@ -16,14 +16,14 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
 
         var filters = new List<SelectedFilter>();
 
-        AddDateFilters(eventFilterChoices, url, queryParameters, filters);
-        AddEventFormatFilters(eventFilterChoices, eventFormatsLookup, url, queryParameters, filters);
-        AddEventTypeFilters(eventFilterChoices, eventTypesLookup, url, queryParameters, filters);
+        AddDateSelectedFilters(eventFilterChoices, url, queryParameters, filters);
+        AddEventFormatSelectedFilters(eventFilterChoices, eventFormatsLookup, url, queryParameters, filters);
+        AddEventTypeSelectedFilters(eventFilterChoices, eventTypesLookup, url, queryParameters, filters);
 
         return filters;
     }
 
-    private static void AddDateFilters(EventFilterChoices eventFilterChoices, IUrlHelper url, List<string> queryParameters,
+    private static void AddDateSelectedFilters(EventFilterChoices eventFilterChoices, IUrlHelper url, List<string> queryParameters,
         ICollection<SelectedFilter> filters)
     {
         var filterFromDate = AddFilterDateTime("From date", FilterFields.FromDate, eventFilterChoices.FromDate,
@@ -35,7 +35,7 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
         if (filterToDate != null) filters.Add(filterToDate);
     }
 
-    private static void AddEventFormatFilters(EventFilterChoices eventFilterChoices, List<ChecklistLookup> eventFormatsLookup,
+    private static void AddEventFormatSelectedFilters(EventFilterChoices eventFilterChoices, List<ChecklistLookup> eventFormatsLookup,
         IUrlHelper url, List<string> queryParameters, ICollection<SelectedFilter> filters)
     {
         if (eventFilterChoices.EventFormats != null && eventFilterChoices.EventFormats.Any())
@@ -55,7 +55,7 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
         }
     }
 
-    private static void AddEventTypeFilters(EventFilterChoices eventFilterChoices, List<ChecklistLookup> eventTypesLookup, IUrlHelper url,
+    private static void AddEventTypeSelectedFilters(EventFilterChoices eventFilterChoices, List<ChecklistLookup> eventTypesLookup, IUrlHelper url,
         List<string> queryParameters, ICollection<SelectedFilter> filters)
     {
         var eventTypesChecklistFiltered = new List<ChecklistLookup>();
@@ -77,10 +77,6 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
             }
         }
     }
-
-
-
-
 
     private static List<string> BuildQueryParameters(EventFilterChoices eventFilterChoices)
     {
@@ -126,9 +122,9 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
              };
     }
 
-    private static SelectedFilter? AddFilterChecklist(string fieldName, FilterFields filterToRemove, List<ChecklistLookup>? filterValues, List<string> queryParameters, int filterFieldOrder, EventFilterChoices eventFilterChoices, IUrlHelper url)
+    private static SelectedFilter? AddFilterChecklist(string fieldName, FilterFields filterToRemove, List<ChecklistLookup> filterValues, List<string> queryParameters, int filterFieldOrder, EventFilterChoices eventFilterChoices, IUrlHelper url)
     {
-        if (filterValues == null || !filterValues.Any()) return null;
+        if (!filterValues.Any()) return null;
 
         var order = 0;
         var selectedFilter =
@@ -160,11 +156,8 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
         return selectedFilter;
     }
 
-    private static string? BuildQueryString(List<string> queryParameters, FilterFields filterToRemove, EventFilterChoices? eventFilterChoices, ChecklistLookup? filterValue, IUrlHelper url)
+    private static string? BuildQueryString(List<string> queryParameters, FilterFields filterToRemove, EventFilterChoices eventFilterChoices, ChecklistLookup? filterValue, IUrlHelper url)
     {
-        if (eventFilterChoices == null)
-            return string.Join('&', queryParameters);
-
         var queryParametersToBuild = new List<string>();
 
         foreach (var p in queryParameters)
@@ -188,10 +181,10 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
         return queryParametersToBuild.Any() ? $"{url.RouteUrl(RouteNames.NetworkEvents)}?{string.Join('&', queryParametersToBuild)}" : url.RouteUrl(RouteNames.NetworkEvents);
     }
 
-    private static void ExcludeQueryParametersForMatchingEventFormats(EventFilterChoices? eventFilterChoices,
+    private static void ExcludeQueryParametersForMatchingEventFormats(EventFilterChoices eventFilterChoices,
         ChecklistLookup? filterValue, string p, ICollection<string> queryParametersToBuild)
     {
-        if (eventFilterChoices?.EventFormats == null || !eventFilterChoices.EventFormats.Any() || filterValue == null)
+        if (eventFilterChoices.EventFormats == null || !eventFilterChoices.EventFormats.Any() || filterValue == null)
         {
             return;
         }
@@ -209,10 +202,10 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
         }
     }
 
-    private static void ExcludeQueryParametersForMatchingEventTypes(EventFilterChoices? eventFilterChoices,
+    private static void ExcludeQueryParametersForMatchingEventTypes(EventFilterChoices eventFilterChoices,
         ChecklistLookup? filterValue, string p, ICollection<string> queryParametersToBuild)
     {
-        if (eventFilterChoices?.CalendarIds == null || !eventFilterChoices.CalendarIds.Any() || filterValue == null)
+        if (eventFilterChoices.CalendarIds == null || !eventFilterChoices.CalendarIds.Any() || filterValue == null)
         {
             return;
         }
