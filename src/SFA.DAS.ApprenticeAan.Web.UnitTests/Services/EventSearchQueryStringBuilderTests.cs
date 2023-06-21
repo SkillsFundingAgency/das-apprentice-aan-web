@@ -14,7 +14,7 @@ public class EventSearchQueryStringBuilderTests
 {
     [TestCase(null, null, "", "", "", "", 0, 1)]
     [TestCase("2023-05-31", null, "", "", "From date", "", 1, 1)]
-    [TestCase(null, "2024-01-01", "", "", "To date", "", 1, 2)]
+    [TestCase(null, "2024-01-01", "", "", "To date", "", 1, 1)]
     [TestCase("2023-05-31", "2024-01-01", "?toDate=2024-01-01", "?fromDate=2023-05-31", "From date", "To date", 2, 1)]
     public void BuildEventSearchFiltersForFromDateAndToDate(DateTime? fromDate, DateTime? toDate, string expectedFirst, string expectedSecond, string fieldName1, string fieldName2, int expectedNumberOfFilters, int fieldOrder1)
     {
@@ -107,7 +107,7 @@ public class EventSearchQueryStringBuilderTests
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
         firstItem.FieldName.Should().Be(fieldName);
-        firstItem.FieldOrder.Should().Be(3);
+        firstItem.FieldOrder.Should().Be(1);
         if (firstItem.Filters.Count > 0)
         {
             var filter = firstItem.Filters.First();
@@ -194,7 +194,7 @@ public class EventSearchQueryStringBuilderTests
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
         firstItem.FieldName.Should().Be(fieldName);
-        firstItem.FieldOrder.Should().Be(4);
+        firstItem.FieldOrder.Should().Be(1);
         if (firstItem.Filters.Count > 0)
         {
             var filter = firstItem.Filters.First();
