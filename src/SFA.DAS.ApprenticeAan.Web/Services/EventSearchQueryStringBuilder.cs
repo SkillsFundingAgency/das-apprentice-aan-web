@@ -182,9 +182,9 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
     }
 
     private static void ExcludeQueryParametersForMatchingEventFormats(EventFilterChoices eventFilterChoices,
-        ChecklistLookup? filterValue, string p, ICollection<string> queryParametersToBuild)
+        ChecklistLookup filterValue, string p, ICollection<string> queryParametersToBuild)
     {
-        if (eventFilterChoices.EventFormats == null || !eventFilterChoices.EventFormats.Any() || filterValue == null)
+        if (eventFilterChoices.EventFormats == null || !eventFilterChoices.EventFormats.Any())
         {
             return;
         }
@@ -203,9 +203,9 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
     }
 
     private static void ExcludeQueryParametersForMatchingEventTypes(EventFilterChoices eventFilterChoices,
-        ChecklistLookup? filterValue, string p, ICollection<string> queryParametersToBuild)
+        ChecklistLookup filterValue, string p, ICollection<string> queryParametersToBuild)
     {
-        if (eventFilterChoices.CalendarIds == null || !eventFilterChoices.CalendarIds.Any() || filterValue == null)
+        if (eventFilterChoices.CalendarIds == null || !eventFilterChoices.CalendarIds.Any())
         {
             return;
         }
