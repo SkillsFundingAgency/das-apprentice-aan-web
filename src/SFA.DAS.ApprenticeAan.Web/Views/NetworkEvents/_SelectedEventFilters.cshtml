@@ -6,7 +6,7 @@
             <h3 class="das-filter__selected-heading">Selected filters</h3>
             <a class="das-filter__selected-action govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.NetworkEvents">Clear <span class="govuk-visually-hidden">the selected filters</span></a>
         </div>
-        @foreach (var filters in Model.SearchFilters.OrderBy(x=>x.FieldOrder))
+        @foreach (var filters in Model.SelectedFilters.OrderBy(x=>x.FieldOrder))
         {
             <h4 class="das-filter__selected-sub-heading">@filters.FieldName</h4>
             @foreach (var filter  in filters.Filters.OrderBy(x=>x.Order))

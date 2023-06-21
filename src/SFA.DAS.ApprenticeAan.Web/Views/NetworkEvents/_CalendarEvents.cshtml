@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using SFA.DAS.ApprenticeAan.Domain.Constants
 @using SFA.DAS.ApprenticeAan.Domain.Extensions
 @model NetworkEventsViewModel
@@ -9,7 +9,7 @@
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-three-quarters das-!-float-right">
                     <h2 class="govuk-heading-m das-search-results__heading">
-                        <a class="das-search-results__link" href=@Model.GetEventDetailsPageUrl(calendarEvent.CalendarEventId)>
+                        <a class="das-search-results__link" href="@calendarEvent.CalendarEventLink">
                             @calendarEvent.Title
                         </a>
                     </h2>
@@ -27,13 +27,13 @@
                                     <div>Online</div>
                                     break;
                                 case EventFormat.InPerson:
-                                    <div>@calendarEvent.Location</div>
+                                    <div>@calendarEvent.Location, @calendarEvent.Postcode</div>
                                     break;
                                 case EventFormat.Hybrid:
                                     <div>
-                                        Online<br/> 
-                                        <b>and</b><br/> 
-                                        @calendarEvent.Location
+                                        Online<br />
+                                        <b>and</b><br />
+                                        @calendarEvent.Location, @calendarEvent.Postcode
                                     </div>
                                     break;
                             }

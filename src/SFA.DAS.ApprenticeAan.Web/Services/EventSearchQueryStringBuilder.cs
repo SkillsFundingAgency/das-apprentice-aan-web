@@ -9,50 +9,200 @@ namespace SFA.DAS.ApprenticeAan.Web.Services;
 
 public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
 {
-    public List<SelectedFilter> BuildEventSearchFilters(EventFilters eventFilters, IUrlHelper url)
+    public List<SelectedFilter> BuildEventSearchFilters(EventFilterChoices eventFilterChoices, IUrlHelper url)
     {
+        var queryParameters = BuildQueryParameters(eventFilterChoices);
+
         var filters = new List<SelectedFilter>();
 
-        AddFilterDateTime("From date", FilterFields.FromDate, eventFilters.FromDate, filters, eventFilters, url);
-        AddFilterDateTime("To date", FilterFields.ToDate, eventFilters.ToDate, filters, eventFilters, url);
+        AddDateSelectedFilters(eventFilterChoices, url, queryParameters, filters);
+        AddEventFormatSelectedFilters(eventFilterChoices, url, queryParameters, filters);
+        AddEventTypeSelectedFilters(eventFilterChoices, url, queryParameters, filters);
 
         return filters;
     }
 
-    private static string? BuildQueryString(FilterFields removeFilter, EventFilters eventFilters, IUrlHelper url)
+    private static void AddDateSelectedFilters(EventFilterChoices eventFilterChoices, IUrlHelper url, List<string> queryParameters,
+        ICollection<SelectedFilter> filters)
+    {
+        var filterFromDate = AddFilterDateTime("From date", FilterFields.FromDate, eventFilterChoices.FromDate,
+            queryParameters, filters.Count + 1, eventFilterChoices, url);
+        if (filterFromDate != null) filters.Add(filterFromDate);
+
+        var filterToDate = AddFilterDateTime("To date", FilterFields.ToDate, eventFilterChoices.ToDate, queryParameters, filters.Count + 1,
+            eventFilterChoices, url);
+        if (filterToDate != null) filters.Add(filterToDate);
+    }
+
+    private static void AddEventFormatSelectedFilters(EventFilterChoices eventFilterChoices,
+        IUrlHelper url, List<string> queryParameters, ICollection<SelectedFilter> filters)
+    {
+        if (!eventFilterChoices.EventFormats.Any()) return;
+
+        var eventFormatsChecklistFiltered = new List<ChecklistLookup>();
+        foreach (var a in eventFilterChoices.EventFormatsLookup)
+        {
+            eventFormatsChecklistFiltered.AddRange(from b in eventFilterChoices.EventFormats
+                                                   where a.Value == b.ToString()
+                                                   select a);
+        }
+
+        var filterEventFormat = AddFilterChecklist("Event format", FilterFields.EventFormat,
+            eventFormatsChecklistFiltered,
+            queryParameters, filters.Count + 1, eventFilterChoices, url);
+        if (filterEventFormat != null) filters.Add(filterEventFormat);
+    }
+
+    private static void AddEventTypeSelectedFilters(EventFilterChoices eventFilterChoices, IUrlHelper url,
+        List<string> queryParameters, ICollection<SelectedFilter> filters)
+    {
+        if (!eventFilterChoices.CalendarIds.Any()) return;
+
+        var eventTypesChecklistFiltered = new List<ChecklistLookup>();
+        foreach (var a in eventFilterChoices.EventTypesLookup)
+        {
+            eventTypesChecklistFiltered.AddRange(from b in eventFilterChoices.CalendarIds
+                                                 where a.Value == b.ToString()
+                                                 select a);
+        }
+
+        var filterEventType = AddFilterChecklist("Event type", FilterFields.EventType,
+            eventTypesChecklistFiltered,
+            queryParameters, filters.Count + 1, eventFilterChoices, url);
+        if (filterEventType != null) filters.Add(filterEventType);
+
+    }
+
+    private static List<string> BuildQueryParameters(EventFilterChoices eventFilterChoices)
     {
         var queryParameters = new List<string>();
 
-        if (removeFilter != FilterFields.FromDate && eventFilters.FromDate != null)
+        if (eventFilterChoices.FromDate != null)
         {
-            queryParameters.Add("fromDate=" + DateTimeHelper.ToUrlFormat(eventFilters.FromDate));
+            queryParameters.Add("fromDate=" + DateTimeHelper.ToUrlFormat(eventFilterChoices.FromDate));
         }
 
-        if (removeFilter != FilterFields.ToDate && eventFilters.ToDate != null)
+        if (eventFilterChoices.ToDate != null)
         {
-            queryParameters.Add("toDate=" + DateTimeHelper.ToUrlFormat(eventFilters.ToDate));
+            queryParameters.Add("toDate=" + DateTimeHelper.ToUrlFormat(eventFilterChoices.ToDate));
         }
 
-        return queryParameters.Any() ? $"{url.RouteUrl(RouteNames.NetworkEvents)}?{string.Join('&', queryParameters)}" : url.RouteUrl(RouteNames.NetworkEvents);
+        queryParameters.AddRange(
+                eventFilterChoices.EventFormats.Select(eventFormat => "eventFormat=" + eventFormat));
+
+        queryParameters.AddRange(eventFilterChoices.CalendarIds.Select(eventFormat => "calendarId=" + eventFormat));
+
+        return queryParameters;
+
     }
 
-    private static void AddFilterDateTime(string fieldName, FilterFields filterFields, DateTime? eventFilter, ICollection<SelectedFilter> filters, EventFilters eventFilters, IUrlHelper url)
+    private static SelectedFilter? AddFilterDateTime(string fieldName, FilterFields filterToRemove, DateTime? eventFilter, List<string> queryParameters, int filterFieldOrder, EventFilterChoices eventFilterChoices, IUrlHelper url)
     {
-        if (eventFilter == null) return;
+        if (eventFilter == null) return null;
 
-        filters.Add(
+        return
+             new SelectedFilter
+             {
+                 FieldName = fieldName,
+                 FieldOrder = filterFieldOrder,
+                 Filters = new List<FilterItem>
+                 {
+                    new()
+                    {
+                        ClearFilterLink = BuildQueryString(queryParameters, filterToRemove, eventFilterChoices,null,url), Order = 1,
+                        Value = DateTimeHelper.ToScreenFormat(eventFilter)
+                    }
+                 }
+             };
+    }
+
+    private static SelectedFilter? AddFilterChecklist(string fieldName, FilterFields filterToRemove, List<ChecklistLookup> filterValues, List<string> queryParameters, int filterFieldOrder, EventFilterChoices eventFilterChoices, IUrlHelper url)
+    {
+        var order = 0;
+        var selectedFilter =
             new SelectedFilter
             {
                 FieldName = fieldName,
-                FieldOrder = filters.Count + 1,
-                Filters = new List<FilterItem>
+                FieldOrder = filterFieldOrder,
+                Filters = new List<FilterItem> { }
+            };
+
+        var filtersToAdd = new List<FilterItem>();
+
+        if (filterToRemove is FilterFields.EventFormat or FilterFields.EventType)
+        {
+            foreach (var filterValue in filterValues)
+            {
+                order++;
+                filtersToAdd.Add(new FilterItem
                 {
-                    new()
-                    {
-                        ClearFilterLink = BuildQueryString(filterFields, eventFilters,url), Order = 1,
-                        Value = DateTimeHelper.ToScreenFormat(eventFilter)
-                    }
-                }
-            });
+                    ClearFilterLink = BuildQueryString(queryParameters, filterToRemove, eventFilterChoices, filterValue, url),
+                    Order = order,
+                    Value = filterValue.Name
+                });
+            }
+        }
+
+        selectedFilter.Filters = filtersToAdd;
+
+        return selectedFilter;
     }
-};
+
+    private static string? BuildQueryString(List<string> queryParameters, FilterFields filterToRemove, EventFilterChoices eventFilterChoices, ChecklistLookup? filterValue, IUrlHelper url)
+    {
+        var queryParametersToBuild = new List<string>();
+
+        foreach (var p in queryParameters)
+        {
+            switch (filterToRemove)
+            {
+                case FilterFields.FromDate when p == "fromDate=" + DateTimeHelper.ToUrlFormat(eventFilterChoices!.FromDate):
+                case FilterFields.ToDate when p == "toDate=" + DateTimeHelper.ToUrlFormat(eventFilterChoices!.ToDate):
+                    continue;
+                case FilterFields.EventFormat:
+                    ExcludeQueryParametersForMatchingEventFormats(eventFilterChoices, filterValue, p, queryParametersToBuild);
+                    break;
+                case FilterFields.EventType:
+                    ExcludeQueryParametersForMatchingEventTypes(eventFilterChoices, filterValue, p, queryParametersToBuild);
+                    break;
+                default:
+                    queryParametersToBuild.Add(p);
+                    break;
+            }
+        }
+        return queryParametersToBuild.Any() ? $"{url.RouteUrl(RouteNames.NetworkEvents)}?{string.Join('&', queryParametersToBuild)}" : url.RouteUrl(RouteNames.NetworkEvents);
+    }
+
+    private static void ExcludeQueryParametersForMatchingEventFormats(EventFilterChoices eventFilterChoices,
+        ChecklistLookup? filterValue, string p, ICollection<string> queryParametersToBuild)
+    {
+        var addParameter = true;
+        foreach (var choice in eventFilterChoices.EventFormats.Where(choice => choice.ToString() == filterValue?.Value)
+                     .Where(choice => p == "eventFormat=" + filterValue?.Value))
+        {
+            addParameter = false;
+        }
+
+        if (addParameter)
+        {
+            queryParametersToBuild.Add(p);
+        }
+    }
+
+    private static void ExcludeQueryParametersForMatchingEventTypes(EventFilterChoices eventFilterChoices,
+        ChecklistLookup? filterValue, string p, ICollection<string> queryParametersToBuild)
+    {
+        var addParameter = true;
+
+        foreach (var choice in eventFilterChoices.CalendarIds.Where(choice => choice.ToString() == filterValue?.Value)
+                     .Where(choice => p == "calendarId=" + filterValue?.Value))
+        {
+            addParameter = false;
+        }
+
+        if (addParameter)
+        {
+            queryParametersToBuild.Add(p);
+        }
+    }
+}

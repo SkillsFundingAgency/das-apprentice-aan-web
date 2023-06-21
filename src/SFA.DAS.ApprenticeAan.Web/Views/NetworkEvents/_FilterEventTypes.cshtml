@@ -1,0 +1,29 @@
+﻿@using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses
+@{
+    var eventTypes = Model.FilterChoices.CalendarIds as List<int>;
+    var calendarLookup = Model.Calendars as List<Calendar>;
+}
+<div class="govuk-form-group">
+    <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+            Event type
+        </legend>
+        <div class="govuk-checkboxes govuk-checkboxes--small">
+            @foreach (var eventType in calendarLookup!.OrderBy(x=>x.Ordering))
+            {
+                var checkedValue = string.Empty;
+                @foreach (var ef in eventTypes!.Where(ef => ef == eventType.Id))
+                    {
+                        checkedValue = " checked ";
+                    }
+
+                <div class="govuk-checkboxes__item">
+                    <input class="govuk-checkboxes__input" id="type-employer" name="calendarId" type="checkbox" value="@eventType.Id" @checkedValue>
+                    <label class="govuk-label govuk-checkboxes__label" for="type-employer">
+                        @eventType.CalendarName
+                    </label>
+                </div>
+            }
+        </div>
+    </fieldset>
+</div>

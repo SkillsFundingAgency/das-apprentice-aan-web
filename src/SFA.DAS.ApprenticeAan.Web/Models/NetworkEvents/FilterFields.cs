@@ -3,5 +3,7 @@
 public enum FilterFields
 {
     FromDate,
-    ToDate
+    ToDate,
+    EventFormat,
+    EventType
 }
