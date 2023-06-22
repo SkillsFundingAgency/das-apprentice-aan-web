@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Extensions;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Domain.Models;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
@@ -38,7 +39,7 @@ public class NetworkEventsController : Controller
         var fromDateFormatted = request.FromDate?.ToApiString()!;
         var toDateFormatted = request.ToDate?.ToApiString()!;
         var calendarEventsResponse = await _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), fromDateFormatted,
-            toDateFormatted, request.EventFormat, request.CalendarId, cancellationToken);
+            toDateFormatted, request.EventFormat, request.CalendarId, request.RegionId, cancellationToken);
         var model = (NetworkEventsViewModel)calendarEventsResponse;
 
         foreach (var calendarEvent in model.CalendarEvents)
@@ -46,22 +47,30 @@ public class NetworkEventsController : Controller
             calendarEvent.CalendarEventLink = Url.RouteUrl(RouteNames.NetworkEventDetails, new { id = calendarEvent.CalendarEventId })!;
         }
 
-        model.FilterChoices.FromDate = request.FromDate;
-        model.FilterChoices.ToDate = request.ToDate;
-        model.FilterChoices.EventFormats = request.EventFormat;
-        model.FilterChoices.CalendarIds = request.CalendarId;
-
         var calendars = await _outerApiClient.GetCalendars();
+        var regionsResult = await _outerApiClient.GetRegions();
+        model.Regions = regionsResult.Regions;
 
-        model.FilterChoices.EventFormatsLookup = new List<ChecklistLookup>
+        model.FilterChoices = new EventFilterChoices
         {
-            new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString()),
-            new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString()),
-            new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString())
+            FromDate = request.FromDate,
+            ToDate = request.ToDate,
+            EventFormats = request.EventFormat,
+            CalendarIds = request.CalendarId,
+            RegionIds = request.RegionId,
+            EventFormatsLookup = new List<ChecklistLookup>
+            {
+                new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString()),
+                new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString()),
+                new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString())
+            },
+            EventTypesLookup = model.Calendars.OrderBy(x => x.Ordering)
+                .Select(cal => new ChecklistLookup(cal.CalendarName, cal.Id.ToString())).ToList(),
+            RegionsLookup = model.Regions.OrderBy(x => x.Ordering)
+                .Select(region => new ChecklistLookup(region.Area, region.Id.ToString())).ToList()
         };
 
-        model.FilterChoices.EventTypesLookup = calendars.OrderBy(x => x.Ordering).Select(cal => new ChecklistLookup(cal.CalendarName, cal.Id.ToString())).ToList();
-
+        // MFCMFC model.FilterChoices.EventTypesLookup = calendars.OrderBy(x => x.Ordering).Select(cal => new ChecklistLookup(cal.CalendarName, cal.Id.ToString())).ToList();
         model.SelectedFilters = _builder.BuildEventSearchFilters(model.FilterChoices, Url);
 
         return View(model);

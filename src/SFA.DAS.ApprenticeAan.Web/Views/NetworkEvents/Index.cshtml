@@ -1,4 +1,4 @@
-﻿﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 
 @model NetworkEventsViewModel
 @{
@@ -31,6 +31,7 @@
                         <partial name="_FilterEventDates" Model="Model.FilterChoices" />
                         <partial name="_FilterEventFormats" Model="Model.FilterChoices" />
                         <partial name="_FilterEventTypes" Model="Model.FilterChoices" />
+                        <partial name="_FilterRegions" />
                         <button type="submit" class="govuk-button" id="filters-submit-second">Apply filters</button>
                     </form>
                 </div>

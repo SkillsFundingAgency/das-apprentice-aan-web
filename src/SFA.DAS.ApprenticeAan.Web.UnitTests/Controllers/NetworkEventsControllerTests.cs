@@ -37,10 +37,11 @@ public class NetworkEventsControllerTests
     {
         var eventFormats = new List<EventFormat>();
         var eventTypes = new List<int>();
+        var regions = new List<int>();
         var fromDateFormatted = fromDate?.ToString("yyyy-MM-dd")!;
         var toDateFormatted = toDate?.ToString("yyyy-MM-dd")!;
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
-        outerApiMock.Setup(o => o.GetCalendarEvents(It.IsAny<Guid>(), fromDateFormatted, toDateFormatted, eventFormats, eventTypes, It.IsAny<CancellationToken>())).ReturnsAsync(expectedResult);
+        outerApiMock.Setup(o => o.GetCalendarEvents(It.IsAny<Guid>(), fromDateFormatted, toDateFormatted, eventFormats, eventTypes, regions, It.IsAny<CancellationToken>())).ReturnsAsync(expectedResult);
 
         var request = new GetNetworkEventsRequest
         {

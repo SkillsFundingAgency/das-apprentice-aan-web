@@ -17,7 +17,7 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
         AddDateSelectedFilters(eventFilterChoices, url, queryParameters, filters);
         AddEventFormatSelectedFilters(eventFilterChoices, url, queryParameters, filters);
         AddEventTypeSelectedFilters(eventFilterChoices, url, queryParameters, filters);
-
+        AddRegionSelectedFilters(eventFilterChoices, url, queryParameters, filters);
         return filters;
     }
 
@@ -69,7 +69,25 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
             eventTypesChecklistFiltered,
             queryParameters, filters.Count + 1, eventFilterChoices, url);
         if (filterEventType != null) filters.Add(filterEventType);
+    }
 
+    private static void AddRegionSelectedFilters(EventFilterChoices eventFilterChoices, IUrlHelper url,
+        List<string> queryParameters, ICollection<SelectedFilter> filters)
+    {
+        if (!eventFilterChoices.RegionIds.Any()) return;
+
+        var eventTypesChecklistFiltered = new List<ChecklistLookup>();
+        foreach (var a in eventFilterChoices.RegionsLookup)
+        {
+            eventTypesChecklistFiltered.AddRange(from b in eventFilterChoices.RegionIds
+                                                 where a.Value == b.ToString()
+                                                 select a);
+        }
+
+        var filterEventType = AddFilterChecklist("Regions", FilterFields.Region,
+            eventTypesChecklistFiltered,
+            queryParameters, filters.Count + 1, eventFilterChoices, url);
+        if (filterEventType != null) filters.Add(filterEventType);
     }
 
     private static List<string> BuildQueryParameters(EventFilterChoices eventFilterChoices)
@@ -128,7 +146,7 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
 
         var filtersToAdd = new List<FilterItem>();
 
-        if (filterToRemove is FilterFields.EventFormat or FilterFields.EventType)
+        if (filterToRemove is FilterFields.EventFormat or FilterFields.EventType or FilterFields.Region)
         {
             foreach (var filterValue in filterValues)
             {

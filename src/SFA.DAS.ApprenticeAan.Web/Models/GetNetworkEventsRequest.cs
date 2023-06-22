@@ -14,4 +14,5 @@ public class GetNetworkEventsRequest
     [FromQuery] public List<EventFormat> EventFormat { get; set; } = new List<EventFormat>();
 
     [FromQuery] public List<int> CalendarId { get; set; } = new List<int>();
+    [FromQuery] public List<int> RegionId { get; set; } = new List<int>();
 }
