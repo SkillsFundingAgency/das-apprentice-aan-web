@@ -63,6 +63,7 @@ public class NetworkEventsControllerTests
         model!.TotalCount.Should().Be(expectedResult.TotalCount);
         model.FilterChoices.FromDate?.ToApiString().Should().Be(fromDateFormatted);
         model.FilterChoices.ToDate?.ToApiString().Should().Be(toDateFormatted);
+        outerApiMock.Verify(o => o.GetCalendarEvents(It.IsAny<Guid>(), fromDateFormatted, toDateFormatted, eventFormats, eventTypes, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Test]
