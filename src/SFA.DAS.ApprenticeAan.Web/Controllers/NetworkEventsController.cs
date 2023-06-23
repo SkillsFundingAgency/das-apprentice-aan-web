@@ -7,7 +7,6 @@ using SFA.DAS.ApprenticeAan.Domain.Models;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
-using SFA.DAS.ApprenticeAan.Web.HtmlHelpers;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
@@ -36,8 +35,8 @@ public class NetworkEventsController : Controller
     [Route("", Name = RouteNames.NetworkEvents)]
     public async Task<IActionResult> Index(GetNetworkEventsRequest request, CancellationToken cancellationToken)
     {
-        var fromDateFormatted = DateTimeHelper.ToUrlFormat(request.FromDate)!;
-        var toDateFormatted = DateTimeHelper.ToUrlFormat(request.ToDate)!;
+        var fromDateFormatted = request.FromDate?.ToApiString()!;
+        var toDateFormatted = request.ToDate?.ToApiString()!;
         var calendarEventsResponse = await _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), fromDateFormatted,
             toDateFormatted, request.EventFormat, request.CalendarId, cancellationToken);
         var model = (NetworkEventsViewModel)calendarEventsResponse;

@@ -1,4 +1,4 @@
-﻿@using SFA.DAS.ApprenticeAan.Web.HtmlHelpers
+﻿@model SFA.DAS.ApprenticeAan.Domain.Models.EventFilterChoices
 <div class="govuk-form-group">
     <fieldset class="govuk-fieldset">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
@@ -8,13 +8,13 @@
             <label class="govuk-label" for="fromDate">
                 From date
             </label>
-            <input class="govuk-input" id="fromDate" name="fromDate" type="date" value="@DateTimeHelper.ToUrlFormat(Model.FromDate)">
+            <input class="govuk-input" id="fromDate" name="fromDate" type="date" value="@Model.FromDate?.ToApiString()" min="@DateTime.Today.ToApiString()">
         </div>
         <div class="govuk-form-group">
             <label class="govuk-label" for="toDate">
                 To date
             </label>
-            <input class="govuk-input" id="toDate" name="toDate" type="date" value="@DateTimeHelper.ToUrlFormat(Model.ToDate)">
+            <input class="govuk-input" id="toDate" name="toDate" type="date" value="@Model.ToDate?.ToApiString()" min="@DateTime.Today.ToApiString()">
         </div>
     </fieldset>
 </div>

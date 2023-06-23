@@ -1,4 +1,5 @@
 ﻿@using SFA.DAS.ApprenticeAan.Domain.Models
+@model EventFilterChoices
 @{
     var eventTypes = Model.CalendarIds as List<int>;
     var calendarLookup = Model.EventTypesLookup as List<ChecklistLookup>;

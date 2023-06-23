@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.Models;
-using SFA.DAS.ApprenticeAan.Web.HtmlHelpers;
+using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
@@ -79,12 +79,12 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
 
         if (eventFilterChoices.FromDate != null)
         {
-            queryParameters.Add("fromDate=" + DateTimeHelper.ToUrlFormat(eventFilterChoices.FromDate));
+            queryParameters.Add("fromDate=" + eventFilterChoices.FromDate?.ToApiString());
         }
 
         if (eventFilterChoices.ToDate != null)
         {
-            queryParameters.Add("toDate=" + DateTimeHelper.ToUrlFormat(eventFilterChoices.ToDate));
+            queryParameters.Add("toDate=" + eventFilterChoices.ToDate?.ToApiString());
         }
 
         queryParameters.AddRange(
@@ -110,7 +110,7 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
                     new()
                     {
                         ClearFilterLink = BuildQueryString(queryParameters, filterToRemove, eventFilterChoices,null,url), Order = 1,
-                        Value = DateTimeHelper.ToScreenFormat(eventFilter)
+                        Value = eventFilter.Value.ToScreenString()
                     }
                  }
              };
@@ -156,8 +156,8 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
         {
             switch (filterToRemove)
             {
-                case FilterFields.FromDate when p == "fromDate=" + DateTimeHelper.ToUrlFormat(eventFilterChoices!.FromDate):
-                case FilterFields.ToDate when p == "toDate=" + DateTimeHelper.ToUrlFormat(eventFilterChoices!.ToDate):
+                case FilterFields.FromDate when p == "fromDate=" + eventFilterChoices.FromDate?.ToApiString():
+                case FilterFields.ToDate when p == "toDate=" + eventFilterChoices.ToDate?.ToApiString():
                     continue;
                 case FilterFields.EventFormat:
                     ExcludeQueryParametersForMatchingEventFormats(eventFilterChoices, filterValue, p, queryParametersToBuild);
