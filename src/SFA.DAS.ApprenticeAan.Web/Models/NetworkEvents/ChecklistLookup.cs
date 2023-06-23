@@ -3,11 +3,10 @@ public class ChecklistLookup
 {
     public string Name { get; }
     public string Value { get; }
-    public bool Checked { get; set; }
-    public ChecklistLookup(string name, string value, bool check = false)
+    public bool Checked { get; set; } = false;
+    public ChecklistLookup(string name, string value)
     {
         Name = name;
         Value = value;
-        Checked = check;
     }
 }
