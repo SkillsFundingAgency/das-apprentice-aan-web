@@ -70,7 +70,6 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
                                                  select a);
         }
 
-        //MFCMFC
         foreach (var lookup in from lookup in eventFilterChoices.EventTypeChecklistDetails.Lookups from ef in eventFilterChoices.CalendarIds!.Where(ef => ef.ToString() == lookup.Value) select lookup)
         {
             lookup.Checked = true;
@@ -95,7 +94,6 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
                                             select a);
         }
 
-        //MFCMFC NEW ADDITION
         foreach (var lookup in from lookup in eventFilterChoices.RegionChecklistDetails.Lookups from ef in eventFilterChoices.RegionIds!.Where(ef => ef.ToString() == lookup.Value) select lookup)
         {
             lookup.Checked = true;

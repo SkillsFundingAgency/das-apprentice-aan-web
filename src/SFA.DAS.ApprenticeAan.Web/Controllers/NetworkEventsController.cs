@@ -81,7 +81,6 @@ public class NetworkEventsController : Controller
             }
         };
 
-        // MFCMFC model.FilterChoices.EventTypesLookup = calendars.OrderBy(x => x.Ordering).Select(cal => new ChecklistLookup(cal.CalendarName, cal.Id.ToString())).ToList();
         model.SelectedFilters = _builder.BuildEventSearchFilters(model.FilterChoices, Url);
 
         return View(model);
