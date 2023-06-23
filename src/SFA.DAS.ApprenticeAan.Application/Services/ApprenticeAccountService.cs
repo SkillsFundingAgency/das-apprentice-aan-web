@@ -1,6 +1,6 @@
-﻿using System.Net;
-using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+﻿using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+using System.Net;
 
 namespace SFA.DAS.ApprenticeAan.Application.Services;
 

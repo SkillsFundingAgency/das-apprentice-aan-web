@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ApprenticeAan.Domain.Models;
+using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
-
-namespace SFA.DAS.ApprenticeAan.Domain.Interfaces;
+namespace SFA.DAS.ApprenticeAan.Web.Interfaces;
 
 public interface IEventSearchQueryStringBuilder
 {

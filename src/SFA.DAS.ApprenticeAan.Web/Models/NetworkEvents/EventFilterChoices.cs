@@ -1,6 +1,6 @@
 ﻿using SFA.DAS.ApprenticeAan.Domain.Constants;
 
-namespace SFA.DAS.ApprenticeAan.Domain.Models;
+namespace SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
 public class EventFilterChoices
 {

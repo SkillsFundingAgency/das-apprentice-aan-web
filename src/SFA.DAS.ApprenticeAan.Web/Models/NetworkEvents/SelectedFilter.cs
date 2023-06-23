@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.ApprenticeAan.Domain.Models;
+﻿namespace SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
 public class SelectedFilter
 {

@@ -10,7 +10,9 @@ using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
+using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
+using SFA.DAS.ApprenticeAan.Web.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
@@ -54,12 +56,13 @@ public class NetworkEventsControllerTests
         var actualResult = sut.Index(request, new CancellationToken());
 
         var viewResult = actualResult.Result.As<ViewResult>();
-        //viewResult.Model.Should().BeEquivalentTo(expectedResult);
         var model = viewResult.Model as NetworkEventsViewModel;
         model!.Pagination.Page.Should().Be(expectedResult.Page);
         model!.Pagination.PageSize.Should().Be(expectedResult.PageSize);
         model!.Pagination.TotalPages.Should().Be(expectedResult.TotalPages);
         model!.TotalCount.Should().Be(expectedResult.TotalCount);
+        model.FilterChoices.FromDate?.ToApiString().Should().Be(fromDateFormatted);
+        model.FilterChoices.ToDate?.ToApiString().Should().Be(toDateFormatted);
     }
 
     [Test]

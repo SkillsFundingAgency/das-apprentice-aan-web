@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ApprenticeAan.Domain.Interfaces;
-using SFA.DAS.ApprenticeAan.Domain.Models;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
+using SFA.DAS.ApprenticeAan.Web.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
 namespace SFA.DAS.ApprenticeAan.Web.Services;
@@ -79,12 +78,12 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
 
         if (eventFilterChoices.FromDate != null)
         {
-            queryParameters.Add("fromDate=" + eventFilterChoices.FromDate?.ToApiString());
+            queryParameters.Add("fromDate=" + eventFilterChoices.FromDate.Value.ToApiString());
         }
 
         if (eventFilterChoices.ToDate != null)
         {
-            queryParameters.Add("toDate=" + eventFilterChoices.ToDate?.ToApiString());
+            queryParameters.Add("toDate=" + eventFilterChoices.ToDate.Value.ToApiString());
         }
 
         queryParameters.AddRange(
@@ -156,8 +155,8 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
         {
             switch (filterToRemove)
             {
-                case FilterFields.FromDate when p == "fromDate=" + eventFilterChoices.FromDate?.ToApiString():
-                case FilterFields.ToDate when p == "toDate=" + eventFilterChoices.ToDate?.ToApiString():
+                case FilterFields.FromDate when p == "fromDate=" + eventFilterChoices.FromDate!.Value.ToApiString():
+                case FilterFields.ToDate when p == "toDate=" + eventFilterChoices.ToDate!.Value.ToApiString():
                     continue;
                 case FilterFields.EventFormat:
                     ExcludeQueryParametersForMatchingEventFormats(eventFilterChoices, filterValue, p, queryParametersToBuild);
@@ -177,10 +176,14 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
         ChecklistLookup? filterValue, string p, ICollection<string> queryParametersToBuild)
     {
         var addParameter = true;
-        foreach (var choice in eventFilterChoices.EventFormats.Where(choice => choice.ToString() == filterValue?.Value)
-                     .Where(choice => p == "eventFormat=" + filterValue?.Value))
+        if (filterValue != null)
         {
-            addParameter = false;
+            foreach (var choice in eventFilterChoices.EventFormats
+                         .Where(choice => choice.ToString() == filterValue.Value)
+                         .Where(choice => p == "eventFormat=" + filterValue.Value))
+            {
+                addParameter = false;
+            }
         }
 
         if (addParameter)
@@ -194,10 +197,14 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
     {
         var addParameter = true;
 
-        foreach (var choice in eventFilterChoices.CalendarIds.Where(choice => choice.ToString() == filterValue?.Value)
-                     .Where(choice => p == "calendarId=" + filterValue?.Value))
+        if (filterValue != null)
         {
-            addParameter = false;
+            foreach (var choice in eventFilterChoices.CalendarIds
+                         .Where(choice => choice.ToString() == filterValue.Value)
+                         .Where(choice => p == "calendarId=" + filterValue.Value))
+            {
+                addParameter = false;
+            }
         }
 
         if (addParameter)

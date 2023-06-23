@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Extensions;
-using SFA.DAS.ApprenticeAan.Domain.Models;
+using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 using SFA.DAS.ApprenticeAan.Web.Services;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Services;
