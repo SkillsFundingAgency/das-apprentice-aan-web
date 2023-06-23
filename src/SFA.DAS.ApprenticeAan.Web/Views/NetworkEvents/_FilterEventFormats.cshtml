@@ -1,8 +1,8 @@
 ﻿@using SFA.DAS.ApprenticeAan.Domain.Constants
 @using SFA.DAS.ApprenticeAan.Domain.Models
 @{
-    var eventFormats = Model.FilterChoices.EventFormats as List<EventFormat>;
-    var eventFormatLookup = Model.FilterChoices.EventFormatsLookup as List<ChecklistLookup>;
+    var eventFormats = Model.EventFormats as List<EventFormat>;
+    var eventFormatLookup = Model.EventFormatsLookup as List<ChecklistLookup>;
 }
 <div class="govuk-form-group">
     <fieldset class="govuk-fieldset">

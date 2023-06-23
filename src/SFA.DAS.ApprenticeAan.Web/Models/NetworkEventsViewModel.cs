@@ -17,9 +17,6 @@ public class NetworkEventsViewModel
     // model that builds the filter choices into a model that can populate FE
     public List<SelectedFilter> SelectedFilters { get; set; } = new List<SelectedFilter>();
 
-    // calendars is populated from the Calendar table from aan-hub db to give a lookup for event types
-    public List<Calendar> Calendars { get; set; } = new List<Calendar>();
-
     public bool ShowFilterOptions => SelectedFilters.Any();
 
 

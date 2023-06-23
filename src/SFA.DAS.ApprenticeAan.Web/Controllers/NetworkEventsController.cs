@@ -52,7 +52,7 @@ public class NetworkEventsController : Controller
         model.FilterChoices.EventFormats = request.EventFormat;
         model.FilterChoices.CalendarIds = request.CalendarId;
 
-        model.Calendars = await _outerApiClient.GetCalendars();
+        var calendars = await _outerApiClient.GetCalendars();
 
         model.FilterChoices.EventFormatsLookup = new List<ChecklistLookup>
         {
@@ -61,7 +61,7 @@ public class NetworkEventsController : Controller
             new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString())
         };
 
-        model.FilterChoices.EventTypesLookup = model.Calendars.OrderBy(x => x.Ordering).Select(cal => new ChecklistLookup(cal.CalendarName, cal.Id.ToString())).ToList();
+        model.FilterChoices.EventTypesLookup = calendars.OrderBy(x => x.Ordering).Select(cal => new ChecklistLookup(cal.CalendarName, cal.Id.ToString())).ToList();
 
         model.SelectedFilters = _builder.BuildEventSearchFilters(model.FilterChoices, Url);
 

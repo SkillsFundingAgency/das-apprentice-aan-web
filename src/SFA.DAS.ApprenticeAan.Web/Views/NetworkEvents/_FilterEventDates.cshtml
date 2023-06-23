@@ -8,13 +8,13 @@
             <label class="govuk-label" for="fromDate">
                 From date
             </label>
-            <input class="govuk-input" id="fromDate" name="fromDate" type="date" value="@DateTimeHelper.ToUrlFormat(Model.FilterChoices.FromDate)">
+            <input class="govuk-input" id="fromDate" name="fromDate" type="date" value="@DateTimeHelper.ToUrlFormat(Model.FromDate)">
         </div>
         <div class="govuk-form-group">
             <label class="govuk-label" for="toDate">
                 To date
             </label>
-            <input class="govuk-input" id="toDate" name="toDate" type="date" value="@DateTimeHelper.ToUrlFormat(Model.FilterChoices.ToDate)">
+            <input class="govuk-input" id="toDate" name="toDate" type="date" value="@DateTimeHelper.ToUrlFormat(Model.ToDate)">
         </div>
     </fieldset>
 </div>
