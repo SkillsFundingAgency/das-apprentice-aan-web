@@ -1,6 +1,6 @@
 ﻿namespace SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
-public class FilterItem
+public class EventFilterItem
 {
     public string? Value { get; set; }
     public int Order { get; set; }

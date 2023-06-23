@@ -39,11 +39,16 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
         if (!eventFilterChoices.EventFormats.Any()) return;
 
         var eventFormatsChecklistFiltered = new List<ChecklistLookup>();
-        foreach (var a in eventFilterChoices.EventFormatsLookup)
+        foreach (var a in eventFilterChoices.EventFormatChecklistDetails.Lookups)
         {
             eventFormatsChecklistFiltered.AddRange(from b in eventFilterChoices.EventFormats
                                                    where a.Value == b.ToString()
                                                    select a);
+        }
+
+        foreach (var lookup in from lookup in eventFilterChoices.EventFormatChecklistDetails.Lookups from ef in eventFilterChoices.EventFormats!.Where(ef => ef.ToString() == lookup.Value) select lookup)
+        {
+            lookup.Checked = true;
         }
 
         var filterEventFormat = AddFilterChecklist("Event format", FilterFields.EventFormat,
@@ -58,11 +63,17 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
         if (!eventFilterChoices.CalendarIds.Any()) return;
 
         var eventTypesChecklistFiltered = new List<ChecklistLookup>();
-        foreach (var a in eventFilterChoices.EventTypesLookup)
+        foreach (var a in eventFilterChoices.EventTypeChecklistDetails.Lookups)
         {
             eventTypesChecklistFiltered.AddRange(from b in eventFilterChoices.CalendarIds
                                                  where a.Value == b.ToString()
                                                  select a);
+        }
+
+        //MFCMFC
+        foreach (var lookup in from lookup in eventFilterChoices.EventTypeChecklistDetails.Lookups from ef in eventFilterChoices.CalendarIds!.Where(ef => ef.ToString() == lookup.Value) select lookup)
+        {
+            lookup.Checked = true;
         }
 
         var filterEventType = AddFilterChecklist("Event type", FilterFields.EventType,
@@ -77,17 +88,23 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
         if (!eventFilterChoices.RegionIds.Any()) return;
 
         var regionsChecklistFilter = new List<ChecklistLookup>();
-        foreach (var a in eventFilterChoices.RegionsLookup)
+        foreach (var a in eventFilterChoices.RegionChecklistDetails.Lookups)
         {
             regionsChecklistFilter.AddRange(from b in eventFilterChoices.RegionIds
                                             where a.Value == b.ToString()
                                             select a);
         }
 
-        var filterEventType = AddFilterChecklist("Regions", FilterFields.Region,
+        //MFCMFC NEW ADDITION
+        foreach (var lookup in from lookup in eventFilterChoices.RegionChecklistDetails.Lookups from ef in eventFilterChoices.RegionIds!.Where(ef => ef.ToString() == lookup.Value) select lookup)
+        {
+            lookup.Checked = true;
+        }
+
+        var filterRegion = AddFilterChecklist("Regions", FilterFields.Region,
             regionsChecklistFilter,
             queryParameters, filters.Count + 1, eventFilterChoices, url);
-        if (filterEventType != null) filters.Add(filterEventType);
+        if (filterRegion != null) filters.Add(filterRegion);
     }
 
     private static List<string> BuildQueryParameters(EventFilterChoices eventFilterChoices)
@@ -120,7 +137,7 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
              {
                  FieldName = fieldName,
                  FieldOrder = filterFieldOrder,
-                 Filters = new List<FilterItem>
+                 Filters = new List<EventFilterItem>
                  {
                     new()
                     {
@@ -139,17 +156,17 @@ public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
             {
                 FieldName = fieldName,
                 FieldOrder = filterFieldOrder,
-                Filters = new List<FilterItem> { }
+                Filters = new List<EventFilterItem> { }
             };
 
-        var filtersToAdd = new List<FilterItem>();
+        var filtersToAdd = new List<EventFilterItem>();
 
         if (filterToRemove is FilterFields.EventFormat or FilterFields.EventType or FilterFields.Region)
         {
             foreach (var filterValue in filterValues)
             {
                 order++;
-                filtersToAdd.Add(new FilterItem
+                filtersToAdd.Add(new EventFilterItem
                 {
                     ClearFilterLink = BuildQueryString(queryParameters, filterToRemove, eventFilterChoices, filterValue, url),
                     Order = order,

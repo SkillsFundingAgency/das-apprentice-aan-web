@@ -110,11 +110,16 @@ public class EventSearchQueryStringBuilderTests
         var eventFilters = new EventFilterChoices
         {
             EventFormats = new List<EventFormat>(),
-            EventFormatsLookup = new List<ChecklistLookup>
+
+            EventFormatChecklistDetails = new ChecklistDetails
             {
-                new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString()),
-                new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString()),
-                new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString())
+                InputName = "eventFormat",
+                Lookups = new List<ChecklistLookup>
+                {
+                    new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString()),
+                    new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString()),
+                    new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString())
+                }
             }
         };
 
@@ -210,8 +215,12 @@ public class EventSearchQueryStringBuilderTests
             .Returns(locationUrl);
 
         var service = new EventSearchQueryStringBuilder();
-        eventFilterChoices.EventTypesLookup = eventTypesLookup;
-        ;
+
+        eventFilterChoices.EventTypeChecklistDetails = new ChecklistDetails
+        {
+            InputName = "calendarId",
+            Lookups = eventTypesLookup
+        };
         var actual = service.BuildEventSearchFilters(eventFilterChoices, mockUrlHelper.Object);
 
         if (expectedNumberOfFilters == 0)

@@ -48,7 +48,8 @@ public class NetworkEventsControllerTests
             FromDate = fromDate,
             ToDate = toDate,
             EventFormat = eventFormats,
-            CalendarId = eventTypes
+            CalendarId = eventTypes,
+            RegionId = regions
         };
 
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
@@ -64,7 +65,7 @@ public class NetworkEventsControllerTests
         model!.TotalCount.Should().Be(expectedResult.TotalCount);
         model.FilterChoices.FromDate?.ToApiString().Should().Be(fromDateFormatted);
         model.FilterChoices.ToDate?.ToApiString().Should().Be(toDateFormatted);
-        outerApiMock.Verify(o => o.GetCalendarEvents(It.IsAny<Guid>(), fromDateFormatted, toDateFormatted, eventFormats, eventTypes, It.IsAny<CancellationToken>()), Times.Once);
+        outerApiMock.Verify(o => o.GetCalendarEvents(It.IsAny<Guid>(), fromDateFormatted, toDateFormatted, eventFormats, eventTypes, regions, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Test]

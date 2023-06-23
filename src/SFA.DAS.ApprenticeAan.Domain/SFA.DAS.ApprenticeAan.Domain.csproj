@@ -11,8 +11,4 @@
     <PackageReference Include="RestEase" Version="1.6.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>

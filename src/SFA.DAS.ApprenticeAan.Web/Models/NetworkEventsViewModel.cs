@@ -17,8 +17,6 @@ public class NetworkEventsViewModel
     // model that builds the filter choices into a model that can populate FE
     public List<SelectedFilter> SelectedFilters { get; set; } = new List<SelectedFilter>();
 
-    // Regions is populated from the Region table from aan-hub db to give a lookup for event types
-    public List<Region> Regions { get; set; } = new List<Region>();
 
     public bool ShowFilterOptions => SelectedFilters.Any();
 

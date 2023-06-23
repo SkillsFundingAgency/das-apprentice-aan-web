@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Extensions;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
-using SFA.DAS.ApprenticeAan.Domain.Models;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
@@ -49,7 +48,7 @@ public class NetworkEventsController : Controller
 
         var calendars = await _outerApiClient.GetCalendars();
         var regionsResult = await _outerApiClient.GetRegions();
-        model.Regions = regionsResult.Regions;
+        var regions = regionsResult.Regions;
 
         model.FilterChoices = new EventFilterChoices
         {
@@ -58,16 +57,28 @@ public class NetworkEventsController : Controller
             EventFormats = request.EventFormat,
             CalendarIds = request.CalendarId,
             RegionIds = request.RegionId,
-            EventFormatsLookup = new List<ChecklistLookup>
+            EventFormatChecklistDetails = new ChecklistDetails
             {
-                new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString()),
-                new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString()),
-                new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString())
+                InputName = "eventFormat",
+                Lookups = new List<ChecklistLookup>
+                {
+                    new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString()),
+                    new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString()),
+                    new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString())
+                }
             },
-            EventTypesLookup = model.Calendars.OrderBy(x => x.Ordering)
+            EventTypeChecklistDetails = new ChecklistDetails
+            {
+                InputName = "calendarId",
+                Lookups = calendars.OrderBy(x => x.Ordering)
                 .Select(cal => new ChecklistLookup(cal.CalendarName, cal.Id.ToString())).ToList(),
-            RegionsLookup = model.Regions.OrderBy(x => x.Ordering)
+            },
+            RegionChecklistDetails = new ChecklistDetails
+            {
+                InputName = "regionId",
+                Lookups = regions.OrderBy(x => x.Ordering)
                 .Select(region => new ChecklistLookup(region.Area, region.Id.ToString())).ToList()
+            }
         };
 
         // MFCMFC model.FilterChoices.EventTypesLookup = calendars.OrderBy(x => x.Ordering).Select(cal => new ChecklistLookup(cal.CalendarName, cal.Id.ToString())).ToList();

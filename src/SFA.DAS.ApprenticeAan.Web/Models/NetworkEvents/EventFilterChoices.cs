@@ -9,9 +9,7 @@ public class EventFilterChoices
     public List<EventFormat> EventFormats { get; set; } = new List<EventFormat>();
     public List<int> CalendarIds { get; set; } = new List<int>();
     public List<int> RegionIds { get; set; } = new List<int>();
-    public List<ChecklistLookup> EventFormatsLookup { get; set; } = new List<ChecklistLookup>();
-
-
-    public List<ChecklistLookup> EventTypesLookup { get; set; } = new List<ChecklistLookup>();
-    public List<ChecklistLookup> RegionsLookup { get; set; } = new List<ChecklistLookup>();
+    public ChecklistDetails EventFormatChecklistDetails { get; set; } = new ChecklistDetails();
+    public ChecklistDetails EventTypeChecklistDetails { get; set; } = new ChecklistDetails();
+    public ChecklistDetails RegionChecklistDetails { get; set; } = new ChecklistDetails();
 }
