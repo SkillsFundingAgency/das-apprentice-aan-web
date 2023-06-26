@@ -257,4 +257,107 @@ public class EventSearchQueryStringBuilderTests
             filter.Value.Should().Be(parameterName);
         }
     }
+    [TestCase(null, null, null, "", "", "", "", 0, true)]
+    [TestCase(1, null, null, "", "", "", "Regions", 1, true)]
+    [TestCase(null, 1, null, "", "", "", "Regions", 1, true)]
+    [TestCase(null, null, 1, "", "", "", "Regions", 1, true)]
+    [TestCase(1, 2, null, "?regionId=2", "?regionId=1", "", "Regions", 2, true)]
+    [TestCase(1, null, 3, "?regionId=3", "?regionId=1", "", "Regions", 2, true)]
+    [TestCase(null, 2, 3, "?regionId=3", "?regionId=2", "", "Regions", 2, true)]
+    [TestCase(1, 2, 3, "?regionId=2&regionId=3", "?regionId=1&regionId=3", "?regionId=1&regionId=2", "Regions", 3, true)]
+    [TestCase(1, 2, 3, "?regionId=3", "?regionId=2", "", "Regions", 2, false)]
+    public void BuildEventSearchFiltersForRegions(int? regionId1, int? regionId2, int? regionId3,
+       string expectedFirst, string expectedSecond, string expectedThird, string fieldName,
+       int expectedNumberOfFilters, bool regionId1Checked)
+    {
+        var parameterName = "regionId";
+        var eventFilterChoices = new EventFilterChoices { RegionIds = new List<int>() };
+        var regionLookups = new List<ChecklistLookup>();
+
+        var eventFilters = new EventFilterChoices
+        {
+            RegionIds = new List<int>()
+        };
+
+        if (regionId1 != null)
+        {
+            var lookup = new ChecklistLookup(parameterName, regionId1.Value.ToString())
+            {
+                Checked = regionId1Checked
+            };
+
+            regionLookups.Add(lookup);
+
+            eventFilters.RegionIds.Add(regionId1.Value);
+
+            if (regionId1Checked)
+            {
+                eventFilterChoices.RegionIds.Add(regionId1.Value);
+            }
+        }
+
+        if (regionId2 != null)
+        {
+            regionLookups.Add(new ChecklistLookup(parameterName, regionId2.Value.ToString()));
+            eventFilters.RegionIds.Add(regionId2.Value);
+            eventFilterChoices.RegionIds.Add(regionId2.Value);
+        }
+
+        if (regionId3 != null)
+        {
+            regionLookups.Add(new ChecklistLookup(parameterName, regionId3.Value.ToString()));
+            eventFilters.RegionIds.Add(regionId3.Value);
+            eventFilterChoices.RegionIds.Add(regionId3.Value);
+        }
+
+        var locationUrl = "network-events";
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(locationUrl);
+
+        var service = new EventSearchQueryStringBuilder();
+
+        eventFilterChoices.RegionChecklistDetails = new ChecklistDetails
+        {
+            InputName = "regionId",
+            Lookups = regionLookups
+        };
+
+        var actual = service.BuildEventSearchFilters(eventFilterChoices, mockUrlHelper.Object);
+
+        if (expectedNumberOfFilters == 0)
+        {
+            actual.Count.Should().Be(0);
+            return;
+        }
+
+        var firstItem = actual.First();
+        firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
+        firstItem.FieldName.Should().Be(fieldName);
+        firstItem.FieldOrder.Should().Be(1);
+        if (firstItem.Filters.Count > 0)
+        {
+            var filter = firstItem.Filters.First();
+            filter.ClearFilterLink.Should().Be(locationUrl + expectedFirst);
+            filter.Order.Should().Be(1);
+            filter.Value.Should().Be(parameterName);
+        }
+
+        if (firstItem.Filters.Count > 1)
+        {
+            var filter = firstItem.Filters.Skip(1).First();
+            filter.ClearFilterLink.Should().Be(locationUrl + expectedSecond);
+            filter.Order.Should().Be(2);
+            filter.Value.Should().Be(parameterName);
+        }
+
+        if (firstItem.Filters.Count > 2)
+        {
+            var filter = firstItem.Filters.Skip(2).First();
+            filter.ClearFilterLink.Should().Be(locationUrl + expectedThird);
+            filter.Order.Should().Be(3);
+            filter.Value.Should().Be(parameterName);
+        }
+    }
 }
