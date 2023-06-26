@@ -139,9 +139,9 @@ public class NetworkEventDetailsViewModelTests
     public void EmailLink_ReturnsUrlEscapedMailtoLink(CalendarEvent calendarEvent)
     {
         calendarEvent.ContactEmail = "me@email.com";
-        calendarEvent.Description = "This Is A Description";
+        calendarEvent.Title = "This Is A Title";
 
-        string expected = $"mailto:{calendarEvent.ContactEmail}?subject=This%20Is%20A%20Description";
+        string expected = $"mailto:{calendarEvent.ContactEmail}?subject=This%20Is%20A%20Title";
 
         var sut = new NetworkEventDetailsViewModel(calendarEvent, Guid.NewGuid(), "someapikey", "someprivatesignature");
 
