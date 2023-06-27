@@ -28,7 +28,7 @@ public class NetworkEventDetailsViewModel
     public int AttendeeCount => Attendees.Count;
     public IReadOnlyList<EventGuest> EventGuests { get; }
     public bool IsSignedUp { get; init; }
-    public string EmailLink => MailtoLinkValue.FromAddressAndSubject(ContactEmail, Description);
+    public string EmailLink => MailtoLinkValue.FromAddressAndSubject(ContactEmail, Title);
     public string StaticMapImageLink => MapLinkGenerator.GetStaticImagePreviewLink(LocationDetails!.Value, GoogleMapsApiKey, GoogleMapsPrivateKey);
     public string FullMapLink => MapLinkGenerator.GetLinkToFullMap(LocationDetails!.Value.Latitude!.Value, LocationDetails!.Value.Longitude!.Value);
     public string EventsHubUrl { get; set; } = "#";

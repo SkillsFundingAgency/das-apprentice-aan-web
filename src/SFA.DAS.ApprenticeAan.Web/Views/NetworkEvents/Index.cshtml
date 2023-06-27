@@ -1,12 +1,8 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using SFA.DAS.ApprenticeAan.Web.Extensions;
+﻿﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 
 @model NetworkEventsViewModel
 @{
     ViewData["Title"] = "Search Network Events";
-
-    var hideSearchElements = "govuk-visually-hidden";
-    //hideSearchElements = "";
 
     var totalCountDescription = $"{Model.TotalCount} results";
     if (Model.TotalCount == 1)
@@ -19,19 +15,6 @@
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">Search network events</h1>
         <p>All events listed on this page are relevant to your profile preferences. You can use filters to narrow your search parameters further and find the most suitable events from within your preferred options. </p>
-        <form method="POST" role="search" aria-label="On this page">
-            <div class="govuk-form-group govuk-!-margin-bottom-9  @hideSearchElements">
-                <label for="searchTerm" class="govuk-label">
-                    Search for events
-                </label>
-                <div class="das-search-form__group">
-                    <input id="searchTerm" name="searchTerm" title="Search" class="govuk-input das-search-form__input" type="text" value="" placeholder="Search" />
-                    <div class="das-search-form__button-wrap">
-                        <button class="govuk-button das-search-form__button" type="submit">Search</button>
-                    </div>
-                </div>
-            </div>
-        </form>
     </div>
 </div>
 <div class="govuk-grid-row">
@@ -44,16 +27,10 @@
                 <partial name="_SelectedEventFilters" />
                 <div class="das-filter__body das-!-show--from-tablet" id="events-filter-options">
                     <form asp-route="@RouteNames.NetworkEvents" method="GET">
-                    <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
-                        <div class="govuk-form-group">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                    Event date
-                                </legend>
-                                <partial name="_FilterEventDates"/>
-                            </fieldset>
-                        </div>
-                 
+                        <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
+                        <partial name="_FilterEventDates" Model="Model.FilterChoices" />
+                        <partial name="_FilterEventFormats" Model="Model.FilterChoices" />
+                        <partial name="_FilterEventTypes" Model="Model.FilterChoices" />
                         <button type="submit" class="govuk-button" id="filters-submit-second">Apply filters</button>
                     </form>
                 </div>
@@ -69,9 +46,9 @@
         </p>
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 ">
         <div class="das-search-results">
-            
-            <partial name="_CalendarEvents"  />
-            
+
+            <partial name="_CalendarEvents" />
+
         </div>
     </div>
 </div>

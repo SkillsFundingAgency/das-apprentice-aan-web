@@ -1,14 +1,7 @@
-﻿using AutoFixture.NUnit3;
-using FluentAssertions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using SFA.DAS.ApprenticeAan.Domain.Interfaces;
-using SFA.DAS.ApprenticeAan.Domain.Models;
+﻿using FluentAssertions;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
-using SFA.DAS.ApprenticeAan.Web.Controllers;
 using SFA.DAS.ApprenticeAan.Web.Models;
-using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
+using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models;
@@ -18,16 +11,16 @@ public class NetworkEventsViewModelTests
 {
     [Test]
     [MoqAutoData]
-    public void NetworkEventsViewModel_From_GetCalendarEventsQueryResult(GetCalendarEventsQueryResult result, IUrlHelper helper)
+    public void NetworkEventsViewModel_From_GetCalendarEventsQueryResult(GetCalendarEventsQueryResult result)
     {
-        var sut = new NetworkEventsViewModel(result, helper);
+        var sut = (NetworkEventsViewModel)result;
 
         Assert.Multiple(() =>
         {
             Assert.That(sut, Is.Not.Null);
-            Assert.That(sut.Page, Is.EqualTo(result.Page));
-            Assert.That(sut.PageSize, Is.EqualTo(result.PageSize));
-            Assert.That(sut.TotalPages, Is.EqualTo(result.TotalPages));
+            Assert.That(sut.Pagination.Page, Is.EqualTo(result.Page));
+            Assert.That(sut.Pagination.PageSize, Is.EqualTo(result.PageSize));
+            Assert.That(sut.Pagination.TotalPages, Is.EqualTo(result.TotalPages));
             Assert.That(sut.TotalCount, Is.EqualTo(result.TotalCount));
             Assert.That(sut.CalendarEvents, Is.EquivalentTo(result.CalendarEvents));
         });
@@ -37,14 +30,14 @@ public class NetworkEventsViewModelTests
     [TestCase(false, false)]
     public void ShowFilterOptions_ReturningExpectedValueFromParameters(bool searchFilterAdded, bool expected)
     {
-        var model = new NetworkEventsViewModel(new Mock<IUrlHelper>().Object)
+        var model = new NetworkEventsViewModel()
         {
-            SearchFilters = new List<SelectedFilter>()
+            SelectedFilters = new List<SelectedFilter>()
         };
 
         if (searchFilterAdded)
         {
-            model.SearchFilters.Add(new SelectedFilter());
+            model.SelectedFilters.Add(new SelectedFilter());
         }
 
         var actual = model.ShowFilterOptions;

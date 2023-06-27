@@ -7,8 +7,21 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Extensions;
 public class DateTimeExtensionsTests
 {
     [Test, AutoData]
-    public void ToApiString_ReturnsFormattedDateString(DateTime date)
+    public void ToApiString_ReturnsFormattedDateOnlyString(DateTime date)
     {
         DateTimeExtensions.ToApiString(DateOnly.FromDateTime(date)).Should().Be(date.ToString("yyyy-MM-dd"));
     }
+
+    [Test, AutoData]
+    public void ToApiString_ReturnsFormattedDateTimeString(DateTime date)
+    {
+        date.ToApiString().Should().Be(date.ToString("yyyy-MM-dd"));
+    }
+
+    [Test, AutoData]
+    public void ToScreenString_ReturnsFormattedDateTimeString(DateTime date)
+    {
+        date.ToScreenString().Should().Be(date.ToString("dd/MM/yyyy"));
+    }
+
 }

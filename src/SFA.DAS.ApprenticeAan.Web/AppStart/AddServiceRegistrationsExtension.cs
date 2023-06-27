@@ -2,6 +2,7 @@
 using SFA.DAS.ApprenticeAan.Application.Services;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
+using SFA.DAS.ApprenticeAan.Web.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Services;
 using SFA.DAS.ApprenticePortal.SharedUi.Services;
 using SFA.DAS.Http.Configuration;

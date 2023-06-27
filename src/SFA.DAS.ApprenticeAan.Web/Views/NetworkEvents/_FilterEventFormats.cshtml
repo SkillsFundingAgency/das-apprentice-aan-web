@@ -1,0 +1,31 @@
+﻿@using SFA.DAS.ApprenticeAan.Domain.Constants
+@using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents
+@model EventFilterChoices
+@{
+    var eventFormats = Model.EventFormats as List<EventFormat>;
+    var eventFormatLookup = Model.EventFormatsLookup as List<ChecklistLookup>;
+}
+<div class="govuk-form-group">
+    <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+            Event format
+        </legend>
+        <div class="govuk-checkboxes govuk-checkboxes--small">
+            @foreach (var eventF in eventFormatLookup!)
+            {
+                var checkedValue = string.Empty;
+                @foreach (var ef in eventFormats!.Where(ef => ef.ToString() == eventF.Value))
+                    {
+                        checkedValue = " checked ";
+                    }
+
+                <div class="govuk-checkboxes__item">
+                    <input class="govuk-checkboxes__input" id="format-person" name="eventFormat" type="checkbox" value="@eventF.Value" @checkedValue>
+                    <label class="govuk-label govuk-checkboxes__label" for="format-person">
+                        @eventF.Name
+                    </label>
+                </div>
+            }
+        </div>
+    </fieldset>
+</div>

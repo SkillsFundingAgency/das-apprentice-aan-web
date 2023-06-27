@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ApprenticeAan.Domain.Constants;
+using SFA.DAS.ApprenticeAan.Domain.Extensions;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
-using SFA.DAS.ApprenticeAan.Web.HtmlHelpers;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
+using SFA.DAS.ApprenticeAan.Web.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
@@ -33,16 +35,34 @@ public class NetworkEventsController : Controller
     [Route("", Name = RouteNames.NetworkEvents)]
     public async Task<IActionResult> Index(GetNetworkEventsRequest request, CancellationToken cancellationToken)
     {
-        var fromDateFormatted = DateTimeHelper.ToUrlFormat(request.FromDate)!;
-        var toDateFormatted = DateTimeHelper.ToUrlFormat(request.ToDate)!;
+        var fromDateFormatted = request.FromDate?.ToApiString()!;
+        var toDateFormatted = request.ToDate?.ToApiString()!;
         var calendarEventsResponse = await _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), fromDateFormatted,
-            toDateFormatted, cancellationToken);
-        var model = new NetworkEventsViewModel(calendarEventsResponse, Url);
+            toDateFormatted, request.EventFormat, request.CalendarId, cancellationToken);
+        var model = (NetworkEventsViewModel)calendarEventsResponse;
 
-        model.EventFilters.FromDate = request.FromDate;
-        model.EventFilters.ToDate = request.ToDate;
+        foreach (var calendarEvent in model.CalendarEvents)
+        {
+            calendarEvent.CalendarEventLink = Url.RouteUrl(RouteNames.NetworkEventDetails, new { id = calendarEvent.CalendarEventId })!;
+        }
 
-        model.SearchFilters = _builder.BuildEventSearchFilters(model.EventFilters, Url);
+        model.FilterChoices.FromDate = request.FromDate;
+        model.FilterChoices.ToDate = request.ToDate;
+        model.FilterChoices.EventFormats = request.EventFormat;
+        model.FilterChoices.CalendarIds = request.CalendarId;
+
+        var calendars = await _outerApiClient.GetCalendars();
+
+        model.FilterChoices.EventFormatsLookup = new List<ChecklistLookup>
+        {
+            new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString()),
+            new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString()),
+            new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString())
+        };
+
+        model.FilterChoices.EventTypesLookup = calendars.OrderBy(x => x.Ordering).Select(cal => new ChecklistLookup(cal.CalendarName, cal.Id.ToString())).ToList();
+
+        model.SelectedFilters = _builder.BuildEventSearchFilters(model.FilterChoices, Url);
 
         return View(model);
     }
@@ -85,8 +105,8 @@ public class NetworkEventsController : Controller
     {
         var memberId = User.GetAanMemberId();
         await _outerApiClient.PutAttendance(calendarEventId, memberId, new SetAttendanceStatusRequest(newStatus), new CancellationToken());
-        return newStatus 
-            ? RedirectToAction("SignUpConfirmation") 
+        return newStatus
+            ? RedirectToAction("SignUpConfirmation")
             : RedirectToAction("CancellationConfirmation");
     }
 }

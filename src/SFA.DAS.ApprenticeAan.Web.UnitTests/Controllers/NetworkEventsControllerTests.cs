@@ -1,24 +1,31 @@
-﻿using System.Net;
-using AutoFixture.NUnit3;
+﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using RestEase;
+using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
-using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
+using SFA.DAS.ApprenticeAan.Web.Extensions;
+using SFA.DAS.ApprenticeAan.Web.Infrastructure;
+using SFA.DAS.ApprenticeAan.Web.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Models;
+using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
+using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
-using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
-using SFA.DAS.ApprenticeAan.Web.Configuration;
+using System.Net;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
 
 public class NetworkEventsControllerTests
 {
+    private static readonly string AllNetworksUrl = Guid.NewGuid().ToString();
+
     [Test, MoqAutoData]
     public void GetCalendarEvents_ReturnsApiResponse(
         [Frozen] Mock<IOuterApiClient> outerApiMock,
@@ -28,22 +35,35 @@ public class NetworkEventsControllerTests
         DateTime? toDate,
         Guid apprenticeId)
     {
+        var eventFormats = new List<EventFormat>();
+        var eventTypes = new List<int>();
         var fromDateFormatted = fromDate?.ToString("yyyy-MM-dd")!;
         var toDateFormatted = toDate?.ToString("yyyy-MM-dd")!;
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
-        outerApiMock.Setup(o => o.GetCalendarEvents(It.IsAny<Guid>(), fromDateFormatted, toDateFormatted, It.IsAny<CancellationToken>())).ReturnsAsync(expectedResult);
+        outerApiMock.Setup(o => o.GetCalendarEvents(It.IsAny<Guid>(), fromDateFormatted, toDateFormatted, eventFormats, eventTypes, It.IsAny<CancellationToken>())).ReturnsAsync(expectedResult);
 
         var request = new GetNetworkEventsRequest
         {
             FromDate = fromDate,
-            ToDate = toDate
+            ToDate = toDate,
+            EventFormat = eventFormats,
+            CalendarId = eventTypes
         };
 
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.NetworkEvents, AllNetworksUrl);
+
         var actualResult = sut.Index(request, new CancellationToken());
 
         var viewResult = actualResult.Result.As<ViewResult>();
-        viewResult.Model.Should().BeEquivalentTo(expectedResult);
+        var model = viewResult.Model as NetworkEventsViewModel;
+        model!.Pagination.Page.Should().Be(expectedResult.Page);
+        model!.Pagination.PageSize.Should().Be(expectedResult.PageSize);
+        model!.Pagination.TotalPages.Should().Be(expectedResult.TotalPages);
+        model!.TotalCount.Should().Be(expectedResult.TotalCount);
+        model.FilterChoices.FromDate?.ToApiString().Should().Be(fromDateFormatted);
+        model.FilterChoices.ToDate?.ToApiString().Should().Be(toDateFormatted);
+        outerApiMock.Verify(o => o.GetCalendarEvents(It.IsAny<Guid>(), fromDateFormatted, toDateFormatted, eventFormats, eventTypes, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Test]
