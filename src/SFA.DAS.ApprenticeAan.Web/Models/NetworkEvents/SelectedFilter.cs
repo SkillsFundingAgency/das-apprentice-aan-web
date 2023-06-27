@@ -4,5 +4,5 @@ public class SelectedFilter
 {
     public string FieldName { get; set; } = null!;
     public int FieldOrder { get; set; }
-    public List<FilterItem> Filters { get; set; } = new List<FilterItem>();
+    public List<EventFilterItem> Filters { get; set; } = new List<EventFilterItem>();
 }

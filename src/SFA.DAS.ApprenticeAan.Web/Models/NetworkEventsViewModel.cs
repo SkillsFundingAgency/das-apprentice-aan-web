@@ -17,6 +17,7 @@ public class NetworkEventsViewModel
     // model that builds the filter choices into a model that can populate FE
     public List<SelectedFilter> SelectedFilters { get; set; } = new List<SelectedFilter>();
 
+
     public bool ShowFilterOptions => SelectedFilters.Any();
 
 

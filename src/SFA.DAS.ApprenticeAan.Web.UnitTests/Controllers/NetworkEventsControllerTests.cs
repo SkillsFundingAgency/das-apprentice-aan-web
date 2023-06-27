@@ -28,26 +28,28 @@ public class NetworkEventsControllerTests
 
     [Test, MoqAutoData]
     public void GetCalendarEvents_ReturnsApiResponse(
-        [Frozen] Mock<IOuterApiClient> outerApiMock,
-        [Greedy] NetworkEventsController sut,
-        GetCalendarEventsQueryResult expectedResult,
-        DateTime? fromDate,
-        DateTime? toDate,
-        Guid apprenticeId)
+    [Frozen] Mock<IOuterApiClient> outerApiMock,
+    [Greedy] NetworkEventsController sut,
+    GetCalendarEventsQueryResult expectedResult,
+    DateTime? fromDate,
+    DateTime? toDate,
+    Guid apprenticeId)
     {
         var eventFormats = new List<EventFormat>();
         var eventTypes = new List<int>();
+        var regions = new List<int>();
         var fromDateFormatted = fromDate?.ToString("yyyy-MM-dd")!;
         var toDateFormatted = toDate?.ToString("yyyy-MM-dd")!;
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
-        outerApiMock.Setup(o => o.GetCalendarEvents(It.IsAny<Guid>(), fromDateFormatted, toDateFormatted, eventFormats, eventTypes, It.IsAny<CancellationToken>())).ReturnsAsync(expectedResult);
+        outerApiMock.Setup(o => o.GetCalendarEvents(It.IsAny<Guid>(), fromDateFormatted, toDateFormatted, eventFormats, eventTypes, regions, It.IsAny<CancellationToken>())).ReturnsAsync(expectedResult);
 
         var request = new GetNetworkEventsRequest
         {
             FromDate = fromDate,
             ToDate = toDate,
             EventFormat = eventFormats,
-            CalendarId = eventTypes
+            CalendarId = eventTypes,
+            RegionId = regions
         };
 
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
@@ -63,7 +65,7 @@ public class NetworkEventsControllerTests
         model!.TotalCount.Should().Be(expectedResult.TotalCount);
         model.FilterChoices.FromDate?.ToApiString().Should().Be(fromDateFormatted);
         model.FilterChoices.ToDate?.ToApiString().Should().Be(toDateFormatted);
-        outerApiMock.Verify(o => o.GetCalendarEvents(It.IsAny<Guid>(), fromDateFormatted, toDateFormatted, eventFormats, eventTypes, It.IsAny<CancellationToken>()), Times.Once);
+        outerApiMock.Verify(o => o.GetCalendarEvents(It.IsAny<Guid>(), fromDateFormatted, toDateFormatted, eventFormats, eventTypes, regions, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Test]

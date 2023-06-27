@@ -38,7 +38,7 @@ public class NetworkEventsController : Controller
         var fromDateFormatted = request.FromDate?.ToApiString()!;
         var toDateFormatted = request.ToDate?.ToApiString()!;
         var calendarEventsResponse = await _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), fromDateFormatted,
-            toDateFormatted, request.EventFormat, request.CalendarId, cancellationToken);
+            toDateFormatted, request.EventFormat, request.CalendarId, request.RegionId, cancellationToken);
         var model = (NetworkEventsViewModel)calendarEventsResponse;
 
         foreach (var calendarEvent in model.CalendarEvents)
@@ -46,21 +46,43 @@ public class NetworkEventsController : Controller
             calendarEvent.CalendarEventLink = Url.RouteUrl(RouteNames.NetworkEventDetails, new { id = calendarEvent.CalendarEventId })!;
         }
 
-        model.FilterChoices.FromDate = request.FromDate;
-        model.FilterChoices.ToDate = request.ToDate;
-        model.FilterChoices.EventFormats = request.EventFormat;
-        model.FilterChoices.CalendarIds = request.CalendarId;
-
         var calendars = await _outerApiClient.GetCalendars();
+        var regionsResult = await _outerApiClient.GetRegions();
+        var regions = regionsResult.Regions;
 
-        model.FilterChoices.EventFormatsLookup = new List<ChecklistLookup>
+        model.FilterChoices = new EventFilterChoices
         {
-            new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString()),
-            new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString()),
-            new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString())
+            FromDate = request.FromDate,
+            ToDate = request.ToDate,
+            EventFormats = request.EventFormat,
+            CalendarIds = request.CalendarId,
+            RegionIds = request.RegionId,
+            EventFormatChecklistDetails = new ChecklistDetails
+            {
+                Title = "Event formats",
+                QueryStringParameterName = "eventFormat",
+                Lookups = new List<ChecklistLookup>
+                {
+                    new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString()),
+                    new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString()),
+                    new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString())
+                }
+            },
+            EventTypeChecklistDetails = new ChecklistDetails
+            {
+                Title = "Event types",
+                QueryStringParameterName = "calendarId",
+                Lookups = calendars.OrderBy(x => x.Ordering)
+                .Select(cal => new ChecklistLookup(cal.CalendarName, cal.Id.ToString())).ToList(),
+            },
+            RegionChecklistDetails = new ChecklistDetails
+            {
+                Title = "Regions",
+                QueryStringParameterName = "regionId",
+                Lookups = regions.OrderBy(x => x.Ordering)
+                .Select(region => new ChecklistLookup(region.Area, region.Id.ToString())).ToList()
+            }
         };
-
-        model.FilterChoices.EventTypesLookup = calendars.OrderBy(x => x.Ordering).Select(cal => new ChecklistLookup(cal.CalendarName, cal.Id.ToString())).ToList();
 
         model.SelectedFilters = _builder.BuildEventSearchFilters(model.FilterChoices, Url);
 
