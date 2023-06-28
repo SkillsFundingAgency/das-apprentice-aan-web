@@ -37,6 +37,7 @@ public class NetworkEventDetailsViewModelTests
             Assert.That(sut.Attendees, Is.EqualTo(source.Attendees));
             Assert.That(sut.AttendeeCount, Is.EqualTo(source.Attendees.Count));
             Assert.That(sut.EventGuests, Is.EqualTo(source.EventGuests));
+            Assert.That(sut.StartTimeAndDate, Is.EqualTo(source.StartDate));
         });
     }
 

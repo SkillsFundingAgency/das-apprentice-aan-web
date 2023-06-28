@@ -1,5 +1,4 @@
 ﻿@using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
-@using SFA.DAS.ApprenticeAan.Web.UrlHelpers;
 @using SFA.DAS.ApprenticeAan.Domain.Extensions;
 
 @model NetworkEventDetailsViewModel
@@ -50,24 +49,29 @@
                 <p class="app-green-tick-large">
                     <span class="das-icon-list__icon das-icon-list__icon--tick">Yes: </span>You're signed up
                 </p>
-                <h3 class="govuk-heading-s">Can't make it?</h3>
-                @using (Html.BeginForm("SetAttendanceStatus", "NetworkEvents", FormMethod.Post))
-                {
-                    <input type="hidden" asp-for="@Model.CalendarEventId" />
-                    <input type="hidden" id="newStatus" name="newStatus" value="false" />
-                    <button class="govuk-button govuk-button--warning govuk-!-margin-bottom-0 govuk-!-width-full">Cancel your attendance</button>
-                }
-
+                @* @if (Model.StartTimeAndDate >= DateTime.Now) *@
+                @* { *@
+                    <h3 class="govuk-heading-s">Can't make it?</h3>
+                    @using (Html.BeginForm("SetAttendanceStatus", "NetworkEvents", FormMethod.Post))
+                    {
+                        <input type="hidden" asp-for="@Model.CalendarEventId"/>
+                        <input type="hidden" id="newStatus" name="newStatus" value="false"/>
+                        <button class="govuk-button govuk-button--warning govuk-!-margin-bottom-0 govuk-!-width-full">Cancel your attendance</button>
+                    }
+                // }
             }
             else
-            {
-                <h3 class="govuk-heading-m">Want to be involved in this event?</h3>
-                @using (Html.BeginForm("SetAttendanceStatus", "NetworkEvents", FormMethod.Post))
-                {
-                    <input type="hidden" asp-for="@Model.CalendarEventId" />
-                    <input type="hidden" id="newStatus" name="newStatus" value="true" />
-                    <button class="govuk-button govuk-!-margin-bottom-0 govuk-!-width-full" data-module="govuk-button" type="submit">Sign up</button>
-                }
+            { 
+                @* @if (Model.StartTimeAndDate >= DateTime.Now) *@
+                @* { *@
+                    <h3 class="govuk-heading-m">Want to be involved in this event?</h3>
+                    @using (Html.BeginForm("SetAttendanceStatus", "NetworkEvents", FormMethod.Post))
+                    {
+                        <input type="hidden" asp-for="@Model.CalendarEventId"/>
+                        <input type="hidden" id="newStatus" name="newStatus" value="true"/>
+                        <button class="govuk-button govuk-!-margin-bottom-0 govuk-!-width-full" data-module="govuk-button" type="submit">Sign up</button>
+                    }
+                // }
             }
         </div>
     </div>
