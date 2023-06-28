@@ -5,9 +5,10 @@ public class ChecklistLookup
     public string Value { get; }
     public string Checked { get; set; } = string.Empty;
 
-    public ChecklistLookup(string name, string value)
+    public ChecklistLookup(string name, string value, bool isChecked = false)
     {
         Name = name;
         Value = value;
+        Checked = isChecked ? "checked" : string.Empty;
     }
 }

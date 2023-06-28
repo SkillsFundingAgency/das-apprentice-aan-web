@@ -5,5 +5,5 @@ public class ChecklistDetails
     public string? Title { get; set; }
     public string? QueryStringParameterName { get; set; }
 
-    public List<ChecklistLookup> Lookups { get; set; } = new List<ChecklistLookup>();
+    public IEnumerable<ChecklistLookup> Lookups { get; set; } = Enumerable.Empty<ChecklistLookup>();
 }

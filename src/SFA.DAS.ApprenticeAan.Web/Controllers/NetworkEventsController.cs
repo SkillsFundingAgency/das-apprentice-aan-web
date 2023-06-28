@@ -4,12 +4,13 @@ using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Extensions;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
-using SFA.DAS.ApprenticeAan.Web.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
+using SFA.DAS.ApprenticeAan.Web.Services;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
@@ -22,13 +23,11 @@ public class NetworkEventsController : Controller
 
     private readonly IOuterApiClient _outerApiClient;
     private readonly ApplicationConfiguration _applicationConfiguration;
-    private readonly IEventSearchQueryStringBuilder _builder;
 
-    public NetworkEventsController(IOuterApiClient outerApiClient, IEventSearchQueryStringBuilder builder, ApplicationConfiguration applicationConfiguration)
+    public NetworkEventsController(IOuterApiClient outerApiClient, ApplicationConfiguration applicationConfiguration)
     {
         _outerApiClient = outerApiClient;
         _applicationConfiguration = applicationConfiguration;
-        _builder = builder;
     }
 
     [HttpGet]
@@ -37,56 +36,64 @@ public class NetworkEventsController : Controller
     {
         var fromDateFormatted = request.FromDate?.ToApiString()!;
         var toDateFormatted = request.ToDate?.ToApiString()!;
-        var calendarEventsResponse = await _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), fromDateFormatted,
-            toDateFormatted, request.EventFormat, request.CalendarId, request.RegionId, cancellationToken);
-        var model = (NetworkEventsViewModel)calendarEventsResponse;
 
-        foreach (var calendarEvent in model.CalendarEvents)
-        {
-            calendarEvent.CalendarEventLink = Url.RouteUrl(RouteNames.NetworkEventDetails, new { id = calendarEvent.CalendarEventId })!;
-        }
+        var calendarEventsTask = _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), fromDateFormatted, toDateFormatted, request.EventFormat, request.CalendarId, request.RegionId, cancellationToken);
+        var calendarTask = _outerApiClient.GetCalendars();
+        var regionTask = _outerApiClient.GetRegions();
 
-        var calendars = await _outerApiClient.GetCalendars();
-        var regionsResult = await _outerApiClient.GetRegions();
-        var regions = regionsResult.Regions;
+        List<Task> tasks = new() { calendarEventsTask, calendarTask, regionTask };
 
+        await Task.WhenAll(tasks);
+
+        var calendars = calendarTask.Result;
+        var regions = regionTask.Result.Regions;
+        var model = (NetworkEventsViewModel)calendarEventsTask.Result;
+        GenerateEventUrls(model);
+        PopulateFilterChoices(request, calendars, regions, model);
+
+        model.SelectedFilters = FilterBuilder.Build(request, Url, model.FilterChoices.EventFormatChecklistDetails.Lookups, model.FilterChoices.EventTypeChecklistDetails.Lookups, model.FilterChoices.RegionChecklistDetails.Lookups);
+
+        return View(model);
+    }
+
+    private static void PopulateFilterChoices(GetNetworkEventsRequest request, List<Calendar> calendars, List<Region> regions, NetworkEventsViewModel model)
+    {
         model.FilterChoices = new EventFilterChoices
         {
             FromDate = request.FromDate,
             ToDate = request.ToDate,
-            EventFormats = request.EventFormat,
-            CalendarIds = request.CalendarId,
-            RegionIds = request.RegionId,
             EventFormatChecklistDetails = new ChecklistDetails
             {
                 Title = "Event formats",
                 QueryStringParameterName = "eventFormat",
-                Lookups = new List<ChecklistLookup>
+                Lookups = new ChecklistLookup[]
                 {
-                    new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString()),
-                    new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString()),
-                    new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString())
+                    new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString(), request.EventFormat.Any(x => x == EventFormat.InPerson)),
+                    new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString(), request.EventFormat.Any(x => x == EventFormat.Online)),
+                    new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString(), request.EventFormat.Any(x => x == EventFormat.Hybrid))
                 }
             },
             EventTypeChecklistDetails = new ChecklistDetails
             {
                 Title = "Event types",
                 QueryStringParameterName = "calendarId",
-                Lookups = calendars.OrderBy(x => x.Ordering)
-                .Select(cal => new ChecklistLookup(cal.CalendarName, cal.Id.ToString())).ToList(),
+                Lookups = calendars.OrderBy(x => x.Ordering).Select(cal => new ChecklistLookup(cal.CalendarName, cal.Id.ToString(), request.CalendarId.Any(x => x == cal.Id))).ToList(),
             },
             RegionChecklistDetails = new ChecklistDetails
             {
                 Title = "Regions",
                 QueryStringParameterName = "regionId",
-                Lookups = regions.OrderBy(x => x.Ordering)
-                .Select(region => new ChecklistLookup(region.Area, region.Id.ToString())).ToList()
+                Lookups = regions.OrderBy(x => x.Ordering).Select(region => new ChecklistLookup(region.Area, region.Id.ToString(), request.RegionId.Any(x => x == region.Id))).ToList()
             }
         };
+    }
 
-        model.SelectedFilters = _builder.BuildEventSearchFilters(model.FilterChoices, Url);
-
-        return View(model);
+    private void GenerateEventUrls(NetworkEventsViewModel model)
+    {
+        foreach (var calendarEvent in model.CalendarEvents)
+        {
+            calendarEvent.CalendarEventLink = Url.RouteUrl(RouteNames.NetworkEventDetails, new { id = calendarEvent.CalendarEventId })!;
+        }
     }
 
     [HttpGet]

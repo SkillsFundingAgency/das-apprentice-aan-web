@@ -1,266 +1,95 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
-using SFA.DAS.ApprenticeAan.Web.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
 namespace SFA.DAS.ApprenticeAan.Web.Services;
 
-public class EventSearchQueryStringBuilder : IEventSearchQueryStringBuilder
+public static class FilterBuilder
 {
-    public List<SelectedFilter> BuildEventSearchFilters(EventFilterChoices eventFilterChoices, IUrlHelper url)
+    public static List<SelectedFilter> Build(GetNetworkEventsRequest request, IUrlHelper urlHelper, IEnumerable<ChecklistLookup> eventFormatLookups, IEnumerable<ChecklistLookup> eventTypeLookups, IEnumerable<ChecklistLookup> regionLookups)
     {
-        var queryParameters = BuildQueryParameters(eventFilterChoices);
-
         var filters = new List<SelectedFilter>();
+        var fullQueryParameters = BuildQueryParameters(request);
 
-        AddDateSelectedFilters(eventFilterChoices, url, queryParameters, filters);
-        AddEventFormatSelectedFilters(eventFilterChoices, url, queryParameters, filters);
-        AddEventTypeSelectedFilters(eventFilterChoices, url, queryParameters, filters);
-        AddRegionSelectedFilters(eventFilterChoices, url, queryParameters, filters);
+        if (request.FromDate.HasValue)
+        {
+            filters.AddFilterItems(urlHelper, fullQueryParameters, new[] { request.FromDate.Value.ToApiString() }, "From date", "fromDate", 1, Enumerable.Empty<ChecklistLookup>());
+        }
+
+        if (request.ToDate.HasValue)
+        {
+            filters.AddFilterItems(urlHelper, fullQueryParameters, new[] { request.ToDate.Value.ToApiString() }, "To date", "toDate", 2, Enumerable.Empty<ChecklistLookup>());
+        }
+
+        filters.AddFilterItems(urlHelper, fullQueryParameters, request.EventFormat.Select(e => e.ToString()), "Event format", "eventFormat", 3, eventFormatLookups);
+
+        filters.AddFilterItems(urlHelper, fullQueryParameters, request.CalendarId.Select(e => e.ToString()), "Event type", "calendarId", 4, eventTypeLookups);
+
+        filters.AddFilterItems(urlHelper, fullQueryParameters, request.RegionId.Select(e => e.ToString()), "Region", "regionId", 5, regionLookups);
+
         return filters;
     }
 
-    private static void AddDateSelectedFilters(EventFilterChoices eventFilterChoices, IUrlHelper url, List<string> queryParameters,
-        ICollection<SelectedFilter> filters)
+    private static void AddFilterItems(this ICollection<SelectedFilter> filters, IUrlHelper url, List<string> fullQueryParameters, IEnumerable<string> selectedValues, string fieldName, string parameterName, int fieldOrder, IEnumerable<ChecklistLookup> lookups)
     {
-        var filterFromDate = AddFilterDateTime("From date", FilterFields.FromDate, eventFilterChoices.FromDate,
-            queryParameters, filters.Count + 1, eventFilterChoices, url);
-        if (filterFromDate != null) filters.Add(filterFromDate);
+        if (!selectedValues.Any()) return;
 
-        var filterToDate = AddFilterDateTime("To date", FilterFields.ToDate, eventFilterChoices.ToDate, queryParameters, filters.Count + 1,
-            eventFilterChoices, url);
-        if (filterToDate != null) filters.Add(filterToDate);
+        var filter = new SelectedFilter
+        {
+            FieldName = fieldName,
+            FieldOrder = fieldOrder
+        };
+
+        int i = 0;
+
+        foreach (var value in selectedValues)
+        {
+            var v = lookups.Any() ? lookups.First(l => l.Value == value).Name : value;
+            filter.Filters.Add(BuildFilterItem(url, fullQueryParameters, BuildQueryParameter(parameterName, value), v, ++i));
+        }
+
+        filters.Add(filter);
     }
 
-    private static void AddEventFormatSelectedFilters(EventFilterChoices eventFilterChoices,
-        IUrlHelper url, List<string> queryParameters, ICollection<SelectedFilter> filters)
-    {
-        if (!eventFilterChoices.EventFormats.Any()) return;
-
-        var eventFormatsChecklistFiltered = new List<ChecklistLookup>();
-        foreach (var a in eventFilterChoices.EventFormatChecklistDetails.Lookups)
-        {
-            eventFormatsChecklistFiltered.AddRange(from b in eventFilterChoices.EventFormats
-                                                   where a.Value == b.ToString()
-                                                   select a);
-        }
-
-        foreach (var lookup in from lookup in eventFilterChoices.EventFormatChecklistDetails.Lookups from ef in eventFilterChoices.EventFormats!.Where(ef => ef.ToString() == lookup.Value) select lookup)
-        {
-            lookup.Checked = "checked";
-        }
-
-        var filterEventFormat = AddFilterChecklist("Event format", FilterFields.EventFormat,
-            eventFormatsChecklistFiltered,
-            queryParameters, filters.Count + 1, eventFilterChoices, url);
-        if (filterEventFormat != null) filters.Add(filterEventFormat);
-    }
-
-    private static void AddEventTypeSelectedFilters(EventFilterChoices eventFilterChoices, IUrlHelper url,
-        List<string> queryParameters, ICollection<SelectedFilter> filters)
-    {
-        if (!eventFilterChoices.CalendarIds.Any()) return;
-
-        var eventTypesChecklistFiltered = new List<ChecklistLookup>();
-        foreach (var a in eventFilterChoices.EventTypeChecklistDetails.Lookups)
-        {
-            eventTypesChecklistFiltered.AddRange(from b in eventFilterChoices.CalendarIds
-                                                 where a.Value == b.ToString()
-                                                 select a);
-        }
-
-        foreach (var lookup in from lookup in eventFilterChoices.EventTypeChecklistDetails.Lookups from ef in eventFilterChoices.CalendarIds!.Where(ef => ef.ToString() == lookup.Value) select lookup)
-        {
-            lookup.Checked = "checked";
-        }
-
-        var filterEventType = AddFilterChecklist("Event type", FilterFields.EventType,
-            eventTypesChecklistFiltered,
-            queryParameters, filters.Count + 1, eventFilterChoices, url);
-        if (filterEventType != null) filters.Add(filterEventType);
-    }
-
-    private static void AddRegionSelectedFilters(EventFilterChoices eventFilterChoices, IUrlHelper url,
-        List<string> queryParameters, ICollection<SelectedFilter> filters)
-    {
-        if (!eventFilterChoices.RegionIds.Any()) return;
-
-        var regionsChecklistFilter = new List<ChecklistLookup>();
-        foreach (var a in eventFilterChoices.RegionChecklistDetails.Lookups)
-        {
-            regionsChecklistFilter.AddRange(from b in eventFilterChoices.RegionIds
-                                            where a.Value == b.ToString()
-                                            select a);
-        }
-
-        foreach (var lookup in from lookup in eventFilterChoices.RegionChecklistDetails.Lookups from ef in eventFilterChoices.RegionIds!.Where(ef => ef.ToString() == lookup.Value) select lookup)
-        {
-            lookup.Checked = "checked";
-        }
-
-        var filterRegion = AddFilterChecklist("Regions", FilterFields.Region,
-            regionsChecklistFilter,
-            queryParameters, filters.Count + 1, eventFilterChoices, url);
-        if (filterRegion != null) filters.Add(filterRegion);
-    }
-
-    private static List<string> BuildQueryParameters(EventFilterChoices eventFilterChoices)
+    private static List<string> BuildQueryParameters(GetNetworkEventsRequest request)
     {
         var queryParameters = new List<string>();
 
-        if (eventFilterChoices.FromDate != null)
+        if (request.FromDate != null)
         {
-            queryParameters.Add("fromDate=" + eventFilterChoices.FromDate.Value.ToApiString());
+            queryParameters.Add(BuildDateQueryParameter("fromDate", request.FromDate.GetValueOrDefault()));
         }
 
-        if (eventFilterChoices.ToDate != null)
+        if (request.ToDate != null)
         {
-            queryParameters.Add("toDate=" + eventFilterChoices.ToDate.Value.ToApiString());
+            queryParameters.Add(BuildDateQueryParameter("toDate", request.ToDate.GetValueOrDefault()));
         }
 
-        queryParameters.AddRange(eventFilterChoices.EventFormats.Select(eventFormat => "eventFormat=" + eventFormat));
-        queryParameters.AddRange(eventFilterChoices.CalendarIds.Select(eventType => "calendarId=" + eventType));
-        queryParameters.AddRange(eventFilterChoices.RegionIds.Select(region => "regionId=" + region));
+        queryParameters.AddRange(request.EventFormat.Select(eventFormat => "eventFormat=" + eventFormat));
+        queryParameters.AddRange(request.CalendarId.Select(eventType => "calendarId=" + eventType));
+        queryParameters.AddRange(request.RegionId.Select(region => "regionId=" + region));
 
         return queryParameters;
     }
 
-    private static SelectedFilter? AddFilterDateTime(string fieldName, FilterFields filterToRemove, DateTime? eventFilter, List<string> queryParameters, int filterFieldOrder, EventFilterChoices eventFilterChoices, IUrlHelper url)
-    {
-        if (eventFilter == null) return null;
-
-        return
-             new SelectedFilter
-             {
-                 FieldName = fieldName,
-                 FieldOrder = filterFieldOrder,
-                 Filters = new List<EventFilterItem>
-                 {
-                    new()
-                    {
-                        ClearFilterLink = BuildQueryString(queryParameters, filterToRemove, eventFilterChoices,null,url), Order = 1,
-                        Value = eventFilter.Value.ToScreenString()
-                    }
-                 }
-             };
-    }
-
-    private static SelectedFilter? AddFilterChecklist(string fieldName, FilterFields filterToRemove, List<ChecklistLookup> filterValues, List<string> queryParameters, int filterFieldOrder, EventFilterChoices eventFilterChoices, IUrlHelper url)
-    {
-        var order = 0;
-        var selectedFilter =
-            new SelectedFilter
-            {
-                FieldName = fieldName,
-                FieldOrder = filterFieldOrder,
-                Filters = new List<EventFilterItem> { }
-            };
-
-        var filtersToAdd = new List<EventFilterItem>();
-
-        if (filterToRemove is FilterFields.EventFormat or FilterFields.EventType or FilterFields.Region)
+    private static EventFilterItem BuildFilterItem(IUrlHelper url, List<string> queryParameters, string filterToRemove, string filterValue, int filterFieldOrder)
+        =>
+        new()
         {
-            foreach (var filterValue in filterValues)
-            {
-                order++;
-                filtersToAdd.Add(new EventFilterItem
-                {
-                    ClearFilterLink = BuildQueryString(queryParameters, filterToRemove, eventFilterChoices, filterValue, url),
-                    Order = order,
-                    Value = filterValue.Name
-                });
-            }
-        }
+            ClearFilterLink = BuildQueryString(url, queryParameters, filterToRemove),
+            Order = filterFieldOrder,
+            Value = filterValue
+        };
 
-        selectedFilter.Filters = filtersToAdd;
-
-        return selectedFilter;
-    }
-
-    private static string? BuildQueryString(List<string> queryParameters, FilterFields filterToRemove, EventFilterChoices eventFilterChoices, ChecklistLookup? filterValue, IUrlHelper url)
+    private static string? BuildQueryString(IUrlHelper url, List<string> queryParameters, string filterToRemove)
     {
-        var queryParametersToBuild = new List<string>();
+        var queryParametersToBuild = queryParameters.Where(s => s != filterToRemove);
 
-        foreach (var p in queryParameters)
-        {
-            switch (filterToRemove)
-            {
-                case FilterFields.FromDate when p == "fromDate=" + eventFilterChoices.FromDate!.Value.ToApiString():
-                case FilterFields.ToDate when p == "toDate=" + eventFilterChoices.ToDate!.Value.ToApiString():
-                    continue;
-                case FilterFields.EventFormat:
-                    ExcludeQueryParametersForMatchingEventFormats(eventFilterChoices, filterValue, p, queryParametersToBuild);
-                    break;
-                case FilterFields.EventType:
-                    ExcludeQueryParametersForMatchingEventTypes(eventFilterChoices, filterValue, p, queryParametersToBuild);
-                    break;
-                case FilterFields.Region:
-                    ExcludeQueryParametersForMatchingRegions(eventFilterChoices, filterValue, p, queryParametersToBuild);
-                    break;
-                default:
-                    queryParametersToBuild.Add(p);
-                    break;
-            }
-        }
         return queryParametersToBuild.Any() ? $"{url.RouteUrl(RouteNames.NetworkEvents)}?{string.Join('&', queryParametersToBuild)}" : url.RouteUrl(RouteNames.NetworkEvents);
     }
 
-    private static void ExcludeQueryParametersForMatchingEventFormats(EventFilterChoices eventFilterChoices,
-        ChecklistLookup? filterValue, string p, ICollection<string> queryParametersToBuild)
-    {
-        var addParameter = true;
-        if (filterValue != null)
-        {
-            foreach (var choice in eventFilterChoices.EventFormats
-                         .Where(choice => choice.ToString() == filterValue.Value)
-                         .Where(choice => p == "eventFormat=" + filterValue.Value))
-            {
-                addParameter = false;
-            }
-        }
+    private static string BuildDateQueryParameter(string name, DateTime value) => $"{name}={value.ToApiString()}";
 
-        if (addParameter)
-        {
-            queryParametersToBuild.Add(p);
-        }
-    }
-
-    private static void ExcludeQueryParametersForMatchingEventTypes(EventFilterChoices eventFilterChoices,
-        ChecklistLookup? filterValue, string p, ICollection<string> queryParametersToBuild)
-    {
-        var addParameter = true;
-
-        if (filterValue != null)
-        {
-            foreach (var choice in eventFilterChoices.CalendarIds
-                         .Where(choice => choice.ToString() == filterValue.Value)
-                         .Where(choice => p == "calendarId=" + filterValue.Value))
-            {
-                addParameter = false;
-            }
-        }
-
-        if (addParameter)
-        {
-            queryParametersToBuild.Add(p);
-        }
-    }
-
-    private static void ExcludeQueryParametersForMatchingRegions(EventFilterChoices eventFilterChoices,
-        ChecklistLookup? filterValue, string p, ICollection<string> queryParametersToBuild)
-    {
-        var addParameter = true;
-
-        foreach (var choice in eventFilterChoices.RegionIds.Where(choice => choice.ToString() == filterValue?.Value)
-                     .Where(choice => p == "regionId=" + filterValue?.Value))
-        {
-            addParameter = false;
-        }
-
-        if (addParameter)
-        {
-            queryParametersToBuild.Add(p);
-        }
-    }
+    private static string BuildQueryParameter(string name, string value) => $"{name}={value}";
 }

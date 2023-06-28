@@ -15,9 +15,7 @@ public class NetworkEventsViewModel
 
     public List<SelectedFilter> SelectedFilters { get; set; } = new List<SelectedFilter>();
 
-
     public bool ShowFilterOptions => SelectedFilters.Any();
-
 
     public static implicit operator NetworkEventsViewModel(GetCalendarEventsQueryResult result) => new()
     {
