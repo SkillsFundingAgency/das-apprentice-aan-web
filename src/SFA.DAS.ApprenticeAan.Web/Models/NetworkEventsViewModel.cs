@@ -11,10 +11,8 @@ public class NetworkEventsViewModel
 
     public List<CalendarEventSummary> CalendarEvents { get; set; } = new List<CalendarEventSummary>();
 
-    // filter choices made by the user
     public EventFilterChoices FilterChoices { get; set; } = new EventFilterChoices();
 
-    // model that builds the filter choices into a model that can populate FE
     public List<SelectedFilter> SelectedFilters { get; set; } = new List<SelectedFilter>();
 
 
