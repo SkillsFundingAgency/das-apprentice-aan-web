@@ -47,18 +47,39 @@ public class NetworkEventsController : Controller
 
         var calendars = calendarTask.Result;
         var regions = regionTask.Result.Regions;
-        var model = (NetworkEventsViewModel)calendarEventsTask.Result;
-        GenerateEventUrls(model);
-        PopulateFilterChoices(request, calendars, regions, model);
 
-        model.SelectedFilters = FilterBuilder.Build(request, Url, model.FilterChoices.EventFormatChecklistDetails.Lookups, model.FilterChoices.EventTypeChecklistDetails.Lookups, model.FilterChoices.RegionChecklistDetails.Lookups);
+        var model = InitialiseViewModel(calendarEventsTask.Result);
+        var filterChoices = PopulateFilterChoices(request, calendars, regions);
+        model.FilterChoices = filterChoices;
+        model.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices.EventFormatChecklistDetails.Lookups, filterChoices.EventTypeChecklistDetails.Lookups, filterChoices.RegionChecklistDetails.Lookups);
 
         return View(model);
     }
 
-    private static void PopulateFilterChoices(GetNetworkEventsRequest request, List<Calendar> calendars, List<Region> regions, NetworkEventsViewModel model)
+    private NetworkEventsViewModel InitialiseViewModel(GetCalendarEventsQueryResult result)
     {
-        model.FilterChoices = new EventFilterChoices
+        NetworkEventsViewModel model = new()
+        {
+            Pagination = new PaginationModel
+            {
+                Page = result.Page,
+                PageSize = result.PageSize,
+                TotalPages = result.TotalPages
+            },
+            TotalCount = result.TotalCount
+        };
+
+        foreach (var calendarEvent in result.CalendarEvents)
+        {
+            CalendarEventViewModel vm = calendarEvent;
+            vm.CalendarEventLink = Url.RouteUrl(RouteNames.NetworkEventDetails, new { id = calendarEvent.CalendarEventId })!;
+            model.CalendarEvents.Add(vm);
+        }
+        return model;
+    }
+
+    private static EventFilterChoices PopulateFilterChoices(GetNetworkEventsRequest request, List<Calendar> calendars, List<Region> regions)
+        => new EventFilterChoices
         {
             FromDate = request.FromDate,
             ToDate = request.ToDate,
@@ -86,15 +107,6 @@ public class NetworkEventsController : Controller
                 Lookups = regions.OrderBy(x => x.Ordering).Select(region => new ChecklistLookup(region.Area, region.Id.ToString(), request.RegionId.Any(x => x == region.Id))).ToList()
             }
         };
-    }
-
-    private void GenerateEventUrls(NetworkEventsViewModel model)
-    {
-        foreach (var calendarEvent in model.CalendarEvents)
-        {
-            calendarEvent.CalendarEventLink = Url.RouteUrl(RouteNames.NetworkEventDetails, new { id = calendarEvent.CalendarEventId })!;
-        }
-    }
 
     [HttpGet]
     [Route("{id}", Name = RouteNames.NetworkEventDetails)]

@@ -6,12 +6,10 @@ public class CalendarEventSummary
 {
     public Guid CalendarEventId { get; set; }
     public string CalendarName { get; set; } = null!;
-    public string? CalendarEventLink { get; set; }
     public EventFormat EventFormat { get; set; }
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
     public string Title { get; set; } = null!;
-    public string Description { get; set; } = null!;
     public string Summary { get; set; } = null!;
     public string Location { get; set; } = null!;
     public string Postcode { get; set; } = null!;
