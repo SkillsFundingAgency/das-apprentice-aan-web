@@ -439,10 +439,7 @@ public class FilterBuilderTests
 
         if (regionId1 != null)
         {
-            var lookup = new ChecklistLookup(parameterName, regionId1.Value.ToString())
-            {
-                Checked = "checked"
-            };
+            var lookup = new ChecklistLookup(parameterName, regionId1.Value.ToString(), true);
 
             regionLookups.Add(lookup);
 
