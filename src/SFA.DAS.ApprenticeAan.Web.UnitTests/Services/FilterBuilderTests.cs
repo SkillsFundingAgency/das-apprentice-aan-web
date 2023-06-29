@@ -85,7 +85,7 @@ public class FilterBuilderTests
         {
             var firstItem = actual.First();
             firstItem.FieldName.Should().Be(fieldName1);
-            firstItem.FieldOrder.Should().Be(2);
+            firstItem.FieldOrder.Should().Be(1);
             firstItem.Filters.First().ClearFilterLink.Should().Be(locationUrl);
             firstItem.Filters.First().Order.Should().Be(1);
             if (fieldName1 != "")
@@ -179,7 +179,7 @@ public class FilterBuilderTests
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
         firstItem.FieldName.Should().Be(fieldName);
-        firstItem.FieldOrder.Should().Be(3);
+        firstItem.FieldOrder.Should().Be(1);
         if (firstItem.Filters.Count > 0)
         {
             var filter = firstItem.Filters.First();
@@ -216,7 +216,7 @@ public class FilterBuilderTests
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(2);
         firstItem.FieldName.Should().Be("Event format");
-        firstItem.FieldOrder.Should().Be(3);
+        firstItem.FieldOrder.Should().Be(1);
 
         var filter = firstItem.Filters.First();
         filter.ClearFilterLink.Should().Be(locationUrl + expectedFirst);
@@ -254,7 +254,7 @@ public class FilterBuilderTests
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(3);
         firstItem.FieldName.Should().Be("Event format");
-        firstItem.FieldOrder.Should().Be(3);
+        firstItem.FieldOrder.Should().Be(1);
 
         var filterFirst = firstItem.Filters.First();
         filterFirst.ClearFilterLink.Should().Be(locationUrl + expectedFirst);
@@ -311,7 +311,7 @@ public class FilterBuilderTests
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
         firstItem.FieldName.Should().Be(fieldName);
-        firstItem.FieldOrder.Should().Be(4);
+        firstItem.FieldOrder.Should().Be(1);
 
         var filter = firstItem.Filters.First();
         filter.ClearFilterLink.Should().Be(locationUrl);
@@ -355,7 +355,7 @@ public class FilterBuilderTests
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(2);
         firstItem.FieldName.Should().Be("Event type");
-        firstItem.FieldOrder.Should().Be(4);
+        firstItem.FieldOrder.Should().Be(1);
 
         var filter = firstItem.Filters.First();
         filter.ClearFilterLink.Should().Be(locationUrl + expectedFirst);
@@ -404,7 +404,7 @@ public class FilterBuilderTests
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(3);
         firstItem.FieldName.Should().Be("Event type");
-        firstItem.FieldOrder.Should().Be(4);
+        firstItem.FieldOrder.Should().Be(1);
 
         var filter = firstItem.Filters.First();
         filter.ClearFilterLink.Should().Be(locationUrl + expectedFirst);
@@ -467,7 +467,7 @@ public class FilterBuilderTests
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
         firstItem.FieldName.Should().Be(fieldName);
-        firstItem.FieldOrder.Should().Be(5);
+        firstItem.FieldOrder.Should().Be(1);
 
         var filter = firstItem.Filters.First();
         filter.ClearFilterLink.Should().Be(locationUrl);
@@ -516,7 +516,7 @@ public class FilterBuilderTests
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(2);
         firstItem.FieldName.Should().Be("Region");
-        firstItem.FieldOrder.Should().Be(5);
+        firstItem.FieldOrder.Should().Be(1);
 
         var filter = firstItem.Filters.First();
         filter.ClearFilterLink.Should().Be(locationUrl + expectedFirst);
@@ -578,7 +578,7 @@ public class FilterBuilderTests
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
         firstItem.FieldName.Should().Be("Region");
-        firstItem.FieldOrder.Should().Be(5);
+        firstItem.FieldOrder.Should().Be(1);
 
         var filter = firstItem.Filters.First();
         filter.ClearFilterLink.Should().Be(locationUrl + expectedFirst);

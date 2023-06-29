@@ -15,31 +15,31 @@ public static class FilterBuilder
 
         if (request.FromDate.HasValue)
         {
-            filters.AddFilterItems(urlHelper, fullQueryParameters, new[] { request.FromDate.Value.ToScreenString() }, "From date", "fromDate", 1, Enumerable.Empty<ChecklistLookup>());
+            filters.AddFilterItems(urlHelper, fullQueryParameters, new[] { request.FromDate.Value.ToScreenString() }, "From date", "fromDate", Enumerable.Empty<ChecklistLookup>());
         }
 
         if (request.ToDate.HasValue)
         {
-            filters.AddFilterItems(urlHelper, fullQueryParameters, new[] { request.ToDate.Value.ToScreenString() }, "To date", "toDate", 2, Enumerable.Empty<ChecklistLookup>());
+            filters.AddFilterItems(urlHelper, fullQueryParameters, new[] { request.ToDate.Value.ToScreenString() }, "To date", "toDate", Enumerable.Empty<ChecklistLookup>());
         }
 
-        filters.AddFilterItems(urlHelper, fullQueryParameters, request.EventFormat.Select(e => e.ToString()), "Event format", "eventFormat", 3, eventFormatLookups);
+        filters.AddFilterItems(urlHelper, fullQueryParameters, request.EventFormat.Select(e => e.ToString()), "Event format", "eventFormat", eventFormatLookups);
 
-        filters.AddFilterItems(urlHelper, fullQueryParameters, request.CalendarId.Select(e => e.ToString()), "Event type", "calendarId", 4, eventTypeLookups);
+        filters.AddFilterItems(urlHelper, fullQueryParameters, request.CalendarId.Select(e => e.ToString()), "Event type", "calendarId", eventTypeLookups);
 
-        filters.AddFilterItems(urlHelper, fullQueryParameters, request.RegionId.Select(e => e.ToString()), "Region", "regionId", 5, regionLookups);
+        filters.AddFilterItems(urlHelper, fullQueryParameters, request.RegionId.Select(e => e.ToString()), "Region", "regionId", regionLookups);
 
         return filters;
     }
 
-    private static void AddFilterItems(this ICollection<SelectedFilter> filters, IUrlHelper url, List<string> fullQueryParameters, IEnumerable<string> selectedValues, string fieldName, string parameterName, int fieldOrder, IEnumerable<ChecklistLookup> lookups)
+    private static void AddFilterItems(this ICollection<SelectedFilter> filters, IUrlHelper url, List<string> fullQueryParameters, IEnumerable<string> selectedValues, string fieldName, string parameterName, IEnumerable<ChecklistLookup> lookups)
     {
         if (!selectedValues.Any()) return;
 
         var filter = new SelectedFilter
         {
             FieldName = fieldName,
-            FieldOrder = fieldOrder
+            FieldOrder = filters.Count + 1
         };
 
         int i = 0;

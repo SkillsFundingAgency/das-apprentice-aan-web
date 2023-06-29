@@ -89,22 +89,22 @@ public class NetworkEventsController : Controller
                 QueryStringParameterName = "eventFormat",
                 Lookups = new ChecklistLookup[]
                 {
-                    new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString(), request.EventFormat.Any(x => x == EventFormat.InPerson)),
-                    new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString(), request.EventFormat.Any(x => x == EventFormat.Online)),
-                    new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString(), request.EventFormat.Any(x => x == EventFormat.Hybrid))
+                    new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString(), request.EventFormat.Exists(x => x == EventFormat.InPerson)),
+                    new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString(), request.EventFormat.Exists(x => x == EventFormat.Online)),
+                    new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString(), request.EventFormat.Exists(x => x == EventFormat.Hybrid))
                 }
             },
             EventTypeChecklistDetails = new ChecklistDetails
             {
                 Title = "Event types",
                 QueryStringParameterName = "calendarId",
-                Lookups = calendars.OrderBy(x => x.Ordering).Select(cal => new ChecklistLookup(cal.CalendarName, cal.Id.ToString(), request.CalendarId.Any(x => x == cal.Id))).ToList(),
+                Lookups = calendars.OrderBy(x => x.Ordering).Select(cal => new ChecklistLookup(cal.CalendarName, cal.Id.ToString(), request.CalendarId.Exists(x => x == cal.Id))).ToList(),
             },
             RegionChecklistDetails = new ChecklistDetails
             {
                 Title = "Regions",
                 QueryStringParameterName = "regionId",
-                Lookups = regions.OrderBy(x => x.Ordering).Select(region => new ChecklistLookup(region.Area, region.Id.ToString(), request.RegionId.Any(x => x == region.Id))).ToList()
+                Lookups = regions.OrderBy(x => x.Ordering).Select(region => new ChecklistLookup(region.Area, region.Id.ToString(), request.RegionId.Exists(x => x == region.Id))).ToList()
             }
         };
 
