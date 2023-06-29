@@ -10,7 +10,7 @@ using SFA.DAS.ApprenticeAan.Web.Services;
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Services;
 
 [TestFixture]
-public class EventSearchQueryStringBuilderTests
+public class FilterBuilderTests
 {
     [Test]
     public void BuildFilterChoicesForNoFilters()
@@ -21,16 +21,14 @@ public class EventSearchQueryStringBuilderTests
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns(locationUrl);
 
-        var service = new EventSearchQueryStringBuilder();
-
-
-        var eventFilters = new EventFilterChoices
+        var request = new GetNetworkEventsRequest
         {
             FromDate = null,
             ToDate = null
         };
 
-        var actual = service.BuildEventSearchFilters(eventFilters, mockUrlHelper.Object);
+
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new List<ChecklistLookup>(), new List<ChecklistLookup>(), new List<ChecklistLookup>());
         actual.Count.Should().Be(0);
     }
 
@@ -44,14 +42,12 @@ public class EventSearchQueryStringBuilderTests
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns(locationUrl);
 
-        var service = new EventSearchQueryStringBuilder();
-
-        var eventFilters = new EventFilterChoices
+        var request = new GetNetworkEventsRequest
         {
             FromDate = fromDate
         };
 
-        var actual = service.BuildEventSearchFilters(eventFilters, mockUrlHelper.Object);
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new List<ChecklistLookup>(), new List<ChecklistLookup>(), new List<ChecklistLookup>());
         actual.Count.Should().Be(expectedNumberOfFilters);
         if (expectedNumberOfFilters > 0)
         {
@@ -77,20 +73,19 @@ public class EventSearchQueryStringBuilderTests
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns(locationUrl);
 
-        var service = new EventSearchQueryStringBuilder();
-
-        var eventFilters = new EventFilterChoices
+        var request = new GetNetworkEventsRequest
         {
             ToDate = toDate
         };
 
-        var actual = service.BuildEventSearchFilters(eventFilters, mockUrlHelper.Object);
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new List<ChecklistLookup>(), new List<ChecklistLookup>(), new List<ChecklistLookup>());
+
         actual.Count.Should().Be(expectedNumberOfFilters);
         if (expectedNumberOfFilters > 0)
         {
             var firstItem = actual.First();
             firstItem.FieldName.Should().Be(fieldName1);
-            firstItem.FieldOrder.Should().Be(1);
+            firstItem.FieldOrder.Should().Be(2);
             firstItem.Filters.First().ClearFilterLink.Should().Be(locationUrl);
             firstItem.Filters.First().Order.Should().Be(1);
             if (fieldName1 != "")
@@ -109,15 +104,15 @@ public class EventSearchQueryStringBuilderTests
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns(locationUrl);
 
-        var service = new EventSearchQueryStringBuilder();
 
-        var eventFilters = new EventFilterChoices
+        var request = new GetNetworkEventsRequest
         {
             FromDate = fromDate,
             ToDate = toDate
         };
 
-        var actual = service.BuildEventSearchFilters(eventFilters, mockUrlHelper.Object);
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new List<ChecklistLookup>(), new List<ChecklistLookup>(), new List<ChecklistLookup>());
+
         actual.Count.Should().Be(2);
 
         var firstItem = actual.First();
@@ -160,32 +155,21 @@ public class EventSearchQueryStringBuilderTests
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns(locationUrl);
 
-        var service = new EventSearchQueryStringBuilder();
-
-        var eventFilters = new EventFilterChoices
+        var request = new GetNetworkEventsRequest
         {
-            EventFormats = new List<EventFormat>(),
-
-            EventFormatChecklistDetails = new ChecklistDetails
-            {
-                QueryStringParameterName = "eventFormat",
-                Lookups = new List<ChecklistLookup>
-                {
-                    new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString()),
-                    new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString()),
-                    new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString())
-                }
-            }
+            EventFormat = new List<EventFormat>(),
         };
 
         if (inPerson != null)
-            eventFilters.EventFormats.Add(inPerson.Value);
+            request.EventFormat.Add(inPerson.Value);
         if (online != null)
-            eventFilters.EventFormats.Add(online.Value);
+            request.EventFormat.Add(online.Value);
         if (hybrid != null)
-            eventFilters.EventFormats.Add(hybrid.Value);
+            request.EventFormat.Add(hybrid.Value);
 
-        var actual = service.BuildEventSearchFilters(eventFilters, mockUrlHelper.Object);
+
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, ChecklistLookupEventFormats(), new List<ChecklistLookup>(), new List<ChecklistLookup>());
+
         if (expectedNumberOfFilters == 0)
         {
             actual.Count.Should().Be(0);
@@ -195,7 +179,7 @@ public class EventSearchQueryStringBuilderTests
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
         firstItem.FieldName.Should().Be(fieldName);
-        firstItem.FieldOrder.Should().Be(1);
+        firstItem.FieldOrder.Should().Be(3);
         if (firstItem.Filters.Count > 0)
         {
             var filter = firstItem.Filters.First();
@@ -205,10 +189,10 @@ public class EventSearchQueryStringBuilderTests
         }
     }
 
-    [TestCase(EventFormat.InPerson, EventFormat.Online, null, "?eventFormat=Online", "?eventFormat=InPerson", "In person", "Online")]
-    [TestCase(EventFormat.InPerson, null, EventFormat.Hybrid, "?eventFormat=Hybrid", "?eventFormat=InPerson", "In person", "Hybrid")]
-    [TestCase(null, EventFormat.Online, EventFormat.Hybrid, "?eventFormat=Hybrid", "?eventFormat=Online", "Online", "Hybrid")]
-    public void BuildEventSearchFiltersForTwoEventFormats(EventFormat? inPerson, EventFormat? online, EventFormat? hybrid,
+    [TestCase(EventFormat.InPerson, EventFormat.Online, "?eventFormat=Online", "?eventFormat=InPerson", "In person", "Online")]
+    [TestCase(EventFormat.InPerson, EventFormat.Hybrid, "?eventFormat=Hybrid", "?eventFormat=InPerson", "In person", "Hybrid")]
+    [TestCase(EventFormat.Online, EventFormat.Hybrid, "?eventFormat=Hybrid", "?eventFormat=Online", "Online", "Hybrid")]
+    public void BuildEventSearchFiltersForTwoEventFormats(EventFormat eventFormat1, EventFormat eventFormat2,
         string expectedFirst, string expectedSecond,
          string firstValue, string secondValue)
     {
@@ -218,37 +202,21 @@ public class EventSearchQueryStringBuilderTests
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns(locationUrl);
 
-        var service = new EventSearchQueryStringBuilder();
-
-        var eventFilters = new EventFilterChoices
+        var request = new GetNetworkEventsRequest
         {
-            EventFormats = new List<EventFormat>(),
-
-            EventFormatChecklistDetails = new ChecklistDetails
+            EventFormat = new List<EventFormat>
             {
-                QueryStringParameterName = "eventFormat",
-                Lookups = new List<ChecklistLookup>
-                {
-                    new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString()),
-                    new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString()),
-                    new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString())
-                }
+                eventFormat1,
+                eventFormat2
             }
         };
 
-        if (inPerson != null)
-            eventFilters.EventFormats.Add(inPerson.Value);
-        if (online != null)
-            eventFilters.EventFormats.Add(online.Value);
-        if (hybrid != null)
-            eventFilters.EventFormats.Add(hybrid.Value);
-
-        var actual = service.BuildEventSearchFilters(eventFilters, mockUrlHelper.Object);
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, ChecklistLookupEventFormats(), new List<ChecklistLookup>(), new List<ChecklistLookup>());
 
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(2);
         firstItem.FieldName.Should().Be("Event format");
-        firstItem.FieldOrder.Should().Be(1);
+        firstItem.FieldOrder.Should().Be(3);
 
         var filter = firstItem.Filters.First();
         filter.ClearFilterLink.Should().Be(locationUrl + expectedFirst);
@@ -271,35 +239,22 @@ public class EventSearchQueryStringBuilderTests
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns(locationUrl);
 
-        var service = new EventSearchQueryStringBuilder();
-
-        var eventFilters = new EventFilterChoices
+        var request = new GetNetworkEventsRequest
         {
-            EventFormats = new List<EventFormat>
+            EventFormat = new List<EventFormat>
             {
                 EventFormat.InPerson,
                 EventFormat.Online,
                 EventFormat.Hybrid
-            },
-
-            EventFormatChecklistDetails = new ChecklistDetails
-            {
-                QueryStringParameterName = "eventFormat",
-                Lookups = new List<ChecklistLookup>
-                {
-                    new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString()),
-                    new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString()),
-                    new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString())
-                }
             }
         };
 
-        var actual = service.BuildEventSearchFilters(eventFilters, mockUrlHelper.Object);
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, ChecklistLookupEventFormats(), new List<ChecklistLookup>(), new List<ChecklistLookup>());
 
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(3);
         firstItem.FieldName.Should().Be("Event format");
-        firstItem.FieldOrder.Should().Be(1);
+        firstItem.FieldOrder.Should().Be(3);
 
         var filterFirst = firstItem.Filters.First();
         filterFirst.ClearFilterLink.Should().Be(locationUrl + expectedFirst);
@@ -324,19 +279,19 @@ public class EventSearchQueryStringBuilderTests
     public void BuildEventSearchFiltersForEventTypes(int? calendarId, string fieldName, int expectedNumberOfFilters)
     {
         var parameterName = "calendarId";
-        var eventFilterChoices = new EventFilterChoices { CalendarIds = new List<int>() };
+        var request = new GetNetworkEventsRequest { CalendarId = new List<int>() };
         var eventTypesLookup = new List<ChecklistLookup>();
 
-        var eventFilters = new EventFilterChoices
+        var eventFilters = new GetNetworkEventsRequest
         {
-            CalendarIds = new List<int>()
+            CalendarId = new List<int>()
         };
 
         if (calendarId != null)
         {
             eventTypesLookup.Add(new ChecklistLookup(parameterName, calendarId.Value.ToString()));
-            eventFilters.CalendarIds.Add(calendarId.Value);
-            eventFilterChoices.CalendarIds.Add(calendarId.Value);
+            eventFilters.CalendarId.Add(calendarId.Value);
+            request.CalendarId.Add(calendarId.Value);
         }
 
         var locationUrl = "network-events";
@@ -345,14 +300,7 @@ public class EventSearchQueryStringBuilderTests
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns(locationUrl);
 
-        var service = new EventSearchQueryStringBuilder();
-
-        eventFilterChoices.EventTypeChecklistDetails = new ChecklistDetails
-        {
-            QueryStringParameterName = "calendarId",
-            Lookups = eventTypesLookup
-        };
-        var actual = service.BuildEventSearchFilters(eventFilterChoices, mockUrlHelper.Object);
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new List<ChecklistLookup>(), eventTypesLookup, new List<ChecklistLookup>());
 
         if (expectedNumberOfFilters == 0)
         {
@@ -363,7 +311,7 @@ public class EventSearchQueryStringBuilderTests
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
         firstItem.FieldName.Should().Be(fieldName);
-        firstItem.FieldOrder.Should().Be(1);
+        firstItem.FieldOrder.Should().Be(4);
 
         var filter = firstItem.Filters.First();
         filter.ClearFilterLink.Should().Be(locationUrl);
@@ -371,41 +319,30 @@ public class EventSearchQueryStringBuilderTests
         filter.Value.Should().Be(parameterName);
     }
 
-    [TestCase(1, 2, null, "?calendarId=2", "?calendarId=1")]
-    [TestCase(1, null, 3, "?calendarId=3", "?calendarId=1")]
-    [TestCase(null, 2, 3, "?calendarId=3", "?calendarId=2")]
-    public void BuildEventSearchFiltersForTwoEventTypes(int? calendarId1, int? calendarId2, int? calendarId3,
+
+
+    [TestCase(1, 2, "?calendarId=2", "?calendarId=1")]
+    [TestCase(1, 3, "?calendarId=3", "?calendarId=1")]
+    [TestCase(2, 3, "?calendarId=3", "?calendarId=2")]
+    public void BuildEventSearchFiltersForTwoEventTypes(int calendarId1, int calendarId2,
       string expectedFirst, string expectedSecond)
     {
         var parameterName = "calendarId";
-        var eventFilterChoices = new EventFilterChoices { CalendarIds = new List<int>() };
+        var request = new GetNetworkEventsRequest { CalendarId = new List<int>() };
         var eventTypesLookup = new List<ChecklistLookup>();
 
-        var eventFilters = new EventFilterChoices
+        var eventFilters = new GetNetworkEventsRequest
         {
-            CalendarIds = new List<int>()
+            CalendarId = new List<int>()
         };
 
-        if (calendarId1 != null)
-        {
-            eventTypesLookup.Add(new ChecklistLookup(parameterName, calendarId1.Value.ToString()));
-            eventFilters.CalendarIds.Add(calendarId1.Value);
-            eventFilterChoices.CalendarIds.Add(calendarId1.Value);
-        }
+        eventTypesLookup.Add(new ChecklistLookup(parameterName, calendarId1.ToString()));
+        eventFilters.CalendarId.Add(calendarId1);
+        request.CalendarId.Add(calendarId1);
 
-        if (calendarId2 != null)
-        {
-            eventTypesLookup.Add(new ChecklistLookup(parameterName, calendarId2.Value.ToString()));
-            eventFilters.CalendarIds.Add(calendarId2.Value);
-            eventFilterChoices.CalendarIds.Add(calendarId2.Value);
-        }
-
-        if (calendarId3 != null)
-        {
-            eventTypesLookup.Add(new ChecklistLookup(parameterName, calendarId3.Value.ToString()));
-            eventFilters.CalendarIds.Add(calendarId3.Value);
-            eventFilterChoices.CalendarIds.Add(calendarId3.Value);
-        }
+        eventTypesLookup.Add(new ChecklistLookup(parameterName, calendarId2.ToString()));
+        eventFilters.CalendarId.Add(calendarId2);
+        request.CalendarId.Add(calendarId2);
 
         var locationUrl = "network-events";
         var mockUrlHelper = new Mock<IUrlHelper>();
@@ -413,19 +350,12 @@ public class EventSearchQueryStringBuilderTests
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns(locationUrl);
 
-        var service = new EventSearchQueryStringBuilder();
-
-        eventFilterChoices.EventTypeChecklistDetails = new ChecklistDetails
-        {
-            QueryStringParameterName = "calendarId",
-            Lookups = eventTypesLookup
-        };
-        var actual = service.BuildEventSearchFilters(eventFilterChoices, mockUrlHelper.Object);
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new List<ChecklistLookup>(), eventTypesLookup, new List<ChecklistLookup>());
 
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(2);
         firstItem.FieldName.Should().Be("Event type");
-        firstItem.FieldOrder.Should().Be(1);
+        firstItem.FieldOrder.Should().Be(4);
 
         var filter = firstItem.Filters.First();
         filter.ClearFilterLink.Should().Be(locationUrl + expectedFirst);
@@ -443,25 +373,25 @@ public class EventSearchQueryStringBuilderTests
     public void BuildEventSearchFiltersForThreeEventTypes(int calendarId1, int calendarId2, int calendarId3, string expectedFirst, string expectedSecond, string expectedThird)
     {
         var parameterName = "calendarId";
-        var eventFilterChoices = new EventFilterChoices { CalendarIds = new List<int>() };
+        var request = new GetNetworkEventsRequest { CalendarId = new List<int>() };
         var eventTypesLookup = new List<ChecklistLookup>();
 
-        var eventFilters = new EventFilterChoices
+        var eventFilters = new GetNetworkEventsRequest
         {
-            CalendarIds = new List<int>()
+            CalendarId = new List<int>()
         };
 
         eventTypesLookup.Add(new ChecklistLookup(parameterName, calendarId1.ToString()));
-        eventFilters.CalendarIds.Add(calendarId1);
-        eventFilterChoices.CalendarIds.Add(calendarId1);
+        eventFilters.CalendarId.Add(calendarId1);
+        request.CalendarId.Add(calendarId1);
 
         eventTypesLookup.Add(new ChecklistLookup(parameterName, calendarId2.ToString()));
-        eventFilters.CalendarIds.Add(calendarId2);
-        eventFilterChoices.CalendarIds.Add(calendarId2);
+        eventFilters.CalendarId.Add(calendarId2);
+        request.CalendarId.Add(calendarId2);
 
         eventTypesLookup.Add(new ChecklistLookup(parameterName, calendarId3.ToString()));
-        eventFilters.CalendarIds.Add(calendarId3);
-        eventFilterChoices.CalendarIds.Add(calendarId3);
+        eventFilters.CalendarId.Add(calendarId3);
+        request.CalendarId.Add(calendarId3);
 
         var locationUrl = "network-events";
         var mockUrlHelper = new Mock<IUrlHelper>();
@@ -469,19 +399,12 @@ public class EventSearchQueryStringBuilderTests
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns(locationUrl);
 
-        var service = new EventSearchQueryStringBuilder();
-
-        eventFilterChoices.EventTypeChecklistDetails = new ChecklistDetails
-        {
-            QueryStringParameterName = "calendarId",
-            Lookups = eventTypesLookup
-        };
-        var actual = service.BuildEventSearchFilters(eventFilterChoices, mockUrlHelper.Object);
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new List<ChecklistLookup>(), eventTypesLookup, new List<ChecklistLookup>());
 
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(3);
         firstItem.FieldName.Should().Be("Event type");
-        firstItem.FieldOrder.Should().Be(1);
+        firstItem.FieldOrder.Should().Be(4);
 
         var filter = firstItem.Filters.First();
         filter.ClearFilterLink.Should().Be(locationUrl + expectedFirst);
@@ -500,18 +423,18 @@ public class EventSearchQueryStringBuilderTests
     }
 
     [TestCase(null, "", 0)]
-    [TestCase(1, "Regions", 1)]
-    [TestCase(2, "Regions", 1)]
-    [TestCase(3, "Regions", 1)]
+    [TestCase(1, "Region", 1)]
+    [TestCase(2, "Region", 1)]
+    [TestCase(3, "Region", 1)]
     public void BuildEventSearchFiltersForSingleRegions(int? regionId1, string fieldName, int expectedNumberOfFilters)
     {
         var parameterName = "regionId";
-        var eventFilterChoices = new EventFilterChoices { RegionIds = new List<int>() };
+        var request = new GetNetworkEventsRequest { RegionId = new List<int>() };
         var regionLookups = new List<ChecklistLookup>();
 
-        var eventFilters = new EventFilterChoices
+        var eventFilters = new GetNetworkEventsRequest
         {
-            RegionIds = new List<int>()
+            RegionId = new List<int>()
         };
 
         if (regionId1 != null)
@@ -523,8 +446,8 @@ public class EventSearchQueryStringBuilderTests
 
             regionLookups.Add(lookup);
 
-            eventFilters.RegionIds.Add(regionId1.Value);
-            eventFilterChoices.RegionIds.Add(regionId1.Value);
+            eventFilters.RegionId.Add(regionId1.Value);
+            request.RegionId.Add(regionId1.Value);
         }
 
         var locationUrl = "network-events";
@@ -533,15 +456,7 @@ public class EventSearchQueryStringBuilderTests
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns(locationUrl);
 
-        var service = new EventSearchQueryStringBuilder();
-
-        eventFilterChoices.RegionChecklistDetails = new ChecklistDetails
-        {
-            QueryStringParameterName = "regionId",
-            Lookups = regionLookups
-        };
-
-        var actual = service.BuildEventSearchFilters(eventFilterChoices, mockUrlHelper.Object);
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new List<ChecklistLookup>(), new List<ChecklistLookup>(), regionLookups);
 
         if (expectedNumberOfFilters == 0)
         {
@@ -552,7 +467,7 @@ public class EventSearchQueryStringBuilderTests
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
         firstItem.FieldName.Should().Be(fieldName);
-        firstItem.FieldOrder.Should().Be(1);
+        firstItem.FieldOrder.Should().Be(5);
 
         var filter = firstItem.Filters.First();
         filter.ClearFilterLink.Should().Be(locationUrl);
@@ -560,47 +475,35 @@ public class EventSearchQueryStringBuilderTests
         filter.Value.Should().Be(parameterName);
     }
 
-    [TestCase(1, 2, null, "?regionId=2", "?regionId=1")]
-    [TestCase(1, null, 3, "?regionId=3", "?regionId=1")]
-    [TestCase(null, 2, 3, "?regionId=3", "?regionId=2")]
-    public void BuildEventSearchFiltersForTwoRegions(int? regionId1, int? regionId2, int? regionId3,
+    [TestCase(1, 2, "?regionId=2", "?regionId=1")]
+    [TestCase(1, 3, "?regionId=3", "?regionId=1")]
+    [TestCase(2, 3, "?regionId=3", "?regionId=2")]
+    public void BuildEventSearchFiltersForTwoRegions(int regionId1, int regionId2,
        string expectedFirst, string expectedSecond)
     {
         var parameterName = "regionId";
-        var eventFilterChoices = new EventFilterChoices { RegionIds = new List<int>() };
+        var request
+            = new GetNetworkEventsRequest { RegionId = new List<int>() };
         var regionLookups = new List<ChecklistLookup>();
 
-        var eventFilters = new EventFilterChoices
+        var eventFilters = new GetNetworkEventsRequest
         {
-            RegionIds = new List<int>()
+            RegionId = new List<int>()
         };
 
-        if (regionId1 != null)
+        var lookup = new ChecklistLookup(parameterName, regionId1.ToString())
         {
-            var lookup = new ChecklistLookup(parameterName, regionId1.Value.ToString())
-            {
-                Checked = "Checked"
-            };
+            Checked = "Checked"
+        };
 
-            regionLookups.Add(lookup);
+        regionLookups.Add(lookup);
 
-            eventFilters.RegionIds.Add(regionId1.Value);
-            eventFilterChoices.RegionIds.Add(regionId1.Value);
-        }
+        request.RegionId.Add(regionId1);
+        request.RegionId.Add(regionId2);
+        eventFilters.RegionId.Add(regionId1);
+        eventFilters.RegionId.Add(regionId2);
 
-        if (regionId2 != null)
-        {
-            regionLookups.Add(new ChecklistLookup(parameterName, regionId2.Value.ToString()));
-            eventFilters.RegionIds.Add(regionId2.Value);
-            eventFilterChoices.RegionIds.Add(regionId2.Value);
-        }
-
-        if (regionId3 != null)
-        {
-            regionLookups.Add(new ChecklistLookup(parameterName, regionId3.Value.ToString()));
-            eventFilters.RegionIds.Add(regionId3.Value);
-            eventFilterChoices.RegionIds.Add(regionId3.Value);
-        }
+        regionLookups.Add(new ChecklistLookup(parameterName, regionId2.ToString()));
 
         var locationUrl = "network-events";
         var mockUrlHelper = new Mock<IUrlHelper>();
@@ -608,20 +511,12 @@ public class EventSearchQueryStringBuilderTests
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns(locationUrl);
 
-        var service = new EventSearchQueryStringBuilder();
-
-        eventFilterChoices.RegionChecklistDetails = new ChecklistDetails
-        {
-            QueryStringParameterName = "regionId",
-            Lookups = regionLookups
-        };
-
-        var actual = service.BuildEventSearchFilters(eventFilterChoices, mockUrlHelper.Object);
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new List<ChecklistLookup>(), new List<ChecklistLookup>(), regionLookups);
 
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(2);
-        firstItem.FieldName.Should().Be("Regions");
-        firstItem.FieldOrder.Should().Be(1);
+        firstItem.FieldName.Should().Be("Region");
+        firstItem.FieldOrder.Should().Be(5);
 
         var filter = firstItem.Filters.First();
         filter.ClearFilterLink.Should().Be(locationUrl + expectedFirst);
@@ -640,12 +535,12 @@ public class EventSearchQueryStringBuilderTests
        string expectedFirst, string expectedSecond, string expectedThird, int expectedNumberOfFilters, string regionId1Checked)
     {
         var parameterName = "regionId";
-        var eventFilterChoices = new EventFilterChoices { RegionIds = new List<int>() };
+        var request = new GetNetworkEventsRequest { RegionId = new List<int>() };
         var regionLookups = new List<ChecklistLookup>();
 
-        var eventFilters = new EventFilterChoices
+        var eventFilters = new GetNetworkEventsRequest
         {
-            RegionIds = new List<int>()
+            RegionId = new List<int>()
         };
 
 
@@ -656,20 +551,20 @@ public class EventSearchQueryStringBuilderTests
 
         regionLookups.Add(lookup);
 
-        eventFilters.RegionIds.Add(1);
+        eventFilters.RegionId.Add(1);
 
         if (regionId1Checked == "checked")
         {
-            eventFilterChoices.RegionIds.Add(1);
+            request.RegionId.Add(1);
         }
 
         regionLookups.Add(new ChecklistLookup(parameterName, 2.ToString()));
-        eventFilters.RegionIds.Add(2);
-        eventFilterChoices.RegionIds.Add(2);
+        eventFilters.RegionId.Add(2);
+        request.RegionId.Add(2);
 
         regionLookups.Add(new ChecklistLookup(parameterName, 3.ToString()));
-        eventFilters.RegionIds.Add(3);
-        eventFilterChoices.RegionIds.Add(3);
+        eventFilters.RegionId.Add(3);
+        request.RegionId.Add(3);
 
 
         var locationUrl = "network-events";
@@ -678,26 +573,12 @@ public class EventSearchQueryStringBuilderTests
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
             .Returns(locationUrl);
 
-        var service = new EventSearchQueryStringBuilder();
-
-        eventFilterChoices.RegionChecklistDetails = new ChecklistDetails
-        {
-            QueryStringParameterName = "regionId",
-            Lookups = regionLookups
-        };
-
-        var actual = service.BuildEventSearchFilters(eventFilterChoices, mockUrlHelper.Object);
-
-        if (expectedNumberOfFilters == 0)
-        {
-            actual.Count.Should().Be(0);
-            return;
-        }
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new List<ChecklistLookup>(), new List<ChecklistLookup>(), regionLookups);
 
         var firstItem = actual.First();
         firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
-        firstItem.FieldName.Should().Be("Regions");
-        firstItem.FieldOrder.Should().Be(1);
+        firstItem.FieldName.Should().Be("Region");
+        firstItem.FieldOrder.Should().Be(5);
 
         var filter = firstItem.Filters.First();
         filter.ClearFilterLink.Should().Be(locationUrl + expectedFirst);
@@ -717,4 +598,14 @@ public class EventSearchQueryStringBuilderTests
             filterThird.Value.Should().Be(parameterName);
         }
     }
+
+
+    private static List<ChecklistLookup> ChecklistLookupEventFormats() =>
+        new()
+        {
+            new ChecklistLookup(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString()),
+            new ChecklistLookup(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString()),
+            new (EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString())
+        };
+
 }

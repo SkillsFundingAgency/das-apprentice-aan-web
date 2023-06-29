@@ -12,7 +12,6 @@ using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
-using SFA.DAS.ApprenticeAan.Web.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
@@ -25,6 +24,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
 public class NetworkEventsControllerTests
 {
     private static readonly string AllNetworksUrl = Guid.NewGuid().ToString();
+
 
     [Test, MoqAutoData]
     public void GetCalendarEvents_ReturnsApiResponse(
@@ -163,7 +163,6 @@ public class NetworkEventsControllerTests
     [Test]
     [MoqAutoData]
     public async Task SetAttendanceStatus_InvokesOuterApiClientPutAttendance(
-        IEventSearchQueryStringBuilder builder,
         ApplicationConfiguration config,
         Mock<IOuterApiClient> outerApiMock,
         Guid apprenticeId,
@@ -172,7 +171,7 @@ public class NetworkEventsControllerTests
     {
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
 
-        var sut = new NetworkEventsController(outerApiMock.Object, builder, config);
+        var sut = new NetworkEventsController(outerApiMock.Object, config);
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
 
         await sut.SetAttendanceStatus(calendarEventId, newStatus);

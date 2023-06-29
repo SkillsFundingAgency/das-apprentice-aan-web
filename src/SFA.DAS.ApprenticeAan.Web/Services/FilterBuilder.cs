@@ -2,6 +2,7 @@
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
+using System.Globalization;
 
 namespace SFA.DAS.ApprenticeAan.Web.Services;
 
@@ -14,12 +15,12 @@ public static class FilterBuilder
 
         if (request.FromDate.HasValue)
         {
-            filters.AddFilterItems(urlHelper, fullQueryParameters, new[] { request.FromDate.Value.ToApiString() }, "From date", "fromDate", 1, Enumerable.Empty<ChecklistLookup>());
+            filters.AddFilterItems(urlHelper, fullQueryParameters, new[] { request.FromDate.Value.ToScreenString() }, "From date", "fromDate", 1, Enumerable.Empty<ChecklistLookup>());
         }
 
         if (request.ToDate.HasValue)
         {
-            filters.AddFilterItems(urlHelper, fullQueryParameters, new[] { request.ToDate.Value.ToApiString() }, "To date", "toDate", 2, Enumerable.Empty<ChecklistLookup>());
+            filters.AddFilterItems(urlHelper, fullQueryParameters, new[] { request.ToDate.Value.ToScreenString() }, "To date", "toDate", 2, Enumerable.Empty<ChecklistLookup>());
         }
 
         filters.AddFilterItems(urlHelper, fullQueryParameters, request.EventFormat.Select(e => e.ToString()), "Event format", "eventFormat", 3, eventFormatLookups);
@@ -91,5 +92,11 @@ public static class FilterBuilder
 
     private static string BuildDateQueryParameter(string name, DateTime value) => $"{name}={value.ToApiString()}";
 
-    private static string BuildQueryParameter(string name, string value) => $"{name}={value}";
+    private static string BuildQueryParameter(string name, string value)
+    {
+        return DateTime.TryParseExact(value, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None,
+            out DateTime parsedDate) ?
+            $"{name}={parsedDate.ToApiString()}" :
+            $"{name}={value}";
+    }
 }
