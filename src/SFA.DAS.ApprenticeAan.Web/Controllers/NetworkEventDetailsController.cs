@@ -46,14 +46,14 @@ public class NetworkEventDetailsController : Controller
                 _applicationConfiguration.ApplicationSettings.GoogleMapsPrivateKey));
         }
 
-        throw new InvalidOperationException($"An event with ID {id} was not found."); //TODO: Navigate to 404
+        throw new InvalidOperationException($"An event with ID {id} was not found.");
     }
 
     [HttpPost]
     public async Task<IActionResult> Post(SubmitAttendanceCommand command, CancellationToken cancellationToken)
     {
         var memberId = User.GetAanMemberId();
-        var result = _validator.Validate(command);
+        var result = await _validator.ValidateAsync(command, cancellationToken);
 
         if (!result.IsValid)
         {
