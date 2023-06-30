@@ -15,7 +15,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 [Route("network-event-details")]
 public class NetworkEventDetailsController : Controller
 {
-    public const string ViewPath = "~/Views/NetworkEventDetails/Detail.cshtml";
+    public const string DetailsViewPath = "~/Views/NetworkEventDetails/Detail.cshtml";
     public const string SignUpConfirmationViewPath = "~/Views/NetworkEventDetails/SignUpConfirmation.cshtml";
     public const string CancellationConfirmationViewPath = "~/Views/NetworkEventDetails/CancellationConfirmation.cshtml";
 
@@ -39,7 +39,7 @@ public class NetworkEventDetailsController : Controller
 
         if (eventDetailsResponse.ResponseMessage.IsSuccessStatusCode)
         {
-            return View(ViewPath, new NetworkEventDetailsViewModel(
+            return View(DetailsViewPath, new NetworkEventDetailsViewModel(
                 eventDetailsResponse.GetContent(),
                 memberId,
                 _applicationConfiguration.ApplicationSettings.GoogleMapsApiKey,
@@ -68,7 +68,7 @@ public class NetworkEventDetailsController : Controller
 
             if (eventDetailsResponse.ResponseMessage.IsSuccessStatusCode)
             {
-                return View(ViewPath, model);
+                return View(DetailsViewPath, model);
             }
         }
 

@@ -126,12 +126,47 @@ public class NetworkEventDetailsControllerTests
         var sut = new NetworkEventDetailsController(outerApiMock.Object, config, validator.Object);
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
 
-        await sut.Post(new SubmitAttendanceCommand(calendarEventId, newStatus, DateTime.Now.AddDays(1)), new CancellationToken());
+        var command = new SubmitAttendanceCommand
+        {
+            CalendarEventId = calendarEventId,
+            NewStatus = newStatus,
+            StartTimeAndDate = DateTime.Now.AddDays(1)
+        };
+
+        await sut.Post(command, new CancellationToken());
 
         outerApiMock.Verify(o => o.PutAttendance(calendarEventId,
                                                  It.IsAny<Guid>(),
                                                  It.Is<SetAttendanceStatusRequest>(a => a.IsAttending == newStatus),
                                                  It.IsAny<CancellationToken>()), Times.Once());
+    }
+
+    [Test, MoqAutoData]
+    public async Task Post_WhenValidationErrorIsRaised(
+        ApplicationConfiguration config,
+        Mock<IOuterApiClient> outerApiMock,
+        Guid apprenticeId,
+        Guid calendarEventId,
+        Mock<IValidator<SubmitAttendanceCommand>> validator)
+    {
+
+        var calendarEvent = new CalendarEvent { CalendarEventId = calendarEventId };
+        var response = new Response<CalendarEvent>(null, new(HttpStatusCode.OK), () => calendarEvent);
+        outerApiMock.Setup(o => o.GetCalendarEventDetails(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(response);
+        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
+
+        var sut = new NetworkEventDetailsController(outerApiMock.Object, config, validator.Object);
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+
+        sut.ModelState.AddModelError("key", "message");
+
+        var command = new SubmitAttendanceCommand();
+
+        var result = await sut.Post(command, new CancellationToken()) as ViewResult;
+
+        sut.ModelState.IsValid.Should().BeFalse();
+        result!.ViewName.Should().Be(NetworkEventDetailsController.DetailsViewPath);
     }
 
     [Test]
@@ -143,7 +178,13 @@ public class NetworkEventDetailsControllerTests
     {
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        var result = await sut.Post(new SubmitAttendanceCommand(calendarEventId, true, DateTime.Today.AddDays(1)), new CancellationToken());
+        var command = new SubmitAttendanceCommand
+        {
+            CalendarEventId = calendarEventId,
+            NewStatus = true,
+            StartTimeAndDate = DateTime.Now.AddDays(1)
+        };
+        var result = await sut.Post(command, new CancellationToken());
 
         Assert.That(result.As<RedirectToActionResult>().ActionName, Is.EqualTo("SignUpConfirmation"));
     }
@@ -157,8 +198,13 @@ public class NetworkEventDetailsControllerTests
     {
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        var result = await sut.Post(new SubmitAttendanceCommand(calendarEventId, false, DateTime.Today.AddDays(1)), new CancellationToken());
-
+        var command = new SubmitAttendanceCommand
+        {
+            CalendarEventId = calendarEventId,
+            NewStatus = false,
+            StartTimeAndDate = DateTime.Now.AddDays(1)
+        };
+        var result = await sut.Post(command, new CancellationToken());
 
         Assert.That(result.As<RedirectToActionResult>().ActionName, Is.EqualTo("CancellationConfirmation"));
     }
