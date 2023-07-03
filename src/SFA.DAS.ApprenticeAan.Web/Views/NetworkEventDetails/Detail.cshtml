@@ -43,8 +43,6 @@
         </div>
 
     </div>
-@if (Model.StartTimeAndDate >= DateTime.Now)
-    {
     <div class="govuk-grid-column-one-third">
         <div class="das-highlight govuk-!-margin-top-0">
             @if (Model.IsSignedUp)
@@ -52,7 +50,7 @@
                 <p class="app-green-tick-large">
                     <span class="das-icon-list__icon das-icon-list__icon--tick">Yes: </span>You're signed up
                 </p>
-                @if (Model.StartTimeAndDate >= DateTime.Now)
+                @if (!Model.IsPastEvent)
                 {
                     <h3 class="govuk-heading-s">Can't make it?</h3>
                     @using (Html.BeginForm("Post", "NetworkEventDetails", FormMethod.Post))
@@ -62,34 +60,32 @@
                         <input type="hidden" id="newStatus" name="newStatus" value="false"/>
                         <button class="govuk-button govuk-button--warning govuk-!-margin-bottom-0 govuk-!-width-full">Cancel your attendance</button>
                     }
-
+                }
+                else
+                {
+                    <h3 class="govuk-heading-s">Past event</h3>
                 }
             }
             else
             {
-                <h3 class="govuk-heading-m">Want to be involved in this event?</h3>
-                    @using (Html.BeginForm("Post", "NetworkEventDetails", FormMethod.Post))
+                @if (!Model.IsPastEvent)
                 {
-                    <input type="hidden" asp-for="@Model.StartTimeAndDate"/>
-                    <input type="hidden" asp-for="@Model.CalendarEventId"/>
-                    <input type="hidden" id="newStatus" name="newStatus" value="true"/>
-                    <button class="govuk-button govuk-!-margin-bottom-0 govuk-!-width-full" data-module="govuk-button" type="submit">Sign up</button>
+                    <h3 class="govuk-heading-m">Want to be involved in this event?</h3>
+                    @using (Html.BeginForm("Post", "NetworkEventDetails", FormMethod.Post))
+                    {
+                        <input type="hidden" asp-for="@Model.StartTimeAndDate"/>
+                        <input type="hidden" asp-for="@Model.CalendarEventId"/>
+                        <input type="hidden" id="newStatus" name="newStatus" value="true"/>
+                        <button class="govuk-button govuk-!-margin-bottom-0 govuk-!-width-full" data-module="govuk-button" type="submit">Sign up</button>
+                    }
+                }
+                else
+                {
+                    <h3 class="govuk-heading-s">Past event / can't sign up</h3>
                 }
             }
         </div>
     </div>
-    }
-@if (Model.StartTimeAndDate < DateTime.Now && Model.IsSignedUp)
-{
-    <div class="govuk-grid-column-one-third">
-        <div class="das-highlight govuk-!-margin-top-0">
-          
-            <p class="app-green-tick-large">
-                <span class="das-icon-list__icon das-icon-list__icon--tick">Yes: </span>You're signed up
-            </p>
-        </div>
-    </div>
-}
 </div>
 
 @if (Model.StartTimeAndDate >= DateTime.Now)

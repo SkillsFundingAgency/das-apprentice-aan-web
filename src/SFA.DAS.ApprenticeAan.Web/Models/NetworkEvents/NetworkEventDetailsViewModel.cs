@@ -15,6 +15,9 @@ public class NetworkEventDetailsViewModel
     public string EndDate { get; init; }
     public string StartTime { get; init; }
     public DateTime StartTimeAndDate { get; init; }
+
+    public bool IsPastEvent => StartTimeAndDate < DateTime.Now;
+
     public string EndTime { get; init; }
     public string Title { get; init; }
     public string Description { get; init; }
