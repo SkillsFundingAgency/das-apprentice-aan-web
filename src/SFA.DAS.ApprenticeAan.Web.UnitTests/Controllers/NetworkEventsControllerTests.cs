@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using RestEase;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
+using SFA.DAS.ApprenticeAan.Domain.Extensions;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
@@ -56,6 +57,15 @@ public class NetworkEventsControllerTests
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.NetworkEvents, AllNetworksUrl);
 
         var actualResult = sut.Index(request, new CancellationToken());
+        var expectedEventFormatChecklistLookup = new ChecklistLookup[]
+        {
+            new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString(),
+                request.EventFormat.Exists(x => x == EventFormat.InPerson)),
+            new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString(),
+                request.EventFormat.Exists(x => x == EventFormat.Online)),
+            new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString(),
+                request.EventFormat.Exists(x => x == EventFormat.Hybrid))
+        };
 
         var viewResult = actualResult.Result.As<ViewResult>();
         var model = viewResult.Model as NetworkEventsViewModel;
@@ -65,6 +75,8 @@ public class NetworkEventsControllerTests
         model!.TotalCount.Should().Be(expectedResult.TotalCount);
         model.FilterChoices.FromDate?.ToApiString().Should().Be(fromDateFormatted);
         model.FilterChoices.ToDate?.ToApiString().Should().Be(toDateFormatted);
+        model.FilterChoices.EventFormatChecklistDetails.Lookups.Should().BeEquivalentTo(expectedEventFormatChecklistLookup);
+
         outerApiMock.Verify(o => o.GetCalendarEvents(It.IsAny<Guid>(), fromDateFormatted, toDateFormatted, eventFormats, eventTypes, regions, It.IsAny<CancellationToken>()), Times.Once);
     }
 
