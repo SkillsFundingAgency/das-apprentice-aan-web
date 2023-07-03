@@ -36,7 +36,12 @@ public class NetworkEventsControllerTests
     DateTime? toDate,
     Guid apprenticeId)
     {
-        var eventFormats = new List<EventFormat>();
+        var eventFormats = new List<EventFormat>
+        {
+            EventFormat.InPerson,
+            EventFormat.Online,
+            EventFormat.Hybrid
+        };
         var eventTypes = new List<int>();
         var regions = new List<int>();
         var fromDateFormatted = fromDate?.ToString("yyyy-MM-dd")!;
