@@ -1,12 +1,11 @@
-﻿using RestEase.HttpClientFactory;
+﻿using System.Diagnostics.CodeAnalysis;
+using RestEase.HttpClientFactory;
 using SFA.DAS.ApprenticeAan.Application.Services;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
-using SFA.DAS.ApprenticeAan.Web.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Services;
 using SFA.DAS.ApprenticePortal.SharedUi.Services;
 using SFA.DAS.Http.Configuration;
-using System.Diagnostics.CodeAnalysis;
 
 namespace SFA.DAS.ApprenticeAan.Web.AppStart;
 
@@ -23,7 +22,6 @@ public static class ServiceRegistrationsStartup
         services.AddTransient<IApprenticeAccountService, ApprenticeAccountService>();
         services.AddTransient<IApprenticeService, ApprenticeService>();
         services.AddTransient<IMyApprenticeshipService, MyApprenticeshipService>();
-        services.AddTransient<IEventSearchQueryStringBuilder, EventSearchQueryStringBuilder>();
         return services;
     }
 

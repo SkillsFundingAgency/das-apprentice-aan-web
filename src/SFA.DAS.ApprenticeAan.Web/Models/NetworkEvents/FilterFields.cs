@@ -5,5 +5,6 @@ public enum FilterFields
     FromDate,
     ToDate,
     EventFormat,
-    EventType
+    EventType,
+    Region
 }

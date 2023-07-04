@@ -29,8 +29,9 @@
                     <form asp-route="@RouteNames.NetworkEvents" method="GET">
                         <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
                         <partial name="_FilterEventDates" Model="Model.FilterChoices" />
-                        <partial name="_FilterEventFormats" Model="Model.FilterChoices" />
-                        <partial name="_FilterEventTypes" Model="Model.FilterChoices" />
+                        <partial name="_FilterDetails" Model="Model.FilterChoices.EventFormatChecklistDetails" />
+                        <partial name="_FilterDetails" Model="Model.FilterChoices.EventTypeChecklistDetails" />
+                        <partial name="_FilterDetails" Model="Model.FilterChoices.RegionChecklistDetails" />
                         <button type="submit" class="govuk-button" id="filters-submit-second">Apply filters</button>
                     </form>
                 </div>
@@ -46,9 +47,7 @@
         </p>
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 ">
         <div class="das-search-results">
-
             <partial name="_CalendarEvents" />
-
         </div>
     </div>
 </div>
