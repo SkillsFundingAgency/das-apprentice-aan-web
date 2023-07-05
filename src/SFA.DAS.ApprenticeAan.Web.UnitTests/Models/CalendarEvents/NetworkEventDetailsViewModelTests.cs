@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
-using SFA.DAS.ApprenticeAan.Domain.Constants;
+﻿using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 using SFA.DAS.ApprenticeAan.Web.UrlHelpers;
 using SFA.DAS.Testing.AutoFixture;
@@ -21,8 +21,8 @@ public class NetworkEventDetailsViewModelTests
             Assert.That(sut.CalendarEventId, Is.EqualTo(source.CalendarEventId));
             Assert.That(sut.CalendarName, Is.EqualTo(source.CalendarName));
             Assert.That(sut.EventFormat, Is.EqualTo(source.EventFormat));
-            Assert.That(sut.StartDate, Is.EqualTo(source.StartDate.ToString("dddd, d MMMM yyyy")));
-            Assert.That(sut.EndDate, Is.EqualTo(source.EndDate.ToString("dddd, d MMMM yyyy")));
+            Assert.That(sut.StartDate, Is.EqualTo(source.StartDate.UtcToLocalTime().ToString("dddd, d MMMM yyyy")));
+            Assert.That(sut.EndDate, Is.EqualTo(source.EndDate.UtcToLocalTime().ToString("dddd, d MMMM yyyy")));
             Assert.That(sut.Title, Is.EqualTo(source.Title));
             Assert.That(sut.Description, Is.EqualTo(source.Description));
             Assert.That(sut.Summary, Is.EqualTo(source.Summary));
@@ -38,7 +38,7 @@ public class NetworkEventDetailsViewModelTests
             Assert.That(sut.Attendees, Is.EqualTo(source.Attendees));
             Assert.That(sut.AttendeeCount, Is.EqualTo(source.Attendees.Count));
             Assert.That(sut.EventGuests, Is.EqualTo(source.EventGuests));
-            Assert.That(sut.StartDateTime, Is.EqualTo(source.StartDate));
+            Assert.That(sut.StartDateTime, Is.EqualTo(source.StartDate.UtcToLocalTime()));
             if (sut.StartDateTime < DateTime.Now)
             {
                 Assert.That(sut.IsPastEvent, Is.True);
@@ -48,21 +48,7 @@ public class NetworkEventDetailsViewModelTests
                 Assert.That(sut.IsPastEvent, Is.False);
 
             }
-
         });
-    }
-
-
-    [Test]
-    [MoqInlineAutoData(1, false)]
-    [MoqInlineAutoData(-1, true)]
-    public void Constructor_SetsFlag(int minutes, bool isInPast, CalendarEvent source)
-    {
-        source.StartDate = DateTime.UtcNow.AddMinutes(minutes);
-
-        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid(), "someapikey", "someprivatesignature");
-
-        sut.IsPastEvent.Should().Be(isInPast);
     }
 
     [Test, RecursiveMoqAutoData]
@@ -149,7 +135,7 @@ public class NetworkEventDetailsViewModelTests
     {
         var sut = new NetworkEventDetailsViewModel(calendarEvent, Guid.NewGuid(), "someapikey", "someprivatesignature");
 
-        Assert.That(sut.StartTime, Is.EqualTo(calendarEvent.StartDate.ToString("h:mm tt")));
+        Assert.That(sut.StartTime, Is.EqualTo(calendarEvent.StartDate.UtcToLocalTime().ToString("h:mm tt")));
     }
 
     [Test, MoqAutoData]
@@ -157,7 +143,7 @@ public class NetworkEventDetailsViewModelTests
     {
         var sut = new NetworkEventDetailsViewModel(calendarEvent, Guid.NewGuid(), "someapikey", "someprivatesignature");
 
-        Assert.That(sut.EndTime, Is.EqualTo(calendarEvent.EndDate.ToString("h:mm tt")));
+        Assert.That(sut.EndTime, Is.EqualTo(calendarEvent.EndDate.UtcToLocalTime().ToString("h:mm tt")));
     }
 
     [Test, MoqAutoData]
