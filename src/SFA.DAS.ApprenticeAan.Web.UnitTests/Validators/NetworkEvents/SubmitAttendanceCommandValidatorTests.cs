@@ -12,13 +12,13 @@ public class SubmitAttendanceCommandValidatorTests
     {
         var model = new SubmitAttendanceCommand
         {
-            StartTimeAndDate = DateTime.Now.AddMilliseconds(-5)
+            StartDateTime = DateTime.Now.AddMilliseconds(-5)
         };
 
         var sut = new SubmitAttendanceCommandValidator();
         var result = sut.TestValidate(model);
 
-        result.ShouldHaveValidationErrorFor(c => c.StartTimeAndDate)
+        result.ShouldHaveValidationErrorFor(c => c.StartDateTime)
             .WithErrorMessage(SubmitAttendanceCommandValidator.EventTimeDateHasPassed);
     }
 
@@ -27,7 +27,7 @@ public class SubmitAttendanceCommandValidatorTests
     {
         var model = new SubmitAttendanceCommand
         {
-            StartTimeAndDate = DateTime.Now
+            StartDateTime = DateTime.Now
         };
 
         var sut = new SubmitAttendanceCommandValidator();

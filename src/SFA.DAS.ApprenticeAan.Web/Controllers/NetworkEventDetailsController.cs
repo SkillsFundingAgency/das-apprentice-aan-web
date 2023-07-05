@@ -12,7 +12,7 @@ using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
-[Route("network-event-details")]
+[Route("network-events")]
 public class NetworkEventDetailsController : Controller
 {
     public const string DetailsViewPath = "~/Views/NetworkEventDetails/Detail.cshtml";
@@ -73,6 +73,7 @@ public class NetworkEventDetailsController : Controller
         }
 
         await _outerApiClient.PutAttendance(command.CalendarEventId, memberId, new SetAttendanceStatusRequest(command.NewStatus), cancellationToken);
+
         return command.NewStatus
             ? RedirectToAction("SignUpConfirmation")
             : RedirectToAction("CancellationConfirmation");

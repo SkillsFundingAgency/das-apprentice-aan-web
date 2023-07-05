@@ -130,7 +130,7 @@ public class NetworkEventDetailsControllerTests
         {
             CalendarEventId = calendarEventId,
             NewStatus = newStatus,
-            StartTimeAndDate = DateTime.Now.AddDays(1)
+            StartDateTime = DateTime.Now.AddDays(1)
         };
 
         await sut.Post(command, new CancellationToken());
@@ -182,7 +182,7 @@ public class NetworkEventDetailsControllerTests
         {
             CalendarEventId = calendarEventId,
             NewStatus = true,
-            StartTimeAndDate = DateTime.Now.AddDays(1)
+            StartDateTime = DateTime.Now.AddDays(1)
         };
         var result = await sut.Post(command, new CancellationToken());
 
@@ -202,7 +202,7 @@ public class NetworkEventDetailsControllerTests
         {
             CalendarEventId = calendarEventId,
             NewStatus = false,
-            StartTimeAndDate = DateTime.Now.AddDays(1)
+            StartDateTime = DateTime.Now.AddDays(1)
         };
         var result = await sut.Post(command, new CancellationToken());
 
