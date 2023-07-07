@@ -24,4 +24,12 @@ public class DateTimeExtensionsTests
         date.ToScreenString().Should().Be(date.ToString("dd/MM/yyyy"));
     }
 
+    [TestCase(DateTimeKind.Utc)]
+    [TestCase(DateTimeKind.Unspecified)]
+    public void UtcToLocalTime(DateTimeKind kind)
+    {
+        var date = new DateTime(2023, 5, 7, 13, 10, 0, kind);
+        var actual = date.UtcToLocalTime();
+        actual.Hour.Should().Be(14);
+    }
 }

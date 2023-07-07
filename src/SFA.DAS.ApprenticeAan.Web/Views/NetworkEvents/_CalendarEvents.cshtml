@@ -1,6 +1,7 @@
 ﻿﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using SFA.DAS.ApprenticeAan.Domain.Constants
 @using SFA.DAS.ApprenticeAan.Domain.Extensions
+@using SFA.DAS.ApprenticeAan.Web.Extensions;
 @model NetworkEventsViewModel
 <ol class="das-search-results__list">
     @foreach (var calendarEvent in Model.CalendarEvents)
@@ -16,9 +17,9 @@
                     <p class="govuk-body das-search-results__body">@calendarEvent.Summary</p>
                     <dl class="das-definition-list das-definition-list--inline">
                         <dt class="das-definition-list__title">Date</dt>
-                        <dd class="das-definition-list__definition">@calendarEvent.Start.Date.ToString("d MMMM yyyy")</dd>
+                        <dd class="das-definition-list__definition">@calendarEvent.Start.UtcToLocalTime().Date.ToString("d MMMM yyyy")</dd>
                         <dt class="das-definition-list__title">Time</dt>
-                        <dd class="das-definition-list__definition">@calendarEvent.Start.ToString("h:mmtt").ToLower() - @calendarEvent.End.ToString("h:mmtt").ToLower()</dd>
+                        <dd class="das-definition-list__definition">@calendarEvent.Start.UtcToLocalTime().ToString("h:mmtt").ToLower() - @calendarEvent.End.UtcToLocalTime().ToString("h:mmtt").ToLower()</dd>
                         <dt class="das-definition-list__title">Where</dt>
                         <dd class="das-definition-list__definition">
                             @switch (calendarEvent.EventFormat)
