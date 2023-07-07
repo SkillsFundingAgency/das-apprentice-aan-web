@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
-using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
@@ -20,13 +19,11 @@ public class NetworkEventDetailsController : Controller
     public const string CancellationConfirmationViewPath = "~/Views/NetworkEventDetails/CancellationConfirmation.cshtml";
 
     private readonly IOuterApiClient _outerApiClient;
-    private readonly ApplicationConfiguration _applicationConfiguration;
     private readonly IValidator<SubmitAttendanceCommand> _validator;
 
-    public NetworkEventDetailsController(IOuterApiClient outerApiClient, ApplicationConfiguration applicationConfiguration, IValidator<SubmitAttendanceCommand> validator)
+    public NetworkEventDetailsController(IOuterApiClient outerApiClient, IValidator<SubmitAttendanceCommand> validator)
     {
         _outerApiClient = outerApiClient;
-        _applicationConfiguration = applicationConfiguration;
         _validator = validator;
     }
 
