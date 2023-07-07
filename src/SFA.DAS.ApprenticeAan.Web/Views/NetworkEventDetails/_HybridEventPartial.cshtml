@@ -4,14 +4,10 @@
 
 @model NetworkEventDetailsViewModel
 
-<div class="govuk-grid-column-one-half">
     <h2 class="govuk-heading-m">When and where</h2>
-    <p>@Model.StartDate<span class="das-!-display--block">@Model.StartTime to @Model.EndTime</span> </p>
+    <p><b>Date and Time:</b> @Model.StartDate @Model.StartTime to @Model.EndTime</p>
     <partial name="_OnlineJoiningDetails" />
     <p>
-        In person <br />@Model.LocationDetails?.Location, <span class="das-no-wrap">@Model.LocationDetails?.Postcode</span>
+        <b>In person:</b> @Model.LocationDetails?.Location, <span class="das-no-wrap">@Model.LocationDetails?.Postcode</span>
+    <br /><a href="https://www.google.com/maps/dir//@Model.LocationDetails?.Location+@Model.LocationDetails?.Postcode" rel="noopener" target="_blank" class="govuk-link">Find the location on google maps (opens in a new window)</a>
     </p>
-</div>
-<div hidden class="column-one-third map-container hide-nojs sfa-small-bottom-margin toggle-content--mob">
-    <a href="@Model.FullMapLink" target="_blank"><img class="static-map" src="@Model.StaticMapImageLink" class="map-links fake-link font-xxsmall view-googlemaps" alt="static map" /></a>
-</div>

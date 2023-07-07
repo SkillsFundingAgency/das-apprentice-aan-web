@@ -41,9 +41,7 @@ public class NetworkEventDetailsController : Controller
         {
             return View(DetailsViewPath, new NetworkEventDetailsViewModel(
                 eventDetailsResponse.GetContent(),
-                memberId,
-                _applicationConfiguration.ApplicationSettings.GoogleMapsApiKey,
-                _applicationConfiguration.ApplicationSettings.GoogleMapsPrivateKey));
+                memberId));
         }
 
         throw new InvalidOperationException($"An event with ID {id} was not found.");
@@ -60,9 +58,7 @@ public class NetworkEventDetailsController : Controller
             var eventDetailsResponse = await _outerApiClient.GetCalendarEventDetails(command.CalendarEventId, memberId, cancellationToken);
             var model = new NetworkEventDetailsViewModel(
                 eventDetailsResponse.GetContent(),
-                memberId,
-                _applicationConfiguration.ApplicationSettings.GoogleMapsApiKey,
-                _applicationConfiguration.ApplicationSettings.GoogleMapsPrivateKey);
+                memberId);
 
             result.AddToModelState(ModelState);
 

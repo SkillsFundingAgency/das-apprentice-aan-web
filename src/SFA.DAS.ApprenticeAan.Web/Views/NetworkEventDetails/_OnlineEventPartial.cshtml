@@ -3,8 +3,7 @@
 
 @model NetworkEventDetailsViewModel
 
-<div class="govuk-grid-column-one-half">
-    <h2 class="govuk-heading-m">When and where</h2>
-    <p>@Model.StartDate<span class="das-!-display--block">@Model.StartTime to @Model.EndTime</span> </p>
-    <partial name="_OnlineJoiningDetails" />
-</div>
+<h2 class="govuk-heading-m">When and where</h2>
+<p><b>Date and Time:</b> @Model.StartDate @Model.StartTime to @Model.EndTime</p>
+<partial name="_OnlineJoiningDetails" />
+

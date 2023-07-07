@@ -12,9 +12,7 @@
     <div class="govuk-grid-column-two-thirds">
         <strong class="govuk-tag app-tag app-tag--@Model.EventFormat.ToString()">@Model.EventFormat.GetDescription()</strong> <strong class="govuk-tag app-tag">@Model.CalendarName</strong>
         <h1 class="govuk-heading-xl govuk-!-margin-top-4">@Model.Title</h1>
-        <div class="govuk-grid-row">
-            <partial name=@Model.PartialViewName />
-        </div>
+        <partial name=@Model.PartialViewName />
         <h2 class="govuk-heading-m">Event summary</h2>
         <p>@Model.Description</p>
         <h2 class="govuk-heading-m">Guest speakers</h2>
