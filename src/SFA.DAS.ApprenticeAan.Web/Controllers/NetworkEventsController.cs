@@ -42,6 +42,8 @@ public class NetworkEventsController : Controller
         var regions = regionTask.Result.Regions;
 
         var model = InitialiseViewModel(calendarEventsTask.Result);
+        var filterUrl = FilterBuilder.BuildQueryString(request, Url);
+        model.PaginationView = SetupPagination(calendarEventsTask.Result, filterUrl);
         var filterChoices = PopulateFilterChoices(request, calendars, regions);
         model.FilterChoices = filterChoices;
         model.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices.EventFormatChecklistDetails.Lookups, filterChoices.EventTypeChecklistDetails.Lookups, filterChoices.RegionChecklistDetails.Lookups);
@@ -51,16 +53,8 @@ public class NetworkEventsController : Controller
 
     private NetworkEventsViewModel InitialiseViewModel(GetCalendarEventsQueryResult result)
     {
-        NetworkEventsViewModel model = new()
-        {
-            Pagination = new PaginationModel
-            {
-                Page = result.Page,
-                PageSize = result.PageSize,
-                TotalPages = result.TotalPages
-            },
-            TotalCount = result.TotalCount
-        };
+        var model = new NetworkEventsViewModel();
+
 
         foreach (var calendarEvent in result.CalendarEvents)
         {
@@ -71,6 +65,19 @@ public class NetworkEventsController : Controller
         return model;
     }
 
+    private PaginationViewModel SetupPagination(GetCalendarEventsQueryResult result, string filterUrl)
+    {
+        var pagination = new PaginationViewModel
+        {
+            Page = result.Page,
+            PageSize = result.PageSize,
+            TotalPages = result.TotalPages,
+            TotalCount = result.TotalCount
+        };
+
+        return pagination;
+
+    }
     private static EventFilterChoices PopulateFilterChoices(GetNetworkEventsRequest request, List<Calendar> calendars, List<Region> regions)
         => new EventFilterChoices
         {

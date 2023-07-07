@@ -32,6 +32,14 @@ public static class FilterBuilder
         return filters;
     }
 
+    public static string BuildQueryString(GetNetworkEventsRequest request, IUrlHelper url)
+    {
+        var fullQueryParameters = BuildQueryParameters(request);
+        var querystring = BuildQueryString(url, fullQueryParameters, "none");
+
+        return !string.IsNullOrEmpty(querystring) ? querystring : url.RouteUrl(RouteNames.NetworkEvents)!;
+    }
+
     private static void AddFilterItems(this ICollection<SelectedFilter> filters, IUrlHelper url, List<string> fullQueryParameters, IEnumerable<string> selectedValues, string fieldName, string parameterName, IEnumerable<ChecklistLookup> lookups)
     {
         if (!selectedValues.Any()) return;

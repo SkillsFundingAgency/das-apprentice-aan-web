@@ -70,9 +70,9 @@ public class NetworkEventsControllerTests
 
         var viewResult = actualResult.Result.As<ViewResult>();
         var model = viewResult.Model as NetworkEventsViewModel;
-        model!.Pagination.Page.Should().Be(expectedResult.Page);
-        model!.Pagination.PageSize.Should().Be(expectedResult.PageSize);
-        model!.Pagination.TotalPages.Should().Be(expectedResult.TotalPages);
+        model!.PaginationView.Page.Should().Be(expectedResult.Page);
+        model!.PaginationView.PageSize.Should().Be(expectedResult.PageSize);
+        model!.PaginationView.TotalPages.Should().Be(expectedResult.TotalPages);
         model!.TotalCount.Should().Be(expectedResult.TotalCount);
         model.FilterChoices.FromDate?.ToApiString().Should().Be(fromDateFormatted);
         model.FilterChoices.ToDate?.ToApiString().Should().Be(toDateFormatted);

@@ -6,9 +6,9 @@ namespace SFA.DAS.ApprenticeAan.Web.Models;
 
 public class NetworkEventsViewModel
 {
-    public PaginationModel Pagination { get; set; } = new PaginationModel();
+    public PaginationViewModel PaginationView { get; set; } = new PaginationViewModel();
 
-    public int TotalCount { get; set; }
+
 
     public List<CalendarEventViewModel> CalendarEvents { get; set; } = new List<CalendarEventViewModel>();
 
