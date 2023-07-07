@@ -12,7 +12,7 @@ public class SubmitAttendanceCommandValidatorTests
     {
         var model = new SubmitAttendanceCommand
         {
-            StartDateTime = DateTime.Now.AddMilliseconds(-5)
+            StartDateTime = DateTime.UtcNow.AddMilliseconds(-5)
         };
 
         var sut = new SubmitAttendanceCommandValidator();
@@ -27,7 +27,7 @@ public class SubmitAttendanceCommandValidatorTests
     {
         var model = new SubmitAttendanceCommand
         {
-            StartDateTime = DateTime.Now
+            StartDateTime = DateTime.UtcNow
         };
 
         var sut = new SubmitAttendanceCommandValidator();

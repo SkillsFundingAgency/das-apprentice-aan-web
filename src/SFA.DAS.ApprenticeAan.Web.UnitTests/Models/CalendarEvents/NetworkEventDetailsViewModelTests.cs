@@ -1,4 +1,5 @@
-﻿using SFA.DAS.ApprenticeAan.Domain.Constants;
+﻿using FluentAssertions;
+using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
@@ -38,8 +39,8 @@ public class NetworkEventDetailsViewModelTests
             Assert.That(sut.Attendees, Is.EqualTo(source.Attendees));
             Assert.That(sut.AttendeeCount, Is.EqualTo(source.Attendees.Count));
             Assert.That(sut.EventGuests, Is.EqualTo(source.EventGuests));
-            Assert.That(sut.StartDateTime, Is.EqualTo(source.StartDate.UtcToLocalTime()));
-            if (sut.StartDateTime < DateTime.Now)
+            Assert.That(sut.StartDateTime, Is.EqualTo(source.StartDate));
+            if (sut.StartDateTime < DateTime.UtcNow)
             {
                 Assert.That(sut.IsPastEvent, Is.True);
             }
@@ -49,6 +50,19 @@ public class NetworkEventDetailsViewModelTests
 
             }
         });
+    }
+
+    [Test]
+    [MoqInlineAutoData(1, false)]
+    [MoqInlineAutoData(-1, true)]
+    [MoqInlineAutoData(-61, true)]
+    public void Constructor_SetsIsPastEventFlag(int minutes, bool isInPast, CalendarEvent source)
+    {
+        source.StartDate = DateTime.UtcNow.AddMinutes(minutes);
+
+        var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid(), "someapikey", "someprivatesignature");
+
+        sut.IsPastEvent.Should().Be(isInPast);
     }
 
     [Test, RecursiveMoqAutoData]

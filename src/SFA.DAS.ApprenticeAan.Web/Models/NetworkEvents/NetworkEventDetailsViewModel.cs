@@ -32,7 +32,7 @@ public class NetworkEventDetailsViewModel
     public string PartialViewName => GetPartialViewName();
 
     public int AttendeeCount => Attendees.Count;
-    public bool IsPastEvent => StartDateTime < DateTime.Now;
+    public bool IsPastEvent => StartDateTime < DateTime.UtcNow;
 
     public string EmailLink => MailtoLinkValue.FromAddressAndSubject(ContactEmail, Title);
     public string StaticMapImageLink => MapLinkGenerator.GetStaticImagePreviewLink(LocationDetails!.Value, GoogleMapsApiKey, GoogleMapsPrivateKey);
@@ -46,10 +46,10 @@ public class NetworkEventDetailsViewModel
         CalendarEventId = source.CalendarEventId;
         CalendarName = source.CalendarName;
         EventFormat = source.EventFormat;
-        StartDateTime = source.StartDate.UtcToLocalTime();
-        StartDate = StartDateTime.ToString("dddd, d MMMM yyyy");
+        StartDateTime = source.StartDate;
+        StartDate = StartDateTime.UtcToLocalTime().ToString("dddd, d MMMM yyyy");
         EndDate = source.EndDate.UtcToLocalTime().ToString("dddd, d MMMM yyyy");
-        StartTime = StartDateTime.ToString("h:mm tt");
+        StartTime = StartDateTime.UtcToLocalTime().ToString("h:mm tt");
         EndTime = source.EndDate.UtcToLocalTime().ToString("h:mm tt");
         Title = source.Title;
         Description = source.Description;

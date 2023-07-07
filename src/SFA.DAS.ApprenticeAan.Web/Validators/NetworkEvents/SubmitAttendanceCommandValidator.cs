@@ -10,6 +10,6 @@ public class SubmitAttendanceCommandValidator : AbstractValidator<SubmitAttendan
     public SubmitAttendanceCommandValidator()
     {
         RuleLevelCascadeMode = CascadeMode.Stop;
-        RuleFor(x => x.StartDateTime).Must(c => c > DateTime.Now).WithMessage(EventTimeDateHasPassed);
+        RuleFor(x => x.StartDateTime).Must(c => c > DateTime.UtcNow).WithMessage(EventTimeDateHasPassed);
     }
 }
