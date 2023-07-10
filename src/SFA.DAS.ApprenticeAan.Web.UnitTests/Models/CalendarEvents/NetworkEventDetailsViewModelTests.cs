@@ -172,6 +172,19 @@ public class NetworkEventDetailsViewModelTests
         Assert.That(sut.EmailLink, Is.EqualTo(expected));
     }
 
+
+    [Test, MoqAutoData]
+    public void GoogleMapLink_ReturnsExpectedUrl(NetworkEventDetailsViewModel sut)
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut.GoogleMapsLink,
+                Is.EqualTo(sut.LocationDetails?.Location == null
+                    ? string.Empty
+                    : $"https://www.google.com/maps/dir//{sut.LocationDetails?.Location}+{sut.LocationDetails?.Postcode}"));
+        });
+    }
+
     private static void DoAssertsForInPersonAndHybridEvents(CalendarEvent source, NetworkEventDetailsViewModel sut)
     {
         Assert.Multiple(() =>

@@ -33,6 +33,9 @@ public class NetworkEventDetailsViewModel
     public bool IsPastEvent => StartDateTime < DateTime.UtcNow;
 
     public string EmailLink => MailtoLinkValue.FromAddressAndSubject(ContactEmail, Title);
+
+    public string GoogleMapsLink => LocationDetails?.Location == null ? string.Empty : $"https://www.google.com/maps/dir//{LocationDetails?.Location}+{LocationDetails?.Postcode}";
+
     public string EventsHubUrl { get; set; } = "#";
 
     public NetworkEventDetailsViewModel(CalendarEvent source, Guid memberId)
