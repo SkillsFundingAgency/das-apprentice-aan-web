@@ -103,12 +103,12 @@
 }
 
 .app-calendar__date--today .app-calendar__date-day {
-    background-color: #505a5f;
-    color: #fff;
-    min-width: 1.2em;
-    border-radius: 50%;
-    min-height: 1.2em;
-    text-align: center;
+  background-color: #2C7298;
+  color: #fff;
+  min-width: 1.2em;
+  border-radius: 50%;
+  min-height: 1.2em;
+  text-align: center;
 }
 
 .app-calendar__date-month {
@@ -180,24 +180,13 @@ a.app-calendar__event:focus {
 }
 
 .app-calendar-nav__link {
-    display: block;
-    background: #F3F2F1;
-    padding: 10px;
+  display: block;
+  background: #2C7298;
+  padding: 10px;
 }
 
 .app-calendar-nav__icon {
-    fill: #666;
-}
-
-
-.app-calendar-nav__link:hover {
-    color: #0b0c0c;
-    background-color: #ddd;
-}
-
-.app-calendar-nav__link:focus {
-    background-color: #fd0;
-    box-shadow: 0 4px #0b0c0c;
+    fill: #fff;
 }
 
 .app-calendar-nav__link:focus .app-calendar-nav__icon {
