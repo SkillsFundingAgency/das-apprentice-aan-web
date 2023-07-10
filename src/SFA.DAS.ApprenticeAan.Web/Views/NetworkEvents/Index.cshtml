@@ -4,8 +4,8 @@
 @{
     ViewData["Title"] = "Search Network Events";
 
-    var totalCountDescription = $"{Model.PaginationView.TotalCount} results";
-    if (Model.PaginationView.TotalCount == 1)
+    var totalCountDescription = $"{Model.PaginationViewModel.TotalCount} results";
+    if (Model.PaginationViewModel.TotalCount == 1)
     {
         totalCountDescription = "1 result";
     }

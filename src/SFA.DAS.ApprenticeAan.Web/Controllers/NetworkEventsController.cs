@@ -43,7 +43,7 @@ public class NetworkEventsController : Controller
 
         var model = InitialiseViewModel(calendarEventsTask.Result);
         var filterUrl = FilterBuilder.BuildQueryString(request, Url);
-        model.PaginationView = SetupPagination(calendarEventsTask.Result, filterUrl);
+        model.PaginationViewModel = SetupPagination(calendarEventsTask.Result, filterUrl);
         var filterChoices = PopulateFilterChoices(request, calendars, regions);
         model.FilterChoices = filterChoices;
         model.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices.EventFormatChecklistDetails.Lookups, filterChoices.EventTypeChecklistDetails.Lookups, filterChoices.RegionChecklistDetails.Lookups);
@@ -67,13 +67,7 @@ public class NetworkEventsController : Controller
 
     private PaginationViewModel SetupPagination(GetCalendarEventsQueryResult result, string filterUrl)
     {
-        var pagination = new PaginationViewModel
-        {
-            Page = result.Page,
-            PageSize = result.PageSize,
-            TotalPages = result.TotalPages,
-            TotalCount = result.TotalCount
-        };
+        var pagination = new PaginationViewModel(result.Page, result.PageSize, result.TotalPages, filterUrl);
 
         return pagination;
 

@@ -1,4 +1,5 @@
-﻿using AutoFixture.NUnit3;
+﻿using System.Net;
+using AutoFixture.NUnit3;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -70,10 +71,10 @@ public class NetworkEventsControllerTests
 
         var viewResult = actualResult.Result.As<ViewResult>();
         var model = viewResult.Model as NetworkEventsViewModel;
-        model!.PaginationView.Page.Should().Be(expectedResult.Page);
-        model!.PaginationView.PageSize.Should().Be(expectedResult.PageSize);
-        model!.PaginationView.TotalPages.Should().Be(expectedResult.TotalPages);
-        model!.TotalCount.Should().Be(expectedResult.TotalCount);
+        model!.PaginationViewModel.Page.Should().Be(expectedResult.Page);
+        model!.PaginationViewModel.PageSize.Should().Be(expectedResult.PageSize);
+        model!.PaginationViewModel.TotalPages.Should().Be(expectedResult.TotalPages);
+        model!.PaginationViewModel.TotalCount.Should().Be(expectedResult.TotalCount);
         model.FilterChoices.FromDate?.ToApiString().Should().Be(fromDateFormatted);
         model.FilterChoices.ToDate?.ToApiString().Should().Be(toDateFormatted);
         model.FilterChoices.EventFormatChecklistDetails.Lookups.Should().BeEquivalentTo(expectedEventFormatChecklistLookup);
