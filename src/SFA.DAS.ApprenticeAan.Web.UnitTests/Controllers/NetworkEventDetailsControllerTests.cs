@@ -1,5 +1,4 @@
-﻿using System.Net;
-using AutoFixture.NUnit3;
+﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
@@ -9,11 +8,11 @@ using RestEase;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
-using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
+using System.Net;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
 
@@ -114,7 +113,6 @@ public class NetworkEventDetailsControllerTests
     [Test]
     [MoqAutoData]
     public async Task SetAttendanceStatus_InvokesOuterApiClientPutAttendance(
-        ApplicationConfiguration config,
         Mock<IOuterApiClient> outerApiMock,
         Guid apprenticeId,
         Guid calendarEventId,
@@ -123,7 +121,7 @@ public class NetworkEventDetailsControllerTests
     {
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
 
-        var sut = new NetworkEventDetailsController(outerApiMock.Object, config, validator.Object);
+        var sut = new NetworkEventDetailsController(outerApiMock.Object, validator.Object);
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
 
         var command = new SubmitAttendanceCommand
@@ -143,7 +141,6 @@ public class NetworkEventDetailsControllerTests
 
     [Test, MoqAutoData]
     public async Task Post_WhenValidationErrorIsRaised(
-        ApplicationConfiguration config,
         Mock<IOuterApiClient> outerApiMock,
         Guid apprenticeId,
         Guid calendarEventId,
@@ -156,7 +153,7 @@ public class NetworkEventDetailsControllerTests
             .ReturnsAsync(response);
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
 
-        var sut = new NetworkEventDetailsController(outerApiMock.Object, config, validator.Object);
+        var sut = new NetworkEventDetailsController(outerApiMock.Object, validator.Object);
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
 
         sut.ModelState.AddModelError("key", "message");

@@ -1,9 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using SFA.DAS.ApprenticePortal.SharedUi;
+﻿using SFA.DAS.ApprenticePortal.SharedUi;
 using SFA.DAS.ApprenticePortal.SharedUi.GoogleAnalytics;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using SFA.DAS.ApprenticePortal.SharedUi.Zendesk;
 using SFA.DAS.Http.Configuration;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SFA.DAS.ApprenticeAan.Web.Configuration;
 
@@ -21,15 +21,9 @@ public class ApplicationConfiguration : ISharedUiConfiguration
     public AuthenticationConfiguration Authentication { get; set; } = new();
 
     public OuterApiConfiguration ApprenticeAanOuterApi { get; set; } = new();
-
-    public ApplicationSettingsConfiguration ApplicationSettings { get; set; } = new();
 }
 
-public class ApplicationSettingsConfiguration
-{
-    public string GoogleMapsApiKey { get; set; } = null!;
-    public string GoogleMapsPrivateKey { get; set; } = null!;
-}
+
 
 public class ConnectionStringsConfiguration
 {

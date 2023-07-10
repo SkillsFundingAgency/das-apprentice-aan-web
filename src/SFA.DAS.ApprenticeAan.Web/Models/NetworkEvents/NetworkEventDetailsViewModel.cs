@@ -7,8 +7,6 @@ namespace SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
 public class NetworkEventDetailsViewModel
 {
-    public string GoogleMapsApiKey { get; init; }
-    public string GoogleMapsPrivateKey { get; init; }
     public Guid CalendarEventId { get; init; }
     public string CalendarName { get; init; }
     public EventFormat EventFormat { get; init; }
@@ -35,14 +33,13 @@ public class NetworkEventDetailsViewModel
     public bool IsPastEvent => StartDateTime < DateTime.UtcNow;
 
     public string EmailLink => MailtoLinkValue.FromAddressAndSubject(ContactEmail, Title);
-    public string StaticMapImageLink => MapLinkGenerator.GetStaticImagePreviewLink(LocationDetails!.Value, GoogleMapsApiKey, GoogleMapsPrivateKey);
-    public string FullMapLink => MapLinkGenerator.GetLinkToFullMap(LocationDetails!.Value.Latitude!.Value, LocationDetails!.Value.Longitude!.Value);
+
+    public string GoogleMapsLink => LocationDetails?.Location == null ? string.Empty : $"https://www.google.com/maps/dir//{LocationDetails?.Location}+{LocationDetails?.Postcode}";
+
     public string EventsHubUrl { get; set; } = "#";
 
-    public NetworkEventDetailsViewModel(CalendarEvent source, Guid memberId, string googleMapsApiKey, string googleMapsPrivateKey)
+    public NetworkEventDetailsViewModel(CalendarEvent source, Guid memberId)
     {
-        GoogleMapsApiKey = googleMapsApiKey;
-        GoogleMapsPrivateKey = googleMapsPrivateKey;
         CalendarEventId = source.CalendarEventId;
         CalendarName = source.CalendarName;
         EventFormat = source.EventFormat;
