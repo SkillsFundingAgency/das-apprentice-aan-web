@@ -19,6 +19,9 @@ public class PaginationViewModel
         TotalPages = totalPages;
         BaseUrl = baseUrl;
 
+        if (totalPages == 0)
+            return;
+
         var startPage = currentPage < 4 ? 1 : currentPage - 2;
         if (totalPages <= 6)
         {
@@ -26,7 +29,7 @@ public class PaginationViewModel
         }
         else
         {
-            /// This deals with when the current page is the last page, second to last page, and third to last page
+            /// This deals with when the current page is the last page, second to last page, or third to last page
             if (currentPage >= totalPages - 2)
             {
                 startPage = currentPage - 5 + (totalPages - currentPage);

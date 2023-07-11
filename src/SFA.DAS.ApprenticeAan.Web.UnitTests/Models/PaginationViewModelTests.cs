@@ -16,6 +16,13 @@ public class PaginationViewModelTests
         sut.LinkItems.Last().Url.Should().Be(expectedUrl);
     }
 
+    [Test]
+    public void ReturnsNoLinksWhenNoTotalPages()
+    {
+        PaginationViewModel sut = new(1, 5, 0, BaseUrl);
+        sut.LinkItems.Count.Should().Be(0);
+    }
+
     [TestCase(1, 5, 6, 7, 1, false, true)]
     [TestCase(2, 5, 6, 8, 1, true, true)]
     [TestCase(3, 5, 6, 8, 1, true, true)]
