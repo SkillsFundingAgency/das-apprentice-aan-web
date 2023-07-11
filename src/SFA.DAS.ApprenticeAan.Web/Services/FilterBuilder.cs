@@ -35,9 +35,7 @@ public static class FilterBuilder
     public static string BuildFullQueryString(GetNetworkEventsRequest request, IUrlHelper url)
     {
         var fullQueryParameters = BuildQueryParameters(request);
-        var querystring = BuildQueryString(url, fullQueryParameters, "none");
-
-        return !string.IsNullOrEmpty(querystring) ? querystring : url.RouteUrl(RouteNames.NetworkEvents)!;
+        return BuildQueryString(url, fullQueryParameters, "none")!;
     }
 
     private static void AddFilterItems(this ICollection<SelectedFilter> filters, IUrlHelper url, List<string> fullQueryParameters, IEnumerable<string> selectedValues, string fieldName, string parameterName, IEnumerable<ChecklistLookup> lookups)

@@ -2,10 +2,9 @@
 
 public class PaginationViewModel
 {
-    public const int MaximumPageNumbers = 6;
     public const string PreviousText = "« Previous";
     public const string NextText = "Next »";
-    public int Page { get; init; } //Current page
+    public int CurrentPage { get; init; }
     public int PageSize { get; init; }
     public int TotalPages { get; init; }
     public string BaseUrl { get; init; }
@@ -15,20 +14,26 @@ public class PaginationViewModel
 
     public PaginationViewModel(int currentPage, int pageSize, int totalPages, string baseUrl)
     {
-        Page = currentPage;
+        CurrentPage = currentPage;
         PageSize = pageSize;
         TotalPages = totalPages;
         BaseUrl = baseUrl;
 
         var startPage = currentPage < 4 ? 1 : currentPage - 2;
-        if (totalPages <= MaximumPageNumbers)
+        if (totalPages <= 6)
         {
             startPage = 1;
         }
+        else
+        {
+            /// This deals with when the current page is the last page, second to last page, and third to last page
+            if (currentPage >= totalPages - 2)
+            {
+                startPage = currentPage - 5 + (totalPages - currentPage);
+            }
+        }
 
-        var endPage = startPage + 5;
-
-        var range = Enumerable.Range(startPage, MaximumPageNumbers);
+        var range = Enumerable.Range(startPage, 6);
 
         if (currentPage > 1) LinkItems.Add(new(GetUrl(baseUrl, currentPage - 1, pageSize), PreviousText));
 
@@ -39,7 +44,7 @@ public class PaginationViewModel
             if (r == totalPages) break;
         }
 
-        if (endPage < totalPages) LinkItems.Add(new(GetUrl(baseUrl, currentPage + 1, pageSize), NextText));
+        if (currentPage < totalPages) LinkItems.Add(new(GetUrl(baseUrl, currentPage + 1, pageSize), NextText));
     }
 
     public static string GetUrl(string baseUrl, int page, int pageSize)

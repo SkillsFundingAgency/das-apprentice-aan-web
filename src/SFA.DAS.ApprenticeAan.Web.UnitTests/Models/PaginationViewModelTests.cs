@@ -16,11 +16,11 @@ public class PaginationViewModelTests
         sut.LinkItems.Last().Url.Should().Be(expectedUrl);
     }
 
-    [TestCase(1, 5, 6, 6, 1, false, false)]
-    [TestCase(2, 5, 6, 7, 1, true, false)]
-    [TestCase(3, 5, 6, 7, 1, true, false)]
-    [TestCase(4, 5, 6, 7, 1, true, false)]
-    [TestCase(5, 5, 6, 7, 1, true, false)]
+    [TestCase(1, 5, 6, 7, 1, false, true)]
+    [TestCase(2, 5, 6, 8, 1, true, true)]
+    [TestCase(3, 5, 6, 8, 1, true, true)]
+    [TestCase(4, 5, 6, 8, 1, true, true)]
+    [TestCase(5, 5, 6, 8, 1, true, true)]
     [TestCase(6, 5, 6, 7, 1, true, false)]
     [TestCase(1, 5, 7, 7, 1, false, true)]
     [TestCase(2, 5, 7, 8, 1, true, true)]
@@ -30,7 +30,7 @@ public class PaginationViewModelTests
     [TestCase(6, 5, 100, 8, 4, true, true)]
     public void PopulatesLinkItem(int currentPage, int pageSize, int totalPages, int totalLinkItems, int firstPageExpected, bool isPreviousExpected, bool isNextExpected)
     {
-        var linkItems = Enumerable.Range(firstPageExpected, PaginationViewModel.MaximumPageNumbers);
+        var linkItems = Enumerable.Range(firstPageExpected, 6);
         PaginationViewModel sut = new(currentPage, pageSize, totalPages, BaseUrl);
 
         sut.LinkItems.Count.Should().Be(totalLinkItems);

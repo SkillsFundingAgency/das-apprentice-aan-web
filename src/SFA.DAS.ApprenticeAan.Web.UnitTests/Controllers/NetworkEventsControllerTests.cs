@@ -74,7 +74,7 @@ public class NetworkEventsControllerTests
 
         var viewResult = actualResult.Result.As<ViewResult>();
         var model = viewResult.Model as NetworkEventsViewModel;
-        model!.PaginationViewModel.Page.Should().Be(expectedResult.Page);
+        model!.PaginationViewModel.CurrentPage.Should().Be(expectedResult.Page);
         model!.PaginationViewModel.PageSize.Should().Be(expectedResult.PageSize);
         model!.PaginationViewModel.TotalPages.Should().Be(expectedResult.TotalPages);
         model!.TotalCount.Should().Be(expectedResult.TotalCount);
@@ -114,7 +114,7 @@ public class NetworkEventsControllerTests
 
         var viewResult = actualResult.Result.As<ViewResult>();
         var model = viewResult.Model as NetworkEventsViewModel;
-        model!.PaginationViewModel.Page.Should().Be(expectedResult.Page);
+        model!.PaginationViewModel.CurrentPage.Should().Be(expectedResult.Page);
         model!.PaginationViewModel.PageSize.Should().Be(expectedResult.PageSize);
         model!.PaginationViewModel.TotalPages.Should().Be(expectedResult.TotalPages);
         model!.TotalCount.Should().Be(expectedResult.TotalCount);
