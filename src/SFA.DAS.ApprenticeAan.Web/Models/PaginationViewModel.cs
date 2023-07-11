@@ -2,6 +2,7 @@
 
 public class PaginationViewModel
 {
+    public const int MaximumPageNumbers = 6;
     public const string PreviousText = "« Previous";
     public const string NextText = "Next »";
     public int Page { get; init; } //Current page
@@ -20,10 +21,14 @@ public class PaginationViewModel
         BaseUrl = baseUrl;
 
         var startPage = currentPage < 4 ? 1 : currentPage - 2;
+        if (totalPages <= MaximumPageNumbers)
+        {
+            startPage = 1;
+        }
 
         var endPage = startPage + 5;
 
-        var range = Enumerable.Range(startPage, 6);
+        var range = Enumerable.Range(startPage, MaximumPageNumbers);
 
         if (currentPage > 1) LinkItems.Add(new(GetUrl(baseUrl, currentPage - 1, pageSize), PreviousText));
 
@@ -41,7 +46,7 @@ public class PaginationViewModel
     {
 
         var query = $"page={page}&pageSize={pageSize}";
-        var hasQueryParameters = baseUrl.Contains("?");
+        var hasQueryParameters = baseUrl.Contains('?');
         var queryToAppend = hasQueryParameters ? $"&{query}" : $"?{query}";
 
         return $"{baseUrl}{queryToAppend}";

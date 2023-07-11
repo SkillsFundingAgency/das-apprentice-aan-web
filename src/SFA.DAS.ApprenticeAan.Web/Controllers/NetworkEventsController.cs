@@ -63,7 +63,7 @@ public class NetworkEventsController : Controller
         return model;
     }
 
-    private PaginationViewModel SetupPagination(GetCalendarEventsQueryResult result, string filterUrl)
+    private static PaginationViewModel SetupPagination(GetCalendarEventsQueryResult result, string filterUrl)
     {
         var pagination = new PaginationViewModel(result.Page, result.PageSize, result.TotalPages, filterUrl);
 
