@@ -83,5 +83,10 @@ public class QueryStringParameterBuilderTests
         parameters.TryGetValue("regionId", out var regionIdsResult);
         regionIdsResult!.Length.Should().Be(regionIds.Count);
         regionIds.Select(x => x.ToString()).Should().BeEquivalentTo(regionIdsResult.ToList());
+
+        parameters.ContainsKey("page").Should().BeFalse();
+        parameters.ContainsKey("pageSize").Should().BeFalse();
+
+
     }
 }

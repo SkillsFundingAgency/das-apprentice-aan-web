@@ -84,4 +84,44 @@ public class NetworkEventsControllerTests
 
         outerApiMock.Verify(o => o.GetCalendarEvents(It.IsAny<Guid>(), It.IsAny<Dictionary<string, string[]>>(), It.IsAny<CancellationToken>()), Times.Once);
     }
+    [Test, MoqAutoData]
+    public void GetCalendarEventsNoFilters_ReturnsApiResponse(
+   [Frozen] Mock<IOuterApiClient> outerApiMock,
+   [Greedy] NetworkEventsController sut,
+   GetCalendarEventsQueryResult expectedResult,
+   DateTime? fromDate,
+   DateTime? toDate,
+   Guid apprenticeId)
+    {
+        var request = new GetNetworkEventsRequest();
+
+        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
+        outerApiMock.Setup(o => o.GetCalendarEvents(It.IsAny<Guid>(), It.IsAny<Dictionary<string, string[]>>(), It.IsAny<CancellationToken>())).ReturnsAsync(expectedResult);
+
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.NetworkEvents, AllNetworksUrl);
+
+        var actualResult = sut.Index(request, new CancellationToken());
+        var expectedEventFormatChecklistLookup = new ChecklistLookup[]
+        {
+            new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString(),
+                request.EventFormat.Exists(x => x == EventFormat.InPerson)),
+            new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString(),
+                request.EventFormat.Exists(x => x == EventFormat.Online)),
+            new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString(),
+                request.EventFormat.Exists(x => x == EventFormat.Hybrid))
+        };
+
+        var viewResult = actualResult.Result.As<ViewResult>();
+        var model = viewResult.Model as NetworkEventsViewModel;
+        model!.PaginationViewModel.Page.Should().Be(expectedResult.Page);
+        model!.PaginationViewModel.PageSize.Should().Be(expectedResult.PageSize);
+        model!.PaginationViewModel.TotalPages.Should().Be(expectedResult.TotalPages);
+        model!.TotalCount.Should().Be(expectedResult.TotalCount);
+        model.FilterChoices.FromDate.Should().BeNull();
+        model.FilterChoices.ToDate.Should().BeNull();
+
+        outerApiMock.Verify(o => o.GetCalendarEvents(It.IsAny<Guid>(), It.IsAny<Dictionary<string, string[]>>(), It.IsAny<CancellationToken>()), Times.Once);
+    }
+
 }

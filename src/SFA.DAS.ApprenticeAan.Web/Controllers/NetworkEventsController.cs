@@ -39,7 +39,7 @@ public class NetworkEventsController : Controller
         var regions = regionTask.Result.Regions;
 
         var model = InitialiseViewModel(calendarEventsTask.Result);
-        var filterUrl = FilterBuilder.BuildQueryString(request, Url);
+        var filterUrl = FilterBuilder.BuildFullQueryString(request, Url);
         model.PaginationViewModel = SetupPagination(calendarEventsTask.Result, filterUrl);
         var filterChoices = PopulateFilterChoices(request, calendars, regions);
         model.FilterChoices = filterChoices;

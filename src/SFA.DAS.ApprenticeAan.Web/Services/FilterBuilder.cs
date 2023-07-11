@@ -32,7 +32,7 @@ public static class FilterBuilder
         return filters;
     }
 
-    public static string BuildQueryString(GetNetworkEventsRequest request, IUrlHelper url)
+    public static string BuildFullQueryString(GetNetworkEventsRequest request, IUrlHelper url)
     {
         var fullQueryParameters = BuildQueryParameters(request);
         var querystring = BuildQueryString(url, fullQueryParameters, "none");
