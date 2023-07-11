@@ -186,7 +186,12 @@ a.app-calendar__event:focus {
 }
 
 .app-calendar-nav__icon {
-    fill: #fff;
+  fill: #fff;
+  display: block;
+}
+
+.app-calendar-nav__icon--prev {
+  transform: rotate(180deg);
 }
 
 .app-calendar-nav__link:focus .app-calendar-nav__icon {
