@@ -27,10 +27,7 @@ public class NetworkEventsController : Controller
     [Route("", Name = RouteNames.NetworkEvents)]
     public async Task<IActionResult> Index(GetNetworkEventsRequest request, CancellationToken cancellationToken)
     {
-        var fromDateFormatted = request.FromDate?.ToApiString()!;
-        var toDateFormatted = request.ToDate?.ToApiString()!;
-
-        var calendarEventsTask = _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), fromDateFormatted, toDateFormatted, request.EventFormat, request.CalendarId, request.RegionId, cancellationToken);
+        var calendarEventsTask = _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), QueryStringParameterBuilder.BuildQueryStringParameters(request), cancellationToken);
         var calendarTask = _outerApiClient.GetCalendars();
         var regionTask = _outerApiClient.GetRegions();
 
@@ -47,14 +44,15 @@ public class NetworkEventsController : Controller
         var filterChoices = PopulateFilterChoices(request, calendars, regions);
         model.FilterChoices = filterChoices;
         model.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices.EventFormatChecklistDetails.Lookups, filterChoices.EventTypeChecklistDetails.Lookups, filterChoices.RegionChecklistDetails.Lookups);
-
         return View(model);
     }
 
     private NetworkEventsViewModel InitialiseViewModel(GetCalendarEventsQueryResult result)
     {
-        var model = new NetworkEventsViewModel();
-
+        var model = new NetworkEventsViewModel
+        {
+            TotalCount = result.TotalCount
+        };
 
         foreach (var calendarEvent in result.CalendarEvents)
         {

@@ -400,3 +400,28 @@ a.das-show-hide__button[aria-expanded="false"]:after {
     transform: rotate(135deg);
     top: 10px
 }
+
+.das-flex-space-around {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+    -webkit-box-pack: space-between;
+    -ms-flex-pack: space-between;
+    justify-content: space-between;
+}
+
+.app-pagination-nav
+{
+    float:right;
+}
+
+.das-pagination-links>a, .das-pagination-links span {
+    height: 40px;
+    line-height: 40px;
+    margin-left: 15px;
+}

@@ -4,8 +4,8 @@
 @{
     ViewData["Title"] = "Search Network Events";
 
-    var totalCountDescription = $"{Model.PaginationViewModel.TotalCount} results";
-    if (Model.PaginationViewModel.TotalCount == 1)
+    var totalCountDescription = $"{Model.TotalCount} results";
+    if (Model.TotalCount == 1)
     {
         totalCountDescription = "1 result";
     }
@@ -49,5 +49,7 @@
         <div class="das-search-results">
             <partial name="_CalendarEvents" />
         </div>
+        
+        <partial name="_Pagination" Model="@Model.PaginationViewModel"/>
     </div>
 </div>
