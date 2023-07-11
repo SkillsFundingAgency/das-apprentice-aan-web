@@ -1,36 +1,27 @@
 ﻿@model CalendarViewModel
 
 <div>
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-            <ul class="app-calendar-legend">
-                <li class="app-calendar-legend__key"><span class="app-calendar-legend__colour app-calendar-legend__colour--inperson"></span>In person event</li>
-                <li class="app-calendar-legend__key"><span class="app-calendar-legend__colour app-calendar-legend__colour--online"></span>Online event</li>
-                <li class="app-calendar-legend__key"><span class="app-calendar-legend__colour app-calendar-legend__colour--hybrid"></span>Hybrid event</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="govuk-grid-row">
+    <div class="govuk-grid-row app-calendar__row">
         <div class="govuk-grid-column-one-half">
             <h2 class="govuk-heading-m">Your events</h2>
             <h3 class="govuk-heading-s govuk-!-margin-0">@Model.FirstDayOfCurrentMonth.ToString("MMMM yyyy")</h3>
         </div>
         <div class="govuk-grid-column-one-half">
+            <ul class="app-calendar-legend">
+                <li class="app-calendar-legend__key"><span class="app-calendar-legend__colour app-calendar-legend__colour--inperson"></span>In person event</li>
+                <li class="app-calendar-legend__key"><span class="app-calendar-legend__colour app-calendar-legend__colour--online"></span>Online event</li>
+                <li class="app-calendar-legend__key"><span class="app-calendar-legend__colour app-calendar-legend__colour--hybrid"></span>Hybrid event</li>
+            </ul>
             <nav class="app-calendar-nav" role="navigation">
                 <div class="app-calendar-nav__prev">
                     <a class="app-calendar-nav__link" href="@Model.PreviousMonthLink" rel="prev">
-                        <svg class="app-calendar-nav__icon app-calendar-nav__icon--prev" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false">
-                            <path d="M0 0h13l20 20-20 20H0l20-20z" />
-                        </svg>
+                        <svg class="app-calendar-nav__icon app-calendar-nav__icon--prev" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 69.72 112"><path d="m57.44,40.78L24.55,0H0l45.17,56L0,112h24.55c8.71-10.82,36.93-45.77,45.17-56l-12.28-15.22Z"></svg>
                         <span class="app-calendar-nav__link-title">Previous month</span>
                     </a>
                 </div>
                 <div class="app-calendar-nav__next">
                     <a class="app-calendar-nav__link" href="@Model.NextMonthLink" rel="next">
-                        <svg class="app-calendar-nav__icon app-calendar-nav__icon--next" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false">
-                            <path d="M0 0h13l20 20-20 20H0l20-20z" />
-                        </svg>
+                        <svg class="app-calendar-nav__icon app-calendar-nav__icon--next" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 69.72 112"><path d="m57.44,40.78L24.55,0H0l45.17,56L0,112h24.55c8.71-10.82,36.93-45.77,45.17-56l-12.28-15.22Z"></svg>
                         <span class="app-calendar-nav__link-title">Next month</span>
                     </a>
                 </div>
