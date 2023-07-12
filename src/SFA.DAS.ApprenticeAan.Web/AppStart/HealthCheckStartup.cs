@@ -2,6 +2,8 @@
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using System.Diagnostics.CodeAnalysis;
 
+namespace SFA.DAS.ApprenticeAan.Web.AppStart;
+
 [ExcludeFromCodeCoverage]
 public static class HealthCheckStartup
 {
