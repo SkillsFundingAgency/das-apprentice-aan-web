@@ -28,6 +28,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="SFA.DAS.Testing.AutoFixture" Version="3.0.169" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.0" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="4.3.1" />
   </ItemGroup>
 
   <ItemGroup>
