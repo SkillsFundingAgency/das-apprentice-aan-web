@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SFA.DAS.ApprenticePortal.SharedUi" Version="1.1.67-prerelease-8" />
-    <PackageReference Include="RestEase" Version="1.6.1" />
+    <PackageReference Include="SFA.DAS.ApprenticePortal.SharedUi" Version="1.1.68" />
+    <PackageReference Include="RestEase" Version="1.6.4" />
   </ItemGroup>
 
   <ItemGroup>
