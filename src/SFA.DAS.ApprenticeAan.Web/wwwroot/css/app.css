@@ -64,6 +64,12 @@
     margin: 20px 0;
     color: #0b0c0c;
 }
+@media (min-width: 40.0625em) {
+    .app-calendar__row {
+        display: flex;
+        align-items: end;
+    }
+}
 
 .app-calendar__header,
 .app-calendar__day {
@@ -103,12 +109,12 @@
 }
 
 .app-calendar__date--today .app-calendar__date-day {
-  background-color: #2C7298;
-  color: #fff;
-  min-width: 1.2em;
-  border-radius: 50%;
-  min-height: 1.2em;
-  text-align: center;
+    background-color: #2C7298;
+    color: #fff;
+    min-width: 1.2em;
+    border-radius: 50%;
+    min-height: 1.2em;
+    text-align: center;
 }
 
 .app-calendar__date-month {
@@ -146,7 +152,7 @@ a.app-calendar__event:focus {
 }
 
 .app-calendar-legend {
-    border-radius: 5px;
+    border-radius: 12px;
     max-width: 240px;
     padding: 10px 20px;
     border: 1px solid #b1b4b6;
@@ -158,14 +164,14 @@ a.app-calendar__event:focus {
 
 .app-calendar-legend__key {
     display: flex;
-    margin: 10px 0;
+    margin: 3px 0;
     align-items: center;
 }
 
 .app-calendar-legend__colour {
     display: block;
-    width: 80px;
-    height: 11px;
+    width: 50px;
+    height: 9px;
     margin-right: 10px;
 }
 
@@ -176,17 +182,27 @@ a.app-calendar__event:focus {
 .app-calendar-nav {
     float: right;
     display: flex;
-    gap: 5px;
+    gap: 6px;
+    clear: both;
 }
 
 .app-calendar-nav__link {
-  display: block;
-  background: #2C7298;
-  padding: 10px;
+    background: #2C7298;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
 }
 
 .app-calendar-nav__icon {
     fill: #fff;
+    display: block;
+    height: 15px;
+    margin: 0 auto;
+}
+
+.app-calendar-nav__icon--prev {
+    transform: rotate(180deg);
 }
 
 .app-calendar-nav__link:focus .app-calendar-nav__icon {
