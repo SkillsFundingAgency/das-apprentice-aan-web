@@ -10,7 +10,7 @@ public class QueryStringParameterBuilderTests
 {
 
     [Test, AutoData]
-    public void Operator_PopulatesModelFromParameters(DateTime? fromDate, DateTime? toDate,
+    public void Builder_PopulatesDictionaryBuiltFromModel(DateTime? fromDate, DateTime? toDate,
         List<EventFormat> eventFormats, List<int> calendarIds, List<int> regionIds, int? page, int? pageSize)
     {
         var request = new GetNetworkEventsRequest
@@ -51,8 +51,87 @@ public class QueryStringParameterBuilderTests
         pageSizeResult![0].Should().Be(pageSize?.ToString());
     }
 
+    [TestCase(null)]
+    [TestCase("2030-06-01")]
+    public void Builder_ConstructParameters_FromDate(DateTime? fromDate)
+    {
+        var parameters = QueryStringParameterBuilder.BuildQueryStringParameters(new GetNetworkEventsRequest
+        {
+            FromDate = fromDate
+        });
+        parameters.TryGetValue("fromDate", out var fromDateResult);
+        if (fromDate != null)
+        {
+            fromDateResult![0].Should().Be(fromDate?.ToString("yyyy-MM-dd"));
+        }
+        else
+        {
+            fromDateResult.Should().BeNull();
+        }
+    }
+
+    [TestCase(null)]
+    [TestCase("2030-06-01")]
+    public void Builder_ConstructParameters_ToDate(DateTime? toDate)
+    {
+        var parameters = QueryStringParameterBuilder.BuildQueryStringParameters(new GetNetworkEventsRequest
+        {
+            ToDate = toDate
+        });
+        parameters.TryGetValue("toDate", out var toDateResult);
+        if (toDate != null)
+        {
+            toDateResult![0].Should().Be(toDate?.ToString("yyyy-MM-dd"));
+        }
+        else
+        {
+            toDateResult.Should().BeNull();
+        }
+    }
+
+    [TestCase(null)]
+    [TestCase(3)]
+    public void Builder_ConstructParameters_ToPage(int? page)
+    {
+        var parameters = QueryStringParameterBuilder.BuildQueryStringParameters(new GetNetworkEventsRequest
+        {
+            Page = page
+        });
+
+        parameters.TryGetValue("page", out var pageResult);
+        if (pageResult != null)
+        {
+            pageResult![0].Should().Be(page?.ToString());
+        }
+        else
+        {
+            pageResult.Should().BeNull();
+        }
+    }
+
+    [TestCase(null)]
+    [TestCase(6)]
+    public void Builder_ConstructParameters_ToPageSize(int? pageSize)
+    {
+        var parameters = QueryStringParameterBuilder.BuildQueryStringParameters(new GetNetworkEventsRequest
+        {
+            PageSize = pageSize
+        });
+
+        parameters.TryGetValue("pageSize", out var pageResult);
+        if (pageResult != null)
+        {
+            pageResult![0].Should().Be(pageSize?.ToString());
+        }
+        else
+        {
+            pageResult.Should().BeNull();
+        }
+    }
+
+
     [Test, AutoData]
-    public void Operator_PopulatesModelFromParametersWithNullPageAndPageSize(DateTime? fromDate, DateTime? toDate,
+    public void Builder_PopulatesParametersFromRequestWithNullPageAndPageSize(DateTime? fromDate, DateTime? toDate,
         List<EventFormat> eventFormats, List<int> calendarIds, List<int> regionIds)
     {
         var request = new GetNetworkEventsRequest

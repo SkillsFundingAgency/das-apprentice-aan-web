@@ -12,14 +12,16 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Services;
 [TestFixture]
 public class FilterBuilderTests
 {
+    private const string LocationUrl = "network-events";
+
     [Test]
     public void BuildFilterChoicesForNoFilters()
     {
-        var locationUrl = "network-events";
+
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns(locationUrl);
+            .Returns(LocationUrl);
 
         var request = new GetNetworkEventsRequest
         {
@@ -36,11 +38,10 @@ public class FilterBuilderTests
     [TestCase("2023-05-31", "From date", 1)]
     public void BuildEventSearchFiltersForFromDate(DateTime? fromDate, string fieldName1, int expectedNumberOfFilters)
     {
-        var locationUrl = "network-events";
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns(locationUrl);
+            .Returns(LocationUrl);
 
         var request = new GetNetworkEventsRequest
         {
@@ -54,7 +55,7 @@ public class FilterBuilderTests
             var firstItem = actual.First();
             firstItem.FieldName.Should().Be(fieldName1);
             firstItem.FieldOrder.Should().Be(1);
-            firstItem.Filters.First().ClearFilterLink.Should().Be(locationUrl);
+            firstItem.Filters.First().ClearFilterLink.Should().Be(LocationUrl);
             firstItem.Filters.First().Order.Should().Be(1);
             if (fieldName1 != "")
             {
@@ -67,11 +68,10 @@ public class FilterBuilderTests
     [TestCase("2024-01-01", "To date", 1)]
     public void BuildEventSearchFiltersForToDate(DateTime? toDate, string fieldName1, int expectedNumberOfFilters)
     {
-        var locationUrl = "network-events";
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns(locationUrl);
+            .Returns(LocationUrl);
 
         var request = new GetNetworkEventsRequest
         {
@@ -86,7 +86,7 @@ public class FilterBuilderTests
             var firstItem = actual.First();
             firstItem.FieldName.Should().Be(fieldName1);
             firstItem.FieldOrder.Should().Be(1);
-            firstItem.Filters.First().ClearFilterLink.Should().Be(locationUrl);
+            firstItem.Filters.First().ClearFilterLink.Should().Be(LocationUrl);
             firstItem.Filters.First().Order.Should().Be(1);
             if (fieldName1 != "")
             {
@@ -98,11 +98,10 @@ public class FilterBuilderTests
     [TestCase("2023-05-31", "2024-01-01", "?toDate=2024-01-01", "?fromDate=2023-05-31", "From date", "To date")]
     public void BuildEventSearchFiltersForFromDateAndToDate(DateTime? fromDate, DateTime? toDate, string expectedFirst, string expectedSecond, string fieldName1, string fieldName2)
     {
-        var locationUrl = "network-events";
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns(locationUrl);
+            .Returns(LocationUrl);
 
 
         var request = new GetNetworkEventsRequest
@@ -118,7 +117,7 @@ public class FilterBuilderTests
         var firstItem = actual.First();
         firstItem.FieldName.Should().Be(fieldName1);
         firstItem.FieldOrder.Should().Be(1);
-        firstItem.Filters.First().ClearFilterLink.Should().Be(locationUrl + expectedFirst);
+        firstItem.Filters.First().ClearFilterLink.Should().Be(LocationUrl + expectedFirst);
         firstItem.Filters.First().Order.Should().Be(1);
         if (fieldName1 == "From date")
         {
@@ -133,7 +132,7 @@ public class FilterBuilderTests
 
         secondItem.FieldName.Should().Be(fieldName2);
         secondItem.FieldOrder.Should().Be(2);
-        secondItem.Filters.First().ClearFilterLink.Should().Be(locationUrl + expectedSecond);
+        secondItem.Filters.First().ClearFilterLink.Should().Be(LocationUrl + expectedSecond);
         secondItem.Filters.First().Order.Should().Be(1);
         if (fieldName2 == "To date")
         {
@@ -149,11 +148,10 @@ public class FilterBuilderTests
          string fieldName,
         int expectedNumberOfFilters, string firstValue)
     {
-        var locationUrl = "network-events";
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns(locationUrl);
+            .Returns(LocationUrl);
 
         var request = new GetNetworkEventsRequest
         {
@@ -183,7 +181,7 @@ public class FilterBuilderTests
         if (firstItem.Filters.Count > 0)
         {
             var filter = firstItem.Filters.First();
-            filter.ClearFilterLink.Should().Be(locationUrl);
+            filter.ClearFilterLink.Should().Be(LocationUrl);
             filter.Order.Should().Be(1);
             filter.Value.Should().Be(firstValue);
         }
@@ -196,11 +194,10 @@ public class FilterBuilderTests
         string expectedFirst, string expectedSecond,
          string firstValue, string secondValue)
     {
-        var locationUrl = "network-events";
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns(locationUrl);
+            .Returns(LocationUrl);
 
         var request = new GetNetworkEventsRequest
         {
@@ -219,13 +216,13 @@ public class FilterBuilderTests
         firstItem.FieldOrder.Should().Be(1);
 
         var filter = firstItem.Filters.First();
-        filter.ClearFilterLink.Should().Be(locationUrl + expectedFirst);
+        filter.ClearFilterLink.Should().Be(LocationUrl + expectedFirst);
         filter.Order.Should().Be(1);
         filter.Value.Should().Be(firstValue);
 
 
         var filterSecond = firstItem.Filters.Skip(1).First();
-        filterSecond.ClearFilterLink.Should().Be(locationUrl + expectedSecond);
+        filterSecond.ClearFilterLink.Should().Be(LocationUrl + expectedSecond);
         filterSecond.Order.Should().Be(2);
         filterSecond.Value.Should().Be(secondValue);
     }
@@ -233,11 +230,10 @@ public class FilterBuilderTests
     [TestCase("?eventFormat=Online&eventFormat=Hybrid", "?eventFormat=InPerson&eventFormat=Hybrid", "?eventFormat=InPerson&eventFormat=Online", "In person", "Online", "Hybrid")]
     public void BuildEventSearchFiltersForThreeEventFormats(string expectedFirst, string expectedSecond, string expectedThird, string firstValue, string secondValue, string thirdValue)
     {
-        var locationUrl = "network-events";
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns(locationUrl);
+            .Returns(LocationUrl);
 
         var request = new GetNetworkEventsRequest
         {
@@ -257,17 +253,17 @@ public class FilterBuilderTests
         firstItem.FieldOrder.Should().Be(1);
 
         var filterFirst = firstItem.Filters.First();
-        filterFirst.ClearFilterLink.Should().Be(locationUrl + expectedFirst);
+        filterFirst.ClearFilterLink.Should().Be(LocationUrl + expectedFirst);
         filterFirst.Order.Should().Be(1);
         filterFirst.Value.Should().Be(firstValue);
 
         var filterSecond = firstItem.Filters.Skip(1).First();
-        filterSecond.ClearFilterLink.Should().Be(locationUrl + expectedSecond);
+        filterSecond.ClearFilterLink.Should().Be(LocationUrl + expectedSecond);
         filterSecond.Order.Should().Be(2);
         filterSecond.Value.Should().Be(secondValue);
 
         var filterThird = firstItem.Filters.Skip(2).First();
-        filterThird.ClearFilterLink.Should().Be(locationUrl + expectedThird);
+        filterThird.ClearFilterLink.Should().Be(LocationUrl + expectedThird);
         filterThird.Order.Should().Be(3);
         filterThird.Value.Should().Be(thirdValue);
     }
@@ -294,11 +290,10 @@ public class FilterBuilderTests
             request.CalendarId.Add(calendarId.Value);
         }
 
-        var locationUrl = "network-events";
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns(locationUrl);
+            .Returns(LocationUrl);
 
         var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new List<ChecklistLookup>(), eventTypesLookup, new List<ChecklistLookup>());
 
@@ -314,7 +309,7 @@ public class FilterBuilderTests
         firstItem.FieldOrder.Should().Be(1);
 
         var filter = firstItem.Filters.First();
-        filter.ClearFilterLink.Should().Be(locationUrl);
+        filter.ClearFilterLink.Should().Be(LocationUrl);
         filter.Order.Should().Be(1);
         filter.Value.Should().Be(parameterName);
     }
@@ -344,11 +339,10 @@ public class FilterBuilderTests
         eventFilters.CalendarId.Add(calendarId2);
         request.CalendarId.Add(calendarId2);
 
-        var locationUrl = "network-events";
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns(locationUrl);
+            .Returns(LocationUrl);
 
         var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new List<ChecklistLookup>(), eventTypesLookup, new List<ChecklistLookup>());
 
@@ -358,13 +352,13 @@ public class FilterBuilderTests
         firstItem.FieldOrder.Should().Be(1);
 
         var filter = firstItem.Filters.First();
-        filter.ClearFilterLink.Should().Be(locationUrl + expectedFirst);
+        filter.ClearFilterLink.Should().Be(LocationUrl + expectedFirst);
         filter.Order.Should().Be(1);
         filter.Value.Should().Be(parameterName);
 
 
         var filterSecond = firstItem.Filters.Skip(1).First();
-        filterSecond.ClearFilterLink.Should().Be(locationUrl + expectedSecond);
+        filterSecond.ClearFilterLink.Should().Be(LocationUrl + expectedSecond);
         filterSecond.Order.Should().Be(2);
         filterSecond.Value.Should().Be(parameterName);
     }
@@ -393,11 +387,10 @@ public class FilterBuilderTests
         eventFilters.CalendarId.Add(calendarId3);
         request.CalendarId.Add(calendarId3);
 
-        var locationUrl = "network-events";
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns(locationUrl);
+            .Returns(LocationUrl);
 
         var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new List<ChecklistLookup>(), eventTypesLookup, new List<ChecklistLookup>());
 
@@ -407,17 +400,17 @@ public class FilterBuilderTests
         firstItem.FieldOrder.Should().Be(1);
 
         var filter = firstItem.Filters.First();
-        filter.ClearFilterLink.Should().Be(locationUrl + expectedFirst);
+        filter.ClearFilterLink.Should().Be(LocationUrl + expectedFirst);
         filter.Order.Should().Be(1);
         filter.Value.Should().Be(parameterName);
 
         var filterSecond = firstItem.Filters.Skip(1).First();
-        filterSecond.ClearFilterLink.Should().Be(locationUrl + expectedSecond);
+        filterSecond.ClearFilterLink.Should().Be(LocationUrl + expectedSecond);
         filterSecond.Order.Should().Be(2);
         filterSecond.Value.Should().Be(parameterName);
 
         var filterThird = firstItem.Filters.Skip(2).First();
-        filterThird.ClearFilterLink.Should().Be(locationUrl + expectedThird);
+        filterThird.ClearFilterLink.Should().Be(LocationUrl + expectedThird);
         filterThird.Order.Should().Be(3);
         filterThird.Value.Should().Be(parameterName);
     }
@@ -447,11 +440,10 @@ public class FilterBuilderTests
             request.RegionId.Add(regionId1.Value);
         }
 
-        var locationUrl = "network-events";
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns(locationUrl);
+            .Returns(LocationUrl);
 
         var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new List<ChecklistLookup>(), new List<ChecklistLookup>(), regionLookups);
 
@@ -467,7 +459,7 @@ public class FilterBuilderTests
         firstItem.FieldOrder.Should().Be(1);
 
         var filter = firstItem.Filters.First();
-        filter.ClearFilterLink.Should().Be(locationUrl);
+        filter.ClearFilterLink.Should().Be(LocationUrl);
         filter.Order.Should().Be(1);
         filter.Value.Should().Be(parameterName);
     }
@@ -502,11 +494,10 @@ public class FilterBuilderTests
 
         regionLookups.Add(new ChecklistLookup(parameterName, regionId2.ToString()));
 
-        var locationUrl = "network-events";
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns(locationUrl);
+            .Returns(LocationUrl);
 
         var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new List<ChecklistLookup>(), new List<ChecklistLookup>(), regionLookups);
 
@@ -516,12 +507,12 @@ public class FilterBuilderTests
         firstItem.FieldOrder.Should().Be(1);
 
         var filter = firstItem.Filters.First();
-        filter.ClearFilterLink.Should().Be(locationUrl + expectedFirst);
+        filter.ClearFilterLink.Should().Be(LocationUrl + expectedFirst);
         filter.Order.Should().Be(1);
         filter.Value.Should().Be(parameterName);
 
         var filterSecond = firstItem.Filters.Skip(1).First();
-        filterSecond.ClearFilterLink.Should().Be(locationUrl + expectedSecond);
+        filterSecond.ClearFilterLink.Should().Be(LocationUrl + expectedSecond);
         filterSecond.Order.Should().Be(2);
         filterSecond.Value.Should().Be(parameterName);
     }
@@ -563,12 +554,10 @@ public class FilterBuilderTests
         eventFilters.RegionId.Add(3);
         request.RegionId.Add(3);
 
-
-        var locationUrl = "network-events";
         var mockUrlHelper = new Mock<IUrlHelper>();
         mockUrlHelper
             .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
-            .Returns(locationUrl);
+            .Returns(LocationUrl);
 
         var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new List<ChecklistLookup>(), new List<ChecklistLookup>(), regionLookups);
 
@@ -578,24 +567,74 @@ public class FilterBuilderTests
         firstItem.FieldOrder.Should().Be(1);
 
         var filter = firstItem.Filters.First();
-        filter.ClearFilterLink.Should().Be(locationUrl + expectedFirst);
+        filter.ClearFilterLink.Should().Be(LocationUrl + expectedFirst);
         filter.Order.Should().Be(1);
         filter.Value.Should().Be(parameterName);
 
         var filterSecond = firstItem.Filters.Skip(1).First();
-        filterSecond.ClearFilterLink.Should().Be(locationUrl + expectedSecond);
+        filterSecond.ClearFilterLink.Should().Be(LocationUrl + expectedSecond);
         filterSecond.Order.Should().Be(2);
         filterSecond.Value.Should().Be(parameterName);
 
         if (firstItem.Filters.Count > 2)
         {
             var filterThird = firstItem.Filters.Skip(2).First();
-            filterThird.ClearFilterLink.Should().Be(locationUrl + expectedThird);
+            filterThird.ClearFilterLink.Should().Be(LocationUrl + expectedThird);
             filterThird.Order.Should().Be(3);
             filterThird.Value.Should().Be(parameterName);
         }
     }
 
+
+    [TestCase(null, null, null, null, null, null, null, null, LocationUrl)]
+    [TestCase("2023-07-12", null, null, null, null, null, null, null, LocationUrl + "?fromDate=2023-07-12")]
+    [TestCase(null, "2024-07-13", null, null, null, null, null, null, LocationUrl + "?toDate=2024-07-13")]
+    [TestCase("2023-07-12", "2024-07-13", null, null, null, null, null, null, LocationUrl + "?fromDate=2023-07-12&toDate=2024-07-13")]
+    [TestCase(null, null, EventFormat.Hybrid, null, null, null, null, null, LocationUrl + "?eventFormat=Hybrid")]
+    [TestCase(null, null, EventFormat.InPerson, EventFormat.Online, null, null, null, null, LocationUrl + "?eventFormat=InPerson&eventFormat=Online")]
+    [TestCase(null, null, null, null, 1, null, null, null, LocationUrl + "?calendarId=1")]
+    [TestCase(null, null, null, null, 1, 2, null, null, LocationUrl + "?calendarId=1&calendarId=2")]
+    [TestCase(null, null, null, null, null, null, 1, null, LocationUrl + "?regionId=1")]
+    [TestCase(null, null, null, null, null, null, 1, 2, LocationUrl + "?regionId=1&regionId=2")]
+    [TestCase("2023-07-12", "2024-07-13", EventFormat.Hybrid, EventFormat.InPerson, 1, 2, 3, 4, LocationUrl + "?fromDate=2023-07-12&toDate=2024-07-13&eventFormat=Hybrid&eventFormat=InPerson&calendarId=1&calendarId=2&regionId=3&regionId=4")]
+    public void BuildFullQueryStringForPagination(DateTime? fromDate, DateTime? toDate, EventFormat? eventFormat, EventFormat? eventFormat2, int? calendarId, int? calendarId2, int? regionId, int? regionId2, string expectedUrl)
+    {
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(LocationUrl);
+
+        var request = new GetNetworkEventsRequest
+        {
+            FromDate = fromDate ?? null,
+            ToDate = toDate ?? null
+        };
+
+        if (eventFormat != null)
+        {
+            var eventFormats = new List<EventFormat> { eventFormat.Value };
+            if (eventFormat2 != null) eventFormats.Add(eventFormat2.Value);
+            request.EventFormat = eventFormats;
+        }
+
+        if (calendarId != null)
+        {
+            var calendarIds = new List<int> { calendarId.Value };
+            if (calendarId2 != null) calendarIds.Add(calendarId2.Value);
+            request.CalendarId = calendarIds;
+        }
+
+        if (regionId != null)
+        {
+            var regionIds = new List<int> { regionId.Value };
+            if (regionId2 != null) regionIds.Add(regionId2.Value);
+            request.RegionId = regionIds;
+        }
+
+        var actual = FilterBuilder.BuildFullQueryString(request, mockUrlHelper.Object);
+
+        actual.Should().Be(expectedUrl);
+    }
 
     private static List<ChecklistLookup> ChecklistLookupEventFormats() =>
         new()
