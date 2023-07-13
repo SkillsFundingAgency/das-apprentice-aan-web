@@ -15,7 +15,6 @@ using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
-using System.Net;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
 
@@ -88,10 +87,8 @@ public class NetworkEventsControllerTests
     public void GetCalendarEventsNoFilters_ReturnsApiResponse(
    [Frozen] Mock<IOuterApiClient> outerApiMock,
    [Greedy] NetworkEventsController sut,
-   GetCalendarEventsQueryResult expectedResult,
-   DateTime? fromDate,
-   DateTime? toDate,
-   Guid apprenticeId)
+           GetCalendarEventsQueryResult expectedResult,
+           Guid apprenticeId)
     {
         var request = new GetNetworkEventsRequest();
 
