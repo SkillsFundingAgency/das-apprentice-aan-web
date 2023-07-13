@@ -24,9 +24,7 @@ public class PaginationViewModel
         var startPage =
             (totalPages < 7 || currentPage < 4)
                 ? 1
-                : currentPage > totalPages - 3
-                    ? totalPages - 5
-                    : currentPage - 2;
+                : CalculateStartPage(currentPage, totalPages);
 
         var range = Enumerable.Range(startPage, 6);
 
@@ -40,6 +38,13 @@ public class PaginationViewModel
         }
 
         if (currentPage < totalPages) LinkItems.Add(new(GetUrl(baseUrl, currentPage + 1, pageSize), NextText));
+    }
+
+    private static int CalculateStartPage(int currentPage, int totalPages)
+    {
+        return currentPage > totalPages - 3
+            ? totalPages - 5
+            : currentPage - 2;
     }
 
     public static string GetUrl(string baseUrl, int page, int pageSize)
