@@ -1,7 +1,5 @@
 ﻿using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using SFA.DAS.ApprenticeAan.Web.Models;
+using SFA.DAS.Aan.SharedUi.Models;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models.CalendarViewModelTests;
 
@@ -13,7 +11,7 @@ public class CalendarItemsTests
     public void ThenHasCorrectNoOfItems()
     {
         var date = new DateOnly(2023, 6, 1);
-        CalendarViewModel sut = new(date, Mock.Of<IUrlHelper>(), DateOnly.FromDateTime(DateTime.Today), Enumerable.Empty<Appointment>());
+        CalendarViewModel sut = new(date, DateOnly.FromDateTime(DateTime.Today), Enumerable.Empty<Appointment>());
         sut.CalendarItems.Should().HaveCount(CalendarViewModel.TotalCalendarDaysNormal);
     }
 
@@ -24,7 +22,7 @@ public class CalendarItemsTests
     public void ThenHasCorrectNoOfItems(int month, int totalDaysToRender)
     {
         var date = new DateOnly(TestYear, month, 1);
-        CalendarViewModel sut = new(date, Mock.Of<IUrlHelper>(), DateOnly.FromDateTime(DateTime.Today), Enumerable.Empty<Appointment>());
+        CalendarViewModel sut = new(date, DateOnly.FromDateTime(DateTime.Today), Enumerable.Empty<Appointment>());
         sut.CalendarItems.Should().HaveCount(totalDaysToRender);
     }
 
@@ -38,7 +36,7 @@ public class CalendarItemsTests
     public void ThenStartsRenderingOnTheFirstDayOfTheMonth(int month, int expectedStartIndex)
     {
         var date = new DateOnly(TestYear, month, 1);
-        CalendarViewModel sut = new(date, Mock.Of<IUrlHelper>(), DateOnly.FromDateTime(DateTime.Today), Enumerable.Empty<Appointment>());
+        CalendarViewModel sut = new(date, DateOnly.FromDateTime(DateTime.Today), Enumerable.Empty<Appointment>());
         sut.CalendarItems[expectedStartIndex].Day.Should().Be(date);
         sut.CalendarItems.Where(r => r.Index < expectedStartIndex).All(d => d.Day == null).Should().BeTrue();
     }
@@ -50,7 +48,7 @@ public class CalendarItemsTests
     public void ThenStopsRenderingAfterLastDayOfTheMonth(int month, int expectedDaysToRender)
     {
         var date = new DateOnly(TestYear, month, 1);
-        CalendarViewModel sut = new(date, Mock.Of<IUrlHelper>(), DateOnly.FromDateTime(DateTime.Today), Enumerable.Empty<Appointment>());
+        CalendarViewModel sut = new(date, DateOnly.FromDateTime(DateTime.Today), Enumerable.Empty<Appointment>());
         sut.CalendarItems.Where(r => r.Day != null).Should().HaveCount(expectedDaysToRender);
     }
 
@@ -60,7 +58,7 @@ public class CalendarItemsTests
     {
         var date = new DateOnly(TestYear, month, 1);
         var today = date.AddDays(addDaysToToday);
-        CalendarViewModel sut = new(date, Mock.Of<IUrlHelper>(), today, Enumerable.Empty<Appointment>());
+        CalendarViewModel sut = new(date, today, Enumerable.Empty<Appointment>());
         sut.CalendarItems.Any(c => c.IsToday).Should().Be(expectIsToday);
     }
 
@@ -77,7 +75,7 @@ public class CalendarItemsTests
             new Appointment(Guid.NewGuid().ToString(), string.Empty, date.AddDays(30), string.Empty),
         };
 
-        CalendarViewModel sut = new(date, Mock.Of<IUrlHelper>(), date.AddDays(2), appointments);
+        CalendarViewModel sut = new(date, date.AddDays(2), appointments);
 
         sut.CalendarItems.Single(c => c.Day?.Day == 11).Appointments.Should().HaveCount(2);
         sut.CalendarItems.Single(c => c.Day?.Day == 21).Appointments.Should().HaveCount(1);
