@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
@@ -16,7 +17,9 @@ public class EventsHubViewModel
     {
         _urlHelper = urlHelper;
         AllNetworksUrl = urlHelper.RouteUrl(RouteNames.NetworkEvents)!;
-        Calendar = new(firstDayOfTheMonth, urlHelper, DateOnly.FromDateTime(DateTime.Today), GetAppointments(attendances));
+        Calendar = new(firstDayOfTheMonth, DateOnly.FromDateTime(DateTime.Today), GetAppointments(attendances));
+        Calendar.PreviousMonthLink = urlHelper.RouteUrl(RouteNames.EventsHub, new { firstDayOfTheMonth.AddMonths(-1).Month, firstDayOfTheMonth.AddMonths(-1).Year })!;
+        Calendar.NextMonthLink = _urlHelper.RouteUrl(RouteNames.EventsHub, new { firstDayOfTheMonth.AddMonths(1).Month, firstDayOfTheMonth.AddMonths(1).Year })!;
     }
 
     private List<Appointment> GetAppointments(List<Attendance> attendances)

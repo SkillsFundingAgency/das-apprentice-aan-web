@@ -1,27 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ApprenticeAan.Web.Infrastructure;
+﻿//using SFA.DAS.Aan.SharedUi.Infrastructure;
 
-namespace SFA.DAS.ApprenticeAan.Web.Models;
+namespace SFA.DAS.Aan.SharedUi.Models;
 
 public class CalendarViewModel
 {
     public const int TotalCalendarDaysNormal = 35;
     public const int TotalCalendarDaysExtended = 42;
 
-    private readonly IUrlHelper _urlHelper;
     private readonly DateOnly _today;
 
     public DateOnly FirstDayOfCurrentMonth { get; init; }
     public List<CalendarItem> CalendarItems { get; }
 
-    public string PreviousMonthLink => _urlHelper.RouteUrl(RouteNames.EventsHub, new { FirstDayOfCurrentMonth.AddMonths(-1).Month, FirstDayOfCurrentMonth.AddMonths(-1).Year })!;
+    public string PreviousMonthLink { get; set; }
 
+    public string NextMonthLink { get; set; }
 
-    public string NextMonthLink => _urlHelper.RouteUrl(RouteNames.EventsHub, new { FirstDayOfCurrentMonth.AddMonths(1).Month, FirstDayOfCurrentMonth.AddMonths(1).Year })!;
-
-    public CalendarViewModel(DateOnly firstDayOfTheMonth, IUrlHelper urlHelper, DateOnly today, IEnumerable<Appointment> appointments)
+    public CalendarViewModel(DateOnly firstDayOfTheMonth, DateOnly today, IEnumerable<Appointment> appointments)
     {
-        _urlHelper = urlHelper;
         _today = today;
         FirstDayOfCurrentMonth = firstDayOfTheMonth;
         CalendarItems = RenderCalendarItems(appointments);
@@ -53,7 +49,7 @@ public class CalendarViewModel
     private int GetNumberOfItemsToRender(int firstDayOfTheWeek)
     {
         var daysInMonth = DateTime.DaysInMonth(FirstDayOfCurrentMonth.Year, FirstDayOfCurrentMonth.Month);
-        var totalDays = (firstDayOfTheWeek + daysInMonth);
+        var totalDays = firstDayOfTheWeek + daysInMonth;
         return totalDays > TotalCalendarDaysNormal ? TotalCalendarDaysExtended : TotalCalendarDaysNormal;
     }
 }
@@ -61,3 +57,4 @@ public class CalendarViewModel
 public record CalendarItem(int Index, DateOnly? Day, bool IsToday, List<Appointment> Appointments);
 
 public record Appointment(string Title, string Url, DateOnly Date, string Format);
+
