@@ -1,9 +1,11 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SFA.DAS.ApprenticeAan.Web.AppStart;
 using SFA.DAS.ApprenticeAan.Web.Authentication;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Filters;
+using SFA.DAS.ApprenticeAan.Web.HealthCheck;
 using SFA.DAS.ApprenticeAan.Web.Validators.Onboarding;
 using SFA.DAS.ApprenticePortal.SharedUi.Startup;
 
@@ -26,7 +28,10 @@ builder.Services
     .AddAuthentication(applicationConfiguration.Authentication, builder.Environment)
     .AddServiceRegistrations(applicationConfiguration.ApprenticeAanOuterApi);
 
-builder.Services.AddHealthChecks();
+builder.Services.AddHealthChecks()
+    .AddCheck<ApprenticeAanOuterApiHealthCheck>(ApprenticeAanOuterApiHealthCheck.HealthCheckResultDescription,
+    failureStatus: HealthStatus.Unhealthy,
+    tags: new[] { "ready" });
 
 builder.Services.AddSharedUi(applicationConfiguration, options =>
 {
@@ -75,6 +80,7 @@ app
     .UseAuthentication()
     .UseAuthorization()
     .UseSession()
+    .UseHealthChecks()
     .UseEndpoints(endpoints =>
     {
         endpoints.MapControllerRoute(
