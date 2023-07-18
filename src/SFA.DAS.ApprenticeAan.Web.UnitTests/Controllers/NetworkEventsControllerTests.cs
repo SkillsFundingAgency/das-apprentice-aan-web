@@ -42,8 +42,6 @@ public class NetworkEventsControllerTests
         var regions = new List<int>();
         var fromDateFormatted = fromDate?.ToString("yyyy-MM-dd")!;
         var toDateFormatted = toDate?.ToString("yyyy-MM-dd")!;
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
-        outerApiMock.Setup(o => o.GetCalendarEvents(It.IsAny<Guid>(), fromDateFormatted, toDateFormatted, eventFormats, eventTypes, regions, It.IsAny<CancellationToken>())).ReturnsAsync(expectedResult);
 
         var request = new GetNetworkEventsRequest
         {
@@ -51,8 +49,13 @@ public class NetworkEventsControllerTests
             ToDate = toDate,
             EventFormat = eventFormats,
             CalendarId = eventTypes,
-            RegionId = regions
+            RegionId = regions,
+            Page = expectedResult.Page,
+            PageSize = expectedResult.PageSize,
         };
+
+        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
+        outerApiMock.Setup(o => o.GetCalendarEvents(It.IsAny<Guid>(), It.IsAny<Dictionary<string, string[]>>(), It.IsAny<CancellationToken>())).ReturnsAsync(expectedResult);
 
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.NetworkEvents, AllNetworksUrl);
@@ -70,14 +73,52 @@ public class NetworkEventsControllerTests
 
         var viewResult = actualResult.Result.As<ViewResult>();
         var model = viewResult.Model as NetworkEventsViewModel;
-        model!.Pagination.Page.Should().Be(expectedResult.Page);
-        model!.Pagination.PageSize.Should().Be(expectedResult.PageSize);
-        model!.Pagination.TotalPages.Should().Be(expectedResult.TotalPages);
+        model!.PaginationViewModel.CurrentPage.Should().Be(expectedResult.Page);
+        model!.PaginationViewModel.PageSize.Should().Be(expectedResult.PageSize);
+        model!.PaginationViewModel.TotalPages.Should().Be(expectedResult.TotalPages);
         model!.TotalCount.Should().Be(expectedResult.TotalCount);
         model.FilterChoices.FromDate?.ToApiString().Should().Be(fromDateFormatted);
         model.FilterChoices.ToDate?.ToApiString().Should().Be(toDateFormatted);
         model.FilterChoices.EventFormatChecklistDetails.Lookups.Should().BeEquivalentTo(expectedEventFormatChecklistLookup);
 
-        outerApiMock.Verify(o => o.GetCalendarEvents(It.IsAny<Guid>(), fromDateFormatted, toDateFormatted, eventFormats, eventTypes, regions, It.IsAny<CancellationToken>()), Times.Once);
+        outerApiMock.Verify(o => o.GetCalendarEvents(It.IsAny<Guid>(), It.IsAny<Dictionary<string, string[]>>(), It.IsAny<CancellationToken>()), Times.Once);
     }
+    [Test, MoqAutoData]
+    public void GetCalendarEventsNoFilters_ReturnsApiResponse(
+   [Frozen] Mock<IOuterApiClient> outerApiMock,
+   [Greedy] NetworkEventsController sut,
+           GetCalendarEventsQueryResult expectedResult,
+           Guid apprenticeId)
+    {
+        var request = new GetNetworkEventsRequest();
+
+        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
+        outerApiMock.Setup(o => o.GetCalendarEvents(It.IsAny<Guid>(), It.IsAny<Dictionary<string, string[]>>(), It.IsAny<CancellationToken>())).ReturnsAsync(expectedResult);
+
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.NetworkEvents, AllNetworksUrl);
+
+        var actualResult = sut.Index(request, new CancellationToken());
+        var expectedEventFormatChecklistLookup = new ChecklistLookup[]
+        {
+            new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString(),
+                request.EventFormat.Exists(x => x == EventFormat.InPerson)),
+            new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString(),
+                request.EventFormat.Exists(x => x == EventFormat.Online)),
+            new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString(),
+                request.EventFormat.Exists(x => x == EventFormat.Hybrid))
+        };
+
+        var viewResult = actualResult.Result.As<ViewResult>();
+        var model = viewResult.Model as NetworkEventsViewModel;
+        model!.PaginationViewModel.CurrentPage.Should().Be(expectedResult.Page);
+        model!.PaginationViewModel.PageSize.Should().Be(expectedResult.PageSize);
+        model!.PaginationViewModel.TotalPages.Should().Be(expectedResult.TotalPages);
+        model!.TotalCount.Should().Be(expectedResult.TotalCount);
+        model.FilterChoices.FromDate.Should().BeNull();
+        model.FilterChoices.ToDate.Should().BeNull();
+
+        outerApiMock.Verify(o => o.GetCalendarEvents(It.IsAny<Guid>(), It.IsAny<Dictionary<string, string[]>>(), It.IsAny<CancellationToken>()), Times.Once);
+    }
+
 }

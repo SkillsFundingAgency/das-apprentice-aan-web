@@ -6,7 +6,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Models;
 
 public class NetworkEventsViewModel
 {
-    public PaginationModel Pagination { get; set; } = new PaginationModel();
+    public PaginationViewModel PaginationViewModel { get; set; } = null!;
 
     public int TotalCount { get; set; }
 
@@ -17,6 +17,7 @@ public class NetworkEventsViewModel
     public List<SelectedFilter> SelectedFilters { get; set; } = new List<SelectedFilter>();
 
     public bool ShowFilterOptions => SelectedFilters.Any();
+
 }
 
 public class CalendarEventViewModel

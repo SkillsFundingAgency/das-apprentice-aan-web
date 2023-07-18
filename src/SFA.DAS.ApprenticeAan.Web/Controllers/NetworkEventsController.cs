@@ -27,10 +27,7 @@ public class NetworkEventsController : Controller
     [Route("", Name = RouteNames.NetworkEvents)]
     public async Task<IActionResult> Index(GetNetworkEventsRequest request, CancellationToken cancellationToken)
     {
-        var fromDateFormatted = request.FromDate?.ToApiString()!;
-        var toDateFormatted = request.ToDate?.ToApiString()!;
-
-        var calendarEventsTask = _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), fromDateFormatted, toDateFormatted, request.EventFormat, request.CalendarId, request.RegionId, cancellationToken);
+        var calendarEventsTask = _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), QueryStringParameterBuilder.BuildQueryStringParameters(request), cancellationToken);
         var calendarTask = _outerApiClient.GetCalendars();
         var regionTask = _outerApiClient.GetRegions();
 
@@ -42,23 +39,18 @@ public class NetworkEventsController : Controller
         var regions = regionTask.Result.Regions;
 
         var model = InitialiseViewModel(calendarEventsTask.Result);
+        var filterUrl = FilterBuilder.BuildFullQueryString(request, Url);
+        model.PaginationViewModel = SetupPagination(calendarEventsTask.Result, filterUrl);
         var filterChoices = PopulateFilterChoices(request, calendars, regions);
         model.FilterChoices = filterChoices;
         model.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices.EventFormatChecklistDetails.Lookups, filterChoices.EventTypeChecklistDetails.Lookups, filterChoices.RegionChecklistDetails.Lookups);
-
         return View(model);
     }
 
     private NetworkEventsViewModel InitialiseViewModel(GetCalendarEventsQueryResult result)
     {
-        NetworkEventsViewModel model = new()
+        var model = new NetworkEventsViewModel
         {
-            Pagination = new PaginationModel
-            {
-                Page = result.Page,
-                PageSize = result.PageSize,
-                TotalPages = result.TotalPages
-            },
             TotalCount = result.TotalCount
         };
 
@@ -71,6 +63,13 @@ public class NetworkEventsController : Controller
         return model;
     }
 
+    private static PaginationViewModel SetupPagination(GetCalendarEventsQueryResult result, string filterUrl)
+    {
+        var pagination = new PaginationViewModel(result.Page, result.PageSize, result.TotalPages, filterUrl);
+
+        return pagination;
+
+    }
     private static EventFilterChoices PopulateFilterChoices(GetNetworkEventsRequest request, List<Calendar> calendars, List<Region> regions)
         => new EventFilterChoices
         {
