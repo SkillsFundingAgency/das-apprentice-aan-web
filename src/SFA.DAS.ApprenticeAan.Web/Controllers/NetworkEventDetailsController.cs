@@ -2,6 +2,7 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
@@ -28,7 +29,7 @@ public class NetworkEventDetailsController : Controller
     }
 
     [HttpGet]
-    [Route("{id}", Name = RouteNames.NetworkEventDetails)]
+    [Route("{id}", Name = SharedRouteNames.NetworkEventDetails)]
     public async Task<IActionResult> Get([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var memberId = User.GetAanMemberId();
