@@ -1,6 +1,4 @@
-﻿//using SFA.DAS.Aan.SharedUi.Infrastructure;
-
-namespace SFA.DAS.Aan.SharedUi.Models;
+﻿namespace SFA.DAS.Aan.SharedUi.Models;
 
 public class CalendarViewModel
 {

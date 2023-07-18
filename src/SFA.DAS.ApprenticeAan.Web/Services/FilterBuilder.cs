@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
-using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
-using System.Globalization;
 
 namespace SFA.DAS.ApprenticeAan.Web.Services;
 
@@ -87,7 +87,7 @@ public static class FilterBuilder
     {
         var queryParametersToBuild = queryParameters.Where(s => s != filterToRemove);
 
-        return queryParametersToBuild.Any() ? $"{url.RouteUrl(RouteNames.NetworkEvents)}?{string.Join('&', queryParametersToBuild)}" : url.RouteUrl(RouteNames.NetworkEvents);
+        return queryParametersToBuild.Any() ? $"{url.RouteUrl(SharedRouteNames.NetworkEvents)}?{string.Join('&', queryParametersToBuild)}" : url.RouteUrl(SharedRouteNames.NetworkEvents);
     }
 
     private static string BuildDateQueryParameter(string name, DateTime value) => $"{name}={value.ToApiString()}";
