@@ -401,6 +401,25 @@ a.das-show-hide__button[aria-expanded="false"]:after {
     top: 10px
 }
 
+.app-user-content ul {
+    font-family: "GDS Transport",arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    padding-left: 20px;
+    list-style-type: disc;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    line-height: 1.25;
+    color: #0b0c0c;
+}
+
+@media (min-width: 40.0625em) {
+    .app-user-content ul {
+        font-size: 1.1875rem;
+        line-height: 1.31579;
+    }
+}
+
 .das-flex-space-around {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -415,12 +434,11 @@ a.das-show-hide__button[aria-expanded="false"]:after {
     justify-content: space-between;
 }
 
-.app-pagination-nav
-{
-    float:right;
+.app-pagination-nav {
+    float: right;
 }
 
-.das-pagination-links>a, .das-pagination-links span {
+.das-pagination-links > a, .das-pagination-links span {
     height: 40px;
     line-height: 40px;
     margin-left: 15px;
