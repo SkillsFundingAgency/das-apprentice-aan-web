@@ -13,6 +13,11 @@ public static class FilterBuilder
         var filters = new List<SelectedFilter>();
         var fullQueryParameters = BuildQueryParameters(request);
 
+        if (request.Keyword != null)
+        {
+            filters.AddFilterItems(urlHelper, fullQueryParameters, new[] { request.Keyword }, "Network events", "keyword", Enumerable.Empty<ChecklistLookup>());
+        }
+
         if (request.FromDate.HasValue)
         {
             filters.AddFilterItems(urlHelper, fullQueryParameters, new[] { request.FromDate.Value.ToScreenString() }, "From date", "fromDate", Enumerable.Empty<ChecklistLookup>());
@@ -62,6 +67,11 @@ public static class FilterBuilder
     private static List<string> BuildQueryParameters(GetNetworkEventsRequest request)
     {
         var queryParameters = new List<string>();
+
+        if (request.Keyword != null)
+        {
+            queryParameters.Add(BuildQueryParameter("keyword", request.Keyword));
+        }
 
         if (request.FromDate != null)
         {

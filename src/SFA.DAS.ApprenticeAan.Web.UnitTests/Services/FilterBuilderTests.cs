@@ -35,6 +35,36 @@ public class FilterBuilderTests
     }
 
     [TestCase(null, "", 0)]
+    [TestCase("event", "Network events", 1)]
+    public void BuildEventSearchFiltersForKeyword(string? keyword, string fieldName1, int expectedNumberOfFilters)
+    {
+        var mockUrlHelper = new Mock<IUrlHelper>();
+        mockUrlHelper
+            .Setup(x => x.RouteUrl(It.IsAny<UrlRouteContext>()))
+            .Returns(LocationUrl);
+
+        var request = new GetNetworkEventsRequest
+        {
+            Keyword = keyword
+        };
+
+        var actual = FilterBuilder.Build(request, mockUrlHelper.Object, new List<ChecklistLookup>(), new List<ChecklistLookup>(), new List<ChecklistLookup>());
+        actual.Count.Should().Be(expectedNumberOfFilters);
+        if (expectedNumberOfFilters > 0)
+        {
+            var firstItem = actual.First();
+            firstItem.FieldName.Should().Be(fieldName1);
+            firstItem.FieldOrder.Should().Be(1);
+            firstItem.Filters.First().ClearFilterLink.Should().Be(LocationUrl);
+            firstItem.Filters.First().Order.Should().Be(1);
+            if (fieldName1 != "")
+            {
+                firstItem.Filters.First().Value.Should().Be(keyword);
+            }
+        }
+    }
+
+    [TestCase(null, "", 0)]
     [TestCase("2023-05-31", "From date", 1)]
     public void BuildEventSearchFiltersForFromDate(DateTime? fromDate, string fieldName1, int expectedNumberOfFilters)
     {

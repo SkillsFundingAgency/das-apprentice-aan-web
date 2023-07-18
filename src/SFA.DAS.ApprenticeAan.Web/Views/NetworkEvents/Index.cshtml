@@ -28,6 +28,7 @@
                 <div class="das-filter__body das-!-show--from-tablet" id="events-filter-options">
                     <form asp-route="@RouteNames.NetworkEvents" method="GET">
                         <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
+                        <partial name="_FilterEventKeyword" Model="Model.FilterChoices" />
                         <partial name="_FilterEventDates" Model="Model.FilterChoices" />
                         <partial name="_FilterDetails" Model="Model.FilterChoices.EventFormatChecklistDetails" />
                         <partial name="_FilterDetails" Model="Model.FilterChoices.EventTypeChecklistDetails" />
