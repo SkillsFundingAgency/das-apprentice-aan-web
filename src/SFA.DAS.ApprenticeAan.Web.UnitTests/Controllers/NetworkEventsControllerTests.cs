@@ -22,7 +22,6 @@ public class NetworkEventsControllerTests
 {
     private static readonly string AllNetworksUrl = Guid.NewGuid().ToString();
 
-
     [Test, MoqAutoData]
     public void GetCalendarEvents_ReturnsApiResponse(
     [Frozen] Mock<IOuterApiClient> outerApiMock,
