@@ -13,7 +13,7 @@ public static class FilterBuilder
         var filters = new List<SelectedFilter>();
         var fullQueryParameters = BuildQueryParameters(request);
 
-        if (request.Keyword != null)
+        if (!string.IsNullOrWhiteSpace(request.Keyword))
         {
             filters.AddFilterItems(urlHelper, fullQueryParameters, new[] { request.Keyword }, "Network events", "keyword", Enumerable.Empty<ChecklistLookup>());
         }
