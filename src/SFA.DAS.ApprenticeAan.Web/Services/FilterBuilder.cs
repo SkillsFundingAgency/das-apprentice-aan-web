@@ -68,7 +68,7 @@ public static class FilterBuilder
     {
         var queryParameters = new List<string>();
 
-        if (request.Keyword != null)
+        if (!string.IsNullOrWhiteSpace(request.Keyword))
         {
             queryParameters.Add(BuildQueryParameter("keyword", request.Keyword));
         }
