@@ -18,7 +18,7 @@ using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
 
-public class NetworkEventsControllerTests1
+public class NetworkEventsControllerTests
 {
     private static readonly string AllNetworksUrl = Guid.NewGuid().ToString();
 
