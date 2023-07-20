@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
+using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models;
-using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models.CalendarViewModelTests;
 
@@ -20,7 +20,7 @@ public class CalendarViewModelTests
     {
         _urlHelperMock = new();
         _urlHelperMock.Setup(h => h.RouteUrl(It.Is<UrlRouteContext>(c
-            => c.RouteName == RouteNames.NetworkEvents
+            => c.RouteName == SharedRouteNames.NetworkEvents
             ))).Returns(EventsHubRoute);
         _sut = new(_date, DateOnly.FromDateTime(DateTime.Today), Enumerable.Empty<Appointment>());
     }

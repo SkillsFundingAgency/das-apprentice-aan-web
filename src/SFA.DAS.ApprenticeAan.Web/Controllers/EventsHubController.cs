@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Infrastructure;
+using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
-using SFA.DAS.ApprenticeAan.Web.Infrastructure;
-using SFA.DAS.ApprenticeAan.Web.Models;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
-[Route("events-hub", Name = RouteNames.EventsHub)]
+[Route("events-hub", Name = SharedRouteNames.EventsHub)]
 public class EventsHubController : Controller
 {
     private readonly IOuterApiClient _apiClient;
@@ -30,7 +31,17 @@ public class EventsHubController : Controller
 
         var response = await _apiClient.GetAttendances(User.GetAanMemberId(), firstDayOfTheMonth.ToApiString(), lastDayOfTheMonth.ToApiString(), cancellationToken);
 
-        EventsHubViewModel model = new(firstDayOfTheMonth, Url, response.Attendances);
+        EventsHubViewModel model = new(firstDayOfTheMonth, Url, GetAppointments(response.Attendances));
         return View(model);
+    }
+
+    private List<Appointment> GetAppointments(List<Attendance> attendances)
+    {
+        List<Appointment> appointments = new();
+        foreach (Attendance attendance in attendances)
+        {
+            appointments.Add(attendance.ToAppointment(Url));
+        }
+        return appointments;
     }
 }

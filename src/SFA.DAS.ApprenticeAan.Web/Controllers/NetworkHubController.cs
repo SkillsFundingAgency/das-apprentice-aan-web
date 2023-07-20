@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 
@@ -14,7 +15,7 @@ public class NetworkHubController : Controller
     {
         NetworkHubViewModel model = new()
         {
-            EventsHubUrl = Url.RouteUrl(RouteNames.EventsHub)!
+            EventsHubUrl = Url.RouteUrl(SharedRouteNames.EventsHub)!
         };
         return View(model);
     }

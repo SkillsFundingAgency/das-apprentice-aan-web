@@ -1,6 +1,4 @@
-﻿//using SFA.DAS.Aan.SharedUi.Infrastructure;
-
-namespace SFA.DAS.Aan.SharedUi.Models;
+﻿namespace SFA.DAS.Aan.SharedUi.Models;
 
 public class CalendarViewModel
 {
@@ -12,9 +10,9 @@ public class CalendarViewModel
     public DateOnly FirstDayOfCurrentMonth { get; init; }
     public List<CalendarItem> CalendarItems { get; }
 
-    public string PreviousMonthLink { get; set; }
+    public string PreviousMonthLink { get; set; } = null!;
 
-    public string NextMonthLink { get; set; }
+    public string NextMonthLink { get; set; } = null!;
 
     public CalendarViewModel(DateOnly firstDayOfTheMonth, DateOnly today, IEnumerable<Appointment> appointments)
     {

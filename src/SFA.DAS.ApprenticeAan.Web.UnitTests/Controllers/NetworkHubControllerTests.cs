@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
-using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 
@@ -16,7 +16,7 @@ public class NetworkHubControllerTests
     public void WhenGettingNetworkHub()
     {
         NetworkHubController sut = new();
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.EventsHub, EventsHubUrl);
+        sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.EventsHub, EventsHubUrl);
 
         _result = sut.Index();
     }

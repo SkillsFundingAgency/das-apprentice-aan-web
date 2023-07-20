@@ -3,13 +3,13 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Extensions;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
-using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
@@ -21,7 +21,6 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
 public class NetworkEventsControllerTests
 {
     private static readonly string AllNetworksUrl = Guid.NewGuid().ToString();
-
 
     [Test, MoqAutoData]
     public void GetCalendarEvents_ReturnsApiResponse(
@@ -55,7 +54,7 @@ public class NetworkEventsControllerTests
         };
 
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.NetworkEvents, AllNetworksUrl);
+        sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkEvents, AllNetworksUrl);
 
         var actualResult = sut.Index(request, new CancellationToken());
         var expectedEventFormatChecklistLookup = new ChecklistLookup[]
