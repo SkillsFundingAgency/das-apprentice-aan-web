@@ -192,8 +192,8 @@ public class NetworkEventDetailsViewModelTests
             Assert.That(sut.CalendarEventId, Is.EqualTo(source.CalendarEventId));
             Assert.That(sut.CalendarName, Is.EqualTo(source.CalendarName));
             Assert.That(sut.EventFormat, Is.EqualTo(source.EventFormat));
-            Assert.That(sut.StartDate, Is.EqualTo(source.StartDate.ToString("dddd, d MMMM yyyy")));
-            Assert.That(sut.EndDate, Is.EqualTo(source.EndDate.ToString("dddd, d MMMM yyyy")));
+            Assert.That(sut.StartDate, Is.EqualTo(source.StartDate.UtcToLocalTime().ToString("dddd, d MMMM yyyy")));
+            Assert.That(sut.EndDate, Is.EqualTo(source.EndDate.UtcToLocalTime().ToString("dddd, d MMMM yyyy")));
             Assert.That(sut.Title, Is.EqualTo(source.Title));
             Assert.That(sut.Description, Is.EqualTo(source.Description));
             Assert.That(sut.Summary, Is.EqualTo(source.Summary));
