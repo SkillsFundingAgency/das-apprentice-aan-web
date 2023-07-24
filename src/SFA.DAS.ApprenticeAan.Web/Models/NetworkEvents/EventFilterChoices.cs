@@ -2,6 +2,7 @@
 
 public class EventFilterChoices
 {
+    public string? Keyword { get; set; }
     public DateTime? FromDate { get; set; }
     public DateTime? ToDate { get; set; }
     public ChecklistDetails EventFormatChecklistDetails { get; set; } = new ChecklistDetails();

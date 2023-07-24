@@ -6,6 +6,9 @@ namespace SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 public class GetNetworkEventsRequest
 {
     [FromQuery]
+    public string? Keyword { get; set; }
+
+    [FromQuery]
     public DateTime? FromDate { get; set; }
 
     [FromQuery]

@@ -73,6 +73,7 @@ public class NetworkEventsController : Controller
     private static EventFilterChoices PopulateFilterChoices(GetNetworkEventsRequest request, List<Calendar> calendars, List<Region> regions)
         => new EventFilterChoices
         {
+            Keyword = request.Keyword?.Trim(),
             FromDate = request.FromDate,
             ToDate = request.ToDate,
             EventFormatChecklistDetails = new ChecklistDetails

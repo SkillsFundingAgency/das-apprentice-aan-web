@@ -10,11 +10,12 @@ public class QueryStringParameterBuilderTests
 {
 
     [Test, AutoData]
-    public void Builder_PopulatesDictionaryBuiltFromModel(DateTime? fromDate, DateTime? toDate,
+    public void Builder_PopulatesDictionaryBuiltFromModel(string? keyword, DateTime? fromDate, DateTime? toDate,
         List<EventFormat> eventFormats, List<int> calendarIds, List<int> regionIds, int? page, int? pageSize)
     {
         var request = new GetNetworkEventsRequest
         {
+            Keyword = keyword,
             FromDate = fromDate,
             ToDate = toDate,
             EventFormat = eventFormats,
@@ -25,6 +26,9 @@ public class QueryStringParameterBuilderTests
         };
 
         var parameters = QueryStringParameterBuilder.BuildQueryStringParameters(request);
+
+        parameters.TryGetValue("keyword", out string[]? keywordResult);
+        keywordResult![0].Should().Be(keyword);
 
         parameters.TryGetValue("fromDate", out string[]? fromDateResult);
         fromDateResult![0].Should().Be(fromDate?.ToString("yyyy-MM-dd"));
@@ -49,6 +53,25 @@ public class QueryStringParameterBuilderTests
 
         parameters.TryGetValue("pageSize", out string[]? pageSizeResult);
         pageSizeResult![0].Should().Be(pageSize?.ToString());
+    }
+
+    [TestCase(null)]
+    [TestCase("event")]
+    public void Builder_ConstructParameters_Keyword(string? keyword)
+    {
+        var parameters = QueryStringParameterBuilder.BuildQueryStringParameters(new GetNetworkEventsRequest
+        {
+            Keyword = keyword
+        });
+        parameters.TryGetValue("keyword", out var keywordResult);
+        if (keyword != null)
+        {
+            keywordResult![0].Should().Be(keyword);
+        }
+        else
+        {
+            keywordResult.Should().BeNull();
+        }
     }
 
     [TestCase(null)]
@@ -128,7 +151,6 @@ public class QueryStringParameterBuilderTests
             pageResult.Should().BeNull();
         }
     }
-
 
     [Test, AutoData]
     public void Builder_PopulatesParametersFromRequestWithNullPageAndPageSize(DateTime? fromDate, DateTime? toDate,
