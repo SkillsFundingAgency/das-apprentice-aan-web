@@ -27,6 +27,9 @@
                      </div>
                      
                     <div id="regions-option" class="govuk-radios" data-module="govuk-radios">
+                        <label class="govuk-visually-hidden" asp-for="SelectedRegionId">
+                            Regions
+                        </label>
                         @{
                             foreach (var region in Model.Regions)
                             {
@@ -34,7 +37,7 @@
                                 var buttonIdentifier = $"region-{regionIdentifier}";
 
                                 <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input"  asp-for=@Model.SelectedRegionId  type="radio" value=@region.Id >
+                                    <input class="govuk-radios__input" asp-for=@Model.SelectedRegionId type="radio" value=@region.Id id="@buttonIdentifier">
                                     <label class="govuk-label govuk-radios__label" for=@buttonIdentifier>
                                         @region.Area
                                     </label>

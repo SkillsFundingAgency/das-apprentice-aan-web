@@ -60,6 +60,7 @@ public class RegionsController : Controller
 
     private async Task<RegionsViewModel> GetViewModel(OnboardingSessionModel sessionModel)
     {
+
         return new RegionsViewModel
         {
             BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(RouteNames.Onboarding.CurrentJobTitle)!,
