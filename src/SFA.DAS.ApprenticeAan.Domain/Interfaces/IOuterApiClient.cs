@@ -1,4 +1,6 @@
 ﻿using RestEase;
+using SFA.DAS.Aan.SharedUi.Constants;
+using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 
@@ -31,7 +33,7 @@ public interface IOuterApiClient
     Task<Response<Apprentice?>> GetApprentice([Path] Guid apprenticeId);
 
     [Get("calendarEvents")]
-    Task<GetCalendarEventsQueryResult> GetCalendarEvents([Header(Constants.RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId, [QueryMap] IDictionary<string, string[]> parameters, CancellationToken cancellationToken);
+    Task<GetCalendarEventsQueryResult> GetCalendarEvents([Header(RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId, [QueryMap] IDictionary<string, string[]> parameters, CancellationToken cancellationToken);
 
 
     [Get("/myapprenticeship/{apprenticeId}")]
@@ -47,7 +49,7 @@ public interface IOuterApiClient
     [Get("/calendarevents/{calendarEventId}")]
     [AllowAnyStatusCode]
     Task<Response<CalendarEvent>> GetCalendarEventDetails([Path] Guid calendarEventId,
-        [Header(Constants.RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId,
+        [Header(RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId,
         CancellationToken cancellationToken);
 
     [Get("/stagedapprentices")]
@@ -56,10 +58,10 @@ public interface IOuterApiClient
 
     [Put("/calendarevents/{calendarEventId}/attendance")]
     Task PutAttendance([Path] Guid calendarEventId,
-                       [Header(Constants.RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId,
+                       [Header(RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId,
                        [Body] SetAttendanceStatusRequest newStatus,
                        CancellationToken cancellationToken);
 
     [Get("/attendances")]
-    Task<GetAttendancesResponse> GetAttendances([Header(Constants.RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId, string fromDate, string toDate, CancellationToken cancellationToken);
+    Task<GetAttendancesResponse> GetAttendances([Header(RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId, string fromDate, string toDate, CancellationToken cancellationToken);
 }

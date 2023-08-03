@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
-using SFA.DAS.ApprenticeAan.Domain.Constants;
-using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
-using SFA.DAS.ApprenticeAan.Web.Extensions;
-using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
+using SFA.DAS.Aan.SharedUi.Constants;
+using SFA.DAS.Aan.SharedUi.Extensions;
+using SFA.DAS.Aan.SharedUi.Models;
+using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 using SFA.DAS.Testing.AutoFixture;
 
-namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models.CalendarEvents;
+namespace SFA.DAS.Aan.SharedUi.UnitTests.Models.CalendarEvents;
 
 public class NetworkEventDetailsViewModelTests
 {
@@ -21,8 +21,8 @@ public class NetworkEventDetailsViewModelTests
             Assert.That(sut.CalendarEventId, Is.EqualTo(source.CalendarEventId));
             Assert.That(sut.CalendarName, Is.EqualTo(source.CalendarName));
             Assert.That(sut.EventFormat, Is.EqualTo(source.EventFormat));
-            Assert.That(sut.StartDate, Is.EqualTo(source.StartDate.UtcToLocalTime().ToString("dddd, d MMMM yyyy")));
-            Assert.That(sut.EndDate, Is.EqualTo(source.EndDate.UtcToLocalTime().ToString("dddd, d MMMM yyyy")));
+            Assert.That(sut.StartDate, Is.EqualTo(source.StartDate.SharedUtcToLocalTime().ToString("dddd, d MMMM yyyy")));
+            Assert.That(sut.EndDate, Is.EqualTo(source.EndDate.SharedUtcToLocalTime().ToString("dddd, d MMMM yyyy")));
             Assert.That(sut.Title, Is.EqualTo(source.Title));
             Assert.That(sut.Description, Is.EqualTo(source.Description));
             Assert.That(sut.Summary, Is.EqualTo(source.Summary));
@@ -148,7 +148,7 @@ public class NetworkEventDetailsViewModelTests
     {
         var sut = new NetworkEventDetailsViewModel(calendarEvent, Guid.NewGuid());
 
-        Assert.That(sut.StartTime, Is.EqualTo(calendarEvent.StartDate.UtcToLocalTime().ToString("h:mm tt")));
+        Assert.That(sut.StartTime, Is.EqualTo(calendarEvent.StartDate.SharedUtcToLocalTime().ToString("h:mm tt")));
     }
 
     [Test, MoqAutoData]
@@ -156,7 +156,7 @@ public class NetworkEventDetailsViewModelTests
     {
         var sut = new NetworkEventDetailsViewModel(calendarEvent, Guid.NewGuid());
 
-        Assert.That(sut.EndTime, Is.EqualTo(calendarEvent.EndDate.UtcToLocalTime().ToString("h:mm tt")));
+        Assert.That(sut.EndTime, Is.EqualTo(calendarEvent.EndDate.SharedUtcToLocalTime().ToString("h:mm tt")));
     }
 
     [Test, MoqAutoData]

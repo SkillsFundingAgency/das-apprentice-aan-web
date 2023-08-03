@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.ApprenticeAan.Web.UrlHelpers;
+﻿namespace SFA.DAS.Aan.SharedUi.UrlHelpers;
 
 public static class MailtoLinkValue
 {

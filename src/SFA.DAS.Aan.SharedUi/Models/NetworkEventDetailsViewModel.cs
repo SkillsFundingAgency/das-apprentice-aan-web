@@ -1,10 +1,9 @@
-﻿using SFA.DAS.ApprenticeAan.Domain.Constants;
-using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
-using SFA.DAS.ApprenticeAan.Web.Extensions;
-using SFA.DAS.ApprenticeAan.Web.UrlHelpers;
+﻿using SFA.DAS.Aan.SharedUi.Constants;
+using SFA.DAS.Aan.SharedUi.Extensions;
+using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
+using SFA.DAS.Aan.SharedUi.UrlHelpers;
 
-namespace SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
-
+namespace SFA.DAS.Aan.SharedUi.Models;
 public class NetworkEventDetailsViewModel
 {
     public Guid CalendarEventId { get; init; }
@@ -44,10 +43,10 @@ public class NetworkEventDetailsViewModel
         CalendarName = source.CalendarName;
         EventFormat = source.EventFormat;
         StartDateTime = source.StartDate;
-        StartDate = StartDateTime.UtcToLocalTime().ToString("dddd, d MMMM yyyy");
-        EndDate = source.EndDate.UtcToLocalTime().ToString("dddd, d MMMM yyyy");
-        StartTime = StartDateTime.UtcToLocalTime().ToString("h:mm tt");
-        EndTime = source.EndDate.UtcToLocalTime().ToString("h:mm tt");
+        StartDate = StartDateTime.SharedUtcToLocalTime().ToString("dddd, d MMMM yyyy");
+        EndDate = source.EndDate.SharedUtcToLocalTime().ToString("dddd, d MMMM yyyy");
+        StartTime = StartDateTime.SharedUtcToLocalTime().ToString("h:mm tt");
+        EndTime = source.EndDate.SharedUtcToLocalTime().ToString("h:mm tt");
         Title = source.Title;
         Description = source.Description;
         Summary = source.Summary;

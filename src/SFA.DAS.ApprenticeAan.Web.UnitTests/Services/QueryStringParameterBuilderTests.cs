@@ -1,6 +1,6 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
-using SFA.DAS.ApprenticeAan.Domain.Constants;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 using SFA.DAS.ApprenticeAan.Web.Services;
 

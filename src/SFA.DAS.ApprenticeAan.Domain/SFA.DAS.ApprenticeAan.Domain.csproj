@@ -21,4 +21,8 @@
     <Folder Include="Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.Aan.SharedUi\SFA.DAS.Aan.SharedUi.csproj" />
+  </ItemGroup>
+
 </Project>

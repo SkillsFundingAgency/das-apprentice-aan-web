@@ -21,7 +21,7 @@
         </div>
 
         <div>
-            @Html.RenderPartialAsync("~/Views/Shared/_Calendar.cshtml",Model.Calendar)
+            @{ await Html.RenderPartialAsync("~/Views/Shared/_Calendar.cshtml", Model.Calendar);}
         </div>
     </div>
 </div>

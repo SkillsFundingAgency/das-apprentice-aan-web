@@ -1,6 +1,5 @@
-﻿using SFA.DAS.ApprenticeAan.Web.UrlHelpers;
-
-namespace SFA.DAS.ApprenticeAan.Web.UnitTests.UrlHelpers;
+﻿using SFA.DAS.Aan.SharedUi.UrlHelpers;
+namespace SFA.DAS.Aan.SharedUi.UnitTests.UrlHelpers;
 
 public class MailtoLinkValueTests
 {

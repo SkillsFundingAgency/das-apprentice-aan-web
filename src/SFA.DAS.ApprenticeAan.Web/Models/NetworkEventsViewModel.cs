@@ -1,5 +1,5 @@
-﻿using SFA.DAS.ApprenticeAan.Domain.Constants;
-using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+﻿using SFA.DAS.Aan.SharedUi.Constants;
+using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
 namespace SFA.DAS.ApprenticeAan.Web.Models;

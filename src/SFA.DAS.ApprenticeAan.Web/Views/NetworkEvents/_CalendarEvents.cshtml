@@ -1,7 +1,9 @@
 ﻿﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using SFA.DAS.ApprenticeAan.Domain.Constants
-@using SFA.DAS.ApprenticeAan.Domain.Extensions
 @using SFA.DAS.ApprenticeAan.Web.Extensions;
+@using SFA.DAS.Aan.SharedUi.Constants;
+@using SFA.DAS.Aan.SharedUi.Extensions;
+
 @model NetworkEventsViewModel
 <ol class="das-search-results__list">
     @foreach (var calendarEvent in Model.CalendarEvents)

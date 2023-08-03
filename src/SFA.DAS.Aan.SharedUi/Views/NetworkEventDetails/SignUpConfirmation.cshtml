@@ -1,22 +1,23 @@
-﻿@using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
-@using SFA.DAS.Aan.SharedUi.Infrastructure;
+﻿@using SFA.DAS.Aan.SharedUi.Models;
+@using SFA.DAS.Aan.SharedUi.Infrastructure;;
 
 @{
-    ViewData["Title"] = $"Confirmation Page — Cancel attendance";
+    ViewData["Title"] = $"Confirmation Page — Sign up event";
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <div class="govuk-panel govuk-panel--confirmation">
             <h1 class="govuk-panel__title">
-                You have successfully cancelled your attendance at this event
+                You have successfully signed up to this event
             </h1>
         </div>
 
         <h2 class="govuk-heading-m">What happens next</h2>
 
         <p class="govuk-body">
-            You have successfully cancelled your attendance at this event and it has been removed from your network profile calendar.
+            You have successfully signed up to this event and it has been added to your network profile calendar.
+            You can find more information on the event in the calendar booking, where you can update your details or cancel your attendance.
             <a href="@Url.RouteUrl(SharedRouteNames.NetworkEvents)"> Find more information on upcoming network events that may suit your preferences.</a>
         </p>
 

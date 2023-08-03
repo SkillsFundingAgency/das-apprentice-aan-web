@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+﻿using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
+
+namespace SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 public class GetCalendarEventsQueryResult
 {
     public int Page { get; set; }

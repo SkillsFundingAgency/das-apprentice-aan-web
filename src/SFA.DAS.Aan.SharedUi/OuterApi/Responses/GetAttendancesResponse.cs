@@ -1,4 +1,4 @@
-﻿using SFA.DAS.ApprenticeAan.Domain.Constants;
+﻿using SFA.DAS.Aan.SharedUi.Constants;
 
 namespace SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 

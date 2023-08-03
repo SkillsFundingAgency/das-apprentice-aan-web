@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace SFA.DAS.ApprenticeAan.Domain.Extensions;
+namespace SFA.DAS.Aan.SharedUi.Extensions;
 
 public static class EnumExtensions
 {

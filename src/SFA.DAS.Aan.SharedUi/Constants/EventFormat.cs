@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace SFA.DAS.ApprenticeAan.Domain.Constants;
+namespace SFA.DAS.Aan.SharedUi.Constants;
 
 public enum EventFormat
 {
