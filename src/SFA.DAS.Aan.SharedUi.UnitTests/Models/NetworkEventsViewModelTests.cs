@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
+using SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
 using SFA.DAS.ApprenticeAan.Web.Models;
-using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models;
 

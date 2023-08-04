@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.Extensions;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
+using SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
+using SFA.DAS.Aan.SharedUi.Services;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
@@ -44,6 +46,7 @@ public class NetworkEventsController : Controller
         var filterChoices = PopulateFilterChoices(request, calendars, regions);
         model.FilterChoices = filterChoices;
         model.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices.EventFormatChecklistDetails.Lookups, filterChoices.EventTypeChecklistDetails.Lookups, filterChoices.RegionChecklistDetails.Lookups);
+        model.ClearSelectedFiltersLink = Url.RouteUrl(SharedRouteNames.NetworkEvents)!;
         return View(model);
     }
 

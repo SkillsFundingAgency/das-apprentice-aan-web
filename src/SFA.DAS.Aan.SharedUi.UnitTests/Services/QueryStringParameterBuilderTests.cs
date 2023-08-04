@@ -1,10 +1,10 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using SFA.DAS.Aan.SharedUi.Constants;
-using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
+using SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
 using SFA.DAS.ApprenticeAan.Web.Services;
 
-namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Services;
+namespace SFA.DAS.Aan.SharedUi.UnitTests.Services;
 
 public class QueryStringParameterBuilderTests
 {

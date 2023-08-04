@@ -34,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.Aan.SharedTestHelpers\SFA.DAS.Aan.UnitTests.Shared.csproj" />
     <ProjectReference Include="..\SFA.DAS.Aan.SharedUi\SFA.DAS.Aan.SharedUi.csproj" />
   </ItemGroup>
 

@@ -31,7 +31,7 @@ public class NetworkEventDetailsViewModel
     public int AttendeeCount => Attendees.Count;
     public bool IsPastEvent => StartDateTime < DateTime.UtcNow;
 
-    public string EmailLink => MailtoLinkValue.FromAddressAndSubject(ContactEmail, Title);
+    public string EmailLink => MailToLinkValue.FromAddressAndSubject(ContactEmail, Title);
 
     public string GoogleMapsLink => LocationDetails?.Location == null ? string.Empty : $"https://www.google.com/maps/dir//{LocationDetails?.Location}+{LocationDetails?.Postcode}";
 
@@ -43,10 +43,10 @@ public class NetworkEventDetailsViewModel
         CalendarName = source.CalendarName;
         EventFormat = source.EventFormat;
         StartDateTime = source.StartDate;
-        StartDate = StartDateTime.SharedUtcToLocalTime().ToString("dddd, d MMMM yyyy");
-        EndDate = source.EndDate.SharedUtcToLocalTime().ToString("dddd, d MMMM yyyy");
-        StartTime = StartDateTime.SharedUtcToLocalTime().ToString("h:mm tt");
-        EndTime = source.EndDate.SharedUtcToLocalTime().ToString("h:mm tt");
+        StartDate = StartDateTime.UtcToLocalTime().ToString("dddd, d MMMM yyyy");
+        EndDate = source.EndDate.UtcToLocalTime().ToString("dddd, d MMMM yyyy");
+        StartTime = StartDateTime.UtcToLocalTime().ToString("h:mm tt");
+        EndTime = source.EndDate.UtcToLocalTime().ToString("h:mm tt");
         Title = source.Title;
         Description = source.Description;
         Summary = source.Summary;

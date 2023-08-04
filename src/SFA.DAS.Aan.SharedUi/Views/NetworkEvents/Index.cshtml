@@ -1,5 +1,6 @@
 ﻿﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using SFA.DAS.Aan.SharedUi.Infrastructure;;
+@using SFA.DAS.Aan.SharedUi.Infrastructure;
+@using SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
 
 @model NetworkEventsViewModel
 @{
@@ -25,14 +26,16 @@
                 <div class="das-filter__header">
                     <h2 class="das-filter__heading">Filter</h2>
                 </div>
-                <partial name="_SelectedEventFilters" />
+                @{ await Html.RenderPartialAsync("_SelectedEventFilters"); }
                 <div class="das-filter__body das-!-show--from-tablet" id="events-filter-options">
                     <form asp-route="@SharedRouteNames.NetworkEvents" method="GET">
-                        <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
-                        <partial name="_FilterEventDates" Model="Model.FilterChoices" />
-                        <partial name="_FilterDetails" Model="Model.FilterChoices.EventFormatChecklistDetails" />
-                        <partial name="_FilterDetails" Model="Model.FilterChoices.EventTypeChecklistDetails" />
-                        <partial name="_FilterDetails" Model="Model.FilterChoices.RegionChecklistDetails" />
+                      <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
+                        @{
+                            await Html.RenderPartialAsync("_FilterEventDates", Model.FilterChoices);
+                            await Html.RenderPartialAsync("_FilterDetails", Model.FilterChoices.EventFormatChecklistDetails);
+                            await Html.RenderPartialAsync("_FilterDetails", Model.FilterChoices.EventTypeChecklistDetails);
+                            await Html.RenderPartialAsync("_FilterDetails", Model.FilterChoices.RegionChecklistDetails);
+                        }
                         <button type="submit" class="govuk-button" id="filters-submit-second">Apply filters</button>
                     </form>
                 </div>
@@ -48,9 +51,10 @@
         </p>
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 ">
         <div class="das-search-results">
-            <partial name="_CalendarEvents" />
+            @{
+                await Html.RenderPartialAsync("_CalendarEvents");
+            }
         </div>
-        
-        <partial name="_Pagination" Model="@Model.PaginationViewModel"/>
+        @{ await Html.RenderPartialAsync("_Pagination", Model.PaginationViewModel); }
     </div>
 </div>

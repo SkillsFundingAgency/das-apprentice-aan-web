@@ -1,10 +1,10 @@
 ﻿using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Extensions;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
-using SFA.DAS.ApprenticeAan.Web.Extensions;
-using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
+using SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
 
-namespace SFA.DAS.ApprenticeAan.Web.Services;
+namespace SFA.DAS.Aan.SharedUi.Services;
 
 public static class FilterBuilder
 {

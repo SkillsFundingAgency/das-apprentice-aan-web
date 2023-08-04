@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using SFA.DAS.Aan.SharedUi.Models;
 
-namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models.CalendarViewModelTests;
+namespace SFA.DAS.Aan.SharedUi.UnitTests.Models.CalendarViewModelTests;
 
 public class CalendarItemsTests
 {

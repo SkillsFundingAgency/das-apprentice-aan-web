@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
+﻿namespace SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
 
 public class EventFilterItem
 {

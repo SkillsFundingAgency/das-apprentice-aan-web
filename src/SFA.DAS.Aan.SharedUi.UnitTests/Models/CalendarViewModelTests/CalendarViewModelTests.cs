@@ -5,7 +5,7 @@ using Moq;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models;
 
-namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models.CalendarViewModelTests;
+namespace SFA.DAS.Aan.SharedUi.UnitTests.Models.CalendarViewModelTests;
 
 public class CalendarViewModelTests
 {

@@ -1,8 +1,9 @@
 ﻿using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
+using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
-namespace SFA.DAS.ApprenticeAan.Web.Models;
+namespace SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
 
 public class NetworkEventsViewModel
 {
@@ -17,6 +18,8 @@ public class NetworkEventsViewModel
     public List<SelectedFilter> SelectedFilters { get; set; } = new List<SelectedFilter>();
 
     public bool ShowFilterOptions => SelectedFilters.Any();
+
+    public string ClearSelectedFiltersLink { get; set; } = null!;
 
 }
 

@@ -1,4 +1,6 @@
 ﻿@using SFA.DAS.Aan.SharedUi.Infrastructure;
+@using SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
+
 @model NetworkEventsViewModel
 
 @if (Model.ShowFilterOptions)
@@ -6,7 +8,7 @@
     <div class="das-filter__selected-filters">
         <div class="das-filter__selected-header">
             <h3 class="das-filter__selected-heading">Selected filters</h3>
-            <a class="das-filter__selected-action govuk-link govuk-link--no-visited-state" asp-route="@SharedRouteNames.NetworkEvents">Clear <span class="govuk-visually-hidden">the selected filters</span></a>
+            <a class="das-filter__selected-action govuk-link govuk-link--no-visited-state" href="@Model.ClearSelectedFiltersLink">Clear <span class="govuk-visually-hidden">the selected filters</span></a>
         </div>
         @foreach (var filters in Model.SelectedFilters.OrderBy(x=>x.FieldOrder))
         {

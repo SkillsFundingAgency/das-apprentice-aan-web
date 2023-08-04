@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Aan.SharedUi.Constants;
 
-namespace SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
+namespace SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
 
 public class GetNetworkEventsRequest
 {
