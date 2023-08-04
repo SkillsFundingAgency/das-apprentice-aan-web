@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace SFA.DAS.ApprenticeAan.Web.Extensions;
+namespace SFA.DAS.Aan.SharedUi.Extensions;
 
 public static class HtmlExtensions
 {
-
     public static HtmlString MarkdownToHtml(this IHtmlHelper htmlHelper, string markdownText)
     {
         return !string.IsNullOrEmpty(markdownText)

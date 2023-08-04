@@ -23,6 +23,8 @@
     <Folder Include="OuterApi\Requests\" />
   </ItemGroup>
 
-
+  <ItemGroup>
+    <PackageReference Include="CommonMark.NET" Version="0.15.1" />
+  </ItemGroup>
 
 </Project>
