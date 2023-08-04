@@ -1,4 +1,4 @@
-﻿﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using SFA.DAS.Aan.SharedUi.Infrastructure;
 @using SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
 
@@ -31,6 +31,7 @@
                     <form asp-route="@SharedRouteNames.NetworkEvents" method="GET">
                       <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
                         @{
+                            await Html.RenderPartialAsync("_FilterEventKeyword", Model="Model.FilterChoices");
                             await Html.RenderPartialAsync("_FilterEventDates", Model.FilterChoices);
                             await Html.RenderPartialAsync("_FilterDetails", Model.FilterChoices.EventFormatChecklistDetails);
                             await Html.RenderPartialAsync("_FilterDetails", Model.FilterChoices.EventTypeChecklistDetails);

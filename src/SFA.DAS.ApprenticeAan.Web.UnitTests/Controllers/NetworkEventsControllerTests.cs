@@ -25,6 +25,7 @@ public class NetworkEventsControllerTests
     [Frozen] Mock<IOuterApiClient> outerApiMock,
     [Greedy] NetworkEventsController sut,
     GetCalendarEventsQueryResult expectedResult,
+    string keyword,
     DateTime? fromDate,
     DateTime? toDate,
     Guid apprenticeId)
@@ -42,6 +43,7 @@ public class NetworkEventsControllerTests
 
         var request = new GetNetworkEventsRequest
         {
+            Keyword = keyword,
             FromDate = fromDate,
             ToDate = toDate,
             EventFormat = eventFormats,
@@ -78,6 +80,7 @@ public class NetworkEventsControllerTests
         model!.TotalCount.Should().Be(expectedResult.TotalCount);
         model.FilterChoices.FromDate?.ToApiString().Should().Be(fromDateFormatted);
         model.FilterChoices.ToDate?.ToApiString().Should().Be(toDateFormatted);
+        model.FilterChoices.Keyword.Should().Be(keyword);
         model.FilterChoices.EventFormatChecklistDetails.Lookups.Should().BeEquivalentTo(expectedEventFormatChecklistLookup);
         model.ClearSelectedFiltersLink.Should().Be(AllNetworksUrl);
 
@@ -117,7 +120,7 @@ public class NetworkEventsControllerTests
         model!.TotalCount.Should().Be(expectedResult.TotalCount);
         model.FilterChoices.FromDate.Should().BeNull();
         model.FilterChoices.ToDate.Should().BeNull();
-
+        model.FilterChoices.Keyword.Should().BeNull();
         outerApiMock.Verify(o => o.GetCalendarEvents(It.IsAny<Guid>(), It.IsAny<Dictionary<string, string[]>>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 

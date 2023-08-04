@@ -15,7 +15,8 @@
         <h1 class="govuk-heading-xl govuk-!-margin-top-4">@Model.Title</h1>
         <partial name=@Model.PartialViewName />
         <h2 class="govuk-heading-m">Event summary</h2>
-        <p>@Model.Description</p>
+        <p class="app-user-content">
+        @Html.MarkdownToHtml(Model.Description)</p>
         <h2 class="govuk-heading-m">Guest speakers</h2>
         <div class="app-speakers">
             @foreach (var person in Model.EventGuests)

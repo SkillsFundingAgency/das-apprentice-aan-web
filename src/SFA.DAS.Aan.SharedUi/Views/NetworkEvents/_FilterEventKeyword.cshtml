@@ -1,0 +1,14 @@
+﻿@model SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents.EventFilterChoices
+<div class="govuk-form-group">
+    <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+            Network events
+        </legend>
+        <div class="govuk-form-group">
+            <label class="govuk-label" for="keyword">
+                Enter events or keywords
+            </label>
+            <input class="govuk-input" id="keyword" name="keyword" type="Search" value="@Model.Keyword" maxlength="50">
+        </div>
+    </fieldset>
+</div>
