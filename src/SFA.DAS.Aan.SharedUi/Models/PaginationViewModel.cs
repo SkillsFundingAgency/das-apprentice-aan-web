@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.ApprenticeAan.Web.Models;
+﻿namespace SFA.DAS.Aan.SharedUi.Models;
 
 public class PaginationViewModel
 {
@@ -22,7 +22,7 @@ public class PaginationViewModel
         if (totalPages == 0) return;
 
         var startPage =
-            (totalPages < 7 || currentPage < 4)
+            totalPages < 7 || currentPage < 4
                 ? 1
                 : CalculateStartPage(currentPage, totalPages);
 
