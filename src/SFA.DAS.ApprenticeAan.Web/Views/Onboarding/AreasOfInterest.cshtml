@@ -32,8 +32,8 @@
                                 for (int i = 0; i < Model.Events.Count; i++)
                                 {
                                     <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.Events[i].IsSelected>
-                                        <label class="govuk-label govuk-checkboxes__label" asp-for="@Model.Events[i].IsSelected">
+                                        <input class="govuk-checkboxes__input" type="checkbox" name="@Model.Events[i].Description.Replace(" ","-")" asp-for=@Model.Events[i].IsSelected>
+                                        <label class="govuk-label govuk-checkboxes__label" asp-for="@Model.Events[i].Description.Replace(" ","-")">
                                             @Model.Events[i].Description
                                         </label>
                                         <input type="hidden" asp-for="@Model.Events[i].Id" />
@@ -51,8 +51,8 @@
                                 for (int i = 0; i < Model.Promotions.Count; i++)
                                 {
                                     <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.Promotions[i].IsSelected>
-                                        <label class="govuk-label govuk-checkboxes__label">
+                                        <input class="govuk-checkboxes__input" type="checkbox"  name="@Model.Promotions[i].Description.Replace(" ","-")" asp-for=@Model.Promotions[i].IsSelected>
+                                        <label class="govuk-label govuk-checkboxes__label" asp-for="@Model.Promotions[i].Description.Replace(" ","-")">
                                             @Model.Promotions[i].Description
                                         </label>
                                         <input type="hidden" asp-for="@Model.Promotions[i].Id" />
