@@ -31,9 +31,10 @@
                             @{
                                 for (int i = 0; i < Model.Events.Count; i++)
                                 {
+                                    var eventsLabel = @Model.Events[i]?.Description?.Replace(" ", "-");
                                     <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" type="checkbox" name="@Model.Events[i].Description.Replace(" ","-")" asp-for=@Model.Events[i].IsSelected>
-                                        <label class="govuk-label govuk-checkboxes__label" asp-for="@Model.Events[i].Description.Replace(" ","-")">
+                                        <input class="govuk-checkboxes__input" type="checkbox" name="@eventsLabel" asp-for=@Model.Events[i].IsSelected>
+                                        <label class="govuk-label govuk-checkboxes__label" for="@eventsLabel" >
                                             @Model.Events[i].Description
                                         </label>
                                         <input type="hidden" asp-for="@Model.Events[i].Id" />
@@ -50,9 +51,11 @@
                             @{
                                 for (int i = 0; i < Model.Promotions.Count; i++)
                                 {
+                                     var promoLabel = @Model.Promotions[i]?.Description?.Replace(" ", "-");
+                                    
                                     <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" type="checkbox"  name="@Model.Promotions[i].Description.Replace(" ","-")" asp-for=@Model.Promotions[i].IsSelected>
-                                        <label class="govuk-label govuk-checkboxes__label" asp-for="@Model.Promotions[i].Description.Replace(" ","-")">
+                                        <input class="govuk-checkboxes__input" type="checkbox" name="@promoLabel" asp-for=@Model.Promotions[i].IsSelected>
+                                        <label class="govuk-label govuk-checkboxes__label" for="@promoLabel">
                                             @Model.Promotions[i].Description
                                         </label>
                                         <input type="hidden" asp-for="@Model.Promotions[i].Id" />
