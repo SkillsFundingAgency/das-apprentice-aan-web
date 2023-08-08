@@ -3,7 +3,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
-using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 

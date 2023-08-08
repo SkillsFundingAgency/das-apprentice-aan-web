@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Aan.SharedUi.Extensions;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models;
+using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
-using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
