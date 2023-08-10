@@ -38,3 +38,8 @@ jobs:
     inputs:
       targetPath: $(build.artifactstagingdirectory)/publish
       artifactName: ${{ parameters.SolutionBaseName }}
+
+  - template: azure-pipelines-templates/build/step/nuget-pack.yml@das-platform-building-blocks
+    parameters:
+      DotNetStandardPackagesToPack: |
+        src/SFA.DAS.Aan.SharedUi/SFA.DAS.Aan.SharedUi.csproj;

@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
-using SFA.DAS.ApprenticeAan.Domain.Constants;
-using SFA.DAS.ApprenticeAan.Domain.Extensions;
+using SFA.DAS.Aan.SharedUi.Constants;
+using SFA.DAS.Aan.SharedUi.Extensions;
+using SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
+using SFA.DAS.Aan.SharedUi.Services;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
-using SFA.DAS.ApprenticeAan.Web.Services;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Services;
 

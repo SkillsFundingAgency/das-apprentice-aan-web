@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ApprenticeAan.Domain.Constants;
-using SFA.DAS.ApprenticeAan.Domain.Extensions;
+using SFA.DAS.Aan.SharedUi.Constants;
+using SFA.DAS.Aan.SharedUi.Extensions;
+using SFA.DAS.Aan.SharedUi.Infrastructure;
+using SFA.DAS.Aan.SharedUi.Models;
+using SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
+using SFA.DAS.Aan.SharedUi.Services;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
-using SFA.DAS.ApprenticeAan.Web.Infrastructure;
-using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 using SFA.DAS.ApprenticeAan.Web.Services;
 
@@ -24,7 +26,7 @@ public class NetworkEventsController : Controller
     }
 
     [HttpGet]
-    [Route("", Name = RouteNames.NetworkEvents)]
+    [Route("", Name = SharedRouteNames.NetworkEvents)]
     public async Task<IActionResult> Index(GetNetworkEventsRequest request, CancellationToken cancellationToken)
     {
         var calendarEventsTask = _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), QueryStringParameterBuilder.BuildQueryStringParameters(request), cancellationToken);
@@ -44,6 +46,7 @@ public class NetworkEventsController : Controller
         var filterChoices = PopulateFilterChoices(request, calendars, regions);
         model.FilterChoices = filterChoices;
         model.SelectedFilters = FilterBuilder.Build(request, Url, filterChoices.EventFormatChecklistDetails.Lookups, filterChoices.EventTypeChecklistDetails.Lookups, filterChoices.RegionChecklistDetails.Lookups);
+        model.ClearSelectedFiltersLink = Url.RouteUrl(SharedRouteNames.NetworkEvents)!;
         return View(model);
     }
 
@@ -57,7 +60,7 @@ public class NetworkEventsController : Controller
         foreach (var calendarEvent in result.CalendarEvents)
         {
             CalendarEventViewModel vm = calendarEvent;
-            vm.CalendarEventLink = Url.RouteUrl(RouteNames.NetworkEventDetails, new { id = calendarEvent.CalendarEventId })!;
+            vm.CalendarEventLink = Url.RouteUrl(SharedRouteNames.NetworkEventDetails, new { id = calendarEvent.CalendarEventId })!;
             model.CalendarEvents.Add(vm);
         }
         return model;

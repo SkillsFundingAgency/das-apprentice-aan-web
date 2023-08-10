@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <Authors>ESFA</Authors>
+    <Description>AAN shared UI components</Description>
+    <PackageProjectUrl>https://github.com/SkillsFundingAgency/das-apprentice-aan-web</PackageProjectUrl>
+    <PackageOutputPath>$(SolutionDir)..\..\NugetPackages</PackageOutputPath>
+    <Company>ESFA</Company>
+    <License>https://github.com/SkillsFundingAgency/das-shared-packages/blob/master/LICENSE</License>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="OuterApi\Requests\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommonMark.NET" Version="0.15.1" />
+  </ItemGroup>
+
+</Project>
