@@ -13,6 +13,9 @@
                     What is your current job title?
                 </h1>
                 <span asp-validation-for="JobTitle" class="govuk-error-message"></span>
+                <label class="govuk-visually-hidden" asp-for="JobTitle">
+                    Job Title
+                </label>
                 <div id="EnteredJobTitle" data-module="govuk-input">
                     <input type="text" asp-for="JobTitle"  class="govuk-input" sfa-validationerror-class="form-control-error" maxlength="200" />
                 </div>

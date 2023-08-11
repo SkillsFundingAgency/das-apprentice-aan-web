@@ -29,12 +29,18 @@
 
             <div class="govuk-form-group" esfa-validation-marker-for="AddressLine2">
                 <span asp-validation-for="AddressLine2" class="govuk-error-message"></span>
+                <label class="govuk-visually-hidden" asp-for="AddressLine2">
+                    Address Line 2
+                </label>
                 <input asp-for="AddressLine2" id="AddressLine2" class="govuk-input" type="text" maxlength="200"
                         sfa-validationerror-class="form-control-error">
             </div>
 
             <div class="govuk-form-group" esfa-validation-marker-for="County">
                 <span asp-validation-for="County" class="govuk-error-message"></span>
+                <label class="govuk-visually-hidden" asp-for="County">
+                    County
+                </label>
                 <input asp-for="County" id="County" class="govuk-input" type="text" maxlength="200"
                     sfa-validationerror-class="form-control-error">
             </div>
