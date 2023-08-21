@@ -79,13 +79,15 @@ public class NetworkEventDetailsController : Controller
     [Route("signup-confirmation", Name = RouteNames.AttendanceConfirmations.SignUpConfirmation)]
     public IActionResult SignUpConfirmation()
     {
-        return View(SignUpConfirmationViewPath);
+        EventAttendanceConfirmationViewModel model = new(Url.RouteUrl(SharedRouteNames.NetworkEvents)!, new(Url.RouteUrl(SharedRouteNames.EventsHub)));
+        return View(SignUpConfirmationViewPath, model);
     }
 
     [HttpGet]
     [Route("cancellation-confirmation", Name = RouteNames.AttendanceConfirmations.CancellationConfirmation)]
     public IActionResult CancellationConfirmation()
     {
-        return View(CancellationConfirmationViewPath);
+        EventAttendanceConfirmationViewModel model = new(Url.RouteUrl(SharedRouteNames.NetworkEvents)!, new(Url.RouteUrl(SharedRouteNames.EventsHub)));
+        return View(CancellationConfirmationViewPath, model);
     }
 }
