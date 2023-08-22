@@ -47,6 +47,7 @@ public class NetworkEventDetailsController : Controller
     }
 
     [HttpPost]
+    [Route("{id}", Name = SharedRouteNames.NetworkEventDetails)]
     public async Task<IActionResult> Post(SubmitAttendanceCommand command, CancellationToken cancellationToken)
     {
         var memberId = User.GetAanMemberId();
