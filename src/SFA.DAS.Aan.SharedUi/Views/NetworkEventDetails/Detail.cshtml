@@ -91,27 +91,25 @@
 {
     @if (!Model.IsSignedUp)
     {
-        @using (Html.BeginForm("Post", "NetworkEventDetails", FormMethod.Post))
-        {
+        <form method="post">
             <input type="hidden" asp-for="@Model.StartDateTime"/>
             <input type="hidden" asp-for="@Model.CalendarEventId"/>
             <input type="hidden" id="newStatus" name="newStatus" value="true"/>
             <button class="govuk-button govuk-!-margin-top-4" data-module="govuk-button" type="submit">
                 Sign up
             </button>
-        }
+        </form>
     }
     else
     {
-        @using (Html.BeginForm("Post", "NetworkEventDetails", FormMethod.Post))
-        {
+        <form method="post">
             <input type="hidden" asp-for="@Model.StartDateTime"/>
             <input type="hidden" asp-for="@Model.CalendarEventId"/>
             <input type="hidden" id="newStatus" name="newStatus" value="false"/>
             <button class="govuk-button govuk-!-margin-top-4 govuk-button--warning" data-module="govuk-button" type="submit">
                 Cancel your attendance
             </button>
-        }
+        </form>
     }
 }
 
