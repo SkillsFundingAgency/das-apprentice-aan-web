@@ -47,6 +47,7 @@ public class NetworkEventDetailsController : Controller
     }
 
     [HttpPost]
+    [Route("{id}", Name = SharedRouteNames.NetworkEventDetails)]
     public async Task<IActionResult> Post(SubmitAttendanceCommand command, CancellationToken cancellationToken)
     {
         var memberId = User.GetAanMemberId();
@@ -79,13 +80,15 @@ public class NetworkEventDetailsController : Controller
     [Route("signup-confirmation", Name = RouteNames.AttendanceConfirmations.SignUpConfirmation)]
     public IActionResult SignUpConfirmation()
     {
-        return View(SignUpConfirmationViewPath);
+        EventAttendanceConfirmationViewModel model = new(Url.RouteUrl(SharedRouteNames.NetworkEvents)!, new(Url.RouteUrl(SharedRouteNames.EventsHub)));
+        return View(SignUpConfirmationViewPath, model);
     }
 
     [HttpGet]
     [Route("cancellation-confirmation", Name = RouteNames.AttendanceConfirmations.CancellationConfirmation)]
     public IActionResult CancellationConfirmation()
     {
-        return View(CancellationConfirmationViewPath);
+        EventAttendanceConfirmationViewModel model = new(Url.RouteUrl(SharedRouteNames.NetworkEvents)!, new(Url.RouteUrl(SharedRouteNames.EventsHub)));
+        return View(CancellationConfirmationViewPath, model);
     }
 }
