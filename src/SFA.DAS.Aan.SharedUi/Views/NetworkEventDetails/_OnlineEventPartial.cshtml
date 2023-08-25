@@ -5,5 +5,5 @@
 
 <h2 class="govuk-heading-m">When and where</h2>
 <p><b>Date and Time:</b> @Model.StartDate @Model.StartTime to @Model.EndTime</p>
-<partial name="_OnlineJoiningDetails" />
+@Html.Partial("_OnlineJoiningDetails",Model)
 

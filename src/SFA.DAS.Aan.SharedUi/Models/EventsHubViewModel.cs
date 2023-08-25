@@ -9,9 +9,9 @@ public class EventsHubViewModel
 
     public CalendarViewModel Calendar { get; init; }
 
-    public EventsHubViewModel(DateOnly firstDayOfTheMonth, IUrlHelper urlHelper, List<Appointment> appointments)
+    public EventsHubViewModel(DateOnly firstDayOfTheMonth, IUrlHelper urlHelper, List<Appointment> appointments, Func<string> getNetworkEventsUrl)
     {
-        AllNetworksUrl = urlHelper.RouteUrl(SharedRouteNames.NetworkEvents)!;
+        AllNetworksUrl = getNetworkEventsUrl();
         Calendar = new(firstDayOfTheMonth, DateOnly.FromDateTime(DateTime.Today), appointments);
         Calendar.PreviousMonthLink = urlHelper.RouteUrl(SharedRouteNames.EventsHub, new { firstDayOfTheMonth.AddMonths(-1).Month, firstDayOfTheMonth.AddMonths(-1).Year })!;
         Calendar.NextMonthLink = urlHelper.RouteUrl(SharedRouteNames.EventsHub, new { firstDayOfTheMonth.AddMonths(1).Month, firstDayOfTheMonth.AddMonths(1).Year })!;
