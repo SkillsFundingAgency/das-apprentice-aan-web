@@ -20,7 +20,7 @@ public class EventsHubViewModelTests
     [Test]
     public void Constructor_SetsFirstDayOfTheCurrentMonth()
     {
-        EventsHubViewModel sut = new(_date, Mock.Of<IUrlHelper>(), new());
+        EventsHubViewModel sut = new(_date, Mock.Of<IUrlHelper>(), new(), () => { return NetworkEventsRoute; });
 
         sut.Calendar.FirstDayOfCurrentMonth.Should().Be(_date);
     }
@@ -31,7 +31,7 @@ public class EventsHubViewModelTests
         Mock<IUrlHelper> urlHelperMock = new();
         urlHelperMock.Setup(h => h.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName == SharedRouteNames.NetworkEvents))).Returns(NetworkEventsRoute);
 
-        EventsHubViewModel sut = new(_date, urlHelperMock.Object, new());
+        EventsHubViewModel sut = new(_date, urlHelperMock.Object, new(), () => { return NetworkEventsRoute; });
 
         sut.AllNetworksUrl.Should().Be(NetworkEventsRoute);
     }
@@ -47,7 +47,7 @@ public class EventsHubViewModelTests
         urlHelperMock.Setup(h => h.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName == SharedRouteNames.NetworkEvents))).Returns(NetworkEventsRoute);
         urlHelperMock.Setup(h => h.RouteUrl(It.Is<UrlRouteContext>(c => c.RouteName == SharedRouteNames.NetworkEventDetails))).Returns(NetworkEventDetailsRoute);
 
-        EventsHubViewModel sut = new(_date, urlHelperMock.Object, appointments);
+        EventsHubViewModel sut = new(_date, urlHelperMock.Object, appointments, () => { return NetworkEventsRoute; });
 
         sut.Calendar.CalendarItems.SelectMany(c => c.Appointments).Should().HaveCount(appointments.Count);
     }

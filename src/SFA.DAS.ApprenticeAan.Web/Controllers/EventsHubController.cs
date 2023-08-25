@@ -32,7 +32,7 @@ public class EventsHubController : Controller
 
         var response = await _apiClient.GetAttendances(User.GetAanMemberId(), firstDayOfTheMonth.ToApiString(), lastDayOfTheMonth.ToApiString(), cancellationToken);
 
-        EventsHubViewModel model = new(firstDayOfTheMonth, Url, GetAppointments(response.Attendances));
+        EventsHubViewModel model = new(firstDayOfTheMonth, Url, GetAppointments(response.Attendances), () => Url.RouteUrl(SharedRouteNames.NetworkEvents)!);
         return View(model);
     }
 
