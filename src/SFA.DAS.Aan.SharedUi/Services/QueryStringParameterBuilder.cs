@@ -1,4 +1,6 @@
-﻿using SFA.DAS.Aan.SharedUi.Extensions;
+﻿using SFA.DAS.Aan.SharedUi.Constants;
+using SFA.DAS.Aan.SharedUi.Extensions;
+using SFA.DAS.Aan.SharedUi.Models.NetworkDirectory;
 using SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
 
 namespace SFA.DAS.ApprenticeAan.Web.Services;
@@ -17,6 +19,33 @@ public static class QueryStringParameterBuilder
         parameters.Add("regionId", request.RegionId.Select(region => region.ToString()).ToArray());
         if (request.Page != null) parameters.Add("page", new[] { request.Page?.ToString() }!);
         if (request.PageSize != null) parameters.Add("pageSize", new[] { request.PageSize?.ToString() }!);
+        return parameters;
+    }
+
+    public static Dictionary<string, string[]> BuildQueryStringParameters(GetNetworkDirectoryRequest request)
+    {
+        var parameters = new Dictionary<string, string[]>();
+
+        if (request.Page != null) parameters.Add("page", new[] { request.Page.ToString() }!);
+        if (request.PageSize != null) parameters.Add("pageSize", new[] { request.PageSize.ToString() }!);
+
+        if (!string.IsNullOrWhiteSpace(request.Keyword) || (request.RegionId != null && request.RegionId.Any()) || (request.UserType != null && request.UserType.Any()))
+        {
+            if (!string.IsNullOrWhiteSpace(request.Keyword)) parameters.Add("keyword", new[] { request.Keyword });
+            if (request.RegionId != null && request.RegionId.Any())
+            {
+                parameters.Add("regionId", request.RegionId.Select(region => region.ToString()).ToArray());
+            }
+
+            if (request.UserType != null)
+            {
+                parameters.Add("isRegionalChair", new[] { request.UserType.Exists(userType => userType == Role.IsRegionalChair).ToString() }!);
+                if (request.UserType.Any() && request.UserType.Exists(userType => userType != Role.IsRegionalChair))
+                {
+                    parameters.Add("userType", request.UserType.Where(userType => userType != Role.IsRegionalChair).Select(userType => userType.ToString()).ToArray());
+                }
+            }
+        }
         return parameters;
     }
 }

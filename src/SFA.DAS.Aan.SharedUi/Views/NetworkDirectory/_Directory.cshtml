@@ -1,0 +1,40 @@
+﻿﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.Aan.SharedUi.Models.NetworkDirectory;
+@using SFA.DAS.Aan.SharedUi.Extensions;
+@using SFA.DAS.Aan.SharedUi.Constants;
+
+@model NetworkDirectoryViewModel
+<div class="govuk-!-margin-top-0">
+    <ol class="das-search-results__list">
+        <li>
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-one-half">
+                    <h2 class="govuk-heading-m">Name</h2>
+                </div>
+                <div class="govuk-grid-column-one-quarter">
+                    <h2 class="govuk-heading-m">Role</h2>
+                </div>
+                <div class="govuk-grid-column-one-quarter">
+                    <h2 class="govuk-heading-m">Region</h2>
+                </div>
+            </div>
+            <hr />
+        </li>
+        @foreach (var networkDirectory in Model.Members)
+        {
+            <li class="das-search-results__list-item">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-one-half">
+                        <label class="govuk-label"><a href="#" class="das-search-results__link">@networkDirectory.FullName</a></label>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <strong class="govuk-tag app-tag app-tag--@networkDirectory.UserType.ToString()">@networkDirectory.UserType.GetDescription()</strong>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <label class="govuk-label">@networkDirectory.RegionName</label>
+                    </div>
+                </div>
+            </li>
+        }
+    </ol>
+</div>
