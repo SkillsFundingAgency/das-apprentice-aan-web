@@ -25,27 +25,16 @@ public static class QueryStringParameterBuilder
     public static Dictionary<string, string[]> BuildQueryStringParameters(GetNetworkDirectoryRequest request)
     {
         var parameters = new Dictionary<string, string[]>();
-
+        if (!string.IsNullOrWhiteSpace(request.Keyword)) parameters.Add("keyword", new[] { request.Keyword.Trim() });
+        parameters.Add("regionId", request.RegionId.Select(region => region.ToString()).ToArray());
+        if (request.UserType.Any())
+        {
+            parameters.Add("isRegionalChair", new[] { request.UserType.Exists(userType => userType == Role.IsRegionalChair).ToString() }!);
+            parameters.Add("userType", request.UserType.Where(userType => userType != Role.IsRegionalChair).Select(userType => userType.ToString()).ToArray());
+        }
         if (request.Page != null) parameters.Add("page", new[] { request.Page.ToString() }!);
         if (request.PageSize != null) parameters.Add("pageSize", new[] { request.PageSize.ToString() }!);
 
-        if (!string.IsNullOrWhiteSpace(request.Keyword) || (request.RegionId != null && request.RegionId.Any()) || (request.UserType != null && request.UserType.Any()))
-        {
-            if (!string.IsNullOrWhiteSpace(request.Keyword)) parameters.Add("keyword", new[] { request.Keyword });
-            if (request.RegionId != null && request.RegionId.Any())
-            {
-                parameters.Add("regionId", request.RegionId.Select(region => region.ToString()).ToArray());
-            }
-
-            if (request.UserType != null)
-            {
-                parameters.Add("isRegionalChair", new[] { request.UserType.Exists(userType => userType == Role.IsRegionalChair).ToString() }!);
-                if (request.UserType.Any() && request.UserType.Exists(userType => userType != Role.IsRegionalChair))
-                {
-                    parameters.Add("userType", request.UserType.Where(userType => userType != Role.IsRegionalChair).Select(userType => userType.ToString()).ToArray());
-                }
-            }
-        }
         return parameters;
     }
 }

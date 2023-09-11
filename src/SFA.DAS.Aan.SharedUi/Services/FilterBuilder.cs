@@ -36,10 +36,33 @@ public static class FilterBuilder
         return filters;
     }
 
+    public static List<SelectedFilter> Build(GetNetworkDirectoryRequest request, Func<string> getNetworkDirectoryUrl, IEnumerable<ChecklistLookup> userTypeLookups, IEnumerable<ChecklistLookup> regionLookups)
+    {
+        var filters = new List<SelectedFilter>();
+        var fullQueryParameters = BuildQueryParameters(request);
+
+        if (!string.IsNullOrWhiteSpace(request.Keyword))
+        {
+            filters.AddFilterItems(getNetworkDirectoryUrl, fullQueryParameters, new[] { request.Keyword }, "Network directory", "keyword", Enumerable.Empty<ChecklistLookup>());
+        }
+
+        filters.AddFilterItems(getNetworkDirectoryUrl, fullQueryParameters, request.UserType.Select(e => e.ToString()), "Role", "userType", userTypeLookups);
+
+        filters.AddFilterItems(getNetworkDirectoryUrl, fullQueryParameters, request.RegionId.Select(e => e.ToString()), "Region", "regionId", regionLookups);
+
+        return filters;
+    }
+
     public static string BuildFullQueryString(GetNetworkEventsRequest request, Func<string> getNetworkEventsUrl)
     {
         var fullQueryParameters = BuildQueryParameters(request);
         return BuildQueryString(getNetworkEventsUrl, fullQueryParameters, "none")!;
+    }
+
+    public static string BuildFullQueryString(GetNetworkDirectoryRequest request, Func<string> getNetworkDirectoryUrl)
+    {
+        var fullQueryParameters = BuildQueryParameters(request);
+        return BuildQueryString(getNetworkDirectoryUrl, fullQueryParameters, "none")!;
     }
 
     private static void AddFilterItems(this ICollection<SelectedFilter> filters, Func<string> getNetworkEventsUrl, List<string> fullQueryParameters, IEnumerable<string> selectedValues, string fieldName, string parameterName, IEnumerable<ChecklistLookup> lookups)
@@ -89,6 +112,33 @@ public static class FilterBuilder
         return queryParameters;
     }
 
+    private static List<string> BuildQueryParameters(GetNetworkDirectoryRequest request)
+    {
+        var queryParameters = new List<string>();
+
+        if (!string.IsNullOrWhiteSpace(request.Keyword))
+        {
+            queryParameters.Add(BuildQueryParameter("keyword", request.Keyword));
+        }
+
+        if (request.IsRegionalChair != null)
+        {
+            queryParameters.Add(BuildQueryParameter("isRegionalChair", request.IsRegionalChair.ToString()!));
+        }
+
+        if (request.UserType != null && request.UserType.Any())
+        {
+            queryParameters.AddRange(request.UserType.Select(userType => "userType=" + userType));
+        }
+
+        if (request.RegionId != null && request.RegionId.Any())
+        {
+            queryParameters.AddRange(request.RegionId.Select(region => "regionId=" + region));
+        }
+
+        return queryParameters;
+    }
+
     private static EventFilterItem BuildFilterItem(Func<string> getNetworkEventsUrl, List<string> queryParameters, string filterToRemove, string filterValue, int filterFieldOrder)
         =>
         new()
@@ -113,55 +163,5 @@ public static class FilterBuilder
             out DateTime parsedDate) ?
             $"{name}={parsedDate.ToApiString()}" :
             $"{name}={value}";
-    }
-
-    public static List<SelectedFilter> Build(GetNetworkDirectoryRequest request, Func<string> getNetworkDirectoryUrl, IEnumerable<ChecklistLookup> userTypeLookups, IEnumerable<ChecklistLookup> regionLookups)
-    {
-        var filters = new List<SelectedFilter>();
-        var fullQueryParameters = BuildQueryParameters(request);
-
-        if (!string.IsNullOrWhiteSpace(request.Keyword))
-        {
-            filters.AddFilterItems(getNetworkDirectoryUrl, fullQueryParameters, new[] { request.Keyword }, "Network directory", "keyword", Enumerable.Empty<ChecklistLookup>());
-        }
-
-        filters.AddFilterItems(getNetworkDirectoryUrl, fullQueryParameters, request.UserType.Select(e => e.ToString()), "Role", "userType", userTypeLookups);
-
-        filters.AddFilterItems(getNetworkDirectoryUrl, fullQueryParameters, request.RegionId.Select(e => e.ToString()), "Region", "regionId", regionLookups);
-
-        return filters;
-    }
-
-    public static string BuildFullQueryString(GetNetworkDirectoryRequest request, Func<string> getNetworkDirectoryUrl)
-    {
-        var fullQueryParameters = BuildQueryParameters(request);
-        return BuildQueryString(getNetworkDirectoryUrl, fullQueryParameters, "none")!;
-    }
-
-    private static List<string> BuildQueryParameters(GetNetworkDirectoryRequest request)
-    {
-        var queryParameters = new List<string>();
-
-        if (!string.IsNullOrWhiteSpace(request.Keyword))
-        {
-            queryParameters.Add(BuildQueryParameter("keyword", request.Keyword));
-        }
-
-        if (request.IsRegionalChair != null)
-        {
-            queryParameters.Add(BuildQueryParameter("isRegionalChair", request.IsRegionalChair?.ToString()!));
-        }
-
-        if (request.UserType != null && request.UserType.Any())
-        {
-            queryParameters.AddRange(request.UserType.Select(userType => "userType=" + userType));
-        }
-
-        if (request.RegionId != null && request.RegionId.Any())
-        {
-            queryParameters.AddRange(request.RegionId.Select(region => "regionId=" + region));
-        }
-
-        return queryParameters;
     }
 }

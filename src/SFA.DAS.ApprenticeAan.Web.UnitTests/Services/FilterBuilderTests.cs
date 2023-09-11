@@ -676,7 +676,7 @@ public class FilterBuilderTests
     [TestCase(Role.Apprentice, Role.Employer, "?userType=Employer", "?userType=Apprentice", "Apprentice", "Employer")]
     [TestCase(Role.Apprentice, Role.IsRegionalChair, "?userType=IsRegionalChair", "?userType=Apprentice", "Apprentice", "IsRegionalChair")]
     [TestCase(Role.Employer, Role.IsRegionalChair, "?userType=IsRegionalChair", "?userType=Employer", "Employer", "IsRegionalChair")]
-    public void BuildDirectorySearchFiltersForTwoEventFormats(Role role1, Role role2,
+    public void BuildDirectorySearchFiltersForTwoUserTypes(Role role1, Role role2,
         string expectedFirst, string expectedSecond,
          string firstValue, string secondValue)
     {
@@ -709,7 +709,7 @@ public class FilterBuilderTests
     }
 
     [TestCase("?userType=Employer&userType=IsRegionalChair", "?userType=Apprentice&userType=IsRegionalChair", "?userType=Apprentice&userType=Employer", "Apprentice", "Employer", "IsRegionalChair")]
-    public void BuildDirectorySearchFiltersForThreeDirectoryFormats(string expectedFirst, string expectedSecond, string expectedThird, string firstValue, string secondValue, string thirdValue)
+    public void BuildDirectorySearchFiltersForThreeUserTypes(string expectedFirst, string expectedSecond, string expectedThird, string firstValue, string secondValue, string thirdValue)
     {
         var request = new GetNetworkDirectoryRequest
         {

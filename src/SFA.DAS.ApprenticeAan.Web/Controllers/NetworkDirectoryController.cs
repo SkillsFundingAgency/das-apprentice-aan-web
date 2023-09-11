@@ -48,7 +48,7 @@ public class NetworkDirectoryController : Controller
         return View(model);
     }
 
-    private NetworkDirectoryViewModel InitialiseViewModel(GetNetworkDirectoryQueryResult result)
+    private static NetworkDirectoryViewModel InitialiseViewModel(GetNetworkDirectoryQueryResult result)
     {
         var model = new NetworkDirectoryViewModel
         {
