@@ -635,7 +635,7 @@ public class FilterBuilderTests
 
         var sut = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), new List<ChecklistLookup>());
 
-        if (sut.Count() > 0)
+        if (sut.Count > 0)
         {
             var firstItem = sut.First();
             firstItem.FieldOrder.Should().Be(1);
@@ -654,7 +654,7 @@ public class FilterBuilderTests
 
         var sut = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), new List<ChecklistLookup>());
 
-        if (sut.Count() > 0)
+        if (sut.Count > 0)
         {
             var firstItem = sut.First();
             firstItem.FieldName.Should().Be(keywordFieldName);

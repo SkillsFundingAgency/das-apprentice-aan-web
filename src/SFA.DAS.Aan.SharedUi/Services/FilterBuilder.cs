@@ -121,11 +121,6 @@ public static class FilterBuilder
             queryParameters.Add(BuildQueryParameter("keyword", request.Keyword));
         }
 
-        if (request.IsRegionalChair != null)
-        {
-            queryParameters.Add(BuildQueryParameter("isRegionalChair", request.IsRegionalChair.ToString()));
-        }
-
         if (request.UserRole != null && request.UserRole.Any())
         {
             queryParameters.AddRange(request.UserRole.Select(userRole => "userRole=" + userRole));

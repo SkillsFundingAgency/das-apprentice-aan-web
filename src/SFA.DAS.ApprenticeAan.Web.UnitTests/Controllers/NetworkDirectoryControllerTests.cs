@@ -99,6 +99,15 @@ public class NetworkDirectoryControllerTests
         sut.FilterChoices.Keyword.Should().Be(keyword);
     }
 
+    [TestCase(1, "1 result")]
+    [TestCase(3, "3 results")]
+    public void NetworkDirectoryViewModel_SetTotalCountValue_TotalCountDescriptionIsEqualToexpectedString(int totalCount, string expectedString)
+    {
+        var sut = new NetworkDirectoryViewModel();
+        sut.TotalCount = totalCount;
+        sut.TotalCountDescription.Should().Be(expectedString);
+    }
+
     [Test]
     public void Index_NoFilters_ClearLinkAndRolelistAreEqual()
     {
