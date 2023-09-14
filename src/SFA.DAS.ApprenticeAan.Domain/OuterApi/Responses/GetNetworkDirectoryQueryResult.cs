@@ -7,5 +7,5 @@ public class GetNetworkDirectoryQueryResult
     public int PageSize { get; set; }
     public int TotalPages { get; set; }
     public int TotalCount { get; set; }
-    public IEnumerable<NetworkDirectorySummary> Members { get; set; } = Enumerable.Empty<NetworkDirectorySummary>();
+    public IEnumerable<MemberSummary> Members { get; set; } = Enumerable.Empty<MemberSummary>();
 }

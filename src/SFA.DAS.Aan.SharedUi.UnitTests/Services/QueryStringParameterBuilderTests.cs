@@ -154,8 +154,7 @@ public class QueryStringParameterBuilderTests
     }
 
     [Test, AutoData]
-    public void Builder_PopulatesParametersFromRequestWithNullPageAndPageSize(DateTime? fromDate, DateTime? toDate,
-        List<EventFormat> eventFormats, List<int> calendarIds, List<int> regionIds)
+    public void Builder_PopulatesParametersFromRequestWithNullPageAndPageSize(DateTime? fromDate, DateTime? toDate, List<EventFormat> eventFormats, List<int> calendarIds, List<int> regionIds)
     {
         var request = new GetNetworkEventsRequest
         {
@@ -191,51 +190,103 @@ public class QueryStringParameterBuilderTests
     }
 
     [Test, AutoData]
-    public void NetworkDirectoryBuilder_PopulatesDictionaryBuiltFromModel(string? keyword,
-    bool? isRegionalChair, List<Role> userTypes, List<int> regionIds, int? page, int? pageSize)
+    public void BuildQueryStringParameters_PopulatesDictionaryBuiltFromModelForKeyword(string? keyword)
     {
-        var request = new GetNetworkDirectoryRequest
+        var request = new NetworkDirectoryRequestModel
         {
-            Keyword = keyword,
-            IsRegionalChair = isRegionalChair,
-            UserType = userTypes,
-            RegionId = regionIds,
-            Page = page,
+            Keyword = keyword
+        };
+
+        var sut = QueryStringParameterBuilder.BuildQueryStringParameters(request);
+
+        sut.TryGetValue("keyword", out string[]? keywordResult);
+        keywordResult![0].Should().Be(keyword);
+    }
+
+    [TestCase(Role.RegionalChair)]
+    public void BuildQueryStringParameters_PopulatesDictionaryBuiltFromModelForRegionalChair(Role userRole)
+    {
+        string regionalChairExpectedResult = "True";
+        var request = new NetworkDirectoryRequestModel
+        {
+            UserRole = new List<Role> { userRole }
+        };
+
+        var sut = QueryStringParameterBuilder.BuildQueryStringParameters(request);
+
+        sut.TryGetValue("isRegionalChair", out var isRegionalChairResult);
+        isRegionalChairResult.Should().BeEquivalentTo(regionalChairExpectedResult);
+    }
+
+    [Test, AutoData]
+    public void BuildQueryStringParameters_PopulatesDictionaryBuiltFromModelForUserRole(List<Role> userRole)
+    {
+        var request = new NetworkDirectoryRequestModel
+        {
+            UserRole = userRole
+        };
+
+        var sut = QueryStringParameterBuilder.BuildQueryStringParameters(request);
+
+        sut.TryGetValue("userType", out var userTypesResult);
+        userTypesResult!.Length.Should().Be(userRole.Where(userRole => userRole != Role.RegionalChair).ToList().Count);
+        userRole.Where(userRole => userRole != Role.RegionalChair).Select(x => x.ToString()).Should().BeEquivalentTo(userTypesResult.ToList());
+    }
+
+    [Test, AutoData]
+    public void BuildQueryStringParameters_PopulatesDictionaryBuiltFromModelForRegion(List<int> regionIds)
+    {
+        var request = new NetworkDirectoryRequestModel
+        {
+            RegionId = regionIds
+        };
+
+        var sut = QueryStringParameterBuilder.BuildQueryStringParameters(request);
+
+        sut.TryGetValue("regionId", out var regionIdsResult);
+        regionIdsResult!.Length.Should().Be(regionIds.Count);
+        regionIds.Select(x => x.ToString()).Should().BeEquivalentTo(regionIdsResult.ToList());
+    }
+
+    [Test, AutoData]
+    public void BuildQueryStringParameters_PopulatesDictionaryBuiltFromModelForPage(int? page)
+    {
+        var request = new NetworkDirectoryRequestModel
+        {
+            Page = page
+        };
+
+        var sut = QueryStringParameterBuilder.BuildQueryStringParameters(request);
+
+        sut.TryGetValue("page", out string[]? pageResult);
+        pageResult![0].Should().Be(page?.ToString());
+    }
+
+    [Test, AutoData]
+    public void BuildQueryStringParameters_PopulatesDictionaryBuiltFromModelForPageSize(int? pageSize)
+    {
+        var request = new NetworkDirectoryRequestModel
+        {
             PageSize = pageSize
         };
 
-        var parameters = QueryStringParameterBuilder.BuildQueryStringParameters(request);
+        var sut = QueryStringParameterBuilder.BuildQueryStringParameters(request);
 
-        parameters.TryGetValue("keyword", out string[]? keywordResult);
-        keywordResult![0].Should().Be(keyword);
-
-        parameters.TryGetValue("isRegionalChair", out var isRegionalChairResult);
-        isRegionalChairResult.Should().BeEquivalentTo(request.IsRegionalChair.ToString());
-
-        parameters.TryGetValue("userType", out var userTypesResult);
-        userTypesResult!.Length.Should().Be(userTypes.Where(userType => userType != Role.IsRegionalChair).ToList().Count);
-        userTypes.Where(userType => userType != Role.IsRegionalChair).Select(x => x.ToString()).Should().BeEquivalentTo(userTypesResult.ToList());
-
-        parameters.TryGetValue("regionId", out var regionIdsResult);
-        regionIdsResult!.Length.Should().Be(regionIds.Count);
-        regionIds.Select(x => x.ToString()).Should().BeEquivalentTo(regionIdsResult.ToList());
-
-        parameters.TryGetValue("page", out string[]? pageResult);
-        pageResult![0].Should().Be(page?.ToString());
-
-        parameters.TryGetValue("pageSize", out string[]? pageSizeResult);
+        sut.TryGetValue("pageSize", out string[]? pageSizeResult);
         pageSizeResult![0].Should().Be(pageSize?.ToString());
     }
 
     [TestCase(null)]
     [TestCase("directory")]
-    public void NetworkDirectoryBuilder_ConstructParameters_Keyword(string? keyword)
+    public void BuildQueryStringParameters_ConstructsParameterForKeyword(string? keyword)
     {
-        var parameters = QueryStringParameterBuilder.BuildQueryStringParameters(new GetNetworkDirectoryRequest
+        var sut = QueryStringParameterBuilder.BuildQueryStringParameters(new NetworkDirectoryRequestModel
         {
             Keyword = keyword
         });
-        parameters.TryGetValue("keyword", out var keywordResult);
+
+        sut.TryGetValue("keyword", out var keywordResult);
+
         if (keyword != null)
         {
             keywordResult![0].Should().Be(keyword);
@@ -248,14 +299,15 @@ public class QueryStringParameterBuilderTests
 
     [TestCase(null)]
     [TestCase(3)]
-    public void NetworkDirectoryBuilder_ConstructParameters_ToPage(int? page)
+    public void NetworkDirectoryBuilder_ConstructsParameterForPage(int? page)
     {
-        var parameters = QueryStringParameterBuilder.BuildQueryStringParameters(new GetNetworkDirectoryRequest
+        var sut = QueryStringParameterBuilder.BuildQueryStringParameters(new NetworkDirectoryRequestModel
         {
             Page = page
         });
 
-        parameters.TryGetValue("page", out var pageResult);
+        sut.TryGetValue("page", out var pageResult);
+
         if (pageResult != null)
         {
             pageResult![0].Should().Be(page?.ToString());
@@ -268,14 +320,15 @@ public class QueryStringParameterBuilderTests
 
     [TestCase(null)]
     [TestCase(6)]
-    public void NetworkDirectoryBuilder_ConstructParameters_ToPageSize(int? pageSize)
+    public void NetworkDirectoryBuilder_ConstructsParameterForPageSize(int? pageSize)
     {
-        var parameters = QueryStringParameterBuilder.BuildQueryStringParameters(new GetNetworkDirectoryRequest
+        var sut = QueryStringParameterBuilder.BuildQueryStringParameters(new NetworkDirectoryRequestModel
         {
             PageSize = pageSize
         });
 
-        parameters.TryGetValue("pageSize", out var pageResult);
+        sut.TryGetValue("pageSize", out var pageResult);
+
         if (pageResult != null)
         {
             pageResult![0].Should().Be(pageSize?.ToString());
@@ -287,30 +340,30 @@ public class QueryStringParameterBuilderTests
     }
 
     [Test, AutoData]
-    public void NetworkDirectoryBuilder_PopulatesParametersFromRequestWithNullPageAndPageSize(bool? isRegionalChair, List<Role> userTypes, List<int> regionIds)
+    public void BuildQueryStringParameters_PopulatesParametersFromRequestWithNullPageAndPageSize(bool? isRegionalChair, List<Role> userTypes, List<int> regionIds)
     {
-        var request = new GetNetworkDirectoryRequest
+        var request = new NetworkDirectoryRequestModel
         {
             IsRegionalChair = isRegionalChair,
-            UserType = userTypes,
+            UserRole = userTypes,
             RegionId = regionIds
         };
 
-        var parameters = QueryStringParameterBuilder.BuildQueryStringParameters(request);
+        var sut = QueryStringParameterBuilder.BuildQueryStringParameters(request);
 
-        parameters.TryGetValue("isRegionalChair", out var isRegionalChairResult);
+        sut.TryGetValue("isRegionalChair", out var isRegionalChairResult);
         isRegionalChairResult.Should().BeEquivalentTo(request.IsRegionalChair.ToString());
 
-        parameters.TryGetValue("userType", out var userTypesResult);
-        userTypesResult!.Length.Should().Be(userTypes.Where(userType => userType != Role.IsRegionalChair).ToList().Count);
-        userTypes.Where(userType => userType != Role.IsRegionalChair).Select(x => x.ToString()).Should().BeEquivalentTo(userTypesResult.ToList());
+        sut.TryGetValue("userType", out var userTypesResult);
+        userTypesResult!.Length.Should().Be(userTypes.Where(userType => userType != Role.RegionalChair).ToList().Count);
+        userTypes.Where(userType => userType != Role.RegionalChair).Select(x => x.ToString()).Should().BeEquivalentTo(userTypesResult.ToList());
 
-        parameters.TryGetValue("regionId", out var regionIdsResult);
+        sut.TryGetValue("regionId", out var regionIdsResult);
         regionIdsResult!.Length.Should().Be(regionIds.Count);
         regionIds.Select(x => x.ToString()).Should().BeEquivalentTo(regionIdsResult.ToList());
 
-        parameters.ContainsKey("page").Should().BeFalse();
-        parameters.ContainsKey("pageSize").Should().BeFalse();
+        sut.ContainsKey("page").Should().BeFalse();
+        sut.ContainsKey("pageSize").Should().BeFalse();
     }
 
 

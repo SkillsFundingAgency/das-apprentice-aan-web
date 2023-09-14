@@ -1,4 +1,4 @@
-﻿using AutoFixture.NUnit3;
+﻿using AutoFixture;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,100 +19,145 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
 
 public class NetworkDirectoryControllerTests
 {
+    private NetworkDirectoryController _sut = null!;
     private static readonly string AllNetworksUrl = Guid.NewGuid().ToString();
+    private Mock<IOuterApiClient> _outerApiClientMock = null!;
+    private CancellationToken _cancellationToken;
+    private GetNetworkDirectoryQueryResult expectedResult = null!;
+    private IActionResult _result = null!;
+
+    [SetUp]
+    public async Task WhenGettingNetworkDirectory()
+    {
+        Fixture fixture = new();
+        expectedResult = fixture.Create<GetNetworkDirectoryQueryResult>();
+        GetRegionsResult expectedRegions = fixture.Create<GetRegionsResult>();
+        var request = new NetworkDirectoryRequestModel();
+        Guid apprenticeId = Guid.NewGuid();
+        _cancellationToken = new();
+        _outerApiClientMock = new();
+        _outerApiClientMock.Setup(o => o.GetMembers(It.IsAny<Dictionary<string, string[]>>(), _cancellationToken)).ReturnsAsync(expectedResult);
+        _outerApiClientMock.Setup(o => o.GetRegions()).ReturnsAsync(expectedRegions);
+
+        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
+
+        _sut = new(_outerApiClientMock.Object);
+        _sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        _sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkDirectory, AllNetworksUrl);
+        _result = await _sut.Index(request, _cancellationToken);
+    }
+
+    [Test]
+    public void ThenReturnsView()
+        => _result.Should().BeOfType<ViewResult>();
+
+    [Test]
+    public void ThenRetrievesMembers()
+        => _outerApiClientMock.Verify(o => o.GetMembers(It.IsAny<Dictionary<string, string[]>>(), _cancellationToken), Times.Once);
+
+    [Test]
+    public void ThenRetrievesRegions()
+        => _outerApiClientMock.Verify(o => o.GetRegions());
+
 
     [Test, MoqAutoData]
-    public void GetNetworkDirectory_ReturnsApiResponse(
-    [Frozen] Mock<IOuterApiClient> outerApiMock,
-    [Greedy] NetworkDirectoryController sut,
-    GetNetworkDirectoryQueryResult expectedResult,
-    string keyword,
-    Guid apprenticeId)
+    public async Task Index_ApplyFilterForKeyword_KeywordTotalCountAndTotalCountDescriptionAreEqual(string keyword)
     {
         var userTyoes = new List<Role>
         {
             Role.Employer,
             Role.Apprentice,
-            Role.IsRegionalChair
+            Role.RegionalChair
         };
         bool? isRegionalChair = null;
         var regions = new List<int>();
 
-        var request = new GetNetworkDirectoryRequest
+        var request = new NetworkDirectoryRequestModel
         {
             Keyword = keyword,
-            UserType = userTyoes,
+            UserRole = userTyoes,
             IsRegionalChair = isRegionalChair,
             RegionId = regions,
             Page = expectedResult.Page,
             PageSize = expectedResult.PageSize,
         };
 
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
-        outerApiMock.Setup(o => o.GetMembers(It.IsAny<Dictionary<string, string[]>>(), It.IsAny<CancellationToken>())).ReturnsAsync(expectedResult);
+        //action
+        var actualResult = await _sut.Index(request, new CancellationToken());
+        var viewResult = actualResult.As<ViewResult>();
+        var sut = viewResult.Model as NetworkDirectoryViewModel;
 
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkDirectory, AllNetworksUrl);
+        sut!.TotalCount.Should().Be(expectedResult.TotalCount);
+        if (sut!.TotalCount == 1)
+        {
+            sut!.TotalCountDescription.Should().Be("1 result");
+        }
+        else
+        {
+            sut!.TotalCountDescription.Should().Be($"{sut!.TotalCount} results");
+        }
+        sut.FilterChoices.Keyword.Should().Be(keyword);
+    }
+
+    [Test]
+    public void Index_NoFilters_ClearLinkAndRolelistAreEqual()
+    {
+        var request = new NetworkDirectoryRequestModel();
+        var expectedEventFormatChecklistLookup = GetUserRoleCheckListLookup(request);
 
         //action
-        var actualResult = sut.Index(request, new CancellationToken());
-
-        var expectedEventFormatChecklistLookup = new ChecklistLookup[]
-        {
-            new(Role.Apprentice.GetDescription()!, Role.Apprentice.ToString(),
-                request.UserType.Exists(x => x == Role.Apprentice)),
-            new(Role.Employer.GetDescription()!, Role.Employer.ToString(),
-                request.UserType.Exists(x => x == Role.Employer)),
-            new(Role.IsRegionalChair.GetDescription()!, Role.IsRegionalChair.ToString(),
-                request.UserType.Exists(x => x == Role.IsRegionalChair))
-        };
-
+        var actualResult = _sut.Index(request, new CancellationToken());
         var viewResult = actualResult.Result.As<ViewResult>();
-        var model = viewResult.Model as NetworkDirectoryViewModel;
-        model!.PaginationViewModel.CurrentPage.Should().Be(expectedResult.Page);
-        model!.PaginationViewModel.PageSize.Should().Be(expectedResult.PageSize);
-        model!.PaginationViewModel.TotalPages.Should().Be(expectedResult.TotalPages);
-        model!.TotalCount.Should().Be(expectedResult.TotalCount);
-        model.FilterChoices.Keyword.Should().Be(keyword);
-        model.FilterChoices.RoleChecklistDetails.Lookups.Should().BeEquivalentTo(expectedEventFormatChecklistLookup);
-        model.ClearSelectedFiltersLink.Should().Be(AllNetworksUrl);
+        var sut = viewResult.Model as NetworkDirectoryViewModel;
 
-        outerApiMock.Verify(o => o.GetMembers(It.IsAny<Dictionary<string, string[]>>(), It.IsAny<CancellationToken>()), Times.Once);
+        sut!.FilterChoices.RoleChecklistDetails.Lookups.Should().BeEquivalentTo(expectedEventFormatChecklistLookup);
+        sut!.SelectedFiltersModel.ClearSelectedFiltersLink.Should().Be(AllNetworksUrl);
     }
-    [Test, MoqAutoData]
-    public void GetNetworkDirectoryNoFilters_ReturnsApiResponse(
-   [Frozen] Mock<IOuterApiClient> outerApiMock,
-   [Greedy] NetworkDirectoryController sut,
-           GetNetworkDirectoryQueryResult expectedResult,
-           Guid apprenticeId)
+
+    [Test]
+    public void Index_NoFilters_KeywordIsEqualWithNullAndTotalCountDescriptionIsEqual()
     {
-        var request = new GetNetworkDirectoryRequest();
-
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
-        outerApiMock.Setup(o => o.GetMembers(It.IsAny<Dictionary<string, string[]>>(), It.IsAny<CancellationToken>())).ReturnsAsync(expectedResult);
-
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkDirectory, AllNetworksUrl);
-
-        var actualResult = sut.Index(request, new CancellationToken());
-        var expectedEventFormatChecklistLookup = new ChecklistLookup[]
+        var request = new NetworkDirectoryRequestModel();
+        var actualResult = _sut.Index(request, new CancellationToken());
+        var viewResult = actualResult.Result.As<ViewResult>();
+        var sut = viewResult.Model as NetworkDirectoryViewModel;
+        sut!.TotalCount.Should().Be(expectedResult.TotalCount);
+        if (sut!.TotalCount == 1)
         {
-            new(Role.Apprentice.GetDescription()!, Role.Apprentice.ToString(),
-                request.UserType.Exists(x => x == Role.Apprentice)),
-            new(Role.Employer.GetDescription()!, Role.Employer.ToString(),
-                request.UserType.Exists(x => x == Role.Employer)),
-            new(Role.IsRegionalChair.GetDescription()!, Role.IsRegionalChair.ToString(),
-                request.UserType.Exists(x => x == Role.IsRegionalChair))
-        };
+            sut!.TotalCountDescription.Should().Be("1 result");
+        }
+        else
+        {
+            sut!.TotalCountDescription.Should().Be($"{sut!.TotalCount} results");
+        }
+        sut.FilterChoices.Keyword.Should().BeNull();
+    }
+
+    [Test]
+    public void Index_NoFilters_PaginationViewModelIsEqual()
+    {
+        var request = new NetworkDirectoryRequestModel();
+        var actualResult = _sut.Index(request, new CancellationToken());
 
         var viewResult = actualResult.Result.As<ViewResult>();
-        var model = viewResult.Model as NetworkDirectoryViewModel;
-        model!.PaginationViewModel.CurrentPage.Should().Be(expectedResult.Page);
-        model!.PaginationViewModel.PageSize.Should().Be(expectedResult.PageSize);
-        model!.PaginationViewModel.TotalPages.Should().Be(expectedResult.TotalPages);
-        model!.TotalCount.Should().Be(expectedResult.TotalCount);
-        model.FilterChoices.Keyword.Should().BeNull();
-        outerApiMock.Verify(o => o.GetMembers(It.IsAny<Dictionary<string, string[]>>(), It.IsAny<CancellationToken>()), Times.Once);
+        var sut = viewResult.Model as NetworkDirectoryViewModel;
+        sut!.PaginationViewModel.CurrentPage.Should().Be(expectedResult.Page);
+        sut!.PaginationViewModel.PageSize.Should().Be(expectedResult.PageSize);
+        sut!.PaginationViewModel.TotalPages.Should().Be(expectedResult.TotalPages);
+    }
+
+
+    private static ChecklistLookup[] GetUserRoleCheckListLookup(NetworkDirectoryRequestModel networkDirectoryRequestModel)
+    {
+        return new ChecklistLookup[]
+        {
+            new(Role.Apprentice.GetDescription(), Role.Apprentice.ToString(),
+                networkDirectoryRequestModel.UserRole.Exists(x => x == Role.Apprentice)),
+            new(Role.Employer.GetDescription(), Role.Employer.ToString(),
+                networkDirectoryRequestModel.UserRole.Exists(x => x == Role.Employer)),
+            new(Role.RegionalChair.GetDescription(), Role.RegionalChair.ToString(),
+                networkDirectoryRequestModel.UserRole.Exists(x => x == Role.RegionalChair))
+        };
     }
 
 }

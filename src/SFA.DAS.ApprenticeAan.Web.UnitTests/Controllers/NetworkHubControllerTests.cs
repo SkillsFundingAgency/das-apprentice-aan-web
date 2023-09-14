@@ -12,43 +12,49 @@ public class NetworkHubControllerTests
     private IActionResult _result = null!;
     static readonly string EventsHubUrl = Guid.NewGuid().ToString();
     static readonly string NetworkDirectoryUrl = Guid.NewGuid().ToString();
+    private string currentTestMethodName;
+    private NetworkHubViewModel model = null!;
 
     [SetUp]
     public void WhenGettingNetworkHub()
     {
         NetworkHubController sut = new();
-        sut.AddUrlHelperMock();
+
+        currentTestMethodName = TestContext.CurrentContext.Test.Name;
+
+        if (currentTestMethodName == "ThenSetsEventsHubUrlInViewModel")
+        {
+            sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.EventsHub, EventsHubUrl);
+        }
+        else if (currentTestMethodName == "ThenSetsNetworkDirectoryUrlInViewModel")
+        {
+            sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkDirectory, NetworkDirectoryUrl);
+        }
+        else if (currentTestMethodName == "ThenReturnView")
+        {
+            sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.EventsHub, EventsHubUrl);
+        }
+
         _result = sut.Index();
+        model = _result.As<ViewResult>().Model.As<NetworkHubViewModel>();
     }
 
     [Test]
-    public void ThenReturnsView()
+    public void ThenReturnView()
     {
-        NetworkHubController sut = new();
-        sut.AddUrlHelperMock();
-        _result = sut.Index();
         _result.As<ViewResult>().Should().NotBeNull();
     }
 
     [Test]
-    public void SetsEventsHubUrlInViewModel()
+    public void ThenSetsEventsHubUrlInViewModel()
     {
-        NetworkHubController sut = new();
-        sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.EventsHub, EventsHubUrl);
-        _result = sut.Index();
-
-        var model = _result.As<ViewResult>().Model.As<NetworkHubViewModel>();
         model.EventsHubUrl.Should().Be(EventsHubUrl);
     }
 
     [Test]
-    public void SetsNetworkDirectoryUrlInViewModel()
+    public void ThenSetsNetworkDirectoryUrlInViewModel()
     {
-        NetworkHubController sut = new();
-        sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkDirectory, NetworkDirectoryUrl);
-        _result = sut.Index();
-
-        var model = _result.As<ViewResult>().Model.As<NetworkHubViewModel>();
         model.NetworkDirectoryUrl.Should().Be(NetworkDirectoryUrl);
     }
 }
+

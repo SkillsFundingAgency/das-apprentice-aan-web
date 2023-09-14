@@ -22,15 +22,15 @@ public static class QueryStringParameterBuilder
         return parameters;
     }
 
-    public static Dictionary<string, string[]> BuildQueryStringParameters(GetNetworkDirectoryRequest request)
+    public static Dictionary<string, string[]> BuildQueryStringParameters(NetworkDirectoryRequestModel request)
     {
         var parameters = new Dictionary<string, string[]>();
         if (!string.IsNullOrWhiteSpace(request.Keyword)) parameters.Add("keyword", new[] { request.Keyword.Trim() });
         parameters.Add("regionId", request.RegionId.Select(region => region.ToString()).ToArray());
-        if (request.UserType.Any())
+        if (request.UserRole.Any())
         {
-            parameters.Add("isRegionalChair", new[] { request.UserType.Exists(userType => userType == Role.IsRegionalChair).ToString() }!);
-            parameters.Add("userType", request.UserType.Where(userType => userType != Role.IsRegionalChair).Select(userType => userType.ToString()).ToArray());
+            parameters.Add("isRegionalChair", new[] { request.UserRole.Exists(userRole => userRole == Role.RegionalChair).ToString() }!);
+            parameters.Add("userType", request.UserRole.Where(userRole => userRole != Role.RegionalChair).Select(userRole => userRole.ToString()).ToArray());
         }
         if (request.Page != null) parameters.Add("page", new[] { request.Page.ToString() }!);
         if (request.PageSize != null) parameters.Add("pageSize", new[] { request.PageSize.ToString() }!);

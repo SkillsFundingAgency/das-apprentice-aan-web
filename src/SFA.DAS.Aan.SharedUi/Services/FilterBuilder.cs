@@ -36,7 +36,7 @@ public static class FilterBuilder
         return filters;
     }
 
-    public static List<SelectedFilter> Build(GetNetworkDirectoryRequest request, Func<string> getNetworkDirectoryUrl, IEnumerable<ChecklistLookup> userTypeLookups, IEnumerable<ChecklistLookup> regionLookups)
+    public static List<SelectedFilter> Build(NetworkDirectoryRequestModel request, Func<string> getNetworkDirectoryUrl, IEnumerable<ChecklistLookup> userTypeLookups, IEnumerable<ChecklistLookup> regionLookups)
     {
         var filters = new List<SelectedFilter>();
         var fullQueryParameters = BuildQueryParameters(request);
@@ -46,7 +46,7 @@ public static class FilterBuilder
             filters.AddFilterItems(getNetworkDirectoryUrl, fullQueryParameters, new[] { request.Keyword }, "Network directory", "keyword", Enumerable.Empty<ChecklistLookup>());
         }
 
-        filters.AddFilterItems(getNetworkDirectoryUrl, fullQueryParameters, request.UserType.Select(e => e.ToString()), "Role", "userType", userTypeLookups);
+        filters.AddFilterItems(getNetworkDirectoryUrl, fullQueryParameters, request.UserRole.Select(e => e.ToString()), "Role", "userRole", userTypeLookups);
 
         filters.AddFilterItems(getNetworkDirectoryUrl, fullQueryParameters, request.RegionId.Select(e => e.ToString()), "Region", "regionId", regionLookups);
 
@@ -59,7 +59,7 @@ public static class FilterBuilder
         return BuildQueryString(getNetworkEventsUrl, fullQueryParameters, "none")!;
     }
 
-    public static string BuildFullQueryString(GetNetworkDirectoryRequest request, Func<string> getNetworkDirectoryUrl)
+    public static string BuildFullQueryString(NetworkDirectoryRequestModel request, Func<string> getNetworkDirectoryUrl)
     {
         var fullQueryParameters = BuildQueryParameters(request);
         return BuildQueryString(getNetworkDirectoryUrl, fullQueryParameters, "none")!;
@@ -112,7 +112,7 @@ public static class FilterBuilder
         return queryParameters;
     }
 
-    private static List<string> BuildQueryParameters(GetNetworkDirectoryRequest request)
+    private static List<string> BuildQueryParameters(NetworkDirectoryRequestModel request)
     {
         var queryParameters = new List<string>();
 
@@ -123,12 +123,12 @@ public static class FilterBuilder
 
         if (request.IsRegionalChair != null)
         {
-            queryParameters.Add(BuildQueryParameter("isRegionalChair", request.IsRegionalChair.ToString()!));
+            queryParameters.Add(BuildQueryParameter("isRegionalChair", request.IsRegionalChair.ToString()));
         }
 
-        if (request.UserType != null && request.UserType.Any())
+        if (request.UserRole != null && request.UserRole.Any())
         {
-            queryParameters.AddRange(request.UserType.Select(userType => "userType=" + userType));
+            queryParameters.AddRange(request.UserRole.Select(userRole => "userRole=" + userRole));
         }
 
         if (request.RegionId != null && request.RegionId.Any())

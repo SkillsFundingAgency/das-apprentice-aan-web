@@ -14,11 +14,7 @@ public class NetworkEventsViewModel
 
     public EventFilterChoices FilterChoices { get; set; } = new EventFilterChoices();
 
-    public List<SelectedFilter> SelectedFilters { get; set; } = new List<SelectedFilter>();
-
-    public bool ShowFilterOptions => SelectedFilters.Any();
-
-    public string ClearSelectedFiltersLink { get; set; } = null!;
+    public SelectedFiltersModel SelectedFiltersModel { get; set; } = new SelectedFiltersModel();
 
 }
 

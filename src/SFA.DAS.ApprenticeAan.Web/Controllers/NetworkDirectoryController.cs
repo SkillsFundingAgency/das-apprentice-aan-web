@@ -15,7 +15,7 @@ using SFA.DAS.ApprenticeAan.Web.Services;
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
-[Route("network-directory")]
+[Route("network-directory", Name = SharedRouteNames.NetworkDirectory)]
 public class NetworkDirectoryController : Controller
 {
     private readonly IOuterApiClient _outerApiClient;
@@ -26,8 +26,7 @@ public class NetworkDirectoryController : Controller
     }
 
     [HttpGet]
-    [Route("", Name = SharedRouteNames.NetworkDirectory)]
-    public async Task<IActionResult> Index(GetNetworkDirectoryRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Index(NetworkDirectoryRequestModel request, CancellationToken cancellationToken)
     {
         var networkDirectoryTask = _outerApiClient.GetMembers(QueryStringParameterBuilder.BuildQueryStringParameters(request), cancellationToken);
         var regionTask = _outerApiClient.GetRegions();
@@ -43,8 +42,8 @@ public class NetworkDirectoryController : Controller
         model.PaginationViewModel = SetupPagination(networkDirectoryTask.Result, filterUrl);
         var filterChoices = PopulateFilterChoices(request, regions);
         model.FilterChoices = filterChoices;
-        model.SelectedFilters = FilterBuilder.Build(request, () => Url.RouteUrl(SharedRouteNames.NetworkDirectory)!, filterChoices.RoleChecklistDetails.Lookups, filterChoices.RegionChecklistDetails.Lookups);
-        model.ClearSelectedFiltersLink = Url.RouteUrl(SharedRouteNames.NetworkDirectory)!;
+        model.SelectedFiltersModel.SelectedFilters = FilterBuilder.Build(request, () => Url.RouteUrl(SharedRouteNames.NetworkDirectory)!, filterChoices.RoleChecklistDetails.Lookups, filterChoices.RegionChecklistDetails.Lookups);
+        model.SelectedFiltersModel.ClearSelectedFiltersLink = Url.RouteUrl(SharedRouteNames.NetworkDirectory)!;
         return View(model);
     }
 
@@ -70,19 +69,20 @@ public class NetworkDirectoryController : Controller
         return pagination;
 
     }
-    private static DirectoryFilterChoices PopulateFilterChoices(GetNetworkDirectoryRequest request, List<Region> regions)
+
+    private static DirectoryFilterChoices PopulateFilterChoices(NetworkDirectoryRequestModel request, List<Region> regions)
         => new DirectoryFilterChoices
         {
             Keyword = request.Keyword?.Trim(),
             RoleChecklistDetails = new ChecklistDetails
             {
                 Title = "Role",
-                QueryStringParameterName = "userType",
+                QueryStringParameterName = "userRole",
                 Lookups = new ChecklistLookup[]
                 {
-                    new(Role.Apprentice.GetDescription()!, Role.Apprentice.ToString(), request.UserType.Exists(x => x == Role.Apprentice)),
-                    new(Role.Employer.GetDescription()!, Role.Employer.ToString(), request.UserType.Exists(x => x == Role.Employer)),
-                    new(Role.IsRegionalChair.GetDescription()!, Role.IsRegionalChair.ToString(), request.UserType.Exists(x => x == Role.IsRegionalChair))
+                    new(Role.Apprentice.GetDescription(), Role.Apprentice.ToString(), request.UserRole.Exists(x => x == Role.Apprentice)),
+                    new(Role.Employer.GetDescription(), Role.Employer.ToString(), request.UserRole.Exists(x => x == Role.Employer)),
+                    new(Role.RegionalChair.GetDescription(), Role.RegionalChair.ToString(), request.UserRole.Exists(x => x == Role.RegionalChair))
                 }
             },
             RegionChecklistDetails = new ChecklistDetails

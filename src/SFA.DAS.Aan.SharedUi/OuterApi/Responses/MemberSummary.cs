@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 
-public class NetworkDirectorySummary
+public class MemberSummary
 {
     public Guid MemberId { get; set; }
     public string? FullName { get; set; } = null!;

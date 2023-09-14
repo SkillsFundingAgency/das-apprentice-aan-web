@@ -591,170 +591,138 @@ public class FilterBuilderTests
     private static List<ChecklistLookup> ChecklistLookupEventFormats() =>
         new()
         {
-            new ChecklistLookup(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString()),
-            new ChecklistLookup(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString()),
-            new (EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString())
+            new ChecklistLookup(EventFormat.InPerson.GetDescription(), EventFormat.InPerson.ToString()),
+            new ChecklistLookup(EventFormat.Online.GetDescription(), EventFormat.Online.ToString()),
+            new (EventFormat.Hybrid.GetDescription(), EventFormat.Hybrid.ToString())
         };
 
     [Test]
-    public void NetworkDirectoryBuildFilterChoicesForNoFilters()
+    public void Build_NetworkDirectorySearchFilterForNoFilters_CountIsZero()
     {
-        var request = new GetNetworkDirectoryRequest { };
+        var request = new NetworkDirectoryRequestModel { };
 
 
-        var actual = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), new List<ChecklistLookup>());
-        actual.Count.Should().Be(0);
+        var sut = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), new List<ChecklistLookup>());
+        sut.Count.Should().Be(0);
     }
 
-    [TestCase(null, "", 0)]
-    [TestCase("directory", "Network directory", 1)]
-    public void BuildDirectorySearchFiltersForKeyword(string? keyword, string fieldName1, int expectedNumberOfFilters)
+    [TestCase(null, 0)]
+    [TestCase("directory", 1)]
+    public void Build_SearchFiltersForKeyword_ValueAndExpectedNumberOfFilterAreEqualWithkeywordAndexpectedNumberOfFilters(string? keyword, int expectedNumberOfFilters)
     {
-        var request = new GetNetworkDirectoryRequest
+        var request = new NetworkDirectoryRequestModel
         {
             Keyword = keyword
         };
 
-        var actual = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), new List<ChecklistLookup>());
-        actual.Count.Should().Be(expectedNumberOfFilters);
+        var sut = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), new List<ChecklistLookup>());
+        sut.Count.Should().Be(expectedNumberOfFilters);
         if (expectedNumberOfFilters > 0)
         {
-            var firstItem = actual.First();
-            firstItem.FieldName.Should().Be(fieldName1);
-            firstItem.FieldOrder.Should().Be(1);
-            firstItem.Filters.First().ClearFilterLink.Should().Be(NetworkDirectoryLocationUrl);
-            firstItem.Filters.First().Order.Should().Be(1);
-            if (fieldName1 != "")
-            {
-                firstItem.Filters.First().Value.Should().Be(keyword);
-            }
+            var firstItem = sut.First();
+            firstItem.Filters.First().Value.Should().Be(keyword);
         }
     }
 
-    [TestCase(null, null, null, "", 0, null)]
-    [TestCase(Role.Apprentice, null, null, "Role", 1, "Apprentice")]
-    [TestCase(null, Role.Employer, null, "Role", 1, "Employer")]
-    [TestCase(null, null, Role.IsRegionalChair, "Role", 1, "IsRegionalChair")]
-    public void BuildDirectorySearchFiltersForRoletypeSingleChoice(Role? apprentice, Role? employer, Role? isRegionalChair,
-         string fieldName,
-        int expectedNumberOfFilters, string firstValue)
+    [TestCase(null)]
+    [TestCase("directory")]
+    public void Build_SearchFiltersForKeyword_FieldAndFilterOrderAreOne(string? keyword)
     {
-        var request = new GetNetworkDirectoryRequest
+        var request = new NetworkDirectoryRequestModel
         {
-            UserType = new List<Role>(),
+            Keyword = keyword
         };
 
-        if (apprentice != null)
-            request.UserType.Add(apprentice.Value);
-        if (employer != null)
-            request.UserType.Add(employer.Value);
-        if (isRegionalChair != null)
-            request.UserType.Add(isRegionalChair.Value);
+        var sut = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), new List<ChecklistLookup>());
 
-
-        var actual = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), new List<ChecklistLookup>());
-
-        if (expectedNumberOfFilters == 0)
+        if (sut.Count() > 0)
         {
-            actual.Count.Should().Be(0);
-            return;
-        }
-
-        var firstItem = actual.First();
-        firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
-        firstItem.FieldName.Should().Be(fieldName);
-        firstItem.FieldOrder.Should().Be(1);
-        if (firstItem.Filters.Count > 0)
-        {
-            var filter = firstItem.Filters.First();
-            filter.ClearFilterLink.Should().Be(NetworkDirectoryLocationUrl);
-            filter.Order.Should().Be(1);
-            filter.Value.Should().Be(firstValue);
+            var firstItem = sut.First();
+            firstItem.FieldOrder.Should().Be(1);
+            firstItem.Filters.First().Order.Should().Be(1);
         }
     }
 
-    [TestCase(Role.Apprentice, Role.Employer, "?userType=Employer", "?userType=Apprentice", "Apprentice", "Employer")]
-    [TestCase(Role.Apprentice, Role.IsRegionalChair, "?userType=IsRegionalChair", "?userType=Apprentice", "Apprentice", "IsRegionalChair")]
-    [TestCase(Role.Employer, Role.IsRegionalChair, "?userType=IsRegionalChair", "?userType=Employer", "Employer", "IsRegionalChair")]
-    public void BuildDirectorySearchFiltersForTwoUserTypes(Role role1, Role role2,
-        string expectedFirst, string expectedSecond,
-         string firstValue, string secondValue)
+    [TestCase(null, "")]
+    [TestCase("directory", "Network directory")]
+    public void Build_SearchFiltersForKeyword_FieldNameAndClearFilterLinkAreEqualWithkeywordFieldNameAndNetworkDirectoryLocationUrl(string? keyword, string keywordFieldName)
     {
-        var request = new GetNetworkDirectoryRequest
+        var request = new NetworkDirectoryRequestModel
         {
-            UserType = new List<Role>
+            Keyword = keyword
+        };
+
+        var sut = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), new List<ChecklistLookup>());
+
+        if (sut.Count() > 0)
+        {
+            var firstItem = sut.First();
+            firstItem.FieldName.Should().Be(keywordFieldName);
+            firstItem.Filters.First().ClearFilterLink.Should().Be(NetworkDirectoryLocationUrl);
+        }
+    }
+
+    [TestCase(Role.Apprentice, Role.Employer)]
+    [TestCase(Role.Employer, Role.Apprentice)]
+    [TestCase(Role.RegionalChair, Role.Employer)]
+    [TestCase(Role.RegionalChair, Role.Apprentice)]
+    public void Build_SearchFiltersForUserRoleType_FieldAndFilterOrderAreEqual(Role role1, Role role2)
+    {
+        var request = new NetworkDirectoryRequestModel
+        {
+            UserRole = new List<Role>
             {
                 role1,
                 role2
             }
         };
 
-        var actual = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), new List<ChecklistLookup>());
-
-        var firstItem = actual.First();
-        firstItem.Filters.Count.Should().Be(2);
-        firstItem.FieldName.Should().Be("Role");
+        var sut = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), new List<ChecklistLookup>());
+        var firstItem = sut.First();
         firstItem.FieldOrder.Should().Be(1);
 
         var filter = firstItem.Filters.First();
-        filter.ClearFilterLink.Should().Be(NetworkDirectoryLocationUrl + expectedFirst);
         filter.Order.Should().Be(1);
-        filter.Value.Should().Be(firstValue);
 
-
-        var filterSecond = firstItem.Filters.Skip(1).First();
-        filterSecond.ClearFilterLink.Should().Be(NetworkDirectoryLocationUrl + expectedSecond);
-        filterSecond.Order.Should().Be(2);
-        filterSecond.Value.Should().Be(secondValue);
+        var secondFilter = firstItem.Filters.Skip(1).First();
+        secondFilter.Order.Should().Be(2);
     }
 
-    [TestCase("?userType=Employer&userType=IsRegionalChair", "?userType=Apprentice&userType=IsRegionalChair", "?userType=Apprentice&userType=Employer", "Apprentice", "Employer", "IsRegionalChair")]
-    public void BuildDirectorySearchFiltersForThreeUserTypes(string expectedFirst, string expectedSecond, string expectedThird, string firstValue, string secondValue, string thirdValue)
+    [TestCase(Role.Apprentice, Role.Employer, "?userRole=Employer", "?userRole=Apprentice")]
+    [TestCase(Role.Employer, Role.Apprentice, "?userRole=Apprentice", "?userRole=Employer")]
+    public void Build_SearchFiltersForUserRoleType_FieldNameAndClearFilterLinkAreEqual(Role role1, Role role2, string queryStringForRole1, string queryStringForRole2)
     {
-        var request = new GetNetworkDirectoryRequest
+        var request = new NetworkDirectoryRequestModel
         {
-            UserType = new List<Role>
+            UserRole = new List<Role>
             {
-                Role.Apprentice,
-                Role.Employer,
-                Role.IsRegionalChair
+                role1,
+                role2
             }
         };
 
-        var actual = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), new List<ChecklistLookup>());
-
-        var firstItem = actual.First();
-        firstItem.Filters.Count.Should().Be(3);
+        var sut = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), new List<ChecklistLookup>());
+        var firstItem = sut.First();
         firstItem.FieldName.Should().Be("Role");
-        firstItem.FieldOrder.Should().Be(1);
 
-        var filterFirst = firstItem.Filters.First();
-        filterFirst.ClearFilterLink.Should().Be(NetworkDirectoryLocationUrl + expectedFirst);
-        filterFirst.Order.Should().Be(1);
-        filterFirst.Value.Should().Be(firstValue);
+        var filter = firstItem.Filters.First();
+        filter.ClearFilterLink.Should().Be(NetworkDirectoryLocationUrl + queryStringForRole1);
 
-        var filterSecond = firstItem.Filters.Skip(1).First();
-        filterSecond.ClearFilterLink.Should().Be(NetworkDirectoryLocationUrl + expectedSecond);
-        filterSecond.Order.Should().Be(2);
-        filterSecond.Value.Should().Be(secondValue);
-
-        var filterThird = firstItem.Filters.Skip(2).First();
-        filterThird.ClearFilterLink.Should().Be(NetworkDirectoryLocationUrl + expectedThird);
-        filterThird.Order.Should().Be(3);
-        filterThird.Value.Should().Be(thirdValue);
+        var secondFilter = firstItem.Filters.Skip(1).First();
+        secondFilter.ClearFilterLink.Should().Be(NetworkDirectoryLocationUrl + queryStringForRole2);
     }
 
-    [TestCase(null, "", 0)]
-    [TestCase(1, "Region", 1)]
-    [TestCase(2, "Region", 1)]
-    [TestCase(3, "Region", 1)]
-    public void BuildDirectorySearchFiltersForSingleRegions(int? regionId1, string fieldName, int expectedNumberOfFilters)
+    [TestCase(2, 3)]
+    [TestCase(3, 2)]
+    [TestCase(1, 5)]
+    [TestCase(5, 1)]
+    public void Build_SearchForRegions_FieldAndFilterOrderAreEqual(int? regionId1, int? regionId2)
     {
         var parameterName = "regionId";
-        var request = new GetNetworkDirectoryRequest { RegionId = new List<int>() };
+        var request = new NetworkDirectoryRequestModel { RegionId = new List<int>() };
         var regionLookups = new List<ChecklistLookup>();
 
-        var eventFilters = new GetNetworkDirectoryRequest
+        var eventFilters = new NetworkDirectoryRequestModel
         {
             RegionId = new List<int>()
         };
@@ -769,83 +737,125 @@ public class FilterBuilderTests
             request.RegionId.Add(regionId1.Value);
         }
 
-        var actual = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), regionLookups);
-
-        if (expectedNumberOfFilters == 0)
+        if (regionId2 != null)
         {
-            actual.Count.Should().Be(0);
-            return;
+            var lookup = new ChecklistLookup(parameterName, regionId2.Value.ToString(), true);
+
+            regionLookups.Add(lookup);
+
+            eventFilters.RegionId.Add(regionId2.Value);
+            request.RegionId.Add(regionId2.Value);
         }
 
-        var firstItem = actual.First();
-        firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
-        firstItem.FieldName.Should().Be(fieldName);
+        var sut = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), new List<ChecklistLookup>());
+        var firstItem = sut.First();
         firstItem.FieldOrder.Should().Be(1);
 
         var filter = firstItem.Filters.First();
-        filter.ClearFilterLink.Should().Be(NetworkDirectoryLocationUrl);
         filter.Order.Should().Be(1);
-        filter.Value.Should().Be(parameterName);
+
+        var secondFilter = firstItem.Filters.Skip(1).First();
+        secondFilter.Order.Should().Be(2);
     }
 
-    [TestCase(1, 2, "?regionId=2", "?regionId=1")]
-    [TestCase(1, 3, "?regionId=3", "?regionId=1")]
-    [TestCase(2, 3, "?regionId=3", "?regionId=2")]
-    public void BuildDirectorySearchFiltersForTwoRegions(int regionId1, int regionId2,
-       string expectedFirst, string expectedSecond)
+    [TestCase(3, "?regionId=2", 2, "?regionId=3")]
+    [TestCase(2, "?regionId=3", 3, "?regionId=2")]
+    public void Build_SearchForRegions_FieldNameAndClearFilterLinkAreEqual(int? regionId1, string queryString1, int? regionId2, string queryString2)
     {
         var parameterName = "regionId";
-        var request
-            = new GetNetworkDirectoryRequest { RegionId = new List<int>() };
+        var request = new NetworkDirectoryRequestModel { RegionId = new List<int>() };
         var regionLookups = new List<ChecklistLookup>();
 
-        var eventFilters = new GetNetworkDirectoryRequest
+        var eventFilters = new NetworkDirectoryRequestModel
         {
             RegionId = new List<int>()
         };
 
-        var lookup = new ChecklistLookup(parameterName, regionId1.ToString())
+        if (regionId1 != null)
         {
-            Checked = "Checked"
-        };
+            var lookup = new ChecklistLookup(parameterName, regionId1.Value.ToString(), true);
 
-        regionLookups.Add(lookup);
+            regionLookups.Add(lookup);
 
-        request.RegionId.Add(regionId1);
-        request.RegionId.Add(regionId2);
-        eventFilters.RegionId.Add(regionId1);
-        eventFilters.RegionId.Add(regionId2);
+            eventFilters.RegionId.Add(regionId1.Value);
+            request.RegionId.Add(regionId1.Value);
+        }
 
-        regionLookups.Add(new ChecklistLookup(parameterName, regionId2.ToString()));
+        if (regionId2 != null)
+        {
+            var lookup = new ChecklistLookup(parameterName, regionId2.Value.ToString(), true);
 
-        var actual = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), regionLookups);
+            regionLookups.Add(lookup);
 
-        var firstItem = actual.First();
-        firstItem.Filters.Count.Should().Be(2);
+            eventFilters.RegionId.Add(regionId2.Value);
+            request.RegionId.Add(regionId2.Value);
+        }
+
+        var sut = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), new List<ChecklistLookup>());
+        var firstItem = sut.First();
         firstItem.FieldName.Should().Be("Region");
-        firstItem.FieldOrder.Should().Be(1);
 
         var filter = firstItem.Filters.First();
-        filter.ClearFilterLink.Should().Be(NetworkDirectoryLocationUrl + expectedFirst);
-        filter.Order.Should().Be(1);
-        filter.Value.Should().Be(parameterName);
+        filter.ClearFilterLink.Should().Be(NetworkDirectoryLocationUrl + queryString1);
 
-        var filterSecond = firstItem.Filters.Skip(1).First();
-        filterSecond.ClearFilterLink.Should().Be(NetworkDirectoryLocationUrl + expectedSecond);
-        filterSecond.Order.Should().Be(2);
-        filterSecond.Value.Should().Be(parameterName);
+        var secondFilter = firstItem.Filters.Skip(1).First();
+        secondFilter.ClearFilterLink.Should().Be(NetworkDirectoryLocationUrl + queryString2);
     }
 
-    [TestCase("?regionId=2&regionId=3", "?regionId=1&regionId=3", "?regionId=1&regionId=2", 3, "checked")]
-    [TestCase("?regionId=3", "?regionId=2", "", 2, "")]
-    public void BuildDirectorySearchFiltersForThreeRegionsCheckedAndUnchecked(
-       string expectedFirst, string expectedSecond, string expectedThird, int expectedNumberOfFilters, string regionId1Checked)
+    [TestCase(3, 2)]
+    [TestCase(2, 3)]
+    public void Build_SearchForRegions_ValueAndFilterCountAreEqual(int? regionId1, int? regionId2)
     {
         var parameterName = "regionId";
-        var request = new GetNetworkDirectoryRequest { RegionId = new List<int>() };
+        var request = new NetworkDirectoryRequestModel { RegionId = new List<int>() };
         var regionLookups = new List<ChecklistLookup>();
 
-        var eventFilters = new GetNetworkDirectoryRequest
+        var eventFilters = new NetworkDirectoryRequestModel
+        {
+            RegionId = new List<int>()
+        };
+
+        if (regionId1 != null)
+        {
+            var lookup = new ChecklistLookup(parameterName, regionId1.Value.ToString(), true);
+
+            regionLookups.Add(lookup);
+
+            eventFilters.RegionId.Add(regionId1.Value);
+            request.RegionId.Add(regionId1.Value);
+        }
+
+        if (regionId2 != null)
+        {
+            var lookup = new ChecklistLookup(parameterName, regionId2.Value.ToString(), true);
+
+            regionLookups.Add(lookup);
+
+            eventFilters.RegionId.Add(regionId2.Value);
+            request.RegionId.Add(regionId2.Value);
+        }
+
+        var sut = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), new List<ChecklistLookup>());
+
+        var firstItem = sut.First();
+        firstItem.Filters.Count.Should().Be(2);
+
+        var filter = firstItem.Filters.First();
+        filter.Value.Should().Be(regionId1.ToString());
+
+        var secondFilter = firstItem.Filters.Skip(1).First();
+        secondFilter.Value.Should().Be(regionId2.ToString());
+    }
+
+    [TestCase(3, "checked")]
+    [TestCase(2, "")]
+    public void Build_SearchForRegions_FilterValueAreEqual(int expectedNumberOfFilters, string regionId1Checked)
+    {
+        var parameterName = "regionId";
+        var request = new NetworkDirectoryRequestModel { RegionId = new List<int>() };
+        var regionLookups = new List<ChecklistLookup>();
+
+        var eventFilters = new NetworkDirectoryRequestModel
         {
             RegionId = new List<int>()
         };
@@ -873,49 +883,40 @@ public class FilterBuilderTests
         eventFilters.RegionId.Add(3);
         request.RegionId.Add(3);
 
-        var actual = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), regionLookups);
+        var sut = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), regionLookups);
 
-        var firstItem = actual.First();
+        var firstItem = sut.First();
         firstItem.Filters.Count.Should().Be(expectedNumberOfFilters);
-        firstItem.FieldName.Should().Be("Region");
-        firstItem.FieldOrder.Should().Be(1);
 
         var filter = firstItem.Filters.First();
-        filter.ClearFilterLink.Should().Be(NetworkDirectoryLocationUrl + expectedFirst);
-        filter.Order.Should().Be(1);
         filter.Value.Should().Be(parameterName);
 
         var filterSecond = firstItem.Filters.Skip(1).First();
-        filterSecond.ClearFilterLink.Should().Be(NetworkDirectoryLocationUrl + expectedSecond);
-        filterSecond.Order.Should().Be(2);
         filterSecond.Value.Should().Be(parameterName);
 
         if (firstItem.Filters.Count > 2)
         {
             var filterThird = firstItem.Filters.Skip(2).First();
-            filterThird.ClearFilterLink.Should().Be(NetworkDirectoryLocationUrl + expectedThird);
-            filterThird.Order.Should().Be(3);
             filterThird.Value.Should().Be(parameterName);
         }
     }
 
-
     [TestCase(null, null, null, null, NetworkDirectoryLocationUrl)]
-    [TestCase(Role.Employer, null, null, null, NetworkDirectoryLocationUrl + "?userType=Employer")]
-    [TestCase(Role.IsRegionalChair, Role.Apprentice, null, null, NetworkDirectoryLocationUrl + "?userType=IsRegionalChair&userType=Apprentice")]
+    [TestCase(Role.Employer, null, null, null, NetworkDirectoryLocationUrl + "?userRole=Employer")]
+    [TestCase(Role.RegionalChair, Role.Apprentice, null, null, NetworkDirectoryLocationUrl + "?userRole=RegionalChair&userRole=Apprentice")]
     [TestCase(null, null, 1, null, NetworkDirectoryLocationUrl + "?regionId=1")]
     [TestCase(null, null, 1, 2, NetworkDirectoryLocationUrl + "?regionId=1&regionId=2")]
-    [TestCase(Role.Employer, Role.IsRegionalChair, 3, 4, NetworkDirectoryLocationUrl + "?userType=Employer&userType=IsRegionalChair&regionId=3&regionId=4")]
-    public void NetworkDirectoryBuildFullQueryStringForPagination(Role? role, Role? role2, int? regionId, int? regionId2, string expectedUrl)
+    [TestCase(Role.Employer, Role.RegionalChair, 3, 4, NetworkDirectoryLocationUrl + "?userRole=Employer&userRole=RegionalChair&regionId=3&regionId=4")]
+    public void Build_SearchFiltersWithAllInput_QueryStringAndExpectedUrlIsEqual(Role? role, Role? role2, int? regionId, int? regionId2, string expectedUrl)
     {
-        var request = new GetNetworkDirectoryRequest
+        var request = new NetworkDirectoryRequestModel
         {
         };
         if (role != null)
         {
             var roles = new List<Role> { role.Value };
             if (role2 != null) roles.Add(role2.Value);
-            request.UserType = roles;
+            request.UserRole = roles;
         }
 
         if (regionId != null)
@@ -925,9 +926,8 @@ public class FilterBuilderTests
             request.RegionId = regionIds;
         }
 
-        var actual = FilterBuilder.BuildFullQueryString(request, () => { return NetworkDirectoryLocationUrl; });
+        var sut = FilterBuilder.BuildFullQueryString(request, () => { return NetworkDirectoryLocationUrl; });
 
-        actual.Should().Be(expectedUrl);
+        sut.Should().Be(expectedUrl);
     }
-
 }

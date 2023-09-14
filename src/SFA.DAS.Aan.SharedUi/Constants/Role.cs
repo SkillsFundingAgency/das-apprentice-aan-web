@@ -9,5 +9,5 @@ public enum Role
     [Description("Employer")]
     Employer,
     [Description("Regional chair")]
-    IsRegionalChair
+    RegionalChair
 }

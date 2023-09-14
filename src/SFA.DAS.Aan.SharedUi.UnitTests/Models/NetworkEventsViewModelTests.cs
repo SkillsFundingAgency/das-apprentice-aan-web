@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
-using SFA.DAS.ApprenticeAan.Web.Models;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models;
 
@@ -13,15 +12,18 @@ public class NetworkEventsViewModelTests
     {
         var model = new NetworkEventsViewModel()
         {
-            SelectedFilters = new List<SelectedFilter>()
+            SelectedFiltersModel = new SelectedFiltersModel()
+            {
+                SelectedFilters = new List<SelectedFilter>()
+            }
         };
 
         if (searchFilterAdded)
         {
-            model.SelectedFilters.Add(new SelectedFilter());
+            model.SelectedFiltersModel.SelectedFilters.Add(new SelectedFilter());
         }
 
-        var actual = model.ShowFilterOptions;
+        var actual = model.SelectedFiltersModel.ShowFilterOptions;
         actual.Should().Be(expected);
     }
 }

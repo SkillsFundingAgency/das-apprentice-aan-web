@@ -5,12 +5,6 @@
 @model NetworkDirectoryViewModel
 @{
     ViewData["Title"] = "Network Directory";
-
-    var totalCountDescription = $"{Model.TotalCount} results";
-    if (Model.TotalCount == 1)
-    {
-        totalCountDescription = "1 result";
-    }
 }
 
 <div class="govuk-grid-row">
@@ -26,14 +20,16 @@
                 <div class="das-filter__header">
                     <h2 class="das-filter__heading">Filter</h2>
                 </div>
-                @{ await Html.RenderPartialAsync("_SelectedDirectoryFilters"); }
+                @{
+                    await Html.RenderPartialAsync("~/Views/Shared/_SelectedFilters.cshtml",Model.SelectedFiltersModel);
+                }
                 <div class="das-filter__body das-!-show--from-tablet" id="directory-filter-options">
                     <form asp-route="@SharedRouteNames.NetworkDirectory" method="GET">
                       <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
                         @{
                             await Html.RenderPartialAsync("_FilterDirectoryKeyword", Model.FilterChoices);
-                            await Html.RenderPartialAsync("~/Views/NetworkEvents/_FilterDetails.cshtml", Model.FilterChoices.RoleChecklistDetails);
-                            await Html.RenderPartialAsync("~/Views/NetworkEvents/_FilterDetails.cshtml", Model.FilterChoices.RegionChecklistDetails);
+                            await Html.RenderPartialAsync("~/Views/Shared/_FilterDetails.cshtml", Model.FilterChoices.RoleChecklistDetails);
+                            await Html.RenderPartialAsync("~/Views/Shared/_FilterDetails.cshtml", Model.FilterChoices.RegionChecklistDetails);
                         }
                         <button type="submit" class="govuk-button" id="filters-submit-second">Apply filters</button>
                     </form>
@@ -43,7 +39,7 @@
         </div>
     </div>
     <div class="govuk-grid-column-two-thirds">
-        <h2 class="govuk-heading-m">@totalCountDescription</h2>
+        <h2 class="govuk-heading-m">@Model.TotalCountDescription</h2>
         <p class="govuk-body govuk-!-margin-bottom-6  govuk-visually-hidden">
             Sorted by:
             <span class="govuk-!-font-weight-bold">Name</span>

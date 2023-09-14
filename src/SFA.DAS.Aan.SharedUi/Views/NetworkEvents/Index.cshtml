@@ -26,16 +26,18 @@
                 <div class="das-filter__header">
                     <h2 class="das-filter__heading">Filter</h2>
                 </div>
-                @{ await Html.RenderPartialAsync("_SelectedEventFilters"); }
+                @{
+                    await Html.RenderPartialAsync("~/Views/Shared/_SelectedFilters.cshtml", Model.SelectedFiltersModel);
+                }
                 <div class="das-filter__body das-!-show--from-tablet" id="events-filter-options">
                     <form asp-route="@SharedRouteNames.NetworkEvents" method="GET">
                       <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
                         @{
                             await Html.RenderPartialAsync("_FilterEventKeyword", Model.FilterChoices);
                             await Html.RenderPartialAsync("_FilterEventDates", Model.FilterChoices);
-                            await Html.RenderPartialAsync("_FilterDetails", Model.FilterChoices.EventFormatChecklistDetails);
-                            await Html.RenderPartialAsync("_FilterDetails", Model.FilterChoices.EventTypeChecklistDetails);
-                            await Html.RenderPartialAsync("_FilterDetails", Model.FilterChoices.RegionChecklistDetails);
+                            await Html.RenderPartialAsync("~/Views/Shared/_FilterDetails.cshtml", Model.FilterChoices.EventFormatChecklistDetails);
+                            await Html.RenderPartialAsync("~/Views/Shared/_FilterDetails.cshtml", Model.FilterChoices.EventTypeChecklistDetails);
+                            await Html.RenderPartialAsync("~/Views/Shared/_FilterDetails.cshtml", Model.FilterChoices.RegionChecklistDetails);
                         }
                         <button type="submit" class="govuk-button" id="filters-submit-second">Apply filters</button>
                     </form>
