@@ -1,0 +1,53 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.Aan.SharedUi.Infrastructure;
+@using SFA.DAS.Aan.SharedUi.Models.NetworkDirectory;
+
+@model NetworkDirectoryViewModel
+@{
+    ViewData["Title"] = "Network Directory";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">Network directory</h1>
+        <p>Connect with other apprentice and employer ambassadors across the network. You can use filters or search by name to view the most suitable profiles from within your preffered options. </p>
+    </div>
+</div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+        <div class="das-show-hide" data-module="das-show-hide">
+            <div class="das-filter das-!-show--from-tablet das-show-hide__section" id="directory-filter" tabindex="0">
+                <div class="das-filter__header">
+                    <h2 class="das-filter__heading">Filter</h2>
+                </div>
+                @{
+                    await Html.RenderPartialAsync("~/Views/Shared/_SelectedFilters.cshtml",Model.SelectedFiltersModel);
+                }
+                <div class="das-filter__body das-!-show--from-tablet" id="directory-filter-options">
+                    <form asp-route="@SharedRouteNames.NetworkDirectory" method="GET">
+                      <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
+                        @{
+                            await Html.RenderPartialAsync("_FilterDirectoryKeyword", Model.FilterChoices);
+                            await Html.RenderPartialAsync("~/Views/Shared/_FilterDetails.cshtml", Model.FilterChoices.RoleChecklistDetails);
+                            await Html.RenderPartialAsync("~/Views/Shared/_FilterDetails.cshtml", Model.FilterChoices.RegionChecklistDetails);
+                        }
+                        <button type="submit" class="govuk-button" id="filters-submit-second">Apply filters</button>
+                    </form>
+                </div>
+            </div>
+            <button class="govuk-button das-filter__toggle das-show-hide__button govuk-visually-hidden" data-button-string="filter " data-aria-controls="directory-filter" aria-expanded="true">Show filter </button>
+        </div>
+    </div>
+    <div class="govuk-grid-column-two-thirds">
+        <h2 class="govuk-heading-m">@Model.TotalCountDescription</h2>
+        <p class="govuk-body govuk-!-margin-bottom-6  govuk-visually-hidden">
+            Sorted by:
+            <span class="govuk-!-font-weight-bold">Name</span>
+        </p>
+        <hr class="govuk-!-margin-bottom-0" />
+        <div class="das-search-results govuk-!-margin-top-0">
+            @{await Html.RenderPartialAsync("_Directory");}
+        </div>
+        @{ await Html.RenderPartialAsync("_Pagination", Model.PaginationViewModel); }
+    </div>
+</div>

@@ -45,8 +45,8 @@ public class NetworkEventsController : Controller
         model.PaginationViewModel = SetupPagination(calendarEventsTask.Result, filterUrl);
         var filterChoices = PopulateFilterChoices(request, calendars, regions);
         model.FilterChoices = filterChoices;
-        model.SelectedFilters = FilterBuilder.Build(request, () => Url.RouteUrl(SharedRouteNames.NetworkEvents)!, filterChoices.EventFormatChecklistDetails.Lookups, filterChoices.EventTypeChecklistDetails.Lookups, filterChoices.RegionChecklistDetails.Lookups);
-        model.ClearSelectedFiltersLink = Url.RouteUrl(SharedRouteNames.NetworkEvents)!;
+        model.SelectedFiltersModel.SelectedFilters = FilterBuilder.Build(request, () => Url.RouteUrl(SharedRouteNames.NetworkEvents)!, filterChoices.EventFormatChecklistDetails.Lookups, filterChoices.EventTypeChecklistDetails.Lookups, filterChoices.RegionChecklistDetails.Lookups);
+        model.SelectedFiltersModel.ClearSelectedFiltersLink = Url.RouteUrl(SharedRouteNames.NetworkEvents)!;
         return View(model);
     }
 
@@ -85,9 +85,9 @@ public class NetworkEventsController : Controller
                 QueryStringParameterName = "eventFormat",
                 Lookups = new ChecklistLookup[]
                 {
-                    new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString(), request.EventFormat.Exists(x => x == EventFormat.InPerson)),
-                    new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString(), request.EventFormat.Exists(x => x == EventFormat.Online)),
-                    new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString(), request.EventFormat.Exists(x => x == EventFormat.Hybrid))
+                    new(EventFormat.InPerson.GetDescription(), EventFormat.InPerson.ToString(), request.EventFormat.Exists(x => x == EventFormat.InPerson)),
+                    new(EventFormat.Online.GetDescription(), EventFormat.Online.ToString(), request.EventFormat.Exists(x => x == EventFormat.Online)),
+                    new(EventFormat.Hybrid.GetDescription(), EventFormat.Hybrid.ToString(), request.EventFormat.Exists(x => x == EventFormat.Hybrid))
                 }
             },
             EventTypeChecklistDetails = new ChecklistDetails

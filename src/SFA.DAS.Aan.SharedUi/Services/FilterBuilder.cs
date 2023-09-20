@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using SFA.DAS.Aan.SharedUi.Extensions;
+using SFA.DAS.Aan.SharedUi.Models.NetworkDirectory;
 using SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
 
 namespace SFA.DAS.Aan.SharedUi.Services;
@@ -35,10 +36,33 @@ public static class FilterBuilder
         return filters;
     }
 
+    public static List<SelectedFilter> Build(NetworkDirectoryRequestModel request, Func<string> getNetworkDirectoryUrl, IEnumerable<ChecklistLookup> userTypeLookups, IEnumerable<ChecklistLookup> regionLookups)
+    {
+        var filters = new List<SelectedFilter>();
+        var fullQueryParameters = BuildQueryParameters(request);
+
+        if (!string.IsNullOrWhiteSpace(request.Keyword))
+        {
+            filters.AddFilterItems(getNetworkDirectoryUrl, fullQueryParameters, new[] { request.Keyword }, "Network directory", "keyword", Enumerable.Empty<ChecklistLookup>());
+        }
+
+        filters.AddFilterItems(getNetworkDirectoryUrl, fullQueryParameters, request.UserRole.Select(e => e.ToString()), "Role", "userRole", userTypeLookups);
+
+        filters.AddFilterItems(getNetworkDirectoryUrl, fullQueryParameters, request.RegionId.Select(e => e.ToString()), "Region", "regionId", regionLookups);
+
+        return filters;
+    }
+
     public static string BuildFullQueryString(GetNetworkEventsRequest request, Func<string> getNetworkEventsUrl)
     {
         var fullQueryParameters = BuildQueryParameters(request);
         return BuildQueryString(getNetworkEventsUrl, fullQueryParameters, "none")!;
+    }
+
+    public static string BuildFullQueryString(NetworkDirectoryRequestModel request, Func<string> getNetworkDirectoryUrl)
+    {
+        var fullQueryParameters = BuildQueryParameters(request);
+        return BuildQueryString(getNetworkDirectoryUrl, fullQueryParameters, "none")!;
     }
 
     private static void AddFilterItems(this ICollection<SelectedFilter> filters, Func<string> getNetworkEventsUrl, List<string> fullQueryParameters, IEnumerable<string> selectedValues, string fieldName, string parameterName, IEnumerable<ChecklistLookup> lookups)
@@ -84,6 +108,28 @@ public static class FilterBuilder
         queryParameters.AddRange(request.EventFormat.Select(eventFormat => "eventFormat=" + eventFormat));
         queryParameters.AddRange(request.CalendarId.Select(eventType => "calendarId=" + eventType));
         queryParameters.AddRange(request.RegionId.Select(region => "regionId=" + region));
+
+        return queryParameters;
+    }
+
+    private static List<string> BuildQueryParameters(NetworkDirectoryRequestModel request)
+    {
+        var queryParameters = new List<string>();
+
+        if (!string.IsNullOrWhiteSpace(request.Keyword))
+        {
+            queryParameters.Add(BuildQueryParameter("keyword", request.Keyword));
+        }
+
+        if (request.UserRole != null && request.UserRole.Any())
+        {
+            queryParameters.AddRange(request.UserRole.Select(userRole => "userRole=" + userRole));
+        }
+
+        if (request.RegionId != null && request.RegionId.Any())
+        {
+            queryParameters.AddRange(request.RegionId.Select(region => "regionId=" + region));
+        }
 
         return queryParameters;
     }

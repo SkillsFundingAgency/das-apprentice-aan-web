@@ -1,16 +1,17 @@
 ﻿using FluentAssertions;
+using SFA.DAS.Aan.SharedUi.Models.NetworkDirectory;
 using SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models;
 
 [TestFixture]
-public class NetworkEventsViewModelTests
+public class NetworkDirectoryViewModelTests
 {
     [TestCase(true, true)]
     [TestCase(false, false)]
     public void ShowFilterOptions_ReturningExpectedValueFromParameters(bool searchFilterAdded, bool expected)
     {
-        var model = new NetworkEventsViewModel()
+        var sut = new NetworkDirectoryViewModel()
         {
             SelectedFiltersModel = new SelectedFiltersModel()
             {
@@ -20,10 +21,10 @@ public class NetworkEventsViewModelTests
 
         if (searchFilterAdded)
         {
-            model.SelectedFiltersModel.SelectedFilters.Add(new SelectedFilter());
+            sut.SelectedFiltersModel.SelectedFilters.Add(new SelectedFilter());
         }
 
-        var actual = model.SelectedFiltersModel.ShowFilterOptions;
+        var actual = sut.SelectedFiltersModel.ShowFilterOptions;
         actual.Should().Be(expected);
     }
 }

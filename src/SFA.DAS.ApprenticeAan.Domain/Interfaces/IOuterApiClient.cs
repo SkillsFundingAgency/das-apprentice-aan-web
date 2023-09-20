@@ -64,4 +64,7 @@ public interface IOuterApiClient
 
     [Get("/attendances")]
     Task<GetAttendancesResponse> GetAttendances([Header(RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId, string fromDate, string toDate, CancellationToken cancellationToken);
+
+    [Get("/members")]
+    Task<GetNetworkDirectoryQueryResult> GetMembers([QueryMap] IDictionary<string, string[]> parameters, CancellationToken cancellationToken);
 }

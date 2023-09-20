@@ -8,4 +8,5 @@ public static class SharedRouteNames
     public const string EventsHub = nameof(EventsHub);
     public const string NetworkEventDetails = nameof(NetworkEventDetails);
     public const string NetworkEvents = nameof(NetworkEvents);
+    public const string NetworkDirectory = nameof(NetworkDirectory);
 }

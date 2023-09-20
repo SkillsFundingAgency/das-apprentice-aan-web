@@ -64,11 +64,11 @@ public class NetworkEventsControllerTests
 
         var expectedEventFormatChecklistLookup = new ChecklistLookup[]
         {
-            new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString(),
+            new(EventFormat.InPerson.GetDescription(), EventFormat.InPerson.ToString(),
                 request.EventFormat.Exists(x => x == EventFormat.InPerson)),
-            new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString(),
+            new(EventFormat.Online.GetDescription(), EventFormat.Online.ToString(),
                 request.EventFormat.Exists(x => x == EventFormat.Online)),
-            new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString(),
+            new(EventFormat.Hybrid.GetDescription(), EventFormat.Hybrid.ToString(),
                 request.EventFormat.Exists(x => x == EventFormat.Hybrid))
         };
 
@@ -82,7 +82,7 @@ public class NetworkEventsControllerTests
         model.FilterChoices.ToDate?.ToApiString().Should().Be(toDateFormatted);
         model.FilterChoices.Keyword.Should().Be(keyword);
         model.FilterChoices.EventFormatChecklistDetails.Lookups.Should().BeEquivalentTo(expectedEventFormatChecklistLookup);
-        model.ClearSelectedFiltersLink.Should().Be(AllNetworksUrl);
+        model.SelectedFiltersModel.ClearSelectedFiltersLink.Should().Be(AllNetworksUrl);
 
         outerApiMock.Verify(o => o.GetCalendarEvents(It.IsAny<Guid>(), It.IsAny<Dictionary<string, string[]>>(), It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -104,11 +104,11 @@ public class NetworkEventsControllerTests
         var actualResult = sut.Index(request, new CancellationToken());
         var expectedEventFormatChecklistLookup = new ChecklistLookup[]
         {
-            new(EventFormat.InPerson.GetDescription()!, EventFormat.InPerson.ToString(),
+            new(EventFormat.InPerson.GetDescription(), EventFormat.InPerson.ToString(),
                 request.EventFormat.Exists(x => x == EventFormat.InPerson)),
-            new(EventFormat.Online.GetDescription()!, EventFormat.Online.ToString(),
+            new(EventFormat.Online.GetDescription(), EventFormat.Online.ToString(),
                 request.EventFormat.Exists(x => x == EventFormat.Online)),
-            new(EventFormat.Hybrid.GetDescription()!, EventFormat.Hybrid.ToString(),
+            new(EventFormat.Hybrid.GetDescription(), EventFormat.Hybrid.ToString(),
                 request.EventFormat.Exists(x => x == EventFormat.Hybrid))
         };
 

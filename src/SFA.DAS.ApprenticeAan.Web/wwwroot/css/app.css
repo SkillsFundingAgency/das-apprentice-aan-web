@@ -443,3 +443,15 @@ a.das-show-hide__button[aria-expanded="false"]:after {
     line-height: 40px;
     margin-left: 15px;
 }
+
+.app-tag--Apprentice {
+    background-color: #85994b;
+}
+
+.app-tag--Employer {
+    background-color: #6f72af;
+}
+
+.app-tag--IsRegionalChair {
+    background-color: #912b88;
+}
