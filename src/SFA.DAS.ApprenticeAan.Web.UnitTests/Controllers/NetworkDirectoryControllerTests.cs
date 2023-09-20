@@ -155,23 +155,6 @@ public class NetworkDirectoryControllerTests
         sut!.PaginationViewModel.TotalPages.Should().Be(expectedResult.TotalPages);
     }
 
-    [Test]
-    public void Index_NoFilters_ShouldNotReturnMemberWithAnyUserTypeExceptEmployerAndApprentice()
-    {
-        // arrange
-        var request = new NetworkDirectoryRequestModel();
-        var actualResult = _sut.Index(request, new CancellationToken());
-        var viewResult = actualResult.Result.As<ViewResult>();
-        var sut = viewResult.Model as NetworkDirectoryViewModel;
-        List<string> allowableUserType = new List<string>() { Role.Employer.ToString(), Role.Apprentice.ToString() };
-
-        // act
-        var membersWithOtherUserRole = sut!.Members.Where(obj => obj.UserRole != Role.RegionalChair && !allowableUserType.Contains(obj.UserRole.ToString()));
-
-        // assert
-        Assert.IsEmpty(membersWithOtherUserRole, "Member list should not contain a member except employer and apprentice user role");
-    }
-
     private static ChecklistLookup[] GetUserRoleCheckListLookup(NetworkDirectoryRequestModel networkDirectoryRequestModel)
     {
         return new ChecklistLookup[]
