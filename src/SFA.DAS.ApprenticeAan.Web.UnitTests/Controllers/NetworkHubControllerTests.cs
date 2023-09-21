@@ -13,7 +13,6 @@ public class NetworkHubControllerTests
     static readonly string EventsHubUrl = Guid.NewGuid().ToString();
     static readonly string NetworkDirectoryUrl = Guid.NewGuid().ToString();
     static readonly string ProfileSettingsHubUrl = Guid.NewGuid().ToString();
-    private string currentTestMethodName;
     private NetworkHubViewModel model = null!;
 
     [SetUp]
@@ -21,23 +20,24 @@ public class NetworkHubControllerTests
     {
         NetworkHubController sut = new();
 
-        currentTestMethodName = TestContext.CurrentContext.Test.Name;
+        //currentTestMethodName = TestContext.CurrentContext.Test.Name;
 
-        if (currentTestMethodName == "ThenSetsEventsHubUrlInViewModel")
-        {
-            sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.EventsHub, EventsHubUrl);
-        }
-        else if (currentTestMethodName == "ThenSetsNetworkDirectoryUrlInViewModel")
-        {
-            sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkDirectory, NetworkDirectoryUrl);
-        }
-        else if (currentTestMethodName == "ThenReturnView")
-        {
-            sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.EventsHub, EventsHubUrl);
-        }
-        
+        //if (currentTestMethodName == "ThenSetsEventsHubUrlInViewModel")
+        //{
+        //    sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.EventsHub, EventsHubUrl);
+        //}
+        //else if (currentTestMethodName == "ThenSetsNetworkDirectoryUrlInViewModel")
+        //{
+        //    sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkDirectory, NetworkDirectoryUrl);
+        //}
+        //else if (currentTestMethodName == "ThenReturnView")
+        //{
+        //    sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.EventsHub, EventsHubUrl);
+        //}
+
         sut.AddUrlHelperMock()
             .AddUrlForRoute(SharedRouteNames.EventsHub, EventsHubUrl)
+            .AddUrlForRoute(SharedRouteNames.NetworkDirectory, NetworkDirectoryUrl)
             .AddUrlForRoute(SharedRouteNames.ProfileSettings, ProfileSettingsHubUrl);
 
         _result = sut.Index();
@@ -59,7 +59,6 @@ public class NetworkHubControllerTests
     [Test]
     public void ThenSetsProfileSettingsUrlInViewModel()
     {
-        var model = _result.As<ViewResult>().Model.As<NetworkHubViewModel>();
         model.ProfileSettingsUrl.Should().Be(ProfileSettingsHubUrl);
     }
 
