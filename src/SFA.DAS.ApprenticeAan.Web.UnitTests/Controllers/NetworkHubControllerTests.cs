@@ -20,21 +20,6 @@ public class NetworkHubControllerTests
     {
         NetworkHubController sut = new();
 
-        //currentTestMethodName = TestContext.CurrentContext.Test.Name;
-
-        //if (currentTestMethodName == "ThenSetsEventsHubUrlInViewModel")
-        //{
-        //    sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.EventsHub, EventsHubUrl);
-        //}
-        //else if (currentTestMethodName == "ThenSetsNetworkDirectoryUrlInViewModel")
-        //{
-        //    sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkDirectory, NetworkDirectoryUrl);
-        //}
-        //else if (currentTestMethodName == "ThenReturnView")
-        //{
-        //    sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.EventsHub, EventsHubUrl);
-        //}
-
         sut.AddUrlHelperMock()
             .AddUrlForRoute(SharedRouteNames.EventsHub, EventsHubUrl)
             .AddUrlForRoute(SharedRouteNames.NetworkDirectory, NetworkDirectoryUrl)
