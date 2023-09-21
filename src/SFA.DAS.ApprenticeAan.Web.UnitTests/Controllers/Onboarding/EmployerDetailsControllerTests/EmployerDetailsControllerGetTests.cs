@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
@@ -26,14 +27,14 @@ public class EmployerDetailsControllerGetTests
 
     private readonly List<ProfileModel> profileData = new()
     {
-        new() { Id = ProfileDataId.EmployerName, Category = Category, Value = EmployerName},
-        new() { Id = ProfileDataId.AddressLine1, Category = Category, Value = AddressLine1},
-        new() { Id = ProfileDataId.AddressLine2, Category = Category},
-        new() { Id = ProfileDataId.Town, Category = Category, Value = Town},
-        new() { Id = ProfileDataId.County, Category = Category, },
-        new() { Id = ProfileDataId.Postcode, Category = Category, Value = Postcode},
-        new() { Id = ProfileDataId.Longitude, Category = Category, Value = Longitude.ToString()},
-        new() { Id = ProfileDataId.Latitude, Category = Category, Value = Latitude.ToString()}
+        new() { Id = ProfileConstants.ProfileIds.EmployerName, Category = Category, Value = EmployerName},
+        new() { Id = ProfileConstants.ProfileIds.EmployerAddress1, Category = Category, Value = AddressLine1},
+        new() { Id = ProfileConstants.ProfileIds.EmployerAddress2, Category = Category},
+        new() { Id = ProfileConstants.ProfileIds.EmployerTownOrCity, Category = Category, Value = Town},
+        new() { Id = ProfileConstants.ProfileIds.EmployerCounty, Category = Category, },
+        new() { Id = ProfileConstants.ProfileIds.EmployerPostcode, Category = Category, Value = Postcode},
+        new() { Id = ProfileConstants.ProfileIds.EmployerAddressLongitude, Category = Category, Value = Longitude.ToString()},
+        new() { Id = ProfileConstants.ProfileIds.EmployerAddressLatitude, Category = Category, Value = Latitude.ToString()}
     };
 
     [MoqAutoData]

@@ -4,6 +4,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
@@ -43,14 +44,14 @@ public class EmployerSearchControllerPostTests
         sut.Post(submitModel);
 
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m =>
-            m.GetProfileValue(ProfileDataId.EmployerName) == submitModel.OrganisationName &&
-            m.GetProfileValue(ProfileDataId.AddressLine1) == submitModel.AddressLine1 &&
-            m.GetProfileValue(ProfileDataId.AddressLine2) == submitModel.AddressLine2 &&
-            m.GetProfileValue(ProfileDataId.County) == submitModel.County &&
-            m.GetProfileValue(ProfileDataId.Town) == submitModel.Town &&
-            m.GetProfileValue(ProfileDataId.Postcode) == submitModel.Postcode &&
-            m.GetProfileValue(ProfileDataId.Longitude) == submitModel.Longitude.ToString() &&
-            m.GetProfileValue(ProfileDataId.Latitude) == submitModel.Latitude.ToString()
+            m.GetProfileValue(ProfileConstants.ProfileIds.EmployerName) == submitModel.OrganisationName &&
+            m.GetProfileValue(ProfileConstants.ProfileIds.EmployerAddress1) == submitModel.AddressLine1 &&
+            m.GetProfileValue(ProfileConstants.ProfileIds.EmployerAddress2) == submitModel.AddressLine2 &&
+            m.GetProfileValue(ProfileConstants.ProfileIds.EmployerCounty) == submitModel.County &&
+            m.GetProfileValue(ProfileConstants.ProfileIds.EmployerTownOrCity) == submitModel.Town &&
+            m.GetProfileValue(ProfileConstants.ProfileIds.EmployerPostcode) == submitModel.Postcode &&
+            m.GetProfileValue(ProfileConstants.ProfileIds.EmployerAddressLongitude) == submitModel.Longitude.ToString() &&
+            m.GetProfileValue(ProfileConstants.ProfileIds.EmployerAddressLatitude) == submitModel.Latitude.ToString()
         )));
     }
 
@@ -76,14 +77,14 @@ public class EmployerSearchControllerPostTests
         {
             ProfileData = new()
             {
-                new ProfileModel { Id = ProfileDataId.EmployerName },
-                new ProfileModel { Id = ProfileDataId.AddressLine1 },
-                new ProfileModel { Id = ProfileDataId.AddressLine2 },
-                new ProfileModel { Id = ProfileDataId.County },
-                new ProfileModel { Id = ProfileDataId.Town },
-                new ProfileModel { Id = ProfileDataId.Postcode },
-                new ProfileModel { Id = ProfileDataId.Longitude },
-                new ProfileModel { Id = ProfileDataId.Latitude }
+                new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerName },
+                new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerAddress1 },
+                new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerAddress2 },
+                new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerCounty },
+                new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerTownOrCity },
+                new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerPostcode },
+                new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerAddressLongitude },
+                new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerAddressLatitude }
             }
         };
 }

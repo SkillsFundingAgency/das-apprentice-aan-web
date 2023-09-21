@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 
@@ -29,11 +30,11 @@ public class CheckYourAnswersViewModel
     public CheckYourAnswersViewModel(IUrlHelper url, OnboardingSessionModel sessionModel)
     {
         CurrentEmployerChangeLink = url.RouteUrl(@RouteNames.Onboarding.EmployerSearch)!;
-        CurrentEmployerName = sessionModel.GetProfileValue(ProfileDataId.EmployerName)!;
+        CurrentEmployerName = sessionModel.GetProfileValue(ProfileConstants.ProfileIds.EmployerName)!;
         CurrentEmployerAddress = GetEmployerAddress(sessionModel)!;
 
         JobTitleChangeLink = url.RouteUrl(@RouteNames.Onboarding.CurrentJobTitle)!;
-        JobTitle = sessionModel.GetProfileValue(ProfileDataId.JobTitle)!;
+        JobTitle = sessionModel.GetProfileValue(ProfileConstants.ProfileIds.JobTitle)!;
 
         RegionChangeLink = url.RouteUrl(@RouteNames.Onboarding.Regions)!;
         Region = sessionModel.RegionName!;
@@ -45,7 +46,7 @@ public class CheckYourAnswersViewModel
         AreasOfInterest = sessionModel.ProfileData.Where(x => (x.Category == Category.Events || x.Category == Category.Promotions) && x.Value != null).Select(x => x.Description).ToList();
 
         PreviousEngagementChangeLink = url.RouteUrl(@RouteNames.Onboarding.PreviousEngagement)!;
-        PreviousEngagement = GetPreviousEngagementValue(sessionModel.GetProfileValue(ProfileDataId.HasPreviousEngagement))!;
+        PreviousEngagement = GetPreviousEngagementValue(sessionModel.GetProfileValue(ProfileConstants.ProfileIds.EngagedWithAPreviousAmbassadorInTheNetworkApprentice))!;
 
         /// Apprentice's details
         FullName = sessionModel.ApprenticeDetails.Name;
@@ -71,7 +72,7 @@ public class CheckYourAnswersViewModel
 
     private static string? GetEmployerAddress(OnboardingSessionModel sessionModel)
     {
-        var addressFields = new[] { sessionModel.GetProfileValue(ProfileDataId.AddressLine1), sessionModel.GetProfileValue(ProfileDataId.AddressLine2), sessionModel.GetProfileValue(ProfileDataId.Town), sessionModel.GetProfileValue(ProfileDataId.County), sessionModel.GetProfileValue(ProfileDataId.Postcode) };
+        var addressFields = new[] { sessionModel.GetProfileValue(ProfileConstants.ProfileIds.EmployerAddress1), sessionModel.GetProfileValue(ProfileConstants.ProfileIds.EmployerAddress2), sessionModel.GetProfileValue(ProfileConstants.ProfileIds.EmployerTownOrCity), sessionModel.GetProfileValue(ProfileConstants.ProfileIds.EmployerCounty), sessionModel.GetProfileValue(ProfileConstants.ProfileIds.EmployerPostcode) };
         string completeAddress = string.Join(", ", addressFields.Where(s => !string.IsNullOrEmpty(s)));
         return string.IsNullOrWhiteSpace(completeAddress) ? null : completeAddress;
     }

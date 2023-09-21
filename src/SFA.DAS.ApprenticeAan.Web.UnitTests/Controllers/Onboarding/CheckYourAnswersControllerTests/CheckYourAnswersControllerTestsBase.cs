@@ -1,4 +1,5 @@
 ﻿using AutoFixture;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.UnitTests.TestHelpers;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Web.Models;
@@ -18,7 +19,7 @@ public abstract class CheckYourAnswersControllerTestsBase
 
         profileData
             .Add(fixture.Build<ProfileModel>()
-            .With(p => p.Id, ProfileDataId.HasPreviousEngagement)
+            .With(p => p.Id, ProfileConstants.ProfileIds.EngagedWithAPreviousAmbassadorInTheNetworkApprentice)
             .With(p => p.Value, "true")
             .Create());
 

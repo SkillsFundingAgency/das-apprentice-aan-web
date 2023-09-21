@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
@@ -32,7 +33,7 @@ public class CurrentJobTitleController : Controller
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
         var model = GetViewModel(sessionModel);
 
-        model.JobTitle = sessionModel.GetProfileValue(ProfileDataId.JobTitle);
+        model.JobTitle = sessionModel.GetProfileValue(ProfileConstants.ProfileIds.JobTitle);
 
         return View(ViewPath, model);
     }
@@ -51,7 +52,7 @@ public class CurrentJobTitleController : Controller
             return View(ViewPath, model);
         }
 
-        sessionModel.SetProfileValue(ProfileDataId.JobTitle, submitModel.JobTitle!.Trim());
+        sessionModel.SetProfileValue(ProfileConstants.ProfileIds.JobTitle, submitModel.JobTitle!.Trim());
         _sessionService.Set(sessionModel);
 
         return RedirectToRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.Regions);

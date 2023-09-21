@@ -5,6 +5,7 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
+using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
@@ -91,17 +92,18 @@ public class LineManagerControllerPostTests
     [MoqAutoData]
     public async Task Post_HasSeenTermsAndHasLineManagerApprovalAndModelNotInitialised_InitializesSessionModel(
         [Frozen] Mock<IValidator<LineManagerSubmitModel>> validatorMock,
-        [Frozen] Mock<IProfileService> profileServiceMock,
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] LineManagerController sut,
+        Mock<IOuterApiClient> apiClient,
         Mock<ITempDataDictionary> tempDataMock,
-        List<Profile> profiles)
+        List<Profile> profiles,
+        CancellationToken cancellationToken)
     {
         tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.HasSeenTermsAndConditions)).Returns(true);
         sut.TempData = tempDataMock.Object;
         LineManagerSubmitModel submitModel = new() { HasEmployersApproval = true };
         validatorMock.Setup(v => v.Validate(submitModel)).Returns(new ValidationResult());
-        profileServiceMock.Setup(p => p.GetProfilesByUserType("apprentice")).ReturnsAsync(profiles);
+        apiClient.Setup(p => p.GetProfilesByUserType("apprentice", cancellationToken)).ReturnsAsync(new GetProfilesResult { Profiles = profiles });
 
         await sut.Post(submitModel);
 
@@ -112,10 +114,11 @@ public class LineManagerControllerPostTests
     [MoqAutoData]
     public async Task Post_HasSeenTermsAndHasLineManagerApprovalAndModelIsInitialised_DoesNotInitializesSessionModel(
         [Frozen] Mock<IValidator<LineManagerSubmitModel>> validatorMock,
-        [Frozen] Mock<IProfileService> profileServiceMock,
+        [Frozen] Mock<IOuterApiClient> apiClient,
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] LineManagerController sut,
-        Mock<ITempDataDictionary> tempDataMock)
+        Mock<ITempDataDictionary> tempDataMock,
+        CancellationToken cancellationToken)
     {
         tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.HasSeenTermsAndConditions)).Returns(true);
         sut.TempData = tempDataMock.Object;
@@ -125,7 +128,7 @@ public class LineManagerControllerPostTests
 
         await sut.Post(submitModel);
 
-        profileServiceMock.Verify(p => p.GetProfilesByUserType("apprentice"), Times.Never);
+        apiClient.Verify(p => p.GetProfilesByUserType("apprentice", cancellationToken), Times.Never);
         sessionServiceMock.Verify(s => s.Set(It.IsAny<OnboardingSessionModel>()), Times.Never);
     }
 

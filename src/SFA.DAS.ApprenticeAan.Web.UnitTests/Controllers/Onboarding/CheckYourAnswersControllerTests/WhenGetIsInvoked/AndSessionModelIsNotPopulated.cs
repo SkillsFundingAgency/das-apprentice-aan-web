@@ -3,6 +3,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
@@ -38,16 +39,16 @@ public class AndSessionModelIsNotPopulated
 
         sut.AddUrlHelperMock();
 
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.JobTitle, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.JobTitle, Value = null });
         sessionModel.RegionName = null;
         sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork = null;
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = null });
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.EmployerName, Value = null });
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.AddressLine1, Value = null });
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.AddressLine2, Value = null });
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.Town, Value = null });
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.County, Value = null });
-        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileDataId.Postcode, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.EngagedWithAPreviousAmbassadorInTheNetworkApprentice, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerName, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerAddress1, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerAddress2, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerTownOrCity, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerCounty, Value = null });
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerPostcode, Value = null });
 
         var response = sut.Get();
         getResult = response.As<ViewResult>();

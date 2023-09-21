@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
@@ -52,7 +53,7 @@ public class CheckYourAnswersControllerPostTests : CheckYourAnswersControllerTes
 
         //Assert
         outerApiClientMock.Verify(o => o.PostApprenticeMember(It.Is<CreateApprenticeMemberRequest>(r =>
-            r.OrganisationName == onboardingSessionModel.GetProfileValue(ProfileDataId.EmployerName)
+            r.OrganisationName == onboardingSessionModel.GetProfileValue(ProfileConstants.ProfileIds.EmployerName)
             && r.JoinedDate.Date == DateTime.UtcNow.Date
             && r.ApprenticeId == onboardingSessionModel.ApprenticeDetails.ApprenticeId
             && r.RegionId == onboardingSessionModel.RegionId

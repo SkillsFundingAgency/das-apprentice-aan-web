@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
@@ -56,7 +57,7 @@ public class CheckYourAnswersController : Controller
         {
             ApprenticeId = source.ApprenticeDetails.ApprenticeId,
             JoinedDate = DateTime.UtcNow,
-            OrganisationName = source.GetProfileValue(ProfileDataId.EmployerName)!,
+            OrganisationName = source.GetProfileValue(ProfileConstants.ProfileIds.EmployerName)!,
             RegionId = source.RegionId.GetValueOrDefault()
         };
         request.ProfileValues.AddRange(source.ProfileData.Where(p => !string.IsNullOrWhiteSpace(p.Value)).Select(p => new ProfileValue(p.Id, p.Value!)));

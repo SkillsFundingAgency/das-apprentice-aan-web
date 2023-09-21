@@ -1,0 +1,91 @@
+﻿@using SFA.DAS.ApprenticeAan.Web.Models.AmbassadorProfile;
+@model ApprenticeshipDetailsViewModel
+
+<div class="govuk-summary-card">
+    <div class="govuk-summary-card__title-wrapper">
+        <h2 class="govuk-summary-card__title">Your apprenticeship information</h2>
+@*         <ul class="govuk-summary-card__actions">
+            <li class="govuk-summary-card__action">
+                <a class="govuk-link" href="#">
+                    Change<span class="govuk-visually-hidden"> your apprenticeship information</span>
+                </a>
+            </li>
+        </ul> *@
+    </div>
+    <div class="govuk-summary-card__content">
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Employer's name
+                </dt>
+                @if (!string.IsNullOrWhiteSpace(Model.EmployerName))
+                {
+                    <dd class="govuk-summary-list__value">
+                        @Model.EmployerName
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <strong class="@Model.ApprenticeshipDetailsDisplayClass">@Model.ApprenticeshipDetailsDisplayValue</strong>
+                    </dd>
+                }
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Employer's address and postcode
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    <span style="white-space:pre-wrap">@Model.EmployerAddress</span>
+                </dd>
+                @if (!string.IsNullOrWhiteSpace(Model.EmployerAddress))
+                {
+                    <dd class="govuk-summary-list__actions">
+                        <strong class="@Model.ApprenticeshipDetailsDisplayClass">@Model.ApprenticeshipDetailsDisplayValue</strong>
+                    </dd>
+                }
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Apprenticeship sector
+                </dt>
+                @{
+                    if (!string.IsNullOrEmpty(Model.ApprenticeshipSector))
+                    {
+                        <dd class="govuk-summary-list__value">
+                            @Model.ApprenticeshipSector
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <strong class="@Model.ApprenticeshipDetailsDisplayClass">@Model.ApprenticeshipDetailsDisplayValue</strong>
+                        </dd>
+                    }
+                }
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Apprenticeship programme
+                </dt>
+                @if (!string.IsNullOrEmpty(Model.ApprenticeshipProgramme))
+                {
+                    <dd class="govuk-summary-list__value">
+                        @Model.ApprenticeshipProgramme
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <strong class="@Model.ApprenticeshipDetailsDisplayClass">@Model.ApprenticeshipDetailsDisplayValue</strong>
+                    </dd>
+                }
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Apprenticeship level
+                </dt>
+                @if (!string.IsNullOrEmpty(Model.ApprenticeshipLevel))
+                {
+                    <dd class="govuk-summary-list__value">
+                        @Model.ApprenticeshipLevel
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <strong class="@Model.ApprenticeshipDetailsDisplayClass">@Model.ApprenticeshipDetailsDisplayValue</strong>
+                    </dd>
+                }
+            </div>
+        </dl>
+    </div>
+</div>

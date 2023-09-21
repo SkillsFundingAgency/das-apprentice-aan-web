@@ -1,0 +1,35 @@
+﻿@using SFA.DAS.Aan.SharedUi.Models;
+@model AmbassadorProfileViewModel
+@{
+    ViewData["Title"] = "Your ambassador profile";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">Your ambassador profile</h1>
+        <p>
+            You can <a class="govuk-link govuk-link--no-visited-state" href="#">view your current ambassador profile</a>. You can
+            add or change the information that we hold and choose what you display on your profile.
+        </p>
+
+        @{
+            await Html.RenderPartialAsync("PersonalDetails", Model.PersonalDetails);
+        }
+
+        @{
+            await Html.RenderPartialAsync("InterestInTheNetwork", Model.InterestInTheNetwork);
+        }
+
+        @{
+            if (Model.ShowApprenticeshipDetails)
+            {
+                await Html.RenderPartialAsync("ApprenticeshipInformation", Model.ApprenticeshipDetails);
+            }
+        }
+
+        @{
+            await Html.RenderPartialAsync("ContactDetails", Model.ContactDetails);
+        }
+
+    </div>
+</div>

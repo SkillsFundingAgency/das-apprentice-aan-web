@@ -1,4 +1,5 @@
-﻿using RestEase;
+﻿using System.Threading;
+using RestEase;
 using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
@@ -15,7 +16,7 @@ public interface IOuterApiClient
     Task<List<Calendar>> GetCalendars();
 
     [Get("/profiles/{userType}")]
-    Task<GetProfilesResult> GetProfilesByUserType([Path("userType")] string userType);
+    Task<GetProfilesResult> GetProfilesByUserType([Path("userType")] string userType, CancellationToken? cancellationToken);
 
     [Get("/apprentices/{apprenticeId}/account")]
     [AllowAnyStatusCode]
@@ -67,4 +68,7 @@ public interface IOuterApiClient
 
     [Get("/members")]
     Task<GetNetworkDirectoryQueryResult> GetMembers([QueryMap] IDictionary<string, string[]> parameters, CancellationToken cancellationToken);
+
+    [Get("/members/{memberId}/profile")]
+    Task<GetMemberProfileResponse> GetMemberProfile([Path] Guid memberId, [Header(RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId, [Query] bool @public, CancellationToken cancellationToken);
 }

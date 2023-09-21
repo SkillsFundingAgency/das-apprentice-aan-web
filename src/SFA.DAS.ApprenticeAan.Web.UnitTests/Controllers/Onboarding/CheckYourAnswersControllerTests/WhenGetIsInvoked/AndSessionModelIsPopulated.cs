@@ -3,6 +3,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
@@ -80,7 +81,7 @@ public class AndSessionModelIsPopulated : CheckYourAnswersControllerTestsBase
     [Test]
     public void ThenSetsJobTitleInViewModel()
     {
-        _actualViewModel.JobTitle.Should().Be(_sessionModel.ProfileData.First(p => p.Id == ProfileDataId.JobTitle).Value);
+        _actualViewModel.JobTitle.Should().Be(_sessionModel.ProfileData.First(p => p.Id == ProfileConstants.ProfileIds.JobTitle).Value);
         _actualViewModel.JobTitleChangeLink.Should().Be(JobTitleUrl);
     }
 
@@ -110,7 +111,7 @@ public class AndSessionModelIsPopulated : CheckYourAnswersControllerTestsBase
     [TestCase(null, null)]
     public void ThenSetsPreviousEngagementInViewModel(string? isPreviouslyEngaged, string? expectedValue)
     {
-        _sessionModel.SetProfileValue(ProfileDataId.HasPreviousEngagement, isPreviouslyEngaged!);
+        _sessionModel.SetProfileValue(ProfileConstants.ProfileIds.EngagedWithAPreviousAmbassadorInTheNetworkApprentice, isPreviouslyEngaged!);
         var actualResult = _sut.Get();
         var actualViewModel = actualResult.As<ViewResult>().Model.As<CheckYourAnswersViewModel>();
 
@@ -121,7 +122,7 @@ public class AndSessionModelIsPopulated : CheckYourAnswersControllerTestsBase
     [Test]
     public void ThenSetsEmployerNameInViewModel()
     {
-        _actualViewModel.CurrentEmployerName.Should().Be(_sessionModel.ProfileData.First(p => p.Id == ProfileDataId.EmployerName).Value);
+        _actualViewModel.CurrentEmployerName.Should().Be(_sessionModel.ProfileData.First(p => p.Id == ProfileConstants.ProfileIds.EmployerName).Value);
         _actualViewModel.CurrentEmployerChangeLink.Should().Be(EmployerSearchUrl);
     }
 

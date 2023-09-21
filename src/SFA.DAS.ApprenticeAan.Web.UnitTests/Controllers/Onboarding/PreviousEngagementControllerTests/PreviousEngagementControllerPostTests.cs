@@ -5,7 +5,7 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using SFA.DAS.ApprenticeAan.Domain.Constants;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
@@ -68,7 +68,7 @@ public class PreviousEngagementControllerPostTests
 
         //Assert
         sessionServiceMock.Verify(s => s.Set(sessionModel));
-        sessionModel.ProfileData.FirstOrDefault(p => p.Id == ProfileDataId.HasPreviousEngagement)?.Value.Should().Be(hasPreviousEngagementValue.ToString());
+        sessionModel.ProfileData.FirstOrDefault(p => p.Id == ProfileConstants.ProfileIds.EngagedWithAPreviousAmbassadorInTheNetworkApprentice)?.Value.Should().Be(hasPreviousEngagementValue.ToString());
     }
 
     [Test, MoqAutoData]
@@ -130,7 +130,7 @@ public class PreviousEngagementControllerPostTests
     private OnboardingSessionModel GetSessionModel(bool hasSeenPreview = true)
     {
         OnboardingSessionModel model = new() { HasSeenPreview = hasSeenPreview };
-        model.ProfileData.Add(new ProfileModel { Id = ProfileDataId.HasPreviousEngagement, Value = null });
+        model.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.EngagedWithAPreviousAmbassadorInTheNetworkApprentice, Value = null });
         return model;
     }
 }
