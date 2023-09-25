@@ -10,6 +10,6 @@ public static class SharedRouteNames
     public const string NetworkEvents = nameof(NetworkEvents);
     public const string NetworkDirectory = nameof(NetworkDirectory);
     public const string ProfileSettings = nameof(ProfileSettings);
-    public const string YourNetworkProfile = nameof(YourNetworkProfile);
+    public const string YourAmbassadorProfile = nameof(YourAmbassadorProfile);
     public const string LeaveTheNetwork = nameof(LeaveTheNetwork);
 }

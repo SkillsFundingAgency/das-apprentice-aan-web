@@ -10,7 +10,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
 public class ProfileSettingsControllerTests
 {
     private IActionResult _result = null!;
-    static readonly string YourNetworkProfileUrl = Guid.NewGuid().ToString();
+    static readonly string YourAmbassadorProfileUrl = Guid.NewGuid().ToString();
     static readonly string LeaveTheNetworkUrl = Guid.NewGuid().ToString();
 
     [SetUp]
@@ -18,7 +18,7 @@ public class ProfileSettingsControllerTests
     {
         ProfileSettingsController sut = new();
         sut.AddUrlHelperMock()
-            .AddUrlForRoute(SharedRouteNames.YourNetworkProfile, YourNetworkProfileUrl)
+            .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl)
             .AddUrlForRoute(SharedRouteNames.LeaveTheNetwork, LeaveTheNetworkUrl);
 
         _result = sut.Index();
@@ -31,10 +31,10 @@ public class ProfileSettingsControllerTests
     }
 
     [Test]
-    public void ThenSetsYourNetworkProfileUrlInViewModel()
+    public void ThenSetsYourAmbassadorProfileUrlInViewModel()
     {
         var model = _result.As<ViewResult>().Model.As<ProfileSettingsViewModel>();
-        model.YourNetworkProfileUrl.Should().Be(YourNetworkProfileUrl);
+        model.YourAmbassadorProfileUrl.Should().Be(YourAmbassadorProfileUrl);
     }
 
     [Test]

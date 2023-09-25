@@ -14,7 +14,7 @@ public class ProfileSettingsController : Controller
     {
         ProfileSettingsViewModel model = new()
         {
-            YourNetworkProfileUrl = Url.RouteUrl(SharedRouteNames.YourNetworkProfile)!,
+            YourAmbassadorProfileUrl = Url.RouteUrl(SharedRouteNames.YourAmbassadorProfile)!,
             LeaveTheNetworkUrl = Url.RouteUrl(SharedRouteNames.LeaveTheNetwork)!
         };
 
