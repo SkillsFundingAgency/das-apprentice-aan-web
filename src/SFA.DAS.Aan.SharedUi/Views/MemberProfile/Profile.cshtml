@@ -1,0 +1,195 @@
+﻿@using SFA.DAS.Aan.SharedUi.Extensions;
+@using SFA.DAS.Aan.SharedUi.Models;
+@model MemberProfileViewModel
+@{
+    ViewData["Title"] = "Member Profile";
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <strong class="govuk-tag app-tag app-tag--@Model.UserRole">@Model.UserRole.GetDescription()</strong>
+        <h1 class="govuk-heading-xl govuk-!-margin-top-4 govuk-!-margin-bottom-0">@Model.FullName</h1>
+        <p class="profile-job-title govuk-!-margin-bottom-0">@Model.JobTitle</p>
+        <p>@Model.RegionName</p>
+
+        @if (!string.IsNullOrEmpty(Model.Biography))
+        {
+            <div class="profile-about-me-section govuk-!-padding-5">
+                <h3 class="govuk-heading-m">
+                    About me
+                </h3>
+                <p>
+                    @Model.Biography
+                </p>
+            </div>
+        }
+
+        @if (Model.EventProfiles.Count > 0 || Model.PromotionProfiles.Count > 0)
+        {
+            <h1 class="govuk-heading-l govuk-!-margin-top-7">My areas of interest</h1>
+            <p>Here are the areas I’m most interested in as an ambassador.</p>
+            <div>
+                @if (Model.EventProfiles.Count > 0)
+                {
+                    <div>
+                        <h3 class="govuk-heading-m govuk-!-margin-bottom-1">Events:</h3>
+                        <ul>
+                            @foreach (var eventProfile in Model.EventProfiles)
+                            {
+                                <li>
+                                    <p>@eventProfile</p>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+                @if (Model.PromotionProfiles.Count > 0)
+                {
+                    <div>
+                        <h3 class="govuk-heading-m govuk-!-margin-bottom-1">Promoting the network:</h3>
+                        <ul>
+                            @foreach (var promotionProfile in Model.PromotionProfiles)
+                            {
+                                <li>
+                                    <p>@promotionProfile</p>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(Model.OrganisationName) || !string.IsNullOrEmpty(Model.Address) || Model.ApprenticeShip != null)
+        {
+            <h1 class="govuk-heading-l govuk-!-margin-top-7">@Model.FirstName’s apprenticeship information</h1>
+            <dl class="govuk-summary-list">
+                @if (!string.IsNullOrEmpty(Model.OrganisationName))
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Organisation name
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.OrganisationName
+                        </dd>
+                    </div>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.Address))
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Employer’s address and postcode
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.Address
+                        </dd>
+                    </div>
+                }
+
+                @if (Model.ApprenticeShip != null)
+                {
+                    @if (!string.IsNullOrEmpty(Model.ApprenticeShip!.Sector))
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key apprenticeship-sector">
+                                Apprenticeship sectors
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @Model.ApprenticeShip!.Sector
+                            </dd>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.ApprenticeShip!.Programmes))
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Apprenticeship programme
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @Model.ApprenticeShip!.Programmes
+                            </dd>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.ApprenticeShip!.Level))
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Apprenticeship level
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @Model.ApprenticeShip!.Level
+                            </dd>
+                        </div>
+                    }
+                }
+            </dl>
+        }
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Connect with @Model.FirstName</h1>
+        <p class="govuk-!-margin-bottom-4 govuk-!-margin-top-4 govuk-!-margin-top-2">You can connect with @Model.FirstName by email or LinkedIn.</p>
+        <h3 class="govuk-heading-m profile-send-message govuk-!-margin-bottom-0 connect-section-heading govuk-!-padding-2"><span class="govuk-!-margin-left-2">Send a message to @Model.FirstName</span></h3>
+        <div class="profile-send-message-section govuk-!-padding-5">
+            <div>
+                <h3 class="govuk-heading-m govuk-!-margin-bottom-4">I would like to:</h3>
+                <div id="choicePreference" class="govuk-radios" data-module="govuk-radios">
+                    <div class="govuk-radios__item">
+                        <input id="choicePreference-0" class="govuk-radios__input" type="radio" value="choicePreference-0">
+                        <label class="govuk-label govuk-radios__label profile-govuk-radios" for="choicePreference-0">
+                            ask for industry advice
+                        </label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input id="choicePreference-1" class="govuk-radios__input" type="radio" value="choicePreference-1">
+                        <label class="govuk-label govuk-radios__label profile-govuk-radios" for="choicePreference-1">
+                            ask for help with a network activity
+                        </label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input id="choicePreference-2" class="govuk-radios__input" type="radio" value="choicePreference-2"
+                               sfa-validationerror-class="form-control-error">
+                        <label class="govuk-label govuk-radios__label profile-govuk-radios" for="choicePreference-2">
+                            request a case study
+                        </label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input id="choicePreference-3" class="govuk-radios__input" type="radio" value="choicePreference-3"
+                               sfa-validationerror-class="form-control-error">
+                        <label class="govuk-label govuk-radios__label profile-govuk-radios" for="choicePreference-3">
+                            get in touch after meeting at a network event
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="govuk-!-margin-top-4">
+                <h3 class="govuk-heading-m govuk-!-margin-bottom-4">By submitting this message, I agree to:</h3>
+                <div class="govuk-checkboxes govuk-checkboxes--small">
+                    <div class="govuk-checkboxes__item">
+                        <input class="govuk-checkboxes__input" id="details" name="details" type="checkbox" value="true">
+                        <label class="govuk-label govuk-checkboxes__label profile-govuk-checkboxes" for="details">
+                            my details including my name, email address and a link to my profile being displayed in the message
+                        </label>
+                    </div>
+                    <div class="govuk-checkboxes__item">
+                        <input class="govuk-checkboxes__input" id="codeOfConduct" name="codeOfConduct" type="checkbox" value="true">
+                        <label class="govuk-label govuk-checkboxes__label profile-govuk-checkboxes" for="codeOfConduct">
+                            adhere to the <a href="#">code of conduct (opens in new tab)</a>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <p class="govuk-grid-column-full govuk-!-margin-top-4 govuk-!-margin-bottom-4">An email will be sent to @Model.FirstName from the Apprenticeship Ambassador Network inbox outlining your request.</p>
+            <button class="govuk-button govuk-!-margin-bottom-0" disabled="@(Model.IsLoggedInUserMemberProfile)">Send the message</button>
+        </div>
+        @if (!string.IsNullOrEmpty(Model.LinkedinUrl))
+        {
+            <ul class="govuk-list app-icon-list">
+                <li>
+                    <h2 class="govuk-heading-m">Connect with @Model.FirstName on Linkedin</h2>
+                    <p>Send @Model.FirstName a connection request: <a href="@Model.LinkedinUrl" class="govuk-link govuk-link--no-visited-state">@Model.LinkedinUrl</a></p>
+                    <img class="app-icon-list__icon" src="/img/linkedin.svg" />
+                </li>
+            </ul>
+        }
+    </div>
+</div>

@@ -67,4 +67,8 @@ public interface IOuterApiClient
 
     [Get("/members")]
     Task<GetNetworkDirectoryQueryResult> GetMembers([QueryMap] IDictionary<string, string[]> parameters, CancellationToken cancellationToken);
+
+    [Get("/members/{memberId}/profile")]
+    [AllowAnyStatusCode]
+    Task<Response<MemberProfile>> GetMemberProfile([Header(RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId, [Path] Guid memberId, [Query] bool @public, CancellationToken cancellationToken);
 }

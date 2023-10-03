@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models;
+using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
@@ -35,15 +36,28 @@ public class NetworkEventDetailsController : Controller
     {
         var memberId = User.GetAanMemberId();
         var eventDetailsResponse = await _outerApiClient.GetCalendarEventDetails(id, memberId, cancellationToken);
-
         if (eventDetailsResponse.ResponseMessage.IsSuccessStatusCode)
         {
+            CalendarEvent calendarEvent = InitialiseViewModel(eventDetailsResponse.GetContent());
             return View(DetailsViewPath, new NetworkEventDetailsViewModel(
-                eventDetailsResponse.GetContent(),
+                calendarEvent,
                 memberId));
         }
 
         throw new InvalidOperationException($"An event with ID {id} was not found.");
+    }
+
+    private CalendarEvent InitialiseViewModel(CalendarEvent result)
+    {
+        List<Attendee> attendees = new List<Attendee>();
+        foreach (var attendee in result.Attendees)
+        {
+            Attendee attendeeObject = attendee;
+            attendeeObject.MemberProfileLink = Url.RouteUrl(SharedRouteNames.MemberProfile, new { id = attendee.MemberId, @public = false })!;
+            attendees.Add(attendeeObject);
+        }
+        result.Attendees = attendees;
+        return result;
     }
 
     [HttpPost]

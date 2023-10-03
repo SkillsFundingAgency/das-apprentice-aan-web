@@ -11,6 +11,7 @@ public class MembersViewModel
     public Role UserRole { get; set; }
     public bool? IsRegionalChair { get; set; }
     public DateTime JoinedDate { get; set; }
+    public string MemberProfileLink { get; set; } = null!;
 
     public static implicit operator MembersViewModel(MemberSummary source)
         => new()
