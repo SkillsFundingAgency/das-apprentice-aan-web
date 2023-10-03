@@ -84,8 +84,8 @@ public class MemberProfileControllerTests
     [MoqAutoData]
     public void Get_ReturnsProfileView(
         [Frozen] Mock<IOuterApiClient> outerApiMock,
-        CancellationToken cancellationToken,
-        MemberProfile memberProfile
+        MemberProfile memberProfile,
+        CancellationToken cancellationToken
     )
     {
         //Arrange
@@ -105,7 +105,7 @@ public class MemberProfileControllerTests
         Assert.Multiple(async () =>
         {
             var viewResult = await result as ViewResult;
-            Assert.That(viewResult!.ViewName!.Contains("Profile"));
+            Assert.That(viewResult!.ViewName, Does.Contain("Profile"));
         });
     }
 }

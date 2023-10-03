@@ -86,4 +86,26 @@ public class MemberProfileViewModelTest
             Assert.That(sut.RegionName, Is.EqualTo(memberProfile.RegionName));
         });
     }
+
+    [TestCase(null, "")]
+    [TestCase("Multi-Regional", "Multi-Regional")]
+    [MoqAutoData]
+    public void GetValueOrDefault_ReturnExpectedValue(string passedValue, string expectedValue)
+    {
+        //Arrange
+        Profile? profile = null;
+        if (!string.IsNullOrEmpty(passedValue))
+        {
+            profile = new Profile { Value = passedValue };
+        }
+
+        //Act
+        string sut = MemberProfileViewModel.GetValueOrDefault(profile);
+
+        //Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut, Is.EqualTo(expectedValue));
+        });
+    }
 }
