@@ -89,7 +89,6 @@ public class MemberProfileViewModelTest
 
     [TestCase(null, "")]
     [TestCase("Multi-Regional", "Multi-Regional")]
-    [MoqAutoData]
     public void GetValueOrDefault_ReturnExpectedValue(string passedValue, string expectedValue)
     {
         //Arrange
