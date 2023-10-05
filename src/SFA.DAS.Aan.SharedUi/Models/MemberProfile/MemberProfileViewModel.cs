@@ -43,7 +43,7 @@ public class MemberProfileViewModel
         OrganisationName = source.OrganisationName;
         FirstName = source.FirstName;
         LastName = source.LastName;
-        AreasOfInterestTitle = (source.UserType == Role.Apprentice) ? "Here are the areas I’m most interested in as an ambassador." : "Here are my reasons for becoming an ambassador, what support I need\r\nand how I can help other members. ";
+        AreasOfInterestTitle = (source.UserType == Role.Apprentice) ? "Here are the areas I’m most interested in as an ambassador." : "Here are my reasons for becoming an ambassador, what support I need and how I can help other members.";
         AreasOfInterestFirstSectionTitle = (source.UserType == Role.Apprentice) ? "Events:" : "Why I wanted to join the network:";
         AreasOfInterestSecondSectionTitle = (source.UserType == Role.Apprentice) ? "Promoting the network:" : "What support I need from the network:";
         InformationSectionTitle = (source.UserType == Role.Apprentice) ? $"{FirstName}’s apprenticeship information" : "Employer information";
