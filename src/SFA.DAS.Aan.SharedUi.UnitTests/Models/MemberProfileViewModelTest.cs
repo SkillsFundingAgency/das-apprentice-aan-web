@@ -1,5 +1,6 @@
 ﻿using Moq;
 using SFA.DAS.Aan.SharedUi.Constants;
+using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 using SFA.DAS.Testing.AutoFixture;
@@ -65,7 +66,7 @@ public class MemberProfileViewModelTest
         Assert.Multiple(() =>
         {
             Assert.That(sut.RegionId, Is.EqualTo(memberProfile.RegionId));
-            Assert.That(sut.RegionName, Is.EqualTo("Multi-regional"));
+            Assert.That(sut.RegionName, Is.EqualTo(MemberProfileTitle.MultiRegionalRegion));
         });
     }
 
@@ -94,9 +95,9 @@ public class MemberProfileViewModelTest
         MemberProfile memberProfile = new MemberProfile();
         memberProfile.UserType = role;
         memberProfile.FirstName = "test";
-        string expectedAreasOfInterestTitle = "Here are the areas I’m most interested in as an ambassador.";
-        string expectedAreasOfInterestFirstSectionTitle = "Events:";
-        string expectedAreasOfInterestSecondSectionTitle = "Promoting the network:";
+        string expectedAreasOfInterestTitle = MemberProfileTitle.ApprenticeAreasOfInterestTitle;
+        string expectedAreasOfInterestFirstSectionTitle = MemberProfileTitle.ApprenticeAreasOfInterestFirstSectionTitle;
+        string expectedAreasOfInterestSecondSectionTitle = MemberProfileTitle.ApprenticeAreasOfInterestSecondSectionTitle;
         string expectedInformationSectionTitle = $"{memberProfile.FirstName}’s apprenticeship information";
         string expectedConnectSectionTitle = $"You can connect with {memberProfile.FirstName} by email or LinkedIn.";
 
@@ -122,10 +123,10 @@ public class MemberProfileViewModelTest
         MemberProfile memberProfile = new MemberProfile();
         memberProfile.UserType = role;
         memberProfile.FirstName = "test";
-        string expectedAreasOfInterestTitle = "Here are my reasons for becoming an ambassador, what support I need and how I can help other members.";
-        string expectedAreasOfInterestFirstSectionTitle = "Why I wanted to join the network:";
-        string expectedAreasOfInterestSecondSectionTitle = "What support I need from the network:";
-        string expectedInformationSectionTitle = "Employer information";
+        string expectedAreasOfInterestTitle = MemberProfileTitle.EmployerAreasOfInterestTitle;
+        string expectedAreasOfInterestFirstSectionTitle = MemberProfileTitle.EmployerAreasOfInterestFirstSectionTitle;
+        string expectedAreasOfInterestSecondSectionTitle = MemberProfileTitle.EmployerAreasOfInterestSecondSectionTitle;
+        string expectedInformationSectionTitle = MemberProfileTitle.EmployerInformationSectionTitle;
         string expectedConnectSectionTitle = $"You can contact {memberProfile.FirstName} using the form below or connect directly on LinkedIn.";
 
         //Act

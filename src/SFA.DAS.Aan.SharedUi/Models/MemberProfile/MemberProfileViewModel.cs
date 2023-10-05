@@ -1,4 +1,5 @@
 ﻿using SFA.DAS.Aan.SharedUi.Constants;
+using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 
 namespace SFA.DAS.Aan.SharedUi.Models;
@@ -30,7 +31,7 @@ public class MemberProfileViewModel
         FullName = source.FullName;
         Email = source.Email;
         RegionId = source.RegionId;
-        RegionName = (source.RegionId != null) ? source.RegionName : "Multi-regional";
+        RegionName = (source.RegionId != null) ? source.RegionName : MemberProfileTitle.MultiRegionalRegion;
         UserRole = (source.IsRegionalChair ?? false) ? Role.RegionalChair : source.UserType;
         JobTitle = GetValueOrDefault(source.Profiles.FirstOrDefault(x => x.ProfileId == memberProfileMappingModel.JobTitleProfileId));
         Biography = GetValueOrDefault(source.Profiles.FirstOrDefault(x => x.ProfileId == memberProfileMappingModel.BiographyProfileId));
@@ -43,10 +44,10 @@ public class MemberProfileViewModel
         OrganisationName = source.OrganisationName;
         FirstName = source.FirstName;
         LastName = source.LastName;
-        AreasOfInterestTitle = (source.UserType == Role.Apprentice) ? "Here are the areas I’m most interested in as an ambassador." : "Here are my reasons for becoming an ambassador, what support I need and how I can help other members.";
-        AreasOfInterestFirstSectionTitle = (source.UserType == Role.Apprentice) ? "Events:" : "Why I wanted to join the network:";
-        AreasOfInterestSecondSectionTitle = (source.UserType == Role.Apprentice) ? "Promoting the network:" : "What support I need from the network:";
-        InformationSectionTitle = (source.UserType == Role.Apprentice) ? $"{FirstName}’s apprenticeship information" : "Employer information";
+        AreasOfInterestTitle = (source.UserType == Role.Apprentice) ? MemberProfileTitle.ApprenticeAreasOfInterestTitle : MemberProfileTitle.EmployerAreasOfInterestTitle;
+        AreasOfInterestFirstSectionTitle = (source.UserType == Role.Apprentice) ? MemberProfileTitle.ApprenticeAreasOfInterestFirstSectionTitle : MemberProfileTitle.EmployerAreasOfInterestFirstSectionTitle;
+        AreasOfInterestSecondSectionTitle = (source.UserType == Role.Apprentice) ? MemberProfileTitle.ApprenticeAreasOfInterestSecondSectionTitle : MemberProfileTitle.EmployerAreasOfInterestSecondSectionTitle;
+        InformationSectionTitle = (source.UserType == Role.Apprentice) ? $"{FirstName}’s apprenticeship information" : MemberProfileTitle.EmployerInformationSectionTitle;
         ConnectSectionTitle = (source.UserType == Role.Apprentice) ? $"You can connect with {FirstName} by email or LinkedIn." : $"You can contact {FirstName} using the form below or connect directly on LinkedIn.";
     }
 
