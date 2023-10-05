@@ -23,17 +23,17 @@
             </div>
         }
 
-        @if (Model.EventProfiles.Count > 0 || Model.PromotionProfiles.Count > 0)
+        @if (Model.FirstSectionProfiles.Count > 0 || Model.SecondSectionProfiles.Count > 0)
         {
             <h1 class="govuk-heading-l govuk-!-margin-top-7">My areas of interest</h1>
-            <p>Here are the areas I’m most interested in as an ambassador.</p>
+            <p>@Model.AreasOfInterestTitle</p>
             <div>
-                @if (Model.EventProfiles.Count > 0)
+                @if (Model.FirstSectionProfiles.Count > 0)
                 {
                     <div>
-                        <h3 class="govuk-heading-m govuk-!-margin-bottom-1">Events:</h3>
+                        <h3 class="govuk-heading-m govuk-!-margin-bottom-1">@Model.AreasOfInterestFirstSectionTitle</h3>
                         <ul>
-                            @foreach (var eventProfile in Model.EventProfiles)
+                            @foreach (var eventProfile in Model.FirstSectionProfiles)
                             {
                                 <li>
                                     <p>@eventProfile</p>
@@ -42,12 +42,12 @@
                         </ul>
                     </div>
                 }
-                @if (Model.PromotionProfiles.Count > 0)
+                @if (Model.SecondSectionProfiles.Count > 0)
                 {
                     <div>
-                        <h3 class="govuk-heading-m govuk-!-margin-bottom-1">Promoting the network:</h3>
+                        <h3 class="govuk-heading-m govuk-!-margin-bottom-1">@Model.AreasOfInterestSecondSectionTitle</h3>
                         <ul>
-                            @foreach (var promotionProfile in Model.PromotionProfiles)
+                            @foreach (var promotionProfile in Model.SecondSectionProfiles)
                             {
                                 <li>
                                     <p>@promotionProfile</p>
@@ -60,13 +60,13 @@
         }
         @if (!string.IsNullOrEmpty(Model.OrganisationName) || !string.IsNullOrEmpty(Model.Address) || Model.ApprenticeShip != null)
         {
-            <h1 class="govuk-heading-l govuk-!-margin-top-7">@Model.FirstName’s apprenticeship information</h1>
+            <h1 class="govuk-heading-l govuk-!-margin-top-7">@Model.InformationSectionTitle</h1>
             <dl class="govuk-summary-list">
                 @if (!string.IsNullOrEmpty(Model.OrganisationName))
                 {
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">
-                            Organisation name
+                            Employer's name
                         </dt>
                         <dd class="govuk-summary-list__value">
                             @Model.OrganisationName
@@ -123,11 +123,42 @@
                             </dd>
                         </div>
                     }
+
+                    @if (Model.UserRole == SFA.DAS.Aan.SharedUi.Constants.Role.Employer)
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">
+                                Number of active apprentices
+                            </dt>
+                            <dd class="govuk-summary-list__value">
+                                @Model.ApprenticeShip!.ActiveApprenticesCount
+                            </dd>
+                        </div>
+
+                        @if (Model.ApprenticeShip!.Sectors.Count > 0)
+                        {
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    Apprenticeship sectors
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    <ul class="govuk-list govuk-list--bullet">
+                                        @{
+                                            foreach (var sector in Model.ApprenticeShip!.Sectors)
+                                            {
+                                                <li>@sector</li>
+                                            }
+                                        }
+                                    </ul>
+                                </dd>
+                            </div>
+                        }
+                    }
                 }
             </dl>
         }
         <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Connect with @Model.FirstName</h1>
-        <p class="govuk-!-margin-bottom-4 govuk-!-margin-top-4 govuk-!-margin-top-2">You can connect with @Model.FirstName by email or LinkedIn.</p>
+        <p class="govuk-!-margin-bottom-4 govuk-!-margin-top-4 govuk-!-margin-top-2">@Model.ConnectSectionTitle</p>
         <h3 class="govuk-heading-m profile-send-message govuk-!-margin-bottom-0 connect-section-heading govuk-!-padding-2"><span class="govuk-!-margin-left-2">Send a message to @Model.FirstName</span></h3>
         <div class="profile-send-message-section govuk-!-padding-5">
             <div>
