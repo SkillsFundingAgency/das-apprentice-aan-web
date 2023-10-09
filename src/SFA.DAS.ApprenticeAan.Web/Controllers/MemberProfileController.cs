@@ -56,8 +56,18 @@ public class MemberProfileController : Controller
         var memberProfileResponse = await _outerApiClient.GetMemberProfile(memberId, id, true, cancellationToken);
         if (memberProfileResponse.ResponseMessage.IsSuccessStatusCode)
         {
-            return View(MemberProfileViewPath, new MemberProfileViewModel(
-                memberProfileResponse.GetContent(), new MemberProfileMappingModel(linkedinProfileId, jobTitleProfileId, biographyProfileId, eventsProfileIds, promotionsProfileIds, addressProfileIds, employerNameProfileId, (id == memberId))));
+            MemberProfileMappingModel memberProfileMappingModel = new()
+            {
+                LinkedinProfileId = linkedinProfileId,
+                JobTitleProfileId = jobTitleProfileId,
+                BiographyProfileId = biographyProfileId,
+                FirstSectionProfileIds = eventsProfileIds,
+                SecondSectionProfileIds = promotionsProfileIds,
+                AddressProfileIds = addressProfileIds,
+                EmployerNameProfileId = employerNameProfileId,
+                IsLoggedInUserMemberProfile = (id == memberId)
+            };
+            return View(MemberProfileViewPath, new MemberProfileViewModel(memberProfileResponse.GetContent(), memberProfileMappingModel));
         }
         throw new InvalidOperationException($"A member profile with ID {id} was not found.");
     }

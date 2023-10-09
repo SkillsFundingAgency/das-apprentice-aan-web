@@ -1,5 +1,4 @@
-﻿using Moq;
-using SFA.DAS.Aan.SharedUi.Constants;
+﻿using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
@@ -15,7 +14,7 @@ public class MemberProfileViewModelTest
     [SetUp]
     public void Initialize()
     {
-        memberProfileMappingModel = new MemberProfileMappingModel(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), new List<int>(), new List<int>(), new List<int>(), It.IsAny<int>(), false);
+        memberProfileMappingModel = new MemberProfileMappingModel();
     }
 
     [Test]
