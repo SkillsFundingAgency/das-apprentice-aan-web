@@ -33,6 +33,7 @@ public class MemberProfileController : Controller
     private static int linkedinProfileId = ProfileDataId.LinkedinUrl;
     private static int jobTitleProfileId = ProfileDataId.JobTitle;
     private static int biographyProfileId = ProfileDataId.Biography;
+    private static int employerNameProfileId = ProfileDataId.EmployerName;
     private static List<int> addressProfileIds = new List<int>()
     {
         ProfileDataId.AddressLine1,
@@ -48,15 +49,15 @@ public class MemberProfileController : Controller
     }
 
     [HttpGet]
-    [Route("{id}/{public}", Name = SharedRouteNames.MemberProfile)]
-    public async Task<IActionResult> Get([FromRoute] Guid id, [FromRoute] bool @public, CancellationToken cancellationToken)
+    [Route("{id}", Name = SharedRouteNames.MemberProfile)]
+    public async Task<IActionResult> Get([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var memberId = User.GetAanMemberId();
-        var memberProfileResponse = await _outerApiClient.GetMemberProfile(memberId, id, @public, cancellationToken);
+        var memberProfileResponse = await _outerApiClient.GetMemberProfile(memberId, id, true, cancellationToken);
         if (memberProfileResponse.ResponseMessage.IsSuccessStatusCode)
         {
             return View(MemberProfileViewPath, new MemberProfileViewModel(
-                memberProfileResponse.GetContent(), new MemberProfileMappingModel(linkedinProfileId, jobTitleProfileId, biographyProfileId, eventsProfileIds, promotionsProfileIds, addressProfileIds, (id == memberId))));
+                memberProfileResponse.GetContent(), new MemberProfileMappingModel(linkedinProfileId, jobTitleProfileId, biographyProfileId, eventsProfileIds, promotionsProfileIds, addressProfileIds, employerNameProfileId, (id == memberId))));
         }
         throw new InvalidOperationException($"A member profile with ID {id} was not found.");
     }

@@ -15,7 +15,7 @@ public class MemberProfileViewModelTest
     [SetUp]
     public void Initialize()
     {
-        memberProfileMappingModel = new MemberProfileMappingModel(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), new List<int>(), new List<int>(), new List<int>(), false);
+        memberProfileMappingModel = new MemberProfileMappingModel(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), new List<int>(), new List<int>(), new List<int>(), It.IsAny<int>(), false);
     }
 
     [Test]

@@ -58,7 +58,7 @@ public class NetworkDirectoryController : Controller
         foreach (var member in result.Members)
         {
             MembersViewModel vm = member;
-            vm.MemberProfileLink = Url.RouteUrl(SharedRouteNames.MemberProfile, new { id = member.MemberId, @public = true })!;
+            vm.MemberProfileLink = Url.RouteUrl(SharedRouteNames.MemberProfile, new { id = member.MemberId })!;
             model.Members.Add(vm);
         }
 

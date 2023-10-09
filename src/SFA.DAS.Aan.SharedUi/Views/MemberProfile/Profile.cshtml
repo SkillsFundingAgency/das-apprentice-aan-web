@@ -58,18 +58,18 @@
                 }
             </div>
         }
-        @if (!string.IsNullOrEmpty(Model.OrganisationName) || !string.IsNullOrEmpty(Model.Address) || Model.ApprenticeShip != null)
+        @if (!string.IsNullOrEmpty(Model.EmployerName) || !string.IsNullOrEmpty(Model.Address) || Model.ApprenticeShip != null)
         {
             <h1 class="govuk-heading-l govuk-!-margin-top-7">@Model.InformationSectionTitle</h1>
             <dl class="govuk-summary-list">
-                @if (!string.IsNullOrEmpty(Model.OrganisationName))
+                @if (!string.IsNullOrEmpty(Model.EmployerName))
                 {
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">
                             Employer's name
                         </dt>
                         <dd class="govuk-summary-list__value">
-                            @Model.OrganisationName
+                            @Model.EmployerName
                         </dd>
                     </div>
                 }
@@ -100,14 +100,14 @@
                         </div>
                     }
 
-                    @if (!string.IsNullOrEmpty(Model.ApprenticeShip!.Programmes))
+                    @if (!string.IsNullOrEmpty(Model.ApprenticeShip!.Programme))
                     {
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">
                                 Apprenticeship programme
                             </dt>
                             <dd class="govuk-summary-list__value">
-                                @Model.ApprenticeShip!.Programmes
+                                @Model.ApprenticeShip!.Programme
                             </dd>
                         </div>
                     }

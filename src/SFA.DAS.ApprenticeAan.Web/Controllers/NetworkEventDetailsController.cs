@@ -53,7 +53,7 @@ public class NetworkEventDetailsController : Controller
         foreach (var attendee in result.Attendees)
         {
             Attendee attendeeObject = attendee;
-            attendeeObject.MemberProfileLink = Url.RouteUrl(SharedRouteNames.MemberProfile, new { id = attendee.MemberId, @public = false })!;
+            attendeeObject.MemberProfileLink = Url.RouteUrl(SharedRouteNames.MemberProfile, new { id = attendee.MemberId })!;
             attendees.Add(attendeeObject);
         }
         result.Attendees = attendees;

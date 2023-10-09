@@ -34,7 +34,7 @@ public class MemberProfileControllerTests
                     .ReturnsAsync(response);
 
         //Act
-        var result = (ViewResult)sut.Get(memberId, true, new CancellationToken()).Result;
+        var result = (ViewResult)sut.Get(memberId, new CancellationToken()).Result;
 
         //Assert
         Assert.That(result.Model, Is.TypeOf<MemberProfileViewModel>());
@@ -54,7 +54,7 @@ public class MemberProfileControllerTests
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
 
         //Act
-        var result = sut.Get(memberId, true, cancellationToken);
+        var result = sut.Get(memberId, cancellationToken);
 
         //Assert
         outerApiMock.Verify(o => o.GetMemberProfile(memberId, It.IsAny<Guid>(), true, cancellationToken), Times.Once());
@@ -77,7 +77,7 @@ public class MemberProfileControllerTests
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
 
         //Assert
-        Assert.That(() => sut.Get(memberId, true, cancellationToken), Throws.InvalidOperationException);
+        Assert.That(() => sut.Get(memberId, cancellationToken), Throws.InvalidOperationException);
     }
 
     [Test]
@@ -99,7 +99,7 @@ public class MemberProfileControllerTests
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
 
         //Act
-        var result = sut.Get(memberId, true, cancellationToken);
+        var result = sut.Get(memberId, cancellationToken);
 
         //Assert
         Assert.Multiple(async () =>

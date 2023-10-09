@@ -4,12 +4,14 @@ public class MemberProfileMappingModel
     public int LinkedinProfileId { get; set; }
     public int JobTitleProfileId { get; set; }
     public int BiographyProfileId { get; set; }
+
     public List<int> FirstSectionProfileIds { get; set; }
     public List<int> SecondSectionProfileIds { get; set; }
     public List<int> AddressProfileIds { get; set; }
+    public int EmployerNameProfileId { get; set; }
     public bool IsLoggedInUserMemberProfile { get; set; }
 
-    public MemberProfileMappingModel(int sourceLinkedinProfileId, int sourceJobTitleProfileId, int sourceBiographyProfileId, List<int> sourceEventsProfileIds, List<int> sourcePromotionsProfileIds, List<int> sourceAddressProfileIds, bool sourceIsLoggedInUserMemberProfile)
+    public MemberProfileMappingModel(int sourceLinkedinProfileId, int sourceJobTitleProfileId, int sourceBiographyProfileId, List<int> sourceEventsProfileIds, List<int> sourcePromotionsProfileIds, List<int> sourceAddressProfileIds, int sourceEmployerNameProfileId, bool sourceIsLoggedInUserMemberProfile)
     {
         LinkedinProfileId = sourceLinkedinProfileId;
         JobTitleProfileId = sourceJobTitleProfileId;
@@ -17,6 +19,7 @@ public class MemberProfileMappingModel
         FirstSectionProfileIds = sourceEventsProfileIds;
         SecondSectionProfileIds = sourcePromotionsProfileIds;
         AddressProfileIds = sourceAddressProfileIds;
+        EmployerNameProfileId = sourceEmployerNameProfileId;
         IsLoggedInUserMemberProfile = sourceIsLoggedInUserMemberProfile;
     }
 

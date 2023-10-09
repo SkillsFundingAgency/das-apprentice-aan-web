@@ -7,7 +7,7 @@ public class MemberProfileViewModel
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public string? OrganisationName { get; set; }
+    public string? EmployerName { get; set; }
     public string FullName { get; set; }
     public string Email { get; set; }
     public int? RegionId { get; set; }
@@ -41,7 +41,7 @@ public class MemberProfileViewModel
         Address = string.Join(",", source.Profiles.Where(x => memberProfileMappingModel.AddressProfileIds.Contains(x.ProfileId)).Select(x => x.Value).ToList());
         IsLoggedInUserMemberProfile = memberProfileMappingModel.IsLoggedInUserMemberProfile;
         ApprenticeShip = source.Apprenticeship;
-        OrganisationName = source.OrganisationName;
+        EmployerName = GetValueOrDefault(source.Profiles.FirstOrDefault(x => x.ProfileId == memberProfileMappingModel.EmployerNameProfileId));
         FirstName = source.FirstName;
         LastName = source.LastName;
         AreasOfInterestTitle = (source.UserType == Role.Apprentice) ? MemberProfileTitle.ApprenticeAreasOfInterestTitle : MemberProfileTitle.EmployerAreasOfInterestTitle;
