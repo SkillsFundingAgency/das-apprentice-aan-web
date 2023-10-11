@@ -6,6 +6,8 @@ using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
+[Route("", Name = RouteNames.Home)]
+[Route("[controller]")]
 public class HomeController : Controller
 {
     public IActionResult Index()
