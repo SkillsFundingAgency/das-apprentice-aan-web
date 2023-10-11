@@ -113,14 +113,17 @@ public class MemberProfileControllerTests
     [MoqAutoData]
     public void GetUserTypeProfiles_ReturnsUserTypeProfilesModel(List<SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses.Profile> profiles, [Frozen] Mock<IOuterApiClient> outerApiMock)
     {
+        //Arrange
+        List<UserTypeProfilesModel> userTypeProfilesModel = new List<UserTypeProfilesModel>();
+
         //Act
-        var result = MemberProfileController.GetUserTypeProfiles(profiles);
+        var sut = MemberProfileController.GetUserTypeProfiles(profiles);
 
         //Assert
-        Assert.Multiple(async () =>
+        Assert.Multiple(() =>
         {
-            Assert.IsInstanceOf<List<UserTypeProfilesModel>>(result);
-            Assert.That(result.Count, Is.EqualTo(profiles.Count));
+            Assert.That(sut, Is.InstanceOf(userTypeProfilesModel.GetType()));
+            Assert.That(sut, Has.Count.EqualTo(profiles.Count));
         });
     }
 }

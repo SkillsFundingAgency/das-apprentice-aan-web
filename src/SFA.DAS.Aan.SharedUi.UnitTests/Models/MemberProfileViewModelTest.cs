@@ -187,7 +187,7 @@ public class MemberProfileViewModelTest
         //Assert
         Assert.Multiple(() =>
         {
-            Assert.That(sut.Count, Is.EqualTo(2));
+            Assert.That(sut, Has.Count.EqualTo(2));
             Assert.That(sut.FirstOrDefault(), Is.EqualTo("Networking at events in person"));
         });
     }

@@ -58,6 +58,6 @@ public class MemberProfileViewModel
 
     public static List<string> GetSectionProfilesDescription(List<Profile> filteredProfiles, List<UserTypeProfilesModel> userTypeProfilesModels)
     {
-        return userTypeProfilesModels.Where(x => filteredProfiles.Any(y => y.ProfileId == x.Id && y.Value.ToLower() == "true")).OrderBy(x => x.Ordering).Select(x => x.Description).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+        return userTypeProfilesModels.Where(x => filteredProfiles.Exists(y => y.ProfileId == x.Id && y.Value.ToLower() == "true")).OrderBy(x => x.Ordering).Select(x => x.Description).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
     }
 }
