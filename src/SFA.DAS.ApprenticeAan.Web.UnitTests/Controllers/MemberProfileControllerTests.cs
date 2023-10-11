@@ -108,4 +108,19 @@ public class MemberProfileControllerTests
             Assert.That(viewResult!.ViewName, Does.Contain("Profile"));
         });
     }
+
+    [Test]
+    [MoqAutoData]
+    public void GetUserTypeProfiles_ReturnsUserTypeProfilesModel(List<SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses.Profile> profiles, [Frozen] Mock<IOuterApiClient> outerApiMock)
+    {
+        //Act
+        var result = MemberProfileController.GetUserTypeProfiles(profiles);
+
+        //Assert
+        Assert.Multiple(async () =>
+        {
+            Assert.IsInstanceOf<List<UserTypeProfilesModel>>(result);
+            Assert.That(result.Count, Is.EqualTo(profiles.Count));
+        });
+    }
 }

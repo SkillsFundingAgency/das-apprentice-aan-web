@@ -26,7 +26,7 @@ public class MemberProfileViewModel
     public string AreasOfInterestSecondSectionTitle { get; set; }
     public string InformationSectionTitle { get; set; }
     public string ConnectSectionTitle { get; set; }
-    public MemberProfileViewModel(MemberProfile source, MemberProfileMappingModel memberProfileMappingModel)
+    public MemberProfileViewModel(MemberProfile source, MemberProfileMappingModel memberProfileMappingModel, List<UserTypeProfilesModel> userTypeProfilesModels)
     {
         FullName = source.FullName;
         Email = source.Email;
@@ -36,8 +36,8 @@ public class MemberProfileViewModel
         JobTitle = GetValueOrDefault(source.Profiles.FirstOrDefault(x => x.ProfileId == memberProfileMappingModel.JobTitleProfileId));
         Biography = GetValueOrDefault(source.Profiles.FirstOrDefault(x => x.ProfileId == memberProfileMappingModel.BiographyProfileId));
         LinkedinUrl = GetValueOrDefault(source.Profiles.FirstOrDefault(x => x.ProfileId == memberProfileMappingModel.LinkedinProfileId));
-        FirstSectionProfiles = source.Profiles.Where(x => memberProfileMappingModel.FirstSectionProfileIds.Contains(x.ProfileId)).Select(x => x.Value).ToList();
-        SecondSectionProfiles = source.Profiles.Where(x => memberProfileMappingModel.SecondSectionProfileIds.Contains(x.ProfileId)).Select(x => x.Value).ToList();
+        FirstSectionProfiles = GetSectionProfilesDescription(source.Profiles.Where(x => memberProfileMappingModel.FirstSectionProfileIds.Contains(x.ProfileId)).ToList(), userTypeProfilesModels);
+        SecondSectionProfiles = GetSectionProfilesDescription(source.Profiles.Where(x => memberProfileMappingModel.SecondSectionProfileIds.Contains(x.ProfileId)).ToList(), userTypeProfilesModels);
         Address = string.Join(",", source.Profiles.Where(x => memberProfileMappingModel.AddressProfileIds.Contains(x.ProfileId)).Select(x => x.Value).ToList());
         IsLoggedInUserMemberProfile = memberProfileMappingModel.IsLoggedInUserMemberProfile;
         ApprenticeShip = source.Apprenticeship;
@@ -54,5 +54,10 @@ public class MemberProfileViewModel
     public static string GetValueOrDefault(Profile? profile)
     {
         return profile != null ? profile.Value : string.Empty;
+    }
+
+    public static List<string> GetSectionProfilesDescription(List<Profile> filteredProfiles, List<UserTypeProfilesModel> userTypeProfilesModels)
+    {
+        return userTypeProfilesModels.Where(x => filteredProfiles.Any(y => y.ProfileId == x.Id && y.Value.ToLower() == "true")).OrderBy(x => x.Ordering).Select(x => x.Description).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
     }
 }

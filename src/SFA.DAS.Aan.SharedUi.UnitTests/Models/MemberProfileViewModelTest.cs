@@ -10,11 +10,19 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models;
 public class MemberProfileViewModelTest
 {
     MemberProfileMappingModel memberProfileMappingModel = null!;
+    List<UserTypeProfilesModel> userTypeProfilesModels = null!;
 
     [SetUp]
     public void Initialize()
     {
         memberProfileMappingModel = new MemberProfileMappingModel();
+        userTypeProfilesModels = new List<UserTypeProfilesModel>()
+        {
+            new UserTypeProfilesModel { Id = 2, Description = "Presenting at events in person", Category = "Events", Ordering = 2 },
+            new UserTypeProfilesModel { Id = 10, Description = "Carrying out and writing up case studies", Category = "Promotions", Ordering = 3 },
+            new UserTypeProfilesModel { Id = 11, Description = "Designing and creating marketing materials to champion the network", Category = "Promotions", Ordering = 4 },
+            new UserTypeProfilesModel { Id = 1, Description = "Networking at events in person", Category = "Events", Ordering = 1 },
+        };
     }
 
     [Test]
@@ -25,7 +33,7 @@ public class MemberProfileViewModelTest
         memberProfile.IsRegionalChair = false;
 
         //Act
-        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, memberProfileMappingModel);
+        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, memberProfileMappingModel, userTypeProfilesModels);
 
         //Assert
         Assert.Multiple(() =>
@@ -42,7 +50,7 @@ public class MemberProfileViewModelTest
         memberProfile.IsRegionalChair = true;
 
         //Act
-        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, memberProfileMappingModel);
+        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, memberProfileMappingModel, userTypeProfilesModels);
 
         //Assert
         Assert.Multiple(() =>
@@ -59,7 +67,7 @@ public class MemberProfileViewModelTest
         memberProfile.RegionId = null;
 
         //Act
-        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, memberProfileMappingModel);
+        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, memberProfileMappingModel, userTypeProfilesModels);
 
         //Assert
         Assert.Multiple(() =>
@@ -77,7 +85,7 @@ public class MemberProfileViewModelTest
         memberProfile.RegionId = 1;
 
         //Act
-        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, memberProfileMappingModel);
+        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, memberProfileMappingModel, userTypeProfilesModels);
 
         //Assert
         Assert.Multiple(() =>
@@ -101,7 +109,7 @@ public class MemberProfileViewModelTest
         string expectedConnectSectionTitle = $"You can connect with {memberProfile.FirstName} by email or LinkedIn.";
 
         //Act
-        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, memberProfileMappingModel);
+        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, memberProfileMappingModel, userTypeProfilesModels);
 
         //Assert
         Assert.Multiple(() =>
@@ -129,7 +137,7 @@ public class MemberProfileViewModelTest
         string expectedConnectSectionTitle = $"You can contact {memberProfile.FirstName} using the form below or connect directly on LinkedIn.";
 
         //Act
-        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, memberProfileMappingModel);
+        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, memberProfileMappingModel, userTypeProfilesModels);
 
         //Assert
         Assert.Multiple(() =>
@@ -158,9 +166,29 @@ public class MemberProfileViewModelTest
         string sut = MemberProfileViewModel.GetValueOrDefault(profile);
 
         //Assert
+        Assert.That(sut, Is.EqualTo(expectedValue));
+    }
+
+    [Test]
+    public void GetSectionProfilesDescription_ReturnExpectedValueAndCount()
+    {
+        //Arrange
+        List<Profile> profiles = new List<Profile>()
+        {
+          new Profile { ProfileId = 1, Value = "True", PreferenceId = null},
+          new Profile { ProfileId = 2, Value = "False", PreferenceId = null},
+          new Profile { ProfileId = 10, Value = "True", PreferenceId = null},
+          new Profile { ProfileId = 11, Value = "False", PreferenceId = null }
+        };
+
+        //Act
+        List<string> sut = MemberProfileViewModel.GetSectionProfilesDescription(profiles, userTypeProfilesModels);
+
+        //Assert
         Assert.Multiple(() =>
         {
-            Assert.That(sut, Is.EqualTo(expectedValue));
+            Assert.That(sut.Count, Is.EqualTo(2));
+            Assert.That(sut.FirstOrDefault(), Is.EqualTo("Networking at events in person"));
         });
     }
 }

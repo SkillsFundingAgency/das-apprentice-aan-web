@@ -15,12 +15,13 @@ public class ProfileServiceTests
     public async Task Service_ProfileData_ReturnsProfiles(
         [Frozen] Mock<IOuterApiClient> _outerApiClient,
         [Greedy] ProfileService sut,
-        List<Profile> profiles)
+        List<Profile> profiles,
+        CancellationToken cancellationToken)
     {
         const string userType = "apprentice";
-        _outerApiClient.Setup(r => r.GetProfilesByUserType(userType)).ReturnsAsync(new GetProfilesResult() { Profiles = profiles });
+        _outerApiClient.Setup(r => r.GetProfilesByUserType(userType, cancellationToken)).ReturnsAsync(new GetProfilesResult() { Profiles = profiles });
 
-        var result = await sut.GetProfilesByUserType(userType);
+        var result = await sut.GetProfilesByUserType(userType, cancellationToken);
 
         Assert.Multiple(() =>
         {

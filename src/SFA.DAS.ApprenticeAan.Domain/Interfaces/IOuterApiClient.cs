@@ -15,7 +15,7 @@ public interface IOuterApiClient
     Task<List<Calendar>> GetCalendars();
 
     [Get("/profiles/{userType}")]
-    Task<GetProfilesResult> GetProfilesByUserType([Path("userType")] string userType);
+    Task<GetProfilesResult> GetProfilesByUserType([Path("userType")] string userType, CancellationToken? cancellationToken);
 
     [Get("/apprentices/{apprenticeId}/account")]
     [AllowAnyStatusCode]

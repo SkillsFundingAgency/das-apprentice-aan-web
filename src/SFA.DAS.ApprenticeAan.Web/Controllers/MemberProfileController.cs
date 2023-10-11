@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Constants;
+using SFA.DAS.Aan.SharedUi.Extensions;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
@@ -54,6 +56,7 @@ public class MemberProfileController : Controller
     {
         var memberId = User.GetAanMemberId();
         var memberProfileResponse = await _outerApiClient.GetMemberProfile(memberId, id, true, cancellationToken);
+        var userTypeProfile = await _outerApiClient.GetProfilesByUserType(Role.Apprentice.GetDescription(), cancellationToken);
         if (memberProfileResponse.ResponseMessage.IsSuccessStatusCode)
         {
             MemberProfileMappingModel memberProfileMappingModel = new()
@@ -67,8 +70,19 @@ public class MemberProfileController : Controller
                 EmployerNameProfileId = employerNameProfileId,
                 IsLoggedInUserMemberProfile = (id == memberId)
             };
-            return View(MemberProfileViewPath, new MemberProfileViewModel(memberProfileResponse.GetContent(), memberProfileMappingModel));
+            return View(MemberProfileViewPath, new MemberProfileViewModel(memberProfileResponse.GetContent(), memberProfileMappingModel, GetUserTypeProfiles(userTypeProfile.Profiles)));
         }
         throw new InvalidOperationException($"A member profile with ID {id} was not found.");
+    }
+
+    public static List<UserTypeProfilesModel> GetUserTypeProfiles(List<SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses.Profile> profiles)
+    {
+        return profiles.Select(item => new UserTypeProfilesModel
+        {
+            Id = item.Id,
+            Description = item.Description,
+            Category = item.Category,
+            Ordering = item.Ordering,
+        }).ToList();
     }
 }

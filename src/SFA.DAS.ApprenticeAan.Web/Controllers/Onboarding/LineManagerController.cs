@@ -18,19 +18,19 @@ public class LineManagerController : Controller
     public const string ViewPath = "~/Views/Onboarding/LineManager.cshtml";
     public const string ShutterPageViewPath = "~/Views/Onboarding/ShutterPage.cshtml";
     private readonly ISessionService _sessionService;
+    private readonly IOuterApiClient _apiClient;
     private readonly IValidator<LineManagerSubmitModel> _validator;
-    private readonly IProfileService _profileService;
     private readonly ApplicationConfiguration _appplicationConfiguration;
 
     public LineManagerController(
         ISessionService sessionService,
+        IOuterApiClient apiClient,
         IValidator<LineManagerSubmitModel> validator,
-        IProfileService profileService,
         ApplicationConfiguration appplicationConfiguration)
     {
+        _apiClient = apiClient;
         _validator = validator;
         _sessionService = sessionService;
-        _profileService = profileService;
         _appplicationConfiguration = appplicationConfiguration;
     }
 
@@ -69,10 +69,10 @@ public class LineManagerController : Controller
 
         if (!_sessionService.Contains<OnboardingSessionModel>())
         {
-            var profiles = await _profileService.GetProfilesByUserType("apprentice");
+            var profiles = await _apiClient.GetProfilesByUserType("apprentice", null);
             OnboardingSessionModel sessionModel = new()
             {
-                ProfileData = profiles.Select(p => (ProfileModel)p).ToList(),
+                ProfileData = profiles.Profiles.Select(p => (ProfileModel)p).ToList(),
                 HasAcceptedTerms = true
             };
             _sessionService.Set(sessionModel);
