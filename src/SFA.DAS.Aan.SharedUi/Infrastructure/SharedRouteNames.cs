@@ -12,4 +12,5 @@ public static class SharedRouteNames
     public const string ProfileSettings = nameof(ProfileSettings);
     public const string YourAmbassadorProfile = nameof(YourAmbassadorProfile);
     public const string LeaveTheNetwork = nameof(LeaveTheNetwork);
+    public const string MemberProfile = nameof(MemberProfile);
 }

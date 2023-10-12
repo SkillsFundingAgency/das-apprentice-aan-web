@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using FluentAssertions.Execution;
 using SFA.DAS.Aan.SharedUi.Constants;
+using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 using SFA.DAS.Aan.SharedUi.Services;
 using SFA.DAS.Testing.AutoFixture;
@@ -8,6 +9,21 @@ using SFA.DAS.Testing.AutoFixture;
 namespace SFA.DAS.Aan.SharedUi.UnitTests.Services;
 public class MapProfilesAndPreferencesServiceTests
 {
+    private static IEnumerable<Profile> profiles = null!;
+
+    [SetUp]
+    public void Setup()
+    {
+        //Arrange
+        profiles = new List<Profile>()
+        {
+            new Profile(){ Id=1,Description="Profile 1",Category="Events",Ordering=1},
+            new Profile(){ Id=2,Description="Profile 2",Category="Events",Ordering=2},
+            new Profile(){ Id=3,Description="Profile 3",Category="Promotion",Ordering=3},
+            new Profile(){ Id=4,Description="Profile 4",Category="Promotion",Ordering=4}
+        };
+    }
+
     [Test, MoqAutoData]
     public void WhenGettingProfileValue_AndProfileIdIsValid_ThenItIsReturned(IEnumerable<MemberProfile> memberProfiles)
     {
@@ -96,6 +112,58 @@ public class MapProfilesAndPreferencesServiceTests
             displayValue.Should().Be(PreferenceConstants.DisplayValue.HiddenTagName);
             displayClass.Should().NotBeNull();
             displayClass.Should().Be(PreferenceConstants.DisplayValue.HiddenTagClass);
+        }
+    }
+
+    [TestCase("True")]
+    [TestCase("False")]
+    [TestCase("MemberProfile")]
+    public void WhenGettingProfileDescription_AndProfileIdValid_ReturnsExpectedValue(string memberProfileValue)
+    {
+        //Arrange
+        MemberProfile memberProfile = new MemberProfile()
+        {
+            ProfileId = 1,
+            PreferenceId = 2,
+            Value = memberProfileValue
+        };
+
+        //Act
+        var sut = MapProfilesAndPreferencesService.GetProfileDescription(memberProfile, profiles);
+
+        //Assert
+        using (new AssertionScope())
+        {
+            if (memberProfileValue.ToLower() == "true")
+            {
+                sut.Should().NotBeNull();
+                sut!.GetType().Should().Be<string>();
+                sut.Should().Be(profiles.First().Description);
+            }
+            else
+            {
+                sut.Should().BeNull();
+            }
+        }
+    }
+
+    public void WhenGettingProfileDescription_AndProfileIdIsInValid_ReturnsNull()
+    {
+        //Arrange
+        MemberProfile memberProfile = new MemberProfile()
+        {
+            ProfileId = 145452154,
+            PreferenceId = 2,
+            Value = "true"
+        };
+
+        //Act
+        var sut = MapProfilesAndPreferencesService.GetProfileDescription(memberProfile, profiles);
+
+        //Assert
+        using (new AssertionScope())
+        {
+            sut.Should().BeNull();
         }
     }
 }

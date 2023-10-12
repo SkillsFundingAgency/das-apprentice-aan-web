@@ -43,6 +43,17 @@ public static class ProfileConstants
         public const int UnderstandingTrainingProvidersAndResourcesOthersAreUsing = 54;
         public const int UsingTheNetworkToBestBenefitMyOrganisation = 55;
         public const int EngagedWithAPreviousAmbassadorInTheNetworkEmployer = 61;
+        public const int EmployerJobTitle = 62;
+        public const int EmployerBiography = 63;
+        public const int EmployerRegionWhereYouLive = 64;
+        public const int EmployerSector = 65;
+        public const int EmployerLinkedIn = 66;
+        public const int EmployerUserEmployerName = 72;
+        public const int EmployerUserEmployerAddress1 = 67;
+        public const int EmployerUserEmployerAddress2 = 68;
+        public const int EmployerUserEmployerTownOrCity = 69;
+        public const int EmployerUserEmployerCounty = 70;
+        public const int EmployerUserEmployerPostcode = 71;
     }
 
     public static class ProfileCategory
