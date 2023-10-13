@@ -70,7 +70,7 @@ public class AmbassadorProfileViewModelTests
         {
             sut.ApprenticeshipDetails.Should().NotBeNull();
             sut.ApprenticeshipDetails.ApprenticeshipLevel.Should().Be(apprenticeshipDetails?.Level);
-            sut.ApprenticeshipDetails.ApprenticeshipProgramme.Should().Be(apprenticeshipDetails?.Programmes);
+            sut.ApprenticeshipDetails.ApprenticeshipProgramme.Should().Be(apprenticeshipDetails?.Programme);
             sut.ApprenticeshipDetails.ApprenticeshipSector.Should().Be(apprenticeshipDetails?.Sector);
         }
     }

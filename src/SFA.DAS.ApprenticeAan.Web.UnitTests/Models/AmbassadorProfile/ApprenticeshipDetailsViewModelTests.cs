@@ -48,7 +48,7 @@ public class ApprenticeshipDetailsViewModelTests
                 sut.EmployerAddress.Should().BeNullOrEmpty();
             }
             sut.ApprenticeshipSector.Should().Be(apprenticeshipDetails?.Sector);
-            sut.ApprenticeshipProgramme.Should().Be(apprenticeshipDetails?.Programmes);
+            sut.ApprenticeshipProgramme.Should().Be(apprenticeshipDetails?.Programme);
             sut.ApprenticeshipLevel.Should().Be(apprenticeshipDetails?.Level);
         }
     }

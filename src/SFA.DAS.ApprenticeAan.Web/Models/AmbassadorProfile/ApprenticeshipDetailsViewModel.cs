@@ -17,7 +17,7 @@ public class ApprenticeshipDetailsViewModel
         var addressArray = new List<string?>() { employerAddress1, employerAddress2, employerTown, employerCounty, employerPostcode };
         EmployerAddress = string.Join($", {Environment.NewLine}", addressArray.Where(x => !string.IsNullOrWhiteSpace(x)));
         ApprenticeshipSector = apprenticeshipDetails?.Sector;
-        ApprenticeshipProgramme = apprenticeshipDetails?.Programmes;
+        ApprenticeshipProgramme = apprenticeshipDetails?.Programme;
         ApprenticeshipLevel = apprenticeshipDetails?.Level;
         var (apprenticeshipDetailsDisplayValue, apprenticeshipDetailsDisplayClass) = MapProfilesAndPreferencesService.SetDisplayValue(GetApprenticeshipDetailsPreference(memberPreferences));
         ApprenticeshipDetailsDisplayValue = apprenticeshipDetailsDisplayValue;
