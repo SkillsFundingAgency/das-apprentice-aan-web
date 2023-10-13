@@ -2,13 +2,13 @@
 
 public class ApprenticeshipDetailsModel
 {
-    public ApprenticeshipDetailsModel(string? sector, string? programmes, string? level)
+    public ApprenticeshipDetailsModel(string? sector, string? programme, string? level)
     {
         Sector = sector;
-        Programmes = programmes;
+        Programme = programme;
         Level = level;
     }
     public string? Sector { get; set; }
-    public string? Programmes { get; set; }
+    public string? Programme { get; set; }
     public string? Level { get; set; }
 }

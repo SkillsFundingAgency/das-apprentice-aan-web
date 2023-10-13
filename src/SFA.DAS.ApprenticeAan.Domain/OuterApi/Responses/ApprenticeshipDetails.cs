@@ -2,6 +2,6 @@
 public class ApprenticeshipDetails
 {
     public string Sector { get; set; } = null!;
-    public string Programmes { get; set; } = null!;
+    public string Programme { get; set; } = null!;
     public string Level { get; set; } = null!;
 }
