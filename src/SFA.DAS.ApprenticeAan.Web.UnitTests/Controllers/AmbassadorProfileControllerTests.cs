@@ -1,4 +1,4 @@
-﻿using AutoFixture;
+using AutoFixture;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
