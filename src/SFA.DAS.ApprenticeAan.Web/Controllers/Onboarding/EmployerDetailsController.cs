@@ -2,6 +2,7 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
@@ -37,14 +38,14 @@ public class EmployerDetailsController : Controller
 
         var model = new EmployerDetailsViewModel()
         {
-            EmployerName = sessionModel.GetProfileValue(ProfileDataId.EmployerName),
-            AddressLine1 = sessionModel.GetProfileValue(ProfileDataId.AddressLine1),
-            AddressLine2 = sessionModel.GetProfileValue(ProfileDataId.AddressLine2),
-            Town = sessionModel.GetProfileValue(ProfileDataId.Town),
-            County = sessionModel.GetProfileValue(ProfileDataId.County),
-            Postcode = sessionModel.GetProfileValue(ProfileDataId.Postcode),
-            Longitude = sessionModel.GetProfileValue(ProfileDataId.Longitude) != null ? Convert.ToDouble(sessionModel.GetProfileValue(ProfileDataId.Longitude)) : null,
-            Latitude = sessionModel.GetProfileValue(ProfileDataId.Latitude) != null ? Convert.ToDouble(sessionModel.GetProfileValue(ProfileDataId.Latitude)) : null,
+            EmployerName = sessionModel.GetProfileValue(ProfileConstants.ProfileIds.EmployerName),
+            AddressLine1 = sessionModel.GetProfileValue(ProfileConstants.ProfileIds.EmployerAddress1),
+            AddressLine2 = sessionModel.GetProfileValue(ProfileConstants.ProfileIds.EmployerAddress2),
+            Town = sessionModel.GetProfileValue(ProfileConstants.ProfileIds.EmployerTownOrCity),
+            County = sessionModel.GetProfileValue(ProfileConstants.ProfileIds.EmployerCounty),
+            Postcode = sessionModel.GetProfileValue(ProfileConstants.ProfileIds.EmployerPostcode),
+            Longitude = sessionModel.GetProfileValue(ProfileConstants.ProfileIds.EmployerAddressLongitude) != null ? Convert.ToDouble(sessionModel.GetProfileValue(ProfileConstants.ProfileIds.EmployerAddressLongitude)) : null,
+            Latitude = sessionModel.GetProfileValue(ProfileConstants.ProfileIds.EmployerAddressLatitude) != null ? Convert.ToDouble(sessionModel.GetProfileValue(ProfileConstants.ProfileIds.EmployerAddressLatitude)) : null,
 
             BackLink = Url.RouteUrl(@RouteNames.Onboarding.EmployerSearch)!
         };
@@ -68,24 +69,24 @@ public class EmployerDetailsController : Controller
 
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
 
-        sessionModel.SetProfileValue(ProfileDataId.EmployerName, submitModel.EmployerName?.Trim()!);
-        sessionModel.SetProfileValue(ProfileDataId.AddressLine1, submitModel.AddressLine1?.Trim()!);
-        sessionModel.SetProfileValue(ProfileDataId.AddressLine2, submitModel.AddressLine2?.Trim()!);
-        sessionModel.SetProfileValue(ProfileDataId.County, submitModel.County?.Trim()!);
-        sessionModel.SetProfileValue(ProfileDataId.Town, submitModel.Town?.Trim()!);
-        sessionModel.SetProfileValue(ProfileDataId.Postcode, submitModel.Postcode?.Trim()!);
+        sessionModel.SetProfileValue(ProfileConstants.ProfileIds.EmployerName, submitModel.EmployerName?.Trim()!);
+        sessionModel.SetProfileValue(ProfileConstants.ProfileIds.EmployerAddress1, submitModel.AddressLine1?.Trim()!);
+        sessionModel.SetProfileValue(ProfileConstants.ProfileIds.EmployerAddress2, submitModel.AddressLine2?.Trim()!);
+        sessionModel.SetProfileValue(ProfileConstants.ProfileIds.EmployerCounty, submitModel.County?.Trim()!);
+        sessionModel.SetProfileValue(ProfileConstants.ProfileIds.EmployerTownOrCity, submitModel.Town?.Trim()!);
+        sessionModel.SetProfileValue(ProfileConstants.ProfileIds.EmployerPostcode, submitModel.Postcode?.Trim()!);
 
         var apiResponse = await _outerApiClient.GetCoordinates(submitModel.Postcode!);
         if (apiResponse.ResponseMessage.StatusCode == System.Net.HttpStatusCode.OK)
         {
             var coordinates = apiResponse.GetContent();
-            sessionModel.SetProfileValue(ProfileDataId.Longitude, coordinates.Longitude.ToString());
-            sessionModel.SetProfileValue(ProfileDataId.Latitude, coordinates.Latitude.ToString());
+            sessionModel.SetProfileValue(ProfileConstants.ProfileIds.EmployerAddressLongitude, coordinates.Longitude.ToString());
+            sessionModel.SetProfileValue(ProfileConstants.ProfileIds.EmployerAddressLatitude, coordinates.Latitude.ToString());
         }
         else
         {
-            sessionModel.ClearProfileValue(ProfileDataId.Longitude);
-            sessionModel.ClearProfileValue(ProfileDataId.Latitude);
+            sessionModel.ClearProfileValue(ProfileConstants.ProfileIds.EmployerAddressLongitude);
+            sessionModel.ClearProfileValue(ProfileConstants.ProfileIds.EmployerAddressLatitude);
         }
 
         _sessionService.Set(sessionModel);

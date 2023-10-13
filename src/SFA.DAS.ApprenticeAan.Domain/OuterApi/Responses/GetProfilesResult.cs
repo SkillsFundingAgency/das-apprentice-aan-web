@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses
+﻿using SFA.DAS.Aan.SharedUi.Models;
+
+namespace SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses
 {
     public class GetProfilesResult
     {

@@ -1,0 +1,78 @@
+﻿@using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
+@model PersonalDetailsViewModel
+
+<div class="govuk-summary-card">
+    <div class="govuk-summary-card__title-wrapper">
+        <h2 class="govuk-summary-card__title">Your personal details</h2>
+@*         <ul class="govuk-summary-card__actions">
+            <li class="govuk-summary-card__action">
+                <a class="govuk-link" href="#">
+                    Change<span class="govuk-visually-hidden"> your personal details</span>
+                </a>
+            </li>
+        </ul> *@
+    </div>
+    <div class="govuk-summary-card__content">
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Name
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.FullName
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <strong class="@Model.FullNameDisplayClass">@Model.FullNameDisplayValue</strong>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Region where you work
+                </dt>
+                @if ((Model.RegionName == null || Model.RegionName == string.Empty) && (Model.UserType == MemberUserType.Employer))
+                {
+                    <dd class="govuk-summary-list__value">
+                        Multi-region
+                    </dd>
+                }
+                else
+                {
+                    <dd class="govuk-summary-list__value">
+                        @Model.RegionName
+                    </dd>
+                }
+                <dd class="govuk-summary-list__actions">
+                    <strong class="@Model.RegionNameDisplayClass">@Model.RegionNameDisplayValue</strong>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Job title
+                </dt>
+                @if (Model.JobTitle != null)
+                {
+                    <dd class="govuk-summary-list__value">
+                        @Model.JobTitle
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <strong class="@Model.JobTitleDisplayClass">@Model.JobTitleDisplayValue</strong>
+                    </dd>
+                }
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Biography
+                </dt>
+                @if (Model.Biography != null)
+                {
+                    <dd class="govuk-summary-list__value">
+                        @Model.Biography
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <strong class="@Model.BiographyDisplayClass">@Model.BiographyDisplayValue</strong>
+                    </dd>
+                }
+            </div>
+        </dl>
+    </div>
+</div>

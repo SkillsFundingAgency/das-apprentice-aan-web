@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses
+﻿namespace SFA.DAS.Aan.SharedUi.Models
 {
     public class Profile
     {

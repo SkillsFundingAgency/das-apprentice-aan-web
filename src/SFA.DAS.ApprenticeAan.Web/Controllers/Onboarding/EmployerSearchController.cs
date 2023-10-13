@@ -2,6 +2,7 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
@@ -43,14 +44,14 @@ public class EmployerSearchController : Controller
 
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
 
-        sessionModel.SetProfileValue(ProfileDataId.EmployerName, submitModel.OrganisationName!);
-        sessionModel.SetProfileValue(ProfileDataId.AddressLine1, submitModel.AddressLine1!);
-        sessionModel.SetProfileValue(ProfileDataId.AddressLine2, submitModel.AddressLine2!);
-        sessionModel.SetProfileValue(ProfileDataId.County, submitModel.County!);
-        sessionModel.SetProfileValue(ProfileDataId.Town, submitModel.Town!);
-        sessionModel.SetProfileValue(ProfileDataId.Postcode, submitModel.Postcode!);
-        sessionModel.SetProfileValue(ProfileDataId.Longitude, submitModel.Longitude.ToString()!);
-        sessionModel.SetProfileValue(ProfileDataId.Latitude, submitModel.Latitude.ToString()!);
+        sessionModel.SetProfileValue(ProfileConstants.ProfileIds.EmployerName, submitModel.OrganisationName!);
+        sessionModel.SetProfileValue(ProfileConstants.ProfileIds.EmployerAddress1, submitModel.AddressLine1!);
+        sessionModel.SetProfileValue(ProfileConstants.ProfileIds.EmployerAddress2, submitModel.AddressLine2!);
+        sessionModel.SetProfileValue(ProfileConstants.ProfileIds.EmployerCounty, submitModel.County!);
+        sessionModel.SetProfileValue(ProfileConstants.ProfileIds.EmployerTownOrCity, submitModel.Town!);
+        sessionModel.SetProfileValue(ProfileConstants.ProfileIds.EmployerPostcode, submitModel.Postcode!);
+        sessionModel.SetProfileValue(ProfileConstants.ProfileIds.EmployerAddressLongitude, submitModel.Longitude.ToString()!);
+        sessionModel.SetProfileValue(ProfileConstants.ProfileIds.EmployerAddressLatitude, submitModel.Latitude.ToString()!);
 
         _sessionService.Set(sessionModel);
 

@@ -1,0 +1,47 @@
+﻿@using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
+@model ContactDetailsViewModel
+
+<div class="govuk-summary-card">
+    <div class="govuk-summary-card__title-wrapper">
+        <h2 class="govuk-summary-card__title">Contact details</h2>
+        @*         <ul class="govuk-summary-card__actions">
+        <li class="govuk-summary-card__action">
+        <a class="govuk-link" href="#">
+        Change<span class="govuk-visually-hidden"> your contact details</span>
+        </a>
+        </li>
+        </ul> *@
+    </div>
+    <div class="govuk-summary-card__content">
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Email address
+                </dt>
+                @if (Model.EmailAddress != null)
+                {
+                    <dd class="govuk-summary-list__value">
+                        @Model.EmailAddress
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <strong class="govuk-tag govuk-tag--blue">Hidden</strong>
+                    </dd>
+                }
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    LinkedIn profile
+                </dt>
+                @if (Model.LinkedIn != null)
+                {
+                    <dd class="govuk-summary-list__value">
+                        @Model.LinkedIn
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <strong class="@Model.LinkedInDisplayClass">@Model.LinkedInDisplayValue</strong>
+                    </dd>
+                }
+            </div>
+        </dl>
+    </div>
+</div>

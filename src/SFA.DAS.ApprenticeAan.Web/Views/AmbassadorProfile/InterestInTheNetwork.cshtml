@@ -1,0 +1,51 @@
+﻿@using SFA.DAS.ApprenticeAan.Web.Models.AmbassadorProfile;
+@model InterestInTheNetworkViewModel
+
+<div class="govuk-summary-card">
+    <div class="govuk-summary-card__title-wrapper">
+        <h2 class="govuk-summary-card__title">Interest in the network</h2>
+@*         <ul class="govuk-summary-card__actions">
+            <li class="govuk-summary-card__action">
+                <a class="govuk-link" href="#">
+                    Change<span class="govuk-visually-hidden"> your interest in the network</span>
+                </a>
+            </li>
+        </ul> *@
+    </div>
+    <div class="govuk-summary-card__content">
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Events activities
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    <ul class="govuk-list govuk-list--bullet">
+                        @foreach (var eventActivity in Model.EventsActivities)
+                        {
+                            <li>@eventActivity</li>
+                        }
+                    </ul>
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <strong class="@Model.InterestInTheNetworkDisplayClass">@Model.InterestInTheNetworkDisplayed</strong>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Promotion activities
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    <ul class="govuk-list govuk-list--bullet">
+                        @foreach (var promotionActivity in Model.PromotionActivities)
+                        {
+                            <li>@promotionActivity</li>
+                        }
+                    </ul>
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <strong class="@Model.InterestInTheNetworkDisplayClass">@Model.InterestInTheNetworkDisplayed</strong>
+                </dd>
+            </div>
+        </dl>
+    </div>
+</div>

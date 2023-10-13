@@ -18,7 +18,6 @@ public static class ServiceRegistrationsStartup
         services.AddTransient<IMenuVisibility, MenuVisibility>();
         services.AddTransient<ISessionService, SessionService>();
         services.AddTransient<IRegionService, RegionService>();
-        services.AddTransient<IProfileService, ProfileService>();
         services.AddTransient<IApprenticeAccountService, ApprenticeAccountService>();
         services.AddTransient<IApprenticeService, ApprenticeService>();
         services.AddTransient<IMyApprenticeshipService, MyApprenticeshipService>();
