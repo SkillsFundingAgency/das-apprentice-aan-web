@@ -80,7 +80,7 @@ public class AmbassadorProfileControllerTests
     public void ThenSetsViewModelWithPersonalDetails()
         => _result.Invoking(r => r.As<ViewResult>().Model.As<AmbassadorProfileViewModel>().PersonalDetails.FullName.Should().Be(memberProfile.FullName));
 
-    public static IEnumerable<ApprenticeshipDetails?> GetApprenticeshipDetails()
+    private static IEnumerable<ApprenticeshipDetails?> GetApprenticeshipDetails()
     {
         yield return new ApprenticeshipDetails { Sector = string.Empty, Level = string.Empty, Programme = string.Empty };
         yield return null;
@@ -106,6 +106,6 @@ public class AmbassadorProfileControllerTests
         _result = await sut.Index(_cancellationToken);
 
         //Assert
-        Assert.IsInstanceOf<ViewResult>(_result, "Index should return a ViewResult.");
+        Assert.That(_result, Is.InstanceOf<ViewResult>());
     }
 }
