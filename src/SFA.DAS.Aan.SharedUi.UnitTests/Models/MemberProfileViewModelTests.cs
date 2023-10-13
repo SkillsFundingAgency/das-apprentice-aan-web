@@ -77,6 +77,35 @@ public class MemberProfileViewModelTest
         });
     }
 
+    [Test]
+    [MoqAutoData]
+    public void MemberProfileViewModel_SetAddressValue_ReturnsExpectedValue(MemberProfileDetail memberProfile)
+    {
+        //Arrange
+        List<MemberProfile> memberProfiles = new List<MemberProfile>()
+        {
+            new MemberProfile() {ProfileId = 1,PreferenceId = 0,Value = "Address1"},
+            new MemberProfile() {ProfileId = 2,PreferenceId = 0,Value = string.Empty},
+            new MemberProfile() {ProfileId = 3,PreferenceId = 0,Value = "Address2"},
+            new MemberProfile() {ProfileId = 4,PreferenceId = 0,Value = "    "}
+        };
+        MemberProfileMappingModel memberProfileMappingModel = new MemberProfileMappingModel()
+        {
+            AddressProfileIds = new List<int> { 1, 2, 4, 5 }
+        };
+        memberProfile.Profiles = memberProfiles;
+
+        //Act
+        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, profiles, memberProfileMappingModel);
+
+        //Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut.Address, Is.Not.Empty);
+            Assert.That(sut.Address, Is.EqualTo(memberProfiles.First().Value));
+        });
+    }
+
     [TestCase(MemberUserType.Apprentice)]
     public void MemberProfileViewModel_UserRoleApprentice_ReturnsExpectedValueOfTitles(MemberUserType memberUserType)
     {

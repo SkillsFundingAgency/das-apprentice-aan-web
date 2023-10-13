@@ -61,8 +61,8 @@ public class MemberProfileControllerTests
     [MoqAutoData]
     public void Get_ReturnsProfileView(
         [Frozen] Mock<IOuterApiClient> outerApiMock,
-        CancellationToken cancellationToken,
-        GetMemberProfileResponse getMemberProfileResponse
+        GetMemberProfileResponse getMemberProfileResponse,
+        CancellationToken cancellationToken
     )
     {
         //Arrange

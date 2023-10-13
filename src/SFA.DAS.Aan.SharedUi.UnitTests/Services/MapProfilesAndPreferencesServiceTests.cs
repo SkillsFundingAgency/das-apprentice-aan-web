@@ -147,7 +147,8 @@ public class MapProfilesAndPreferencesServiceTests
         }
     }
 
-    public void WhenGettingProfileDescription_AndProfileIdIsInValid_ReturnsNull()
+    [Test]
+    public static void WhenGettingProfileDescription_AndProfileIdIsInValid_ReturnsNull()
     {
         //Arrange
         MemberProfile memberProfile = new MemberProfile()
