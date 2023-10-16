@@ -21,6 +21,8 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
 public class NetworkEventDetailsControllerTests
 {
     private static readonly string AllNetworksUrl = Guid.NewGuid().ToString();
+    private static readonly string MemberProfileUrl = Guid.NewGuid().ToString();
+
     [Test]
     [MoqAutoData]
     public void Details_ReturnsEventDetailsViewModel(
@@ -32,6 +34,7 @@ public class NetworkEventDetailsControllerTests
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
 
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkDirectory, AllNetworksUrl).AddUrlForRoute(SharedRouteNames.MemberProfile, MemberProfileUrl);
 
         var response = new Response<CalendarEvent>(string.Empty, new(HttpStatusCode.OK), () => calendarEvent);
         outerApiMock.Setup(o => o.GetCalendarEventDetails(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()))

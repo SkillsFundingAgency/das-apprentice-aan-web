@@ -1,4 +1,4 @@
-﻿using AutoFixture;
+using AutoFixture;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -79,4 +79,33 @@ public class AmbassadorProfileControllerTests
     [Test]
     public void ThenSetsViewModelWithPersonalDetails()
         => _result.Invoking(r => r.As<ViewResult>().Model.As<AmbassadorProfileViewModel>().PersonalDetails.FullName.Should().Be(memberProfile.FullName));
+
+    private static IEnumerable<ApprenticeshipDetails?> GetApprenticeshipDetails()
+    {
+        yield return new ApprenticeshipDetails { Sector = string.Empty, Level = string.Empty, Programme = string.Empty };
+        yield return null;
+    }
+
+    [Test]
+    public async Task Index_SetApprenticeshipDetails_ReturnsView([ValueSource(nameof(GetApprenticeshipDetails))] ApprenticeshipDetails? apprenticeshipDetails)
+    {
+        //Arrange
+        AmbassadorProfileController sut = null!;
+        var memberId = Guid.NewGuid();
+        Fixture fixture = new();
+        memberProfile = fixture.Create<GetMemberProfileResponse>();
+        memberProfile.Apprenticeship = apprenticeshipDetails;
+        _outerApiClientMock = new();
+        _outerApiClientMock.Setup(o => o.GetMemberProfile(memberId, memberId, false, _cancellationToken)).ReturnsAsync(memberProfile);
+        _outerApiClientMock.Setup(o => o.GetProfilesByUserType(MemberUserType.Apprentice.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(new GetProfilesResult() { Profiles = profiles });
+        sut = new(_outerApiClientMock.Object);
+        sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
+        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
+
+        //Act
+        _result = await sut.Index(_cancellationToken);
+
+        //Assert
+        Assert.That(_result, Is.InstanceOf<ViewResult>());
+    }
 }

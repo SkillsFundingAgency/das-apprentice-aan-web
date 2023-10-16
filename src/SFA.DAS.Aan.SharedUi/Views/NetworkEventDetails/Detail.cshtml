@@ -36,7 +36,7 @@
                 <ul class="govuk-list app-attendee-list">
                     @foreach (var person in Model.Attendees.OrderBy(a => a.AddedDate))
                     {
-                        <li>@person.MemberName</li>
+                        <li><a href="@person.MemberProfileLink" class="das-search-results__link">@person.MemberName</a></li>
                     }
                 </ul>
             </div>

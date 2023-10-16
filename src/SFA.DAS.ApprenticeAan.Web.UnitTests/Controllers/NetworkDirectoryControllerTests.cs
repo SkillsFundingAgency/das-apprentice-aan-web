@@ -21,6 +21,7 @@ public class NetworkDirectoryControllerTests
 {
     private NetworkDirectoryController _sut = null!;
     private static readonly string AllNetworksUrl = Guid.NewGuid().ToString();
+    private static readonly string MemberProfileUrl = Guid.NewGuid().ToString();
     private Mock<IOuterApiClient> _outerApiClientMock = null!;
     private CancellationToken _cancellationToken;
     private GetNetworkDirectoryQueryResult expectedResult = null!;
@@ -43,7 +44,7 @@ public class NetworkDirectoryControllerTests
 
         _sut = new(_outerApiClientMock.Object);
         _sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        _sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkDirectory, AllNetworksUrl);
+        _sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkDirectory, AllNetworksUrl).AddUrlForRoute(SharedRouteNames.MemberProfile, MemberProfileUrl);
         _result = await _sut.Index(request, _cancellationToken);
     }
 

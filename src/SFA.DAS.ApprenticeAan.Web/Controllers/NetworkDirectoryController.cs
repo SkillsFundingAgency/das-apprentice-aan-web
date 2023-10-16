@@ -47,7 +47,7 @@ public class NetworkDirectoryController : Controller
         return View(model);
     }
 
-    private static NetworkDirectoryViewModel InitialiseViewModel(GetNetworkDirectoryQueryResult result)
+    private NetworkDirectoryViewModel InitialiseViewModel(GetNetworkDirectoryQueryResult result)
     {
         var model = new NetworkDirectoryViewModel
         {
@@ -55,9 +55,11 @@ public class NetworkDirectoryController : Controller
 
         };
 
-        foreach (var networkDirectory in result.Members)
+        foreach (var member in result.Members)
         {
-            model.Members.Add(networkDirectory);
+            MembersViewModel vm = member;
+            vm.MemberProfileLink = Url.RouteUrl(SharedRouteNames.MemberProfile, new { id = member.MemberId })!;
+            model.Members.Add(vm);
         }
         return model;
     }
