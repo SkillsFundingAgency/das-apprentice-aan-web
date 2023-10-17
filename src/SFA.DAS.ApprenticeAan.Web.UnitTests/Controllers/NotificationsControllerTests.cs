@@ -34,10 +34,10 @@ public class NotificationsControllerTests
     [InlineAutoData(NotificationTemplateNames.AANApprenticeOnboarding, RouteNames.NetworkHub)]
     [InlineAutoData(NotificationTemplateNames.AANApprenticeEventCancel, RouteNames.NetworkHub)]
     [InlineAutoData(NotificationTemplateNames.AANApprenticeEventSignup, SharedRouteNames.NetworkEventDetails)]
-    [InlineAutoData(NotificationTemplateNames.AANIndustryAdvice, "MemberProfile")]
-    [InlineAutoData(NotificationTemplateNames.AANAskForHelp, "MemberProfile")]
-    [InlineAutoData(NotificationTemplateNames.AANRequestCaseStudy, "MemberProfile")]
-    [InlineAutoData(NotificationTemplateNames.AANGetInTouch, "MemberProfile")]
+    [InlineAutoData(NotificationTemplateNames.AANIndustryAdvice, SharedRouteNames.MemberProfile)]
+    [InlineAutoData(NotificationTemplateNames.AANAskForHelp, SharedRouteNames.MemberProfile)]
+    [InlineAutoData(NotificationTemplateNames.AANRequestCaseStudy, SharedRouteNames.MemberProfile)]
+    [InlineAutoData(NotificationTemplateNames.AANGetInTouch, SharedRouteNames.MemberProfile)]
     [InlineAutoData("unknown template", RouteNames.Home)]
     public async Task Index_OnAANApprenticeOnboardingTemplate_ReturnsNetworkHubRoute(string templateName, string routeName, GetNotificationResult result)
     {

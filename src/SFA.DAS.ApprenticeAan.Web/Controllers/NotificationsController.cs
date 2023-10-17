@@ -41,7 +41,7 @@ public class NotificationsController : Controller
             or NotificationTemplateNames.AANAskForHelp
             or NotificationTemplateNames.AANRequestCaseStudy
             or NotificationTemplateNames.AANGetInTouch
-                => ("MemberProfile", new { id = notification.ReferenceId }), //TODO change to constant in SharedRouteNames post merge of CSP-719
+                => (SharedRouteNames.MemberProfile, new { id = notification.ReferenceId }),
 
             _ => (RouteNames.Home, null)
         };
