@@ -59,6 +59,7 @@
                 }
             </div>
         }
+
         @if (Model.IsEmployerInformationAvailable || Model.IsApprenticeshipInformationAvailable)
         {
             <h1 class="govuk-heading-l govuk-!-margin-top-7">@Model.InformationSectionTitle</h1>
@@ -86,7 +87,9 @@
                         </dd>
                     </div>
                 }
+                
             </dl>
+			
             @if (Model.UserType == MemberUserType.Apprentice)
             {
                 await Html.RenderPartialAsync("~/Views/MemberProfile/_ApprenticeInformationSection.cshtml", Model);
