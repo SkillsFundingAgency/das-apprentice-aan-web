@@ -58,7 +58,7 @@
                 }
             </div>
         }
-        @if (!string.IsNullOrEmpty(Model.EmployerName) || !string.IsNullOrEmpty(Model.Address) || !string.IsNullOrEmpty(Model.Sector) || !string.IsNullOrEmpty(Model.Programmes) || Model.UserRole == SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile.MemberUserType.Employer || Model.Sectors.Count > 0)
+        @if (!string.IsNullOrEmpty(Model.EmployerName) || !string.IsNullOrEmpty(Model.Address) || !string.IsNullOrEmpty(Model.Sector) || !string.IsNullOrEmpty(Model.Programmes) || Model.ActiveApprenticesCount > 0 || Model.Sectors.Count > 0)
         {
             <h1 class="govuk-heading-l govuk-!-margin-top-7">@Model.InformationSectionTitle</h1>
             <dl class="govuk-summary-list">
@@ -122,7 +122,26 @@
                     </div>
                 }
 
-                @if (Model.UserRole == SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile.MemberUserType.Employer)
+                @if (Model.Sectors.Count > 0)
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Apprenticeship sectors
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            <ul class="govuk-list govuk-list--bullet">
+                                @{
+                                    foreach (var sector in Model.Sectors)
+                                    {
+                                        <li>@sector</li>
+                                    }
+                                }
+                            </ul>
+                        </dd>
+                    </div>
+                }
+
+                @if (Model.ActiveApprenticesCount > 0)
                 {
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">
@@ -132,26 +151,8 @@
                             @Model.ActiveApprenticesCount
                         </dd>
                     </div>
-
-                    @if (Model.Sectors.Count > 0)
-                    {
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                                Apprenticeship sectors
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                                <ul class="govuk-list govuk-list--bullet">
-                                    @{
-                                        foreach (var sector in Model.Sectors)
-                                        {
-                                            <li>@sector</li>
-                                        }
-                                    }
-                                </ul>
-                            </dd>
-                        </div>
-                    }
                 }
+
             </dl>
         }
         <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Connect with @Model.FirstName</h1>
