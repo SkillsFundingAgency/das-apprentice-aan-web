@@ -33,7 +33,6 @@ public class MemberProfileViewModel
     public MemberUserType UserType { get; set; }
     public bool IsEmployerInformationAvailable { get; set; }
     public bool IsApprenticeshipInformationAvailable { get; set; }
-
     public MemberProfileViewModel(MemberProfileDetail memberProfileDetail, IEnumerable<Profile> memberProfiles, MemberProfileMappingModel memberProfileMappingModel)
     {
         FullName = memberProfileDetail.FullName;
