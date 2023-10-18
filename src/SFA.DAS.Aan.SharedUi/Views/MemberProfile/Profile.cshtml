@@ -62,7 +62,7 @@
         @if (Model.IsEmployerInformationAvailable || Model.IsApprenticeshipInformationAvailable)
         {
             <h1 class="govuk-heading-l govuk-!-margin-top-7">@Model.InformationSectionTitle</h1>
-            <dl class="govuk-summary-list">
+            <dl class="govuk-summary-list govuk-!-margin-bottom-0">
                 @if (!string.IsNullOrEmpty(Model.EmployerName))
                 {
                     <div class="govuk-summary-list__row">
@@ -86,15 +86,15 @@
                         </dd>
                     </div>
                 }
-                @if (Model.UserType == MemberUserType.Apprentice)
-                {
-                    await Html.RenderPartialAsync("~/Views/MemberProfile/_ApprenticeInformationSection.cshtml",Model);
-                }
-                @if (Model.UserType == MemberUserType.Employer)
-                {
-                    await Html.RenderPartialAsync("~/Views/MemberProfile/_EmployerInformationSection.cshtml",Model);
-                }
             </dl>
+            @if (Model.UserType == MemberUserType.Apprentice)
+            {
+                await Html.RenderPartialAsync("~/Views/MemberProfile/_ApprenticeInformationSection.cshtml", Model);
+            }
+            @if (Model.UserType == MemberUserType.Employer)
+            {
+                await Html.RenderPartialAsync("~/Views/MemberProfile/_EmployerInformationSection.cshtml", Model);
+            }
         }
         <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Connect with @Model.FirstName</h1>
         <p class="govuk-!-margin-bottom-4 govuk-!-margin-top-4 govuk-!-margin-top-2">@Model.ConnectSectionTitle</p>
