@@ -22,7 +22,7 @@ public class MemberProfileViewModel
     public string Sector { get; set; }
     public string Programmes { get; set; }
     public string Level { get; set; }
-    public List<string> Sectors { get; set; }
+    public List<string> Sectors { get; set; } = new List<string>();
     public int ActiveApprenticesCount { get; set; }
     public bool IsLoggedInUserMemberProfile { get; set; }
     public string AreasOfInterestTitle { get; set; }
@@ -49,7 +49,7 @@ public class MemberProfileViewModel
         Sector = memberProfileDetail.Sector;
         Programmes = memberProfileDetail.Programmes;
         Level = memberProfileDetail.Level;
-        Sectors = (memberProfileDetail.Sectors != null) ? memberProfileDetail.Sectors : new List<string>();
+        Sectors = memberProfileDetail.Sectors;
         ActiveApprenticesCount = memberProfileDetail.ActiveApprenticesCount;
         EmployerName = MapProfilesAndPreferencesService.GetProfileValue(memberProfileMappingModel.EmployerNameProfileId, memberProfileDetail.Profiles);
         FirstName = memberProfileDetail.FirstName;
