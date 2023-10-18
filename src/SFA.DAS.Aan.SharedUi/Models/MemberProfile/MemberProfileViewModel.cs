@@ -31,7 +31,8 @@ public class MemberProfileViewModel
     public string InformationSectionTitle { get; set; }
     public string ConnectSectionTitle { get; set; }
     public MemberUserType UserType { get; set; }
-    public bool IsInformationSectionVisible { get; set; }
+    public bool IsEmployerInformationAvailable { get; set; }
+    public bool IsApprenticeshipInformationAvailable { get; set; }
     public MemberProfileViewModel(MemberProfileDetail memberProfileDetail, IEnumerable<Profile> memberProfiles, MemberProfileMappingModel memberProfileMappingModel)
     {
         FullName = memberProfileDetail.FullName;
@@ -60,6 +61,7 @@ public class MemberProfileViewModel
         InformationSectionTitle = (memberProfileDetail.UserType == MemberUserType.Apprentice) ? $"{FirstName}’s apprenticeship information" : MemberProfileTitle.EmployerInformationSectionTitle;
         ConnectSectionTitle = (memberProfileDetail.UserType == MemberUserType.Apprentice) ? $"You can connect with {FirstName} by email or LinkedIn." : $"You can contact {FirstName} using the form below or connect directly on LinkedIn.";
         UserType = memberProfileDetail.UserType;
-        IsInformationSectionVisible = (!string.IsNullOrEmpty(EmployerName) || !string.IsNullOrEmpty(Address)) || (UserType == MemberUserType.Apprentice ? (!string.IsNullOrEmpty(Sector) || !string.IsNullOrEmpty(Programmes) || !string.IsNullOrEmpty(Level)) : (Sectors?.Count > 0 || ActiveApprenticesCount > 0));
+        IsEmployerInformationAvailable = !string.IsNullOrEmpty(EmployerName) || !string.IsNullOrEmpty(Address);
+        IsApprenticeshipInformationAvailable = ((UserType == MemberUserType.Apprentice) ? (!string.IsNullOrEmpty(Sector) || !string.IsNullOrEmpty(Programmes) || !string.IsNullOrEmpty(Level)) : (Sectors.Count > 0 || ActiveApprenticesCount > 0));
     }
 }
