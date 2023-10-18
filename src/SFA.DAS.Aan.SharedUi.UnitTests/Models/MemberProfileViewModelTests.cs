@@ -172,7 +172,49 @@ public class MemberProfileViewModelTest
     [TestCase(MemberUserType.Employer, false)]
     [TestCase(MemberUserType.Apprentice, true)]
     [TestCase(MemberUserType.Apprentice, false)]
-    public void MemberProfileViewModel_InformationSectionVisible_ReturnsExpectedBooleanValue(MemberUserType memberUserType, bool isApprenticeshipSet)
+    public void MemberProfileViewModel_IsApprenticeshipInformationAvailable_ReturnsExpectedBooleanValue(MemberUserType memberUserType, bool isApprenticeshipSet)
+    {
+        //Arrange
+        MemberProfileDetail memberProfile = new MemberProfileDetail();
+        memberProfile.UserType = memberUserType;
+        memberProfile.Profiles = new List<MemberProfile>();
+        if (memberUserType == MemberUserType.Employer && isApprenticeshipSet)
+        {
+            memberProfile.ActiveApprenticesCount = 1;
+            memberProfile.Sectors = new List<string> { "test1", "test2" };
+        }
+        else
+        {
+            memberProfile.ActiveApprenticesCount = 0;
+            memberProfile.Sectors = new List<string>();
+        }
+
+        if (memberUserType == MemberUserType.Apprentice && isApprenticeshipSet)
+        {
+            memberProfile.Sector = "Sector";
+            memberProfile.Programmes = "Programmes";
+            memberProfile.Level = "Level";
+        }
+        else
+        {
+            memberProfile.Sector = string.Empty;
+            memberProfile.Programmes = string.Empty;
+            memberProfile.Level = string.Empty;
+        }
+
+        //Act
+        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, profiles, memberProfileMappingModel);
+
+        //Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut.IsApprenticeshipInformationAvailable, Is.EqualTo(memberUserType == MemberUserType.Employer && isApprenticeshipSet || memberUserType == MemberUserType.Apprentice && isApprenticeshipSet));
+        });
+    }
+
+    [TestCase(true)]
+    [TestCase(false)]
+    public void MemberProfileViewModel_IsEmployerInformationAvailable_ReturnsExpectedBooleanValue(bool isEmployerInformationAvailable)
     {
         //Arrange
         List<Profile> profiles = new List<Profile>()
@@ -188,32 +230,14 @@ public class MemberProfileViewModelTest
             new MemberProfile() {ProfileId = 32,PreferenceId = 0,Value = "Address2"}
         };
         MemberProfileDetail memberProfile = new MemberProfileDetail();
-        memberProfile.UserType = memberUserType;
         memberProfile.Profiles = new List<MemberProfile>();
-        if (memberUserType == MemberUserType.Employer && isApprenticeshipSet)
+        if (isEmployerInformationAvailable)
         {
-            memberProfile.ActiveApprenticesCount = 1;
-            memberProfile.Sectors = new List<string> { "test1", "test2" };
             memberProfile.Profiles = memberProfiles;
         }
         else
         {
-            memberProfile.ActiveApprenticesCount = 0;
-            memberProfile.Sectors = new List<string>();
-        }
-
-        if (memberUserType == MemberUserType.Apprentice && isApprenticeshipSet)
-        {
-            memberProfile.Sector = "Sector";
-            memberProfile.Programmes = "Programmes";
-            memberProfile.Level = "Level";
-            memberProfile.Profiles = memberProfiles;
-        }
-        else
-        {
-            memberProfile.Sector = string.Empty;
-            memberProfile.Programmes = string.Empty;
-            memberProfile.Level = string.Empty;
+            memberProfile.Profiles = new List<MemberProfile>();
         }
 
         //Act
@@ -222,7 +246,7 @@ public class MemberProfileViewModelTest
         //Assert
         Assert.Multiple(() =>
         {
-            Assert.That(sut.IsInformationSectionVisible, Is.EqualTo(memberUserType == MemberUserType.Employer && isApprenticeshipSet || memberUserType == MemberUserType.Apprentice && isApprenticeshipSet));
+            Assert.That(sut.IsEmployerInformationAvailable, Is.EqualTo(isEmployerInformationAvailable));
         });
     }
 }
