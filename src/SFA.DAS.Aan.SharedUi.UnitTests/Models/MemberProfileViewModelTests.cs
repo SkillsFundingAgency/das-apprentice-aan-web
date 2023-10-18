@@ -163,4 +163,48 @@ public class MemberProfileViewModelTest
             Assert.That(sut.ConnectSectionTitle, Is.EqualTo(expectedConnectSectionTitle));
         });
     }
+
+    [TestCase(MemberUserType.Employer, true)]
+    [TestCase(MemberUserType.Employer, false)]
+    [TestCase(MemberUserType.Apprentice, true)]
+    [TestCase(MemberUserType.Apprentice, false)]
+    public void MemberProfileViewModel_InformationSectionVisible_ReturnsExpectedBooleanValue(MemberUserType memberUserType, bool isApprenticeshipSet)
+    {
+        //Arrange
+        MemberProfileDetail memberProfile = new MemberProfileDetail();
+        memberProfile.UserType = memberUserType;
+        memberProfile.Profiles = new List<MemberProfile>();
+        if (memberUserType == MemberUserType.Employer && isApprenticeshipSet)
+        {
+            memberProfile.ActiveApprenticesCount = 1;
+            memberProfile.Sectors = new List<string> { "test1", "test2" };
+        }
+        else
+        {
+            memberProfile.ActiveApprenticesCount = 0;
+            memberProfile.Sectors = new List<string>();
+        }
+
+        if (memberUserType == MemberUserType.Apprentice && isApprenticeshipSet)
+        {
+            memberProfile.Sector = "Sector";
+            memberProfile.Programmes = "Programmes";
+            memberProfile.Level = "Level";
+        }
+        else
+        {
+            memberProfile.Sector = string.Empty;
+            memberProfile.Programmes = string.Empty;
+            memberProfile.Level = string.Empty;
+        }
+
+        //Act
+        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, profiles, memberProfileMappingModel);
+
+        //Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut.IsInformationSectionVisible, Is.EqualTo(memberUserType == MemberUserType.Employer && isApprenticeshipSet || memberUserType == MemberUserType.Apprentice && isApprenticeshipSet));
+        });
+    }
 }
