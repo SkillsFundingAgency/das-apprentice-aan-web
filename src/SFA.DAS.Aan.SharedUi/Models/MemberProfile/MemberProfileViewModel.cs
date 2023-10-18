@@ -22,7 +22,7 @@ public class MemberProfileViewModel
     public string Sector { get; set; }
     public string Programmes { get; set; }
     public string Level { get; set; }
-    public List<string> Sectors { get; set; } = new List<string>();
+    public List<string>? Sectors { get; set; }
     public int ActiveApprenticesCount { get; set; }
     public bool IsLoggedInUserMemberProfile { get; set; }
     public string AreasOfInterestTitle { get; set; }
