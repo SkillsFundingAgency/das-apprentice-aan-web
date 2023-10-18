@@ -51,7 +51,7 @@ public class MemberProfileViewModel
         Sector = memberProfileDetail.Sector;
         Programmes = memberProfileDetail.Programmes;
         Level = memberProfileDetail.Level;
-        Sectors = (memberProfileDetail.Sectors != null) ? memberProfileDetail.Sectors : new List<string>();
+        Sectors = memberProfileDetail.Sectors;
         ActiveApprenticesCount = memberProfileDetail.ActiveApprenticesCount;
         EmployerName = MapProfilesAndPreferencesService.GetProfileValue(memberProfileMappingModel.EmployerNameProfileId, memberProfileDetail.Profiles);
         FirstName = memberProfileDetail.FirstName;
