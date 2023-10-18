@@ -1,5 +1,6 @@
 @using SFA.DAS.Aan.SharedUi.Extensions;
 @using SFA.DAS.Aan.SharedUi.Models;
+@using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 @model MemberProfileViewModel
 @{
     ViewData["Title"] = "Member Profile";
@@ -58,7 +59,7 @@
                 }
             </div>
         }
-        @if (!string.IsNullOrEmpty(Model.EmployerName) || !string.IsNullOrEmpty(Model.Address) || !string.IsNullOrEmpty(Model.Sector) || !string.IsNullOrEmpty(Model.Programmes) || Model.ActiveApprenticesCount > 0 || Model.Sectors.Count > 0)
+        @if (Model.IsInformationSectionVisible)
         {
             <h1 class="govuk-heading-l govuk-!-margin-top-7">@Model.InformationSectionTitle</h1>
             <dl class="govuk-summary-list">
@@ -85,74 +86,14 @@
                         </dd>
                     </div>
                 }
-
-                @if (!string.IsNullOrEmpty(Model.Sector))
+                @if (Model.UserType == MemberUserType.Apprentice)
                 {
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key apprenticeship-sector">
-                            Apprenticeship sectors
-                        </dt>
-                        <dd class="govuk-summary-list__value">
-                            @Model.Sector
-                        </dd>
-                    </div>
+                    await Html.RenderPartialAsync("~/Views/MemberProfile/_ApprenticeInformationSection.cshtml",Model);
                 }
-
-                @if (!string.IsNullOrEmpty(Model.Programmes))
+                @if (Model.UserType == MemberUserType.Employer)
                 {
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
-                            Apprenticeship programme
-                        </dt>
-                        <dd class="govuk-summary-list__value">
-                            @Model.Programmes
-                        </dd>
-                    </div>
+                    await Html.RenderPartialAsync("~/Views/MemberProfile/_EmployerInformationSection.cshtml",Model);
                 }
-
-                @if (!string.IsNullOrEmpty(Model.Level))
-                {
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
-                            Apprenticeship level
-                        </dt>
-                        <dd class="govuk-summary-list__value">
-                            @Model.Level
-                        </dd>
-                    </div>
-                }
-
-                @if (Model.Sectors.Count > 0)
-                {
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
-                            Apprenticeship sectors
-                        </dt>
-                        <dd class="govuk-summary-list__value">
-                            <ul class="govuk-list govuk-list--bullet">
-                                @{
-                                    foreach (var sector in Model.Sectors)
-                                    {
-                                        <li>@sector</li>
-                                    }
-                                }
-                            </ul>
-                        </dd>
-                    </div>
-                }
-
-                @if (Model.ActiveApprenticesCount > 0)
-                {
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
-                            Number of active apprentices
-                        </dt>
-                        <dd class="govuk-summary-list__value">
-                            @Model.ActiveApprenticesCount
-                        </dd>
-                    </div>
-                }
-
             </dl>
         }
         <h1 class="govuk-heading-l govuk-!-margin-bottom-2">Connect with @Model.FirstName</h1>
