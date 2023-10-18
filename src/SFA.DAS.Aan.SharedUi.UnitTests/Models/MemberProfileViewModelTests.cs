@@ -175,6 +175,18 @@ public class MemberProfileViewModelTest
     public void MemberProfileViewModel_IsApprenticeshipInformationAvailable_ReturnsExpectedBooleanValue(MemberUserType memberUserType, bool isApprenticeshipSet)
     {
         //Arrange
+        List<Profile> profiles = new List<Profile>()
+        {
+            new Profile { Id = 30, Description = "Employer name", Category = "Employer", Ordering = 1 },
+            new Profile { Id = 31, Description = "Address 1", Category = "Employer", Ordering = 2 },
+            new Profile { Id = 32, Description = "Address 2", Category = "Employer", Ordering = 3 },
+        };
+        List<MemberProfile> memberProfiles = new List<MemberProfile>()
+        {
+            new MemberProfile() {ProfileId = 30,PreferenceId = 0,Value = "Employer name"},
+            new MemberProfile() {ProfileId = 31,PreferenceId = 0,Value = "Address1"},
+            new MemberProfile() {ProfileId = 32,PreferenceId = 0,Value = "Address2"}
+        };
         MemberProfileDetail memberProfile = new MemberProfileDetail();
         memberProfile.UserType = memberUserType;
         memberProfile.Profiles = new List<MemberProfile>();
@@ -182,6 +194,7 @@ public class MemberProfileViewModelTest
         {
             memberProfile.ActiveApprenticesCount = 1;
             memberProfile.Sectors = new List<string> { "test1", "test2" };
+            memberProfile.Profiles = memberProfiles;
         }
         else
         {
@@ -194,6 +207,7 @@ public class MemberProfileViewModelTest
             memberProfile.Sector = "Sector";
             memberProfile.Programmes = "Programmes";
             memberProfile.Level = "Level";
+            memberProfile.Profiles = memberProfiles;
         }
         else
         {
