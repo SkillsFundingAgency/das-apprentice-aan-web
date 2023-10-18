@@ -19,7 +19,7 @@ public class NotificationsController : Controller
         _outerApiClient = outerApiClient;
     }
 
-    [Route("[controller]/{id}")]
+    [Route("links/{id}")]
     public async Task<IActionResult> Index(Guid id, CancellationToken cancellationToken)
     {
         var response = await _outerApiClient.GetNotification(User.GetAanMemberId(), id, cancellationToken);
@@ -31,11 +31,15 @@ public class NotificationsController : Controller
         (string RouteName, object? RouteValues) route = notification.TemplateName switch
         {
             NotificationTemplateNames.AANApprenticeOnboarding
-            or NotificationTemplateNames.AANApprenticeEventCancel
                 => (RouteNames.NetworkHub, null),
 
             NotificationTemplateNames.AANApprenticeEventSignup
+            or NotificationTemplateNames.AANAdminEventUpdate
+            or NotificationTemplateNames.AANAdminEventCancel
                 => (SharedRouteNames.NetworkEventDetails, new { id = notification.ReferenceId }),
+
+            NotificationTemplateNames.AANApprenticeEventCancel
+                => (SharedRouteNames.NetworkEvents, null),
 
             NotificationTemplateNames.AANIndustryAdvice
             or NotificationTemplateNames.AANAskForHelp
