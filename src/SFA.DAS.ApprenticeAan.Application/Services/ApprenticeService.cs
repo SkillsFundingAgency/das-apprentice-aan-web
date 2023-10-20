@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 
 namespace SFA.DAS.ApprenticeAan.Application.Services;
@@ -26,7 +27,7 @@ public class ApprenticeService : IApprenticeService
 
     public async Task<StagedApprentice?> GetStagedApprentice(string lastName, DateTime dateOfBirth, string email, CancellationToken cancellationToken = new())
     {
-        var response = await _client.GetStagedApprentice(lastName, dateOfBirth.ToString("yyyy-MM-dd"), email, cancellationToken);
+        var response = await _client.GetStagedApprentice(new GetStagedApprenticeRequest(lastName, dateOfBirth.ToString("yyyy-MM-dd"), email), cancellationToken);
         return response.ResponseMessage.StatusCode switch
         {
             HttpStatusCode.NotFound => null,

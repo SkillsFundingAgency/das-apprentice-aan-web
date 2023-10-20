@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using RestEase;
+﻿using RestEase;
 using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
@@ -56,9 +55,9 @@ public interface IOuterApiClient
         [Header(RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId,
         CancellationToken cancellationToken);
 
-    [Get("/stagedapprentices")]
+    [Post("/stagedapprentices")]
     [AllowAnyStatusCode]
-    Task<Response<StagedApprentice?>> GetStagedApprentice([Query] string lastName, [Query] string dateOfBirth, [Query] string email, CancellationToken cancellationToken);
+    Task<Response<StagedApprentice?>> GetStagedApprentice([Body] GetStagedApprenticeRequest request, CancellationToken cancellationToken);
 
     [Put("/calendarevents/{calendarEventId}/attendance")]
     Task PutAttendance([Path] Guid calendarEventId,
