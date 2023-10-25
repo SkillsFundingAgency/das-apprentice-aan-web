@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.Aan.SharedUi.Models;
+using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
@@ -86,11 +87,19 @@ public class MemberProfileControllerTests
     }
 
     [Test]
-    [MoqAutoData]
-    public void MemberProfileDetailMapping_ReturnsMemberProfileDetail(Task<GetMemberProfileResponse> memberProfiles)
+    [MoqInlineAutoData(MemberUserType.Apprentice, true)]
+    [MoqInlineAutoData(MemberUserType.Apprentice, false)]
+    [MoqInlineAutoData(MemberUserType.Employer, true)]
+    [MoqInlineAutoData(MemberUserType.Employer, false)]
+    public void MemberProfileDetailMapping_ReturnsMemberProfileDetail(MemberUserType userType, bool isApprenticeShipAvailable, GetMemberProfileResponse memberProfiles)
     {
         //Arrange
         MemberProfileDetail memberProfileDetail = new MemberProfileDetail();
+        memberProfiles.UserType = userType;
+        if (!isApprenticeShipAvailable)
+        {
+            memberProfiles.Apprenticeship = null;
+        }
 
         //Act
         var sut = MemberProfileController.MemberProfileDetailMapping(memberProfiles);
@@ -99,20 +108,25 @@ public class MemberProfileControllerTests
         Assert.Multiple(() =>
         {
             Assert.That(sut, Is.InstanceOf(memberProfileDetail.GetType()));
-            Assert.That(sut.FullName, Is.EqualTo(memberProfiles.Result.FullName));
-            Assert.That(sut.FirstName, Is.EqualTo(memberProfiles.Result.FirstName));
-            Assert.That(sut.LastName, Is.EqualTo(memberProfiles.Result.LastName));
-            Assert.That(sut.Email, Is.EqualTo(memberProfiles.Result.Email));
-            Assert.That(sut.RegionId, Is.EqualTo(memberProfiles.Result.RegionId));
-            Assert.That(sut.OrganisationName, Is.EqualTo(memberProfiles.Result.OrganisationName));
-            Assert.That(sut.UserType, Is.EqualTo(memberProfiles.Result.UserType));
-            Assert.That(sut.IsRegionalChair, Is.EqualTo(memberProfiles.Result.IsRegionalChair));
-            Assert.That(sut.Profiles, Is.EqualTo(memberProfiles.Result.Profiles));
-            if (memberProfiles.Result.Apprenticeship != null)
+            Assert.That(sut.FullName, Is.EqualTo(memberProfiles.FullName));
+            Assert.That(sut.FirstName, Is.EqualTo(memberProfiles.FirstName));
+            Assert.That(sut.LastName, Is.EqualTo(memberProfiles.LastName));
+            Assert.That(sut.Email, Is.EqualTo(memberProfiles.Email));
+            Assert.That(sut.RegionId, Is.EqualTo(memberProfiles.RegionId));
+            Assert.That(sut.OrganisationName, Is.EqualTo(memberProfiles.OrganisationName));
+            Assert.That(sut.UserType, Is.EqualTo(memberProfiles.UserType));
+            Assert.That(sut.IsRegionalChair, Is.EqualTo(memberProfiles.IsRegionalChair));
+            Assert.That(sut.Profiles, Is.EqualTo(memberProfiles.Profiles));
+            if (memberProfiles.UserType == Aan.SharedUi.Models.AmbassadorProfile.MemberUserType.Apprentice && memberProfiles.Apprenticeship != null)
             {
-                Assert.That(sut.Sector, Is.EqualTo(memberProfiles.Result.Apprenticeship!.Sector));
-                Assert.That(sut.Programmes, Is.EqualTo(memberProfiles.Result.Apprenticeship!.Programme));
-                Assert.That(sut.Level, Is.EqualTo(memberProfiles.Result.Apprenticeship!.Level));
+                Assert.That(sut.Sector, Is.EqualTo(memberProfiles.Apprenticeship!.Sector));
+                Assert.That(sut.Programmes, Is.EqualTo(memberProfiles.Apprenticeship!.Programme));
+                Assert.That(sut.Level, Is.EqualTo(memberProfiles.Apprenticeship!.Level));
+            }
+            if (memberProfiles.UserType == Aan.SharedUi.Models.AmbassadorProfile.MemberUserType.Employer && memberProfiles.Apprenticeship != null)
+            {
+                Assert.That(sut.Sectors, Is.EqualTo(memberProfiles.Apprenticeship!.Sectors));
+                Assert.That(sut.ActiveApprenticesCount, Is.EqualTo(memberProfiles.Apprenticeship!.ActiveApprenticesCount));
             }
         });
     }
