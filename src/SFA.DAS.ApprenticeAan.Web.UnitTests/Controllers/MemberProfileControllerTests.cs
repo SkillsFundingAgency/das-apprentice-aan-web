@@ -17,8 +17,10 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
 public class MemberProfileControllerTests
 {
     [Test]
-    [MoqAutoData]
+    [MoqInlineAutoData(MemberUserType.Apprentice)]
+    [MoqInlineAutoData(MemberUserType.Employer)]
     public void MemberProfile_ReturnsMemberProfileViewModel(
+        MemberUserType memberUserType,
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         [Greedy] MemberProfileController sut,
         GetMemberProfileResponse memberProfile)
@@ -28,6 +30,7 @@ public class MemberProfileControllerTests
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, Guid.NewGuid().ToString());
+        memberProfile.UserType = memberUserType;
         outerApiMock.Setup(o => o.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(memberProfile));
 
@@ -59,8 +62,10 @@ public class MemberProfileControllerTests
     }
 
     [Test]
-    [MoqAutoData]
+    [MoqInlineAutoData(MemberUserType.Apprentice)]
+    [MoqInlineAutoData(MemberUserType.Employer)]
     public void Get_ReturnsProfileView(
+        MemberUserType memberUserType,
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         GetMemberProfileResponse getMemberProfileResponse,
         CancellationToken cancellationToken
@@ -69,6 +74,7 @@ public class MemberProfileControllerTests
         //Arrange
         var memberId = Guid.NewGuid();
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
+        getMemberProfileResponse.UserType = memberUserType;
         outerApiMock.Setup(o => o.GetMemberProfile(memberId, memberId, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(getMemberProfileResponse));
         MemberProfileController sut = new MemberProfileController(outerApiMock.Object);

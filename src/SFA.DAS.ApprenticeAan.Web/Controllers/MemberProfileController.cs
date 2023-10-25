@@ -83,7 +83,6 @@ public class MemberProfileController : Controller
 
         MemberProfileDetail memberProfileDetail = MemberProfileDetailMapping(memberProfiles);
         MemberProfileMappingModel memberProfileMappingModel = new MemberProfileMappingModel();
-        List<Profile> profiles = new List<Profile>();
         memberProfileMappingModel = new()
         {
             LinkedinProfileId = (memberProfileDetail.UserType == MemberUserType.Apprentice) ? ProfileIds.LinkedIn : ProfileIds.EmployerLinkedIn,
