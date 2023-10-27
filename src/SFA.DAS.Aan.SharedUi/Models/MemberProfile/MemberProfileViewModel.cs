@@ -22,7 +22,7 @@ public class MemberProfileViewModel
     public string Sector { get; set; }
     public string Programmes { get; set; }
     public string Level { get; set; }
-    public List<string> Sectors { get; set; }
+    public List<string>? Sectors { get; set; }
     public int ActiveApprenticesCount { get; set; }
     public bool IsLoggedInUserMemberProfile { get; set; }
     public string AreasOfInterestTitle { get; set; }
@@ -30,6 +30,9 @@ public class MemberProfileViewModel
     public string AreasOfInterestSecondSectionTitle { get; set; }
     public string InformationSectionTitle { get; set; }
     public string ConnectSectionTitle { get; set; }
+    public MemberUserType UserType { get; set; }
+    public bool IsEmployerInformationAvailable { get; set; }
+    public bool IsApprenticeshipInformationAvailable { get; set; }
     public MemberProfileViewModel(MemberProfileDetail memberProfileDetail, IEnumerable<Profile> memberProfiles, MemberProfileMappingModel memberProfileMappingModel)
     {
         FullName = memberProfileDetail.FullName;
@@ -57,5 +60,8 @@ public class MemberProfileViewModel
         AreasOfInterestSecondSectionTitle = (memberProfileDetail.UserType == MemberUserType.Apprentice) ? MemberProfileTitle.ApprenticeAreasOfInterestSecondSectionTitle : MemberProfileTitle.EmployerAreasOfInterestSecondSectionTitle;
         InformationSectionTitle = (memberProfileDetail.UserType == MemberUserType.Apprentice) ? $"{FirstName}’s apprenticeship information" : MemberProfileTitle.EmployerInformationSectionTitle;
         ConnectSectionTitle = (memberProfileDetail.UserType == MemberUserType.Apprentice) ? $"You can connect with {FirstName} by email or LinkedIn." : $"You can contact {FirstName} using the form below or connect directly on LinkedIn.";
+        UserType = memberProfileDetail.UserType;
+        IsEmployerInformationAvailable = !string.IsNullOrEmpty(EmployerName) || !string.IsNullOrEmpty(Address);
+        IsApprenticeshipInformationAvailable = ((UserType == MemberUserType.Apprentice) ? (!string.IsNullOrEmpty(Sector) || !string.IsNullOrEmpty(Programmes) || !string.IsNullOrEmpty(Level)) : (Sectors.Count > 0 || ActiveApprenticesCount > 0));
     }
 }

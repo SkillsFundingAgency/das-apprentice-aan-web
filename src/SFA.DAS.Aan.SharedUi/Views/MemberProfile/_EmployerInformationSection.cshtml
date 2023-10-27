@@ -1,0 +1,35 @@
+﻿@using SFA.DAS.Aan.SharedUi.Models;
+@model MemberProfileViewModel
+<dl class="govuk-summary-list">
+    @if (Model.Sectors!.Count > 0)
+    {
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                Apprenticeship sectors
+            </dt>
+            <dd class="govuk-summary-list__value">
+                <ul class="govuk-list govuk-list--bullet">
+                    @{
+                        foreach (var sector in Model.Sectors)
+                        {
+                            <li>@sector</li>
+                        }
+                    }
+                </ul>
+            </dd>
+        </div>
+    }
+
+    @if (Model.ActiveApprenticesCount > 0)
+    {
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                Number of active apprentices
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @Model.ActiveApprenticesCount
+            </dd>
+        </div>
+    }
+</dl>
+

@@ -1,0 +1,40 @@
+﻿@using SFA.DAS.Aan.SharedUi.Models;
+@model MemberProfileViewModel
+<dl class="govuk-summary-list">
+    @if (!string.IsNullOrEmpty(Model.Sector))
+    {
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key apprenticeship-sector">
+                Apprenticeship sectors
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @Model.Sector
+            </dd>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.Programmes))
+    {
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                Apprenticeship programme
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @Model.Programmes
+            </dd>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.Level))
+    {
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                Apprenticeship level
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @Model.Level
+            </dd>
+        </div>
+    }
+</dl>
+

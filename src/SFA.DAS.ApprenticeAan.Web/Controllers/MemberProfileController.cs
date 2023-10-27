@@ -32,10 +32,6 @@ public class MemberProfileController : Controller
         ProfileIds.EngagingWithStakeholdersToWorkOutHowToImproveTheNetwork,
         ProfileIds.PromotingTheNetworkOnSocialMediaChannels
     };
-    private static int linkedinProfileId = ProfileIds.LinkedIn;
-    private static int jobTitleProfileId = ProfileIds.JobTitle;
-    private static int biographyProfileId = ProfileIds.Biography;
-    private static int employerNameProfileId = ProfileIds.EmployerName;
     private static List<int> addressProfileIds = new List<int>()
     {
         ProfileIds.EmployerAddress1,
@@ -43,6 +39,31 @@ public class MemberProfileController : Controller
         ProfileIds.EmployerTownOrCity,
         ProfileIds.EmployerCounty,
         ProfileIds.EmployerPostcode
+    };
+
+    private static List<int> reasonToJoinProfileIds = new List<int>()
+    {
+        ProfileIds.MeetOtherAmbassadorsAndGrowYourNetwork,
+        ProfileIds.ShareYourKnowledgeExperienceAndBestPractice,
+        ProfileIds.ProjectManageAndDeliverNetworkEvents,
+        ProfileIds.BeARoleModelAndActAsAnInformalMentor,
+        ProfileIds.ChampionApprenticeshipDeliveryWithinYourNetworks
+    };
+    private static List<int> supportProfileIds = new List<int>()
+    {
+        ProfileIds.BuildingApprenticeshipProfileOfMyOrganisation,
+        ProfileIds.IncreasingEngagementWithSchoolsAndColleges,
+        ProfileIds.GettingStartedWithApprenticeships,
+        ProfileIds.UnderstandingTrainingProvidersAndResourcesOthersAreUsing,
+        ProfileIds.UsingTheNetworkToBestBenefitMyOrganisation
+    };
+    private static List<int> employerAddressProfileIds = new List<int>()
+    {
+        ProfileIds.EmployerUserEmployerAddress1,
+        ProfileIds.EmployerUserEmployerAddress2,
+        ProfileIds.EmployerUserEmployerTownOrCity,
+        ProfileIds.EmployerUserEmployerCounty,
+        ProfileIds.EmployerUserEmployerPostcode
     };
 
     public MemberProfileController(IOuterApiClient outerApiClient)
@@ -56,45 +77,55 @@ public class MemberProfileController : Controller
     {
         var memberId = User.GetAanMemberId();
 
-        var profiles = _outerApiClient.GetProfilesByUserType(MemberUserType.Apprentice.ToString(), cancellationToken);
-        var memberProfiles = _outerApiClient.GetMemberProfile(id, User.GetAanMemberId(), true, cancellationToken);
-        await Task.WhenAll(profiles, memberProfiles);
+        var apprenticeProfiles = _outerApiClient.GetProfilesByUserType(MemberUserType.Apprentice.ToString(), cancellationToken);
+        var employerProfiles = _outerApiClient.GetProfilesByUserType(MemberUserType.Employer.ToString(), cancellationToken);
+        var memberProfiles = await _outerApiClient.GetMemberProfile(id, User.GetAanMemberId(), true, cancellationToken);
 
-        MemberProfileMappingModel memberProfileMappingModel = new()
+        MemberProfileDetail memberProfileDetail = MemberProfileDetailMapping(memberProfiles);
+        MemberProfileMappingModel memberProfileMappingModel = new MemberProfileMappingModel();
+        memberProfileMappingModel = new()
         {
-            LinkedinProfileId = linkedinProfileId,
-            JobTitleProfileId = jobTitleProfileId,
-            BiographyProfileId = biographyProfileId,
-            FirstSectionProfileIds = eventsProfileIds,
-            SecondSectionProfileIds = promotionsProfileIds,
-            AddressProfileIds = addressProfileIds,
-            EmployerNameProfileId = employerNameProfileId,
+            LinkedinProfileId = (memberProfileDetail.UserType == MemberUserType.Apprentice) ? ProfileIds.LinkedIn : ProfileIds.EmployerLinkedIn,
+            JobTitleProfileId = (memberProfileDetail.UserType == MemberUserType.Apprentice) ? ProfileIds.JobTitle : ProfileIds.EmployerJobTitle,
+            BiographyProfileId = (memberProfileDetail.UserType == MemberUserType.Apprentice) ? ProfileIds.Biography : ProfileIds.EmployerBiography,
+            FirstSectionProfileIds = (memberProfileDetail.UserType == MemberUserType.Apprentice) ? eventsProfileIds : reasonToJoinProfileIds,
+            SecondSectionProfileIds = (memberProfileDetail.UserType == MemberUserType.Apprentice) ? promotionsProfileIds : supportProfileIds,
+            AddressProfileIds = (memberProfileDetail.UserType == MemberUserType.Apprentice) ? addressProfileIds : employerAddressProfileIds,
+            EmployerNameProfileId = (memberProfileDetail.UserType == MemberUserType.Apprentice) ? ProfileIds.EmployerName : ProfileIds.EmployerUserEmployerName,
             IsLoggedInUserMemberProfile = (id == memberId)
         };
 
-        MemberProfileViewModel model = new(MemberProfileDetailMapping(memberProfiles), profiles.Result.Profiles, memberProfileMappingModel);
+        MemberProfileViewModel model = new(memberProfileDetail, (memberProfileDetail.UserType == MemberUserType.Apprentice) ? apprenticeProfiles.Result.Profiles : employerProfiles.Result.Profiles, memberProfileMappingModel);
         return View(MemberProfileViewPath, model);
     }
 
-    public static MemberProfileDetail MemberProfileDetailMapping(Task<GetMemberProfileResponse> memberProfiles)
+    public static MemberProfileDetail MemberProfileDetailMapping(GetMemberProfileResponse memberProfiles)
     {
         MemberProfileDetail memberProfileDetail = new MemberProfileDetail();
-        memberProfileDetail.FullName = memberProfiles.Result.FullName;
-        memberProfileDetail.Email = memberProfiles.Result.Email;
-        memberProfileDetail.FirstName = memberProfiles.Result.FirstName;
-        memberProfileDetail.LastName = memberProfiles.Result.LastName;
-        memberProfileDetail.OrganisationName = memberProfiles.Result.OrganisationName;
-        memberProfileDetail.RegionId = memberProfiles.Result.RegionId;
-        memberProfileDetail.RegionName = memberProfiles.Result.RegionName;
-        memberProfileDetail.UserType = memberProfiles.Result.UserType;
-        memberProfileDetail.IsRegionalChair = memberProfiles.Result.IsRegionalChair;
-        if (memberProfiles.Result.Apprenticeship != null)
+        memberProfileDetail.FullName = memberProfiles.FullName;
+        memberProfileDetail.Email = memberProfiles.Email;
+        memberProfileDetail.FirstName = memberProfiles.FirstName;
+        memberProfileDetail.LastName = memberProfiles.LastName;
+        memberProfileDetail.OrganisationName = memberProfiles.OrganisationName;
+        memberProfileDetail.RegionId = memberProfiles.RegionId;
+        memberProfileDetail.RegionName = memberProfiles.RegionName;
+        memberProfileDetail.UserType = memberProfiles.UserType;
+        memberProfileDetail.IsRegionalChair = memberProfiles.IsRegionalChair;
+        if (memberProfiles.Apprenticeship != null)
         {
-            memberProfileDetail.Sector = memberProfiles.Result.Apprenticeship!.Sector;
-            memberProfileDetail.Programmes = memberProfiles.Result.Apprenticeship!.Programme;
-            memberProfileDetail.Level = memberProfiles.Result.Apprenticeship!.Level;
+            if (memberProfileDetail.UserType == MemberUserType.Apprentice)
+            {
+                memberProfileDetail.Sector = memberProfiles.Apprenticeship!.Sector;
+                memberProfileDetail.Programmes = memberProfiles.Apprenticeship!.Programme;
+                memberProfileDetail.Level = memberProfiles.Apprenticeship!.Level;
+            }
+            if (memberProfileDetail.UserType == MemberUserType.Employer)
+            {
+                memberProfileDetail.Sectors = memberProfiles.Apprenticeship!.Sectors;
+                memberProfileDetail.ActiveApprenticesCount = memberProfiles.Apprenticeship!.ActiveApprenticesCount;
+            }
         }
-        memberProfileDetail.Profiles = memberProfiles.Result.Profiles;
+        memberProfileDetail.Profiles = memberProfiles.Profiles;
         return memberProfileDetail;
     }
 }

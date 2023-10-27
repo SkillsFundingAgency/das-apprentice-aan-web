@@ -15,7 +15,11 @@ public class MemberProfileViewModelTest
     public void Setup()
     {
         //Arrange
-        memberProfileMappingModel = new MemberProfileMappingModel();
+        memberProfileMappingModel = new MemberProfileMappingModel()
+        {
+            EmployerNameProfileId = 30,
+            AddressProfileIds = new List<int> { 31, 32, 33 }
+        };
         profiles = new List<Profile>()
         {
             new Profile { Id = 2, Description = "Presenting at events in person", Category = "Events", Ordering = 2 },
@@ -161,6 +165,88 @@ public class MemberProfileViewModelTest
             Assert.That(sut.AreasOfInterestSecondSectionTitle, Is.EqualTo(expectedAreasOfInterestSecondSectionTitle));
             Assert.That(sut.InformationSectionTitle, Is.EqualTo(expectedInformationSectionTitle));
             Assert.That(sut.ConnectSectionTitle, Is.EqualTo(expectedConnectSectionTitle));
+        });
+    }
+
+    [TestCase(MemberUserType.Employer, true)]
+    [TestCase(MemberUserType.Employer, false)]
+    [TestCase(MemberUserType.Apprentice, true)]
+    [TestCase(MemberUserType.Apprentice, false)]
+    public void MemberProfileViewModel_IsApprenticeshipInformationAvailable_ReturnsExpectedBooleanValue(MemberUserType memberUserType, bool isApprenticeshipSet)
+    {
+        //Arrange
+        MemberProfileDetail memberProfile = new MemberProfileDetail();
+        memberProfile.UserType = memberUserType;
+        memberProfile.Profiles = new List<MemberProfile>();
+        if (memberUserType == MemberUserType.Employer && isApprenticeshipSet)
+        {
+            memberProfile.ActiveApprenticesCount = 1;
+            memberProfile.Sectors = new List<string> { "test1", "test2" };
+        }
+        else
+        {
+            memberProfile.ActiveApprenticesCount = 0;
+            memberProfile.Sectors = new List<string>();
+        }
+
+        if (memberUserType == MemberUserType.Apprentice && isApprenticeshipSet)
+        {
+            memberProfile.Sector = "Sector";
+            memberProfile.Programmes = "Programmes";
+            memberProfile.Level = "Level";
+        }
+        else
+        {
+            memberProfile.Sector = string.Empty;
+            memberProfile.Programmes = string.Empty;
+            memberProfile.Level = string.Empty;
+        }
+
+        //Act
+        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, profiles, memberProfileMappingModel);
+
+        //Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut.IsApprenticeshipInformationAvailable, Is.EqualTo(memberUserType == MemberUserType.Employer && isApprenticeshipSet || memberUserType == MemberUserType.Apprentice && isApprenticeshipSet));
+        });
+    }
+
+    [TestCase(true)]
+    [TestCase(false)]
+    public void MemberProfileViewModel_IsEmployerInformationAvailable_ReturnsExpectedBooleanValue(bool isEmployerInformationAvailable)
+    {
+        //Arrange
+        List<Profile> profiles = new List<Profile>()
+        {
+            new Profile { Id = 30, Description = "Employer name", Category = "Employer", Ordering = 1 },
+            new Profile { Id = 31, Description = "Address 1", Category = "Employer", Ordering = 2 },
+            new Profile { Id = 32, Description = "Address 2", Category = "Employer", Ordering = 3 },
+        };
+        List<MemberProfile> memberProfiles = new List<MemberProfile>()
+        {
+            new MemberProfile() {ProfileId = 30,PreferenceId = 0,Value = "Employer name"},
+            new MemberProfile() {ProfileId = 31,PreferenceId = 0,Value = "Address1"},
+            new MemberProfile() {ProfileId = 32,PreferenceId = 0,Value = "Address2"}
+        };
+        MemberProfileDetail memberProfile = new MemberProfileDetail();
+        memberProfile.Profiles = new List<MemberProfile>();
+        if (isEmployerInformationAvailable)
+        {
+            memberProfile.Profiles = memberProfiles;
+        }
+        else
+        {
+            memberProfile.Profiles = new List<MemberProfile>();
+        }
+
+        //Act
+        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, profiles, memberProfileMappingModel);
+
+        //Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut.IsEmployerInformationAvailable, Is.EqualTo(isEmployerInformationAvailable));
         });
     }
 }
