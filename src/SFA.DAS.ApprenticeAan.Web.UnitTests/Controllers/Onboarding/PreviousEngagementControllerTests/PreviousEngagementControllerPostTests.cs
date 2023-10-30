@@ -1,10 +1,12 @@
-﻿using AutoFixture.NUnit3;
+﻿using System.Net;
+using AutoFixture.NUnit3;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using RestEase;
 using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
@@ -96,7 +98,7 @@ public class PreviousEngagementControllerPostTests
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IValidator<PreviousEngagementSubmitModel>> validatorMock,
         [Frozen] Mock<IApprenticeAccountService> apprenticeAccountServiceMock,
-        [Frozen] Mock<IMyApprenticeshipService> myApprenticeshipServiceMock,
+        [Frozen] Mock<IOuterApiClient> outerApiClientMock,
         [Greedy] PreviousEngagementController sut,
         PreviousEngagementSubmitModel submitModel,
         Guid apprenticeId,
@@ -114,7 +116,8 @@ public class PreviousEngagementControllerPostTests
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
 
         apprenticeAccountServiceMock.Setup(s => s.GetApprenticeAccountDetails(apprenticeId)).ReturnsAsync(apprenticeAccount);
-        myApprenticeshipServiceMock.Setup(s => s.TryCreateMyApprenticeship(apprenticeId, apprenticeAccount.LastName, apprenticeAccount.Email, apprenticeAccount.DateOfBirth, cancellationToken)).ReturnsAsync(myApprenticeship);
+
+        outerApiClientMock.Setup(o => o.GetMyApprenticeship(apprenticeId, cancellationToken)).ReturnsAsync(new Response<MyApprenticeship>("", new(HttpStatusCode.OK), () => myApprenticeship));
 
         //Act
         await sut.Post(submitModel, cancellationToken);

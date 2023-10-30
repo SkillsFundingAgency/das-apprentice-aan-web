@@ -4,7 +4,6 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Aan.SharedUi.Constants;
-using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
@@ -21,18 +20,19 @@ public class PreviousEngagementController : Controller
     public const string ViewPath = "~/Views/Onboarding/PreviousEngagement.cshtml";
     private readonly ISessionService _sessionService;
     private readonly IValidator<PreviousEngagementSubmitModel> _validator;
-    private readonly IMyApprenticeshipService _myApprenticeshipService;
     private readonly IApprenticeAccountService _apprenticeAccountService;
+    private readonly IOuterApiClient _outerApiClient;
 
-    public PreviousEngagementController(ISessionService sessionService,
+    public PreviousEngagementController(
+        ISessionService sessionService,
         IValidator<PreviousEngagementSubmitModel> validator,
-        IMyApprenticeshipService myApprenticeshipService,
-        IApprenticeAccountService apprenticeAccountService)
+        IApprenticeAccountService apprenticeAccountService,
+        IOuterApiClient outerApiClient)
     {
         _validator = validator;
         _sessionService = sessionService;
-        _myApprenticeshipService = myApprenticeshipService;
         _apprenticeAccountService = apprenticeAccountService;
+        _outerApiClient = outerApiClient;
     }
 
     [HttpGet]
@@ -67,9 +67,9 @@ public class PreviousEngagementController : Controller
             sessionModel.ApprenticeDetails.ApprenticeId = User.GetApprenticeId();
             sessionModel.ApprenticeDetails.Name = User.FullName();
             sessionModel.ApprenticeDetails.Email = apprentice?.Email!;
-            var myApprenticeship = await _myApprenticeshipService.TryCreateMyApprenticeship(User.GetApprenticeId(), apprentice!.LastName, apprentice.Email, apprentice.DateOfBirth, cancellationToken);
+            var myApprenticeshipResponse = await _outerApiClient.GetMyApprenticeship(User.GetApprenticeId(), cancellationToken);
 
-            sessionModel.MyApprenticeship = myApprenticeship;
+            sessionModel.MyApprenticeship = myApprenticeshipResponse.GetContent();
         }
 
         _sessionService.Set(sessionModel);
