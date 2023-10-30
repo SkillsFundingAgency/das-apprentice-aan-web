@@ -35,8 +35,9 @@ public class MemberProfileViewModel : INetworkHubLink
     public bool IsApprenticeshipInformationAvailable { get; set; }
     public string? NetworkHubLink { get; set; }
     public int ReasonToGetInTouch { get; set; }
-    public bool CodeOfConduct { get; set; }
     public bool DetailShareAllowed { get; set; }
+    public bool CodeOfConduct { get; set; }
+
 
     public MemberProfileViewModel(MemberProfileDetail memberProfileDetail, IEnumerable<Profile> memberProfiles, MemberProfileMappingModel memberProfileMappingModel)
     {
