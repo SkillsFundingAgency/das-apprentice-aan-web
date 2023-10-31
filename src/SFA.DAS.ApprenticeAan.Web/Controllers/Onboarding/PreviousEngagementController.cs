@@ -37,7 +37,7 @@ public class PreviousEngagementController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(PreviousEngagementSubmitModel submitModel)
+    public IActionResult Post(PreviousEngagementSubmitModel submitModel)
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
 

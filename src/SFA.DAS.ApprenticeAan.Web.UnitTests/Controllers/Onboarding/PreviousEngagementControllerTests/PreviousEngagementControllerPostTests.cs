@@ -18,7 +18,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.PreviousEng
 public class PreviousEngagementControllerPostTests
 {
     [Test, MoqAutoData]
-    public async Task Post_ModelStateIsInvalid_ReloadsViewWithValidationErrors(
+    public void Post_ModelStateIsInvalid_ReloadsViewWithValidationErrors(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] PreviousEngagementController sut,
         [Frozen] PreviousEngagementSubmitModel submitModel)
@@ -31,7 +31,7 @@ public class PreviousEngagementControllerPostTests
         sut.ModelState.AddModelError("key", "message");
 
         //Action
-        var result = await sut.Post(submitModel);
+        var result = sut.Post(submitModel);
 
         //Assert
         sut.ModelState.IsValid.Should().BeFalse();
@@ -42,7 +42,7 @@ public class PreviousEngagementControllerPostTests
 
     [MoqInlineAutoData(true)]
     [MoqInlineAutoData(false)]
-    public async Task Post_ModelStateIsValidAndHasSeenPreview_UpdatesSessionModel(
+    public void Post_ModelStateIsValidAndHasSeenPreview_UpdatesSessionModel(
         bool hasPreviousEngagementValue,
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IValidator<PreviousEngagementSubmitModel>> validatorMock,
@@ -58,7 +58,7 @@ public class PreviousEngagementControllerPostTests
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         //Act
-        await sut.Post(submitModel);
+        sut.Post(submitModel);
 
         //Assert
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(s => s.HasSeenPreview)));
@@ -66,7 +66,7 @@ public class PreviousEngagementControllerPostTests
     }
 
     [Test, MoqAutoData]
-    public async Task Post_ModelStateIsValidAndHasSeenPreview_RedirectsToCheckYourAnswers(
+    public void Post_ModelStateIsValidAndHasSeenPreview_RedirectsToCheckYourAnswers(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IValidator<PreviousEngagementSubmitModel>> validatorMock,
         PreviousEngagementSubmitModel submitModel,
@@ -79,7 +79,7 @@ public class PreviousEngagementControllerPostTests
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(GetSessionModel(true));
 
         //Act
-        var result = await sut.Post(submitModel);
+        var result = sut.Post(submitModel);
 
         //Arrange
         result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.CheckYourAnswers);
