@@ -20,7 +20,7 @@ public class ApprenticeAccountServiceTests
         Response<ApprenticeAccount?> apprenticeAccountResponse)
     {
         apprenticeAccountResponse.ResponseMessage.StatusCode = HttpStatusCode.OK;
-        outerApiClientMock.Setup(o => o.GetApprenticeAccount(apprenticeId)).ReturnsAsync(apprenticeAccountResponse);
+        outerApiClientMock.Setup(o => o.GetApprenticeAccount(apprenticeId, It.IsAny<CancellationToken>())).ReturnsAsync(apprenticeAccountResponse);
 
         var actual = await sut.GetApprenticeAccountDetails(apprenticeId);
 
@@ -36,7 +36,7 @@ public class ApprenticeAccountServiceTests
         Response<ApprenticeAccount?> apprenticeAccountResponse)
     {
         apprenticeAccountResponse.ResponseMessage.StatusCode = HttpStatusCode.NotFound;
-        outerApiClientMock.Setup(o => o.GetApprenticeAccount(apprenticeId)).ReturnsAsync(apprenticeAccountResponse);
+        outerApiClientMock.Setup(o => o.GetApprenticeAccount(apprenticeId, It.IsAny<CancellationToken>())).ReturnsAsync(apprenticeAccountResponse);
 
         var actual = await sut.GetApprenticeAccountDetails(apprenticeId);
 
@@ -52,7 +52,7 @@ public class ApprenticeAccountServiceTests
         Response<ApprenticeAccount?> apprenticeAccountResponse)
     {
         apprenticeAccountResponse.ResponseMessage.StatusCode = HttpStatusCode.InternalServerError;
-        outerApiClientMock.Setup(o => o.GetApprenticeAccount(apprenticeId)).ReturnsAsync(apprenticeAccountResponse);
+        outerApiClientMock.Setup(o => o.GetApprenticeAccount(apprenticeId, It.IsAny<CancellationToken>())).ReturnsAsync(apprenticeAccountResponse);
 
         Func<Task> action = () => sut.GetApprenticeAccountDetails(apprenticeId);
 
