@@ -3,7 +3,7 @@ using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 using SFA.DAS.Aan.SharedUi.Services;
 
 namespace SFA.DAS.Aan.SharedUi.Models;
-public class MemberProfileViewModel
+public class MemberProfileViewModel : INetworkHubLink
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
@@ -33,6 +33,9 @@ public class MemberProfileViewModel
     public MemberUserType UserType { get; set; }
     public bool IsEmployerInformationAvailable { get; set; }
     public bool IsApprenticeshipInformationAvailable { get; set; }
+
+    public string? NetworkHubLink { get; set; }
+
     public MemberProfileViewModel(MemberProfileDetail memberProfileDetail, IEnumerable<Profile> memberProfiles, MemberProfileMappingModel memberProfileMappingModel)
     {
         FullName = memberProfileDetail.FullName;

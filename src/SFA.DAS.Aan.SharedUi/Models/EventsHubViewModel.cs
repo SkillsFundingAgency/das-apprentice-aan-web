@@ -3,11 +3,13 @@ using SFA.DAS.Aan.SharedUi.Infrastructure;
 
 namespace SFA.DAS.Aan.SharedUi.Models;
 
-public class EventsHubViewModel
+public class EventsHubViewModel : INetworkHubLink
 {
     public string AllNetworksUrl { get; init; }
 
     public CalendarViewModel Calendar { get; init; }
+
+    public string? NetworkHubLink { get; set; }
 
     public EventsHubViewModel(DateOnly firstDayOfTheMonth, IUrlHelper urlHelper, List<Appointment> appointments, Func<string> getNetworkEventsUrl)
     {
