@@ -1,10 +1,13 @@
-﻿using FluentValidation;
+﻿using System.Net;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
+using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
@@ -45,7 +48,7 @@ public class LineManagerController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(LineManagerSubmitModel submitmodel)
+    public async Task<IActionResult> Post(LineManagerSubmitModel submitmodel, CancellationToken cancellationToken)
     {
         if (!TempData.ContainsKey(TempDataKeys.HasSeenTermsAndConditions))
         {
@@ -69,12 +72,28 @@ public class LineManagerController : Controller
 
         if (!_sessionService.Contains<OnboardingSessionModel>())
         {
-            var profiles = await  _apiClient.GetProfilesByUserType("apprentice", null);
+            var profilesTask = _apiClient.GetProfilesByUserType("apprentice", cancellationToken);
+            var accountTask = _apiClient.GetApprenticeAccount(User.GetApprenticeId(), cancellationToken);
+            await Task.WhenAll(profilesTask, accountTask);
+
+            var profiles = profilesTask.Result;
+            TryCreateMyApprenticeshipRequest apprentice = accountTask.Result.GetContent()!;
+
+            var myApprenticeship = await _apiClient.TryCreateMyApprenticeship(apprentice, cancellationToken);
+            if (myApprenticeship.ResponseMessage.StatusCode == HttpStatusCode.NotFound)
+            {
+                return Redirect(@"/accessdenied");
+            }
+
             OnboardingSessionModel sessionModel = new()
             {
                 ProfileData = profiles.Profiles.Select(p => (ProfileModel)p).ToList(),
-                HasAcceptedTerms = true
+                HasAcceptedTerms = true,
+                MyApprenticeship = myApprenticeship.GetContent()!
             };
+            sessionModel.ApprenticeDetails.ApprenticeId = User.GetApprenticeId();
+            sessionModel.ApprenticeDetails.Name = $"{apprentice.FirstName} {apprentice.LastName}";
+            sessionModel.ApprenticeDetails.Email = apprentice.Email;
             _sessionService.Set(sessionModel);
         }
 

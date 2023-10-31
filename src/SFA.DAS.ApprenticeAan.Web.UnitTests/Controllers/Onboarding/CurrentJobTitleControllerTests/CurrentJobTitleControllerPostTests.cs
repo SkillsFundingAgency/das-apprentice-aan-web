@@ -5,7 +5,6 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.Aan.SharedUi.Constants;
-using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
@@ -24,7 +23,7 @@ public class CurrentJobTitleControllerPostTests
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IValidator<CurrentJobTitleSubmitModel>> validatorMock,
         [Greedy] CurrentJobTitleController sut,
-        CurrentJobTitleSubmitModel submitmodel,
+        CurrentJobTitleSubmitModel submitModel,
         OnboardingSessionModel sessionModel)
     {
         sut.AddUrlHelperMock();
@@ -32,11 +31,11 @@ public class CurrentJobTitleControllerPostTests
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         ValidationResult validationResult = new();
-        validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
+        validatorMock.Setup(v => v.Validate(submitModel)).Returns(validationResult);
 
-        sut.Post(submitmodel);
+        sut.Post(submitModel);
 
-        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.GetProfileValue(ProfileConstants.ProfileIds.JobTitle) == submitmodel.JobTitle)));
+        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.GetProfileValue(ProfileConstants.ProfileIds.JobTitle) == submitModel.JobTitle)));
     }
 
     [MoqAutoData]
@@ -44,7 +43,7 @@ public class CurrentJobTitleControllerPostTests
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IValidator<CurrentJobTitleSubmitModel>> validatorMock,
         [Greedy] CurrentJobTitleController sut,
-        CurrentJobTitleSubmitModel submitmodel,
+        CurrentJobTitleSubmitModel submitModel,
         OnboardingSessionModel sessionModel)
     {
         sut.AddUrlHelperMock();
@@ -53,11 +52,11 @@ public class CurrentJobTitleControllerPostTests
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         ValidationResult validationResult = new();
-        validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
+        validatorMock.Setup(v => v.Validate(submitModel)).Returns(validationResult);
 
-        var result = sut.Post(submitmodel);
+        var result = sut.Post(submitModel);
 
-        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.GetProfileValue(ProfileConstants.ProfileIds.JobTitle) == submitmodel.JobTitle)));
+        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.GetProfileValue(ProfileConstants.ProfileIds.JobTitle) == submitModel.JobTitle)));
 
         result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.Regions);
     }
@@ -67,7 +66,7 @@ public class CurrentJobTitleControllerPostTests
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Frozen] Mock<IValidator<CurrentJobTitleSubmitModel>> validatorMock,
         [Greedy] CurrentJobTitleController sut,
-        CurrentJobTitleSubmitModel submitmodel,
+        CurrentJobTitleSubmitModel submitModel,
         OnboardingSessionModel sessionModel)
     {
         sut.AddUrlHelperMock();
@@ -76,11 +75,11 @@ public class CurrentJobTitleControllerPostTests
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         ValidationResult validationResult = new();
-        validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
+        validatorMock.Setup(v => v.Validate(submitModel)).Returns(validationResult);
 
-        var result = sut.Post(submitmodel);
+        var result = sut.Post(submitModel);
 
-        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.GetProfileValue(ProfileConstants.ProfileIds.JobTitle) == submitmodel.JobTitle)));
+        sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.GetProfileValue(ProfileConstants.ProfileIds.JobTitle) == submitModel.JobTitle)));
 
         result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.CheckYourAnswers);
     }
@@ -96,10 +95,10 @@ public class CurrentJobTitleControllerPostTests
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
-        CurrentJobTitleSubmitModel submitmodel = new();
-        submitmodel.JobTitle = null;
+        CurrentJobTitleSubmitModel submitModel = new();
+        submitModel.JobTitle = null;
 
-        sut.Post(submitmodel);
+        sut.Post(submitModel);
 
         sut.ModelState.IsValid.Should().BeFalse();
     }
@@ -115,10 +114,10 @@ public class CurrentJobTitleControllerPostTests
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
-        CurrentJobTitleSubmitModel submitmodel = new();
-        submitmodel.JobTitle = null;
+        CurrentJobTitleSubmitModel submitModel = new();
+        submitModel.JobTitle = null;
 
-        var result = sut.Post(submitmodel);
+        var result = sut.Post(submitModel);
 
         sut.ModelState.IsValid.Should().BeFalse();
         result.As<ViewResult>().Model.As<CurrentJobTitleViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);
@@ -135,12 +134,12 @@ public class CurrentJobTitleControllerPostTests
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
-        CurrentJobTitleSubmitModel submitmodel = new()
+        CurrentJobTitleSubmitModel submitModel = new()
         {
             JobTitle = null
         };
 
-        var result = sut.Post(submitmodel);
+        var result = sut.Post(submitModel);
 
         sut.ModelState.IsValid.Should().BeFalse();
         result.As<ViewResult>().Model.As<CurrentJobTitleViewModel>().BackLink.Should().Be(TestConstants.DefaultUrl);

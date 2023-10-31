@@ -19,7 +19,7 @@ public interface IOuterApiClient
 
     [Get("/apprentices/{apprenticeId}/account")]
     [AllowAnyStatusCode]
-    Task<Response<ApprenticeAccount?>> GetApprenticeAccount([Path] Guid apprenticeId);
+    Task<Response<ApprenticeAccount?>> GetApprenticeAccount([Path] Guid apprenticeId, CancellationToken cancellationToken);
 
     [Get("/locations")]
     Task<GetAddressesResult> GetAddresses([Query] string query);
@@ -42,6 +42,10 @@ public interface IOuterApiClient
     [Get("/myapprenticeship/{apprenticeId}")]
     [AllowAnyStatusCode]
     Task<Response<MyApprenticeship>> GetMyApprenticeship([Path] Guid apprenticeId, CancellationToken cancellationToken);
+
+    [Post("myapprenticeship")]
+    [AllowAnyStatusCode]
+    Task<Response<MyApprenticeship?>> TryCreateMyApprenticeship([Body] TryCreateMyApprenticeshipRequest request, CancellationToken cancellationToken);
 
     [Post("/apprentices")]
     Task<CreateApprenticeMemberResponse> PostApprenticeMember([Body] CreateApprenticeMemberRequest request);
