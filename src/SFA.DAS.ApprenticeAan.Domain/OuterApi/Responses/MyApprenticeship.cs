@@ -9,13 +9,13 @@ public class MyApprenticeship
     public DateTime? EndDate { get; set; }
     public long? TrainingProviderId { get; set; }
     public string? TrainingProviderName { get; set; }
-    public TrainingCourse TrainingCourse { get; set; } = null!;
+    public TrainingCourse? TrainingCourse { get; set; }
 }
 
 public class TrainingCourse
 {
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; }
     public int Level { get; set; }
     public int Duration { get; set; }
-    public string Sector { get; set; } = null!;
+    public string? Sector { get; set; }
 }
