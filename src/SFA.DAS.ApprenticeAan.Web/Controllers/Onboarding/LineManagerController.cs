@@ -23,18 +23,18 @@ public class LineManagerController : Controller
     private readonly ISessionService _sessionService;
     private readonly IOuterApiClient _apiClient;
     private readonly IValidator<LineManagerSubmitModel> _validator;
-    private readonly ApplicationConfiguration _appplicationConfiguration;
+    private readonly ApplicationConfiguration _applicationConfiguration;
 
     public LineManagerController(
         ISessionService sessionService,
         IOuterApiClient apiClient,
         IValidator<LineManagerSubmitModel> validator,
-        ApplicationConfiguration appplicationConfiguration)
+        ApplicationConfiguration applicationConfiguration)
     {
         _apiClient = apiClient;
         _validator = validator;
         _sessionService = sessionService;
-        _appplicationConfiguration = appplicationConfiguration;
+        _applicationConfiguration = applicationConfiguration;
     }
 
     [HttpGet]
@@ -48,23 +48,23 @@ public class LineManagerController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(LineManagerSubmitModel submitmodel, CancellationToken cancellationToken)
+    public async Task<IActionResult> Post(LineManagerSubmitModel submitModel, CancellationToken cancellationToken)
     {
         if (!TempData.ContainsKey(TempDataKeys.HasSeenTermsAndConditions))
         {
             return RedirectToRoute(RouteNames.Onboarding.BeforeYouStart);
         }
 
-        ValidationResult result = _validator.Validate(submitmodel);
+        ValidationResult result = _validator.Validate(submitModel);
         if (!result.IsValid)
         {
             result.AddToModelState(this.ModelState);
             return View(ViewPath, GetViewModel());
         }
 
-        if (!submitmodel.HasEmployersApproval.GetValueOrDefault())
+        if (!submitModel.HasEmployersApproval.GetValueOrDefault())
         {
-            ShutterPageViewModel shutterPageViewModel = new() { ApprenticeHomeUrl = _appplicationConfiguration.ApplicationUrls.ApprenticeHomeUrl.ToString() };
+            ShutterPageViewModel shutterPageViewModel = new() { ApprenticeHomeUrl = _applicationConfiguration.ApplicationUrls.ApprenticeHomeUrl.ToString() };
             _sessionService.Delete<OnboardingSessionModel>();
             TempData.Remove(TempDataKeys.HasSeenTermsAndConditions);
             return View(ShutterPageViewPath, shutterPageViewModel);

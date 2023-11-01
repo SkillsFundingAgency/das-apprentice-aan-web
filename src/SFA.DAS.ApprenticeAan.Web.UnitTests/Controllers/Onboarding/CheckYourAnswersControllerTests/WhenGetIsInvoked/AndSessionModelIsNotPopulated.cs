@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.Aan.SharedUi.Constants;
-using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;

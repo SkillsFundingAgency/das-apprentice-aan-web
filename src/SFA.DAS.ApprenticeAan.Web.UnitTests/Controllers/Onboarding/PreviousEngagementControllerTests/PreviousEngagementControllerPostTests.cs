@@ -85,7 +85,7 @@ public class PreviousEngagementControllerPostTests
         result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.CheckYourAnswers);
     }
 
-    private OnboardingSessionModel GetSessionModel(bool hasSeenPreview = true)
+    private static OnboardingSessionModel GetSessionModel(bool hasSeenPreview = true)
     {
         OnboardingSessionModel model = new() { HasSeenPreview = hasSeenPreview };
         model.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.EngagedWithAPreviousAmbassadorInTheNetworkApprentice, Value = null });

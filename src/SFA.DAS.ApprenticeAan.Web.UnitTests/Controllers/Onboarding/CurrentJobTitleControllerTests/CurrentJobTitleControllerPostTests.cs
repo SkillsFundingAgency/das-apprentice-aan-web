@@ -95,8 +95,10 @@ public class CurrentJobTitleControllerPostTests
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
-        CurrentJobTitleSubmitModel submitModel = new();
-        submitModel.JobTitle = null;
+        CurrentJobTitleSubmitModel submitModel = new()
+        {
+            JobTitle = null
+        };
 
         sut.Post(submitModel);
 
@@ -114,8 +116,10 @@ public class CurrentJobTitleControllerPostTests
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
-        CurrentJobTitleSubmitModel submitModel = new();
-        submitModel.JobTitle = null;
+        CurrentJobTitleSubmitModel submitModel = new()
+        {
+            JobTitle = null
+        };
 
         var result = sut.Post(submitModel);
 
