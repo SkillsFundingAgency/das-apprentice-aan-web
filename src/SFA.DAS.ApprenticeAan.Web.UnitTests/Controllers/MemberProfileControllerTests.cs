@@ -74,7 +74,7 @@ public class MemberProfileControllerTests
         MemberUserType memberUserType,
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         GetMemberProfileResponse getMemberProfileResponse,
-        Mock<IValidator<SubmitConnectionCommand>> validator,
+        Mock<IValidator<SubmitConnectionCommand>> validatorMock,
         CancellationToken cancellationToken
     )
     {
@@ -84,7 +84,7 @@ public class MemberProfileControllerTests
         getMemberProfileResponse.UserType = memberUserType;
         outerApiMock.Setup(o => o.GetMemberProfile(memberId, memberId, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(getMemberProfileResponse));
-        MemberProfileController sut = new MemberProfileController(outerApiMock.Object, validator.Object);
+        MemberProfileController sut = new MemberProfileController(outerApiMock.Object, validatorMock.Object);
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
 
@@ -152,7 +152,7 @@ public class MemberProfileControllerTests
         SubmitConnectionCommand command,
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         GetMemberProfileResponse getMemberProfileResponse,
-        Mock<IValidator<SubmitConnectionCommand>> validator,
+        Mock<IValidator<SubmitConnectionCommand>> validatorMock,
         CancellationToken cancellationToken)
     {
         //Arrange
@@ -162,7 +162,7 @@ public class MemberProfileControllerTests
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
         outerApiMock.Setup(o => o.GetMemberProfile(memberId, memberId, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(getMemberProfileResponse));
-        MemberProfileController sut = new MemberProfileController(outerApiMock.Object, validator.Object);
+        MemberProfileController sut = new MemberProfileController(outerApiMock.Object, validatorMock.Object);
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
 
