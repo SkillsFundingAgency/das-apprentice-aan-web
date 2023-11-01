@@ -4,7 +4,7 @@ using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
 namespace SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
 
-public class NetworkEventsViewModel
+public class NetworkEventsViewModel : INetworkHubLink
 {
     public PaginationViewModel PaginationViewModel { get; set; } = null!;
 
@@ -15,7 +15,7 @@ public class NetworkEventsViewModel
     public EventFilterChoices FilterChoices { get; set; } = new EventFilterChoices();
 
     public SelectedFiltersModel SelectedFiltersModel { get; set; } = new SelectedFiltersModel();
-
+    public string? NetworkHubLink { get; set; }
 }
 
 public class CalendarEventViewModel

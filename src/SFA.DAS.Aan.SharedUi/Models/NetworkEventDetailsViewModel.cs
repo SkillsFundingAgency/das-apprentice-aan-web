@@ -4,7 +4,7 @@ using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 using SFA.DAS.Aan.SharedUi.UrlHelpers;
 
 namespace SFA.DAS.Aan.SharedUi.Models;
-public class NetworkEventDetailsViewModel
+public class NetworkEventDetailsViewModel : INetworkHubLink
 {
     public Guid CalendarEventId { get; init; }
     public string CalendarName { get; init; }
@@ -36,6 +36,8 @@ public class NetworkEventDetailsViewModel
     public string GoogleMapsLink => LocationDetails?.Location == null ? string.Empty : $"https://www.google.com/maps/dir//{LocationDetails?.Location}+{LocationDetails?.Postcode}";
 
     public string EventsHubUrl { get; set; } = "#";
+
+    public string? NetworkHubLink { get; set; }
 
     public NetworkEventDetailsViewModel(CalendarEvent source, Guid memberId)
     {
