@@ -8,6 +8,7 @@ using SFA.DAS.ApprenticeAan.Web.Filters;
 using SFA.DAS.ApprenticeAan.Web.HealthCheck;
 using SFA.DAS.ApprenticeAan.Web.Validators.Onboarding;
 using SFA.DAS.ApprenticePortal.SharedUi.Startup;
+using SFA.DAS.Telemetry.Startup;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ builder.Services
     .AddOptions()
     .AddLogging()
     .AddApplicationInsightsTelemetry()
+    .AddTelemetryUriRedaction("firstName,lastName,dateOfBirth")
     .AddHttpContextAccessor()
     .AddValidatorsFromAssembly(typeof(RegionsSubmitModelValidator).Assembly)
     .AddSession(environmentName, applicationConfiguration.ConnectionStrings)
