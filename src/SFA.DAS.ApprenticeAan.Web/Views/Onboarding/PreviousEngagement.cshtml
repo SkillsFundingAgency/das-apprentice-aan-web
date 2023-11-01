@@ -10,8 +10,9 @@
         <form method="post" asp-route=" @RouteNames.Onboarding.PreviousEngagement" enctype="multipart/form-data" novalidate>
             <div esfa-validation-marker-for="HasPreviousEngagement" class="govuk-form-group">
                 <h1 class="govuk-heading-l">
-                    Are you joining because you have engaged with an ambassador in the network?
+                    Did you previously engage with an ambassador before deciding to join the network?
                 </h1>
+                <div class="govuk-hint">This could have been at a face-to-face or online event, on social media, through a training provider or talking to a current ambassador where you work.</div>
                 <span asp-validation-for="HasPreviousEngagement" class="govuk-error-message"></span>
                 <div id="EngagedWithAPreviousAmbassadorInTheNetwork" class="govuk-radios" data-module="govuk-radios">
                     <div class="govuk-radios__item">
