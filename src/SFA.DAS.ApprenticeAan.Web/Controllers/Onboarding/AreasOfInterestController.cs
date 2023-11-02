@@ -8,11 +8,13 @@ using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
+using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
 [Authorize]
 [Route("onboarding/areas-of-interest", Name = RouteNames.Onboarding.AreasOfInterest)]
+[HideNavigationBar(true, true)]
 public class AreasOfInterestController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/AreasOfInterest.cshtml";

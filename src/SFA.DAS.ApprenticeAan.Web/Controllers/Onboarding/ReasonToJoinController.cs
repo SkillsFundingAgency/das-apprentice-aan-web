@@ -7,11 +7,13 @@ using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
+using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
 [Authorize]
 [Route("onboarding/reason-to-join", Name = RouteNames.Onboarding.ReasonToJoin)]
+[HideNavigationBar(true, true)]
 public class ReasonToJoinController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/ReasonToJoin.cshtml";
