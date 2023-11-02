@@ -22,7 +22,7 @@ builder.Services
     .AddOptions()
     .AddLogging()
     .AddApplicationInsightsTelemetry()
-    .AddTelemetryUriRedaction("firstName,lastName,dateOfBirth")
+    .AddTelemetryUriRedaction("firstName,lastName,dateOfBirth,email")
     .AddHttpContextAccessor()
     .AddValidatorsFromAssembly(typeof(RegionsSubmitModelValidator).Assembly)
     .AddSession(environmentName, applicationConfiguration.ConnectionStrings)
