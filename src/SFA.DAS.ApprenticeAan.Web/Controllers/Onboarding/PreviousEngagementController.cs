@@ -4,13 +4,10 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Aan.SharedUi.Constants;
-using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
-using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
-using SFA.DAS.ApprenticePortal.Authentication;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
@@ -21,18 +18,13 @@ public class PreviousEngagementController : Controller
     public const string ViewPath = "~/Views/Onboarding/PreviousEngagement.cshtml";
     private readonly ISessionService _sessionService;
     private readonly IValidator<PreviousEngagementSubmitModel> _validator;
-    private readonly IMyApprenticeshipService _myApprenticeshipService;
-    private readonly IApprenticeAccountService _apprenticeAccountService;
 
-    public PreviousEngagementController(ISessionService sessionService,
-        IValidator<PreviousEngagementSubmitModel> validator,
-        IMyApprenticeshipService myApprenticeshipService,
-        IApprenticeAccountService apprenticeAccountService)
+    public PreviousEngagementController(
+        ISessionService sessionService,
+        IValidator<PreviousEngagementSubmitModel> validator)
     {
         _validator = validator;
         _sessionService = sessionService;
-        _myApprenticeshipService = myApprenticeshipService;
-        _apprenticeAccountService = apprenticeAccountService;
     }
 
     [HttpGet]
@@ -45,7 +37,7 @@ public class PreviousEngagementController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(PreviousEngagementSubmitModel submitModel, CancellationToken cancellationToken)
+    public IActionResult Post(PreviousEngagementSubmitModel submitModel)
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
 
@@ -60,17 +52,7 @@ public class PreviousEngagementController : Controller
 
         sessionModel.SetProfileValue(ProfileConstants.ProfileIds.EngagedWithAPreviousAmbassadorInTheNetworkApprentice, submitModel.HasPreviousEngagement.ToString()!);
 
-        if (!sessionModel.HasSeenPreview)
-        {
-            sessionModel.HasSeenPreview = true;
-            var apprentice = await _apprenticeAccountService.GetApprenticeAccountDetails(User.GetApprenticeId());
-            sessionModel.ApprenticeDetails.ApprenticeId = User.GetApprenticeId();
-            sessionModel.ApprenticeDetails.Name = User.FullName();
-            sessionModel.ApprenticeDetails.Email = apprentice?.Email!;
-            var myApprenticeship = await _myApprenticeshipService.TryCreateMyApprenticeship(User.GetApprenticeId(), apprentice!.LastName, apprentice.Email, apprentice.DateOfBirth, cancellationToken);
-
-            sessionModel.MyApprenticeship = myApprenticeship;
-        }
+        sessionModel.HasSeenPreview = true;
 
         _sessionService.Set(sessionModel);
 

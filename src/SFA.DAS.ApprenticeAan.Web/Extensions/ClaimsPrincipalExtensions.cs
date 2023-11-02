@@ -10,7 +10,6 @@ public static class ClaimsPrincipalExtensions
     public static class ClaimTypes
     {
         public const string AanMemberId = "member_id";
-        public const string StagedApprentice = "is_staged_apprentice";
 
         //This is defined in the login service, so it should be exact match
         public const string ApprenticeId = "apprentice_id";
@@ -32,9 +31,4 @@ public static class ClaimsPrincipalExtensions
         var hasParsed = Guid.TryParse(memberId, out Guid value);
         return hasParsed ? value : Guid.Empty;
     }
-
-    public static void AddStagedApprenticeClaim(this ClaimsPrincipal principal) =>
-        principal.AddIdentity(new ClaimsIdentity(new[] { new Claim(ClaimTypes.StagedApprentice, true.ToString()) }));
-
-    public static bool IsStagedApprentice(this ClaimsPrincipal principal) => principal.FindFirst(ClaimTypes.StagedApprentice) != null;
 }

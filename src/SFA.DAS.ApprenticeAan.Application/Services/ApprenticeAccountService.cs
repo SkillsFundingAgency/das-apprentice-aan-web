@@ -1,6 +1,6 @@
-﻿using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+﻿using System.Net;
+using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
-using System.Net;
 
 namespace SFA.DAS.ApprenticeAan.Application.Services;
 
@@ -14,7 +14,7 @@ public class ApprenticeAccountService : IApprenticeAccountService
 
     public async Task<ApprenticeAccount?> GetApprenticeAccountDetails(Guid apprenticeId)
     {
-        var response = await _client.GetApprenticeAccount(apprenticeId);
+        var response = await _client.GetApprenticeAccount(apprenticeId, CancellationToken.None);
         return response.ResponseMessage.StatusCode switch
         {
             HttpStatusCode.NotFound => null,

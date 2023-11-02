@@ -22,10 +22,10 @@ public class CheckYourAnswersViewModel
     public string? PreviousEngagement { get; }
     public string FullName { get; }
     public string Email { get; }
-    public string ApprenticeshipDuration { get; }
-    public string ApprenticeshipSector { get; }
-    public string ApprenticeshipProgram { get; }
-    public string ApprenticeshipLevel { get; }
+    public string? ApprenticeshipDuration { get; }
+    public string? ApprenticeshipSector { get; }
+    public string? ApprenticeshipProgram { get; }
+    public string? ApprenticeshipLevel { get; }
 
     public CheckYourAnswersViewModel(IUrlHelper url, OnboardingSessionModel sessionModel)
     {
@@ -55,9 +55,9 @@ public class CheckYourAnswersViewModel
         /// Apprenticeship details
         var myApprenticeship = sessionModel.MyApprenticeship;
         ApprenticeshipDuration = $"From {myApprenticeship.StartDate.GetValueOrDefault().Date:dd-MM-yyyy} to {myApprenticeship.EndDate.GetValueOrDefault().Date:dd-MM-yyyy}";
-        ApprenticeshipSector = myApprenticeship.TrainingCourse.Sector;
-        ApprenticeshipProgram = myApprenticeship.TrainingCourse.Name;
-        ApprenticeshipLevel = $"Level {myApprenticeship.TrainingCourse.Level}";
+        ApprenticeshipSector = myApprenticeship.TrainingCourse?.Sector;
+        ApprenticeshipProgram = myApprenticeship.TrainingCourse?.Name;
+        ApprenticeshipLevel = $"Level {myApprenticeship.TrainingCourse?.Level}";
     }
 
     private static string? GetPreviousEngagementValue(string? previousEngagementValue)

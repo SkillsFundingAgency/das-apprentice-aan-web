@@ -57,7 +57,6 @@ public static class AuthenticationStartup
             });
 
         services.AddScoped<AuthenticationEventsLocal>();
-        services.AddSingleton<IAuthorizationHandler, StagedApprenticeAuthorizationHandler>();
     }
 
     private static void AddApplicationAuthorisation(
@@ -67,7 +66,6 @@ public static class AuthenticationStartup
         {
             var builder = new AuthorizationPolicyBuilder();
             builder.RequireAuthenticatedUser();
-            builder.Requirements.Add(new StagedApprenticeRequirement());
             options.DefaultPolicy = builder.Build();
         });
 

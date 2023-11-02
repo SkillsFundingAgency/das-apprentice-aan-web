@@ -20,7 +20,7 @@ public class AmbassadorProfileControllerTests
     private AmbassadorProfileController _sut = null!;
     private GetMemberProfileResponse memberProfile = null!;
     private CancellationToken _cancellationToken;
-    private readonly List<Profile> profiles = new List<Profile>()
+    private readonly List<Profile> profiles = new()
     {
         new Profile { Id = 1, Description = "Networking at events in person", Category = "Events", Ordering = 1 },
         new Profile { Id = 2, Description = "Presenting at events in person", Category = "Events", Ordering = 2 },
@@ -64,7 +64,7 @@ public class AmbassadorProfileControllerTests
     => _result.As<ViewResult>().Model.Should().BeOfType<AmbassadorProfileViewModel>();
 
     [Test]
-    public void ThenSetsViewModelWithApprenticshipDetails()
+    public void ThenSetsViewModelWithApprenticeshipDetails()
     {
         if (memberProfile.Apprenticeship == null)
         {

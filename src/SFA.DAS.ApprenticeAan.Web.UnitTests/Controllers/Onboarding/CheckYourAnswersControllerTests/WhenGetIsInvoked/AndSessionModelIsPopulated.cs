@@ -155,19 +155,19 @@ public class AndSessionModelIsPopulated : CheckYourAnswersControllerTestsBase
     [Test]
     public void ThenSetsApprenticeshipSector()
     {
-        _actualViewModel.ApprenticeshipSector.Should().Be(_sessionModel.MyApprenticeship.TrainingCourse.Sector);
+        _actualViewModel.ApprenticeshipSector.Should().Be(_sessionModel.MyApprenticeship.TrainingCourse!.Sector);
     }
 
     [Test]
     public void ThenSetsApprenticeshipProgram()
     {
-        _actualViewModel.ApprenticeshipProgram.Should().Be(_sessionModel.MyApprenticeship.TrainingCourse.Name);
+        _actualViewModel.ApprenticeshipProgram.Should().Be(_sessionModel.MyApprenticeship.TrainingCourse!.Name);
     }
 
     [Test]
     public void ThenSetsApprenticeshipLevel()
     {
-        _actualViewModel.ApprenticeshipLevel.Should().Be($"Level {_sessionModel.MyApprenticeship.TrainingCourse.Level}");
+        _actualViewModel.ApprenticeshipLevel.Should().Be($"Level {_sessionModel.MyApprenticeship.TrainingCourse!.Level}");
     }
 
 

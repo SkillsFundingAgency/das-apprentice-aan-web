@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using RestEase;
+﻿using RestEase;
 using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
@@ -20,7 +19,7 @@ public interface IOuterApiClient
 
     [Get("/apprentices/{apprenticeId}/account")]
     [AllowAnyStatusCode]
-    Task<Response<ApprenticeAccount?>> GetApprenticeAccount([Path] Guid apprenticeId);
+    Task<Response<ApprenticeAccount?>> GetApprenticeAccount([Path] Guid apprenticeId, CancellationToken cancellationToken);
 
     [Get("/locations")]
     Task<GetAddressesResult> GetAddresses([Query] string query);
@@ -44,8 +43,9 @@ public interface IOuterApiClient
     [AllowAnyStatusCode]
     Task<Response<MyApprenticeship>> GetMyApprenticeship([Path] Guid apprenticeId, CancellationToken cancellationToken);
 
-    [Post("/myapprenticeship")]
-    Task CreateMyApprenticeship([Body] CreateMyApprenticeshipRequest body, CancellationToken cancellationToken);
+    [Post("myapprenticeship")]
+    [AllowAnyStatusCode]
+    Task<Response<MyApprenticeship?>> TryCreateMyApprenticeship([Body] TryCreateMyApprenticeshipRequest request, CancellationToken cancellationToken);
 
     [Post("/apprentices")]
     Task<CreateApprenticeMemberResponse> PostApprenticeMember([Body] CreateApprenticeMemberRequest request);
@@ -55,10 +55,6 @@ public interface IOuterApiClient
     Task<Response<CalendarEvent>> GetCalendarEventDetails([Path] Guid calendarEventId,
         [Header(RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId,
         CancellationToken cancellationToken);
-
-    [Get("/stagedapprentices")]
-    [AllowAnyStatusCode]
-    Task<Response<StagedApprentice?>> GetStagedApprentice([Query] string lastName, [Query] string dateOfBirth, [Query] string email, CancellationToken cancellationToken);
 
     [Put("/calendarevents/{calendarEventId}/attendance")]
     Task PutAttendance([Path] Guid calendarEventId,
