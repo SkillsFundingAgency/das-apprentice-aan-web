@@ -27,6 +27,7 @@ public class CurrentJobTitleControllerPostTests
         OnboardingSessionModel sessionModel)
     {
         sut.AddUrlHelperMock();
+        sessionModel.ProfileData.Clear();
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
@@ -48,6 +49,7 @@ public class CurrentJobTitleControllerPostTests
     {
         sut.AddUrlHelperMock();
         sessionModel.HasSeenPreview = false;
+        sessionModel.ProfileData.Clear();
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
@@ -71,6 +73,7 @@ public class CurrentJobTitleControllerPostTests
     {
         sut.AddUrlHelperMock();
         sessionModel.HasSeenPreview = true;
+        sessionModel.ProfileData.Clear();
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
@@ -92,6 +95,7 @@ public class CurrentJobTitleControllerPostTests
     {
         sut.AddUrlHelperMock();
         sessionModel.HasSeenPreview = false;
+        sessionModel.ProfileData.Clear();
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
@@ -113,6 +117,7 @@ public class CurrentJobTitleControllerPostTests
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers);
         sessionModel.HasSeenPreview = true;
+        sessionModel.ProfileData.Clear();
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
@@ -135,6 +140,7 @@ public class CurrentJobTitleControllerPostTests
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerSearch);
         sessionModel.HasSeenPreview = false;
+        sessionModel.ProfileData.Clear();
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
