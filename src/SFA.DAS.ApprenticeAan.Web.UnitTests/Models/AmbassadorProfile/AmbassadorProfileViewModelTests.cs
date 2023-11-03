@@ -1,10 +1,10 @@
-﻿using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
-using SFA.DAS.Aan.SharedUi.Models;
-using SFA.DAS.ApprenticeAan.Web.Models.AmbassadorProfile;
+﻿using AutoFixture;
 using FluentAssertions;
 using FluentAssertions.Execution;
-using AutoFixture;
 using Pipelines.Sockets.Unofficial.Arenas;
+using SFA.DAS.Aan.SharedUi.Models;
+using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
+using SFA.DAS.ApprenticeAan.Web.Models.AmbassadorProfile;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models.AmbassadorProfile;
 public class AmbassadorProfileViewModelTests
@@ -14,6 +14,7 @@ public class AmbassadorProfileViewModelTests
     private string fullName;
     private string regionName;
     private string email;
+    private string memberProfileUrl = Guid.NewGuid().ToString();
     private IEnumerable<MemberProfile> memberProfiles;
     private IEnumerable<MemberPreference> memberPreferences;
     private ApprenticeshipDetailsModel? apprenticeshipDetails;
@@ -47,7 +48,7 @@ public class AmbassadorProfileViewModelTests
             new Profile { Id = 11, Description = "Designing and creating marketing materials to champion the network", Category = "Promotions", Ordering = 2 }
         };
         var personalDetails = new PersonalDetailsModel(fullName, regionName, userType);
-        sut = new AmbassadorProfileViewModel(personalDetails, email, memberProfiles, memberPreferences, apprenticeshipDetails, profiles);
+        sut = new AmbassadorProfileViewModel(personalDetails, email, memberProfiles, memberPreferences, apprenticeshipDetails, profiles, memberProfileUrl);
     }
 
     [Test]
@@ -60,6 +61,7 @@ public class AmbassadorProfileViewModelTests
             sut.InterestInTheNetwork.Should().NotBeNull();
             sut.PersonalDetails.Should().NotBeNull();
             sut.ShowApprenticeshipDetails.GetType().Should().Be(typeof(bool));
+            sut.MemberProfileUrl.Should().NotBeNull();
         }
     }
 
