@@ -11,11 +11,13 @@ using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
+using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
 [Authorize]
 [Route("onboarding/line-manager", Name = RouteNames.Onboarding.LineManager)]
+[HideNavigationBar(true, true)]
 public class LineManagerController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/LineManager.cshtml";
