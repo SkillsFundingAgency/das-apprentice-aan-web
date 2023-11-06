@@ -148,7 +148,7 @@ public class NetworkEventDetailsViewModelTests
     {
         var sut = new NetworkEventDetailsViewModel(calendarEvent, Guid.NewGuid());
 
-        Assert.That(sut.StartTime, Is.EqualTo(calendarEvent.StartDate.UtcToLocalTime().ToString("h:mm tt")));
+        Assert.That(sut.StartTime, Is.EqualTo(calendarEvent.StartDate.UtcToLocalTime().ToString("h:mmtt").ToLower()));
     }
 
     [Test, MoqAutoData]
@@ -156,7 +156,7 @@ public class NetworkEventDetailsViewModelTests
     {
         var sut = new NetworkEventDetailsViewModel(calendarEvent, Guid.NewGuid());
 
-        Assert.That(sut.EndTime, Is.EqualTo(calendarEvent.EndDate.UtcToLocalTime().ToString("h:mm tt")));
+        Assert.That(sut.EndTime, Is.EqualTo(calendarEvent.EndDate.UtcToLocalTime().ToString("h:mmtt").ToLower()));
     }
 
     [Test, MoqAutoData]
