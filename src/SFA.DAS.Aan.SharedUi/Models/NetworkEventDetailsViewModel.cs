@@ -76,7 +76,7 @@ public class NetworkEventDetailsViewModel : INetworkHubLink
         Attendees = source.Attendees;
         EventGuests = source.EventGuests;
 
-        IsSignedUp = Attendees.Any(a => a.MemberId == memberId);
+        IsSignedUp = Attendees.Exists(a => a.MemberId == memberId);
 
         if (EventFormat != EventFormat.Online)
         {

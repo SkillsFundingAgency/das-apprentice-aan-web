@@ -51,6 +51,47 @@ public class NetworkEventDetailsViewModelTests
         });
     }
 
+
+    [Test, RecursiveMoqAutoData]
+    public void Constructor_ReceivesParameters_SetsProperties(string calendarName, string title, string description, string contactName, string contactEmail)
+    {
+        var start = DateTime.UtcNow;
+        var end = DateTime.UtcNow.AddHours(1).AddMinutes(15);
+
+        var sut = new NetworkEventDetailsViewModel(calendarName, start, end, title, description, contactName, contactEmail);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut.CalendarName, Is.EqualTo(calendarName));
+            Assert.That(sut.StartDate, Is.EqualTo(start.UtcToLocalTime().ToString("dddd, d MMMM yyyy")));
+            Assert.That(sut.EndDate, Is.EqualTo(end.UtcToLocalTime().ToString("dddd, d MMMM yyyy")));
+            Assert.That(sut.Title, Is.EqualTo(title));
+            Assert.That(sut.Description, Is.EqualTo(description));
+            Assert.That(sut.Summary, Is.Null);
+            Assert.That(sut.LocationDetails?.Location, Is.Null);
+            Assert.That(sut.LocationDetails?.Postcode, Is.Null);
+            Assert.That(sut.LocationDetails?.Longitude, Is.Null);
+            Assert.That(sut.LocationDetails?.Latitude, Is.Null);
+            Assert.That(sut.LocationDetails?.Distance, Is.Null);
+            Assert.That(sut.EventLink, Is.Null);
+            Assert.That(sut.ContactName, Is.EqualTo(contactName));
+            Assert.That(sut.ContactEmail, Is.EqualTo(contactEmail));
+            Assert.That(sut.Attendees.Count, Is.EqualTo(0));
+            Assert.That(sut.AttendeeCount, Is.EqualTo(0));
+            Assert.That(sut.EventGuests.Count, Is.EqualTo(0));
+            Assert.That(sut.StartDateTime, Is.EqualTo(start));
+            if (sut.StartDateTime < DateTime.UtcNow)
+            {
+                Assert.That(sut.IsPastEvent, Is.True);
+            }
+            else
+            {
+                Assert.That(sut.IsPastEvent, Is.False);
+            }
+        });
+    }
+
+
     [Test]
     [MoqInlineAutoData(1, false)]
     [MoqInlineAutoData(-1, true)]
