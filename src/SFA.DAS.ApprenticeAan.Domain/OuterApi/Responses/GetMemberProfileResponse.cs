@@ -8,8 +8,8 @@ public class GetMemberProfileResponse
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;
     public string? OrganisationName { get; set; }
-    public int RegionId { get; set; }
-    public string RegionName { get; set; } = null!;
+    public int? RegionId { get; set; }
+    public string? RegionName { get; set; } = null!;
     public MemberUserType UserType { get; set; }
     public bool IsRegionalChair { get; set; }
     public ApprenticeshipDetails? Apprenticeship { get; set; }
