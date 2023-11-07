@@ -48,8 +48,8 @@ public class NetworkEventDetailsViewModel : INetworkHubLink
         StartDateTime = start;
         StartDate = start.UtcToLocalTime().ToString("dddd, d MMMM yyyy");
         EndDate = end.UtcToLocalTime().ToString("dddd, d MMMM yyyy");
-        StartTime = start.UtcToLocalTime().ToString("h:mm tt").ToLower();
-        EndTime = end.UtcToLocalTime().ToString("h:mm tt").ToLower();
+        StartTime = start.UtcToLocalTime().ToString("h:mmtt").ToLower();
+        EndTime = end.UtcToLocalTime().ToString("h:mmtt").ToLower();
         Title = title;
         Description = description;
         ContactName = contactName;

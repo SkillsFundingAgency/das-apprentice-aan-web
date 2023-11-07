@@ -18,13 +18,7 @@
     <div class="govuk-grid-column-two-thirds">
         @if (@Model.IsPreview && !string.IsNullOrEmpty(Model.CheckYourAnswersUrl))
         {
-            <div class="govuk-breadcrumbs">
-                <ol class="govuk-breadcrumbs__list">
-                    <li class="govuk-breadcrumbs__list-item">
-                        <a class="govuk-breadcrumbs__link govuk-back-link" href="@Model.CheckYourAnswersUrl">back to event page</a>
-                    </li>
-                </ol>
-            </div>
+            <a href="@Model.CheckYourAnswersUrl" class="govuk-back-link">back to event page</a>
         }
         <strong class="govuk-tag app-tag app-tag--@Model.EventFormat.ToString()">@Model.EventFormat.GetDescription()</strong> <strong class="govuk-tag app-tag">@Model.CalendarName</strong>
         <h1 class="govuk-heading-xl govuk-!-margin-top-4">@Model.Title</h1>
