@@ -5,5 +5,12 @@
 
 <h2 class="govuk-heading-m">When and where</h2>
 <p><b>Date and Time:</b> @Model.StartDate @Model.StartTime to @Model.EndTime</p>
-@Html.Partial("_OnlineJoiningDetails",Model)
+@if (Model.IsSignedUp)
+{
+    <p><b>Online</b> via <a target="_blank" href="@Model.EventLink">@Model.EventLink</a></p>
+}
+else
+{
+    <p><b>Online:</b> joining details provided on sign up</p>
+}
 
