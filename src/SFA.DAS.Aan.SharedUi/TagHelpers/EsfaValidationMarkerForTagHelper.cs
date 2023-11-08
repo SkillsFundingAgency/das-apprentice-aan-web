@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
-namespace SFA.DAS.ApprenticeAan.Web.TagHelpers;
+namespace SFA.DAS.Aan.SharedUi.TagHelpers;
 
 [ExcludeFromCodeCoverage]
 [HtmlTargetElement("div", Attributes = ValidationForAttributeName)]

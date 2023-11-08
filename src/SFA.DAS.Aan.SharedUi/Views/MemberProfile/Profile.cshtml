@@ -1,10 +1,19 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.Aan.SharedUi.Constants;
 @using SFA.DAS.Aan.SharedUi.Extensions;
+@using SFA.DAS.Aan.SharedUi.Infrastructure;
 @using SFA.DAS.Aan.SharedUi.Models;
 @using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
+@using SFA.DAS.Aan.SharedUi.TagHelpers;
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, SFA.DAS.Aan.SharedUi
+
 @model MemberProfileViewModel
 @{
     ViewData["Title"] = "Member Profile";
 }
+<partial name="_validationSummary" />
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <strong class="govuk-tag app-tag app-tag--@Model.UserRole">@Model.UserRole.GetDescription()</strong>
@@ -103,56 +112,64 @@
         <p class="govuk-!-margin-bottom-4 govuk-!-margin-top-4 govuk-!-margin-top-2">@Model.ConnectSectionTitle</p>
         <h3 class="govuk-heading-m profile-send-message govuk-!-margin-bottom-0 connect-section-heading govuk-!-padding-2"><span class="govuk-!-margin-left-2">Send a message to @Model.FirstName</span></h3>
         <div class="profile-send-message-section govuk-!-padding-5">
-            <div>
-                <h3 class="govuk-heading-m govuk-!-margin-bottom-4">I would like to:</h3>
-                <div id="choicePreference" class="govuk-radios" data-module="govuk-radios">
-                    <div class="govuk-radios__item">
-                        <input id="choicePreference-0" class="govuk-radios__input" type="radio" value="choicePreference-0">
-                        <label class="govuk-label govuk-radios__label profile-govuk-radios" for="choicePreference-0">
-                            ask for industry advice
-                        </label>
-                    </div>
-                    <div class="govuk-radios__item">
-                        <input id="choicePreference-1" class="govuk-radios__input" type="radio" value="choicePreference-1">
-                        <label class="govuk-label govuk-radios__label profile-govuk-radios" for="choicePreference-1">
-                            ask for help with a network activity
-                        </label>
-                    </div>
-                    <div class="govuk-radios__item">
-                        <input id="choicePreference-2" class="govuk-radios__input" type="radio" value="choicePreference-2"
-                               sfa-validationerror-class="form-control-error">
-                        <label class="govuk-label govuk-radios__label profile-govuk-radios" for="choicePreference-2">
-                            request a case study
-                        </label>
-                    </div>
-                    <div class="govuk-radios__item">
-                        <input id="choicePreference-3" class="govuk-radios__input" type="radio" value="choicePreference-3"
-                               sfa-validationerror-class="form-control-error">
-                        <label class="govuk-label govuk-radios__label profile-govuk-radios" for="choicePreference-3">
-                            get in touch after meeting at a network event
-                        </label>
+            <form method="post" asp-route="@SharedRouteNames.MemberProfile" enctype="multipart/form-data" novalidate>
+                <div id="ReasonToGetInTouch" esfa-validation-marker-for="@Model.ReasonToGetInTouch" class="govuk-form-group">
+                    <h3 class="govuk-heading-m govuk-!-margin-bottom-4">I would like to:</h3>
+                    <span asp-validation-for="@Model.ReasonToGetInTouch" class="govuk-error-message"></span>
+                    <div  class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input type="radio" asp-for="@Model.ReasonToGetInTouch" id="askForAdvice" class="govuk-radios__input" value="@NotificationTemplateConstant.AANIndustryAdvice">
+                            <label class="govuk-label govuk-radios__label profile-govuk-radios" for="askForAdvice">
+                                ask for industry advice
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input type="radio" asp-for="@Model.ReasonToGetInTouch" id="askForHelp" class="govuk-radios__input" value="@NotificationTemplateConstant.AANAskForHelp">
+                            <label class="govuk-label govuk-radios__label profile-govuk-radios" for="askForHelp">
+                                ask for help with a network activity
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input type="radio" asp-for="@Model.ReasonToGetInTouch" id="requestCaseStudy" class="govuk-radios__input" value="@NotificationTemplateConstant.AANRequestCaseStudy">
+                            <label class="govuk-label govuk-radios__label profile-govuk-radios" for="requestCaseStudy">
+                                request a case study
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input type="radio" asp-for="@Model.ReasonToGetInTouch" id="afterMeeting" class="govuk-radios__input" value="@NotificationTemplateConstant.AANGetInTouch">
+                            <label class="govuk-label govuk-radios__label profile-govuk-radios" for="afterMeeting">
+                                get in touch after meeting at a network event
+                            </label>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="govuk-!-margin-top-4">
-                <h3 class="govuk-heading-m govuk-!-margin-bottom-4">By submitting this message, I agree to:</h3>
-                <div class="govuk-checkboxes govuk-checkboxes--small">
-                    <div class="govuk-checkboxes__item">
-                        <input class="govuk-checkboxes__input" id="details" name="details" type="checkbox" value="true">
-                        <label class="govuk-label govuk-checkboxes__label profile-govuk-checkboxes" for="details">
-                            my details including my name, email address and a link to my profile being displayed in the message
-                        </label>
-                    </div>
-                    <div class="govuk-checkboxes__item">
-                        <input class="govuk-checkboxes__input" id="codeOfConduct" name="codeOfConduct" type="checkbox" value="true">
-                        <label class="govuk-label govuk-checkboxes__label profile-govuk-checkboxes" for="codeOfConduct">
+                <div class="govuk-!-margin-top-4">
+                    <h3 class="govuk-heading-m govuk-!-margin-bottom-4">By submitting this message, I agree to:</h3>
+                    <div class="govuk-checkboxes govuk-checkboxes--small">
+                        <div esfa-validation-marker-for="DetailShareAllowed" class="govuk-form-group govuk-!-margin-bottom-1">
+                            <span asp-validation-for="DetailShareAllowed" class="govuk-error-message"></span>
+                            <div class="govuk-checkboxes__item" id="DetailShareAllowed">
+                                <input type="checkbox" asp-for="DetailShareAllowed" class="govuk-checkboxes__input" id="detailShareAllowed" name="detailShareAllowed">
+                                <label class="govuk-label govuk-checkboxes__label profile-govuk-checkboxes" for="detailShareAllowed">
+                                    my details including my name, email address and a link to my profile being displayed in the message
+                                </label>
+                            </div>
+                        </div>
+                        <div esfa-validation-marker-for="CodeOfConduct" class="govuk-form-group govuk-!-margin-bottom-1">
+                            <span asp-validation-for="CodeOfConduct" class="govuk-error-message"></span>
+                            <div class="govuk-checkboxes__item" id="CodeOfConduct">
+                                <input type="checkbox" asp-for="CodeOfConduct" class="govuk-checkboxes__input" id="codeOfConduct" name="codeOfConduct">
+                                <label class="govuk-label govuk-checkboxes__label profile-govuk-checkboxes" for="codeOfConduct">
                             adhere to the <a href="https://www.apprenticeships.gov.uk/influencers/aan-resources" target="_blank">code of conduct (opens in new tab)</a>
-                        </label>
+                                </label>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
-            </div>
-            <p class="govuk-grid-column-full govuk-!-margin-top-4 govuk-!-margin-bottom-4">An email will be sent to @Model.FirstName from the Apprenticeship Ambassador Network inbox outlining your request.</p>
-            <button class="govuk-button govuk-!-margin-bottom-0" disabled="@(Model.IsLoggedInUserMemberProfile)">Send the message</button>
+                <p class="govuk-grid-column-full govuk-!-margin-top-3 govuk-!-margin-bottom-4">An email will be sent to @Model.FirstName from the Apprenticeship Ambassador Network inbox outlining your request.</p>
+                <button id="sendMessage" type="submit" data-disable-on-submit="true" class="govuk-button govuk-!-margin-bottom-0" disabled="@(Model.IsLoggedInUserMemberProfile)">Send the message</button>
+            </form>
         </div>
         @if (!string.IsNullOrEmpty(Model.LinkedinUrl))
         {
