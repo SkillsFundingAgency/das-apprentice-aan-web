@@ -249,4 +249,24 @@ public class MemberProfileViewModelTest
             Assert.That(sut.IsEmployerInformationAvailable, Is.EqualTo(isEmployerInformationAvailable));
         });
     }
+
+    [Test]
+    public void MemberProfileViewModel_ReturnsExpectedNetworkJoinValue()
+    {
+        //Arrange
+        List<Profile> profiles = new List<Profile>();
+        MemberProfileDetail memberProfile = new MemberProfileDetail();
+        memberProfile.Profiles = new List<MemberProfile>();
+
+        //Act
+        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, profiles, memberProfileMappingModel);
+
+        //Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut.ReasonToGetInTouch, Is.EqualTo(0));
+            Assert.That(sut.CodeOfConduct, Is.EqualTo(false));
+            Assert.That(sut.DetailShareAllowed, Is.EqualTo(false));
+        });
+    }
 }

@@ -1,10 +1,16 @@
-﻿using AutoFixture.NUnit3;
+﻿using System.Net;
+using AutoFixture.NUnit3;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using RestEase;
+using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
@@ -21,9 +27,9 @@ public class MemberProfileControllerTests
     [MoqInlineAutoData(MemberUserType.Employer)]
     public void MemberProfile_ReturnsMemberProfileViewModel(
         MemberUserType memberUserType,
-        [Frozen] Mock<IOuterApiClient> outerApiMock,
-        [Greedy] MemberProfileController sut,
-        GetMemberProfileResponse memberProfile)
+    [Frozen] Mock<IOuterApiClient> outerApiMock,
+    [Greedy] MemberProfileController sut,
+    GetMemberProfileResponse memberProfile)
     {
         //Arrange
         var memberId = Guid.NewGuid();
@@ -68,6 +74,7 @@ public class MemberProfileControllerTests
         MemberUserType memberUserType,
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         GetMemberProfileResponse getMemberProfileResponse,
+        Mock<IValidator<SubmitConnectionCommand>> validatorMock,
         CancellationToken cancellationToken
     )
     {
@@ -77,7 +84,7 @@ public class MemberProfileControllerTests
         getMemberProfileResponse.UserType = memberUserType;
         outerApiMock.Setup(o => o.GetMemberProfile(memberId, memberId, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(getMemberProfileResponse));
-        MemberProfileController sut = new MemberProfileController(outerApiMock.Object);
+        MemberProfileController sut = new MemberProfileController(outerApiMock.Object, validatorMock.Object);
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
 
@@ -135,5 +142,147 @@ public class MemberProfileControllerTests
                 Assert.That(sut.ActiveApprenticesCount, Is.EqualTo(memberProfiles.Apprenticeship!.ActiveApprenticesCount));
             }
         });
+    }
+
+    [Test]
+    [MoqInlineAutoData(MemberUserType.Apprentice)]
+    [MoqInlineAutoData(MemberUserType.Employer)]
+    public async Task Post_InvalidCommand_ReturnsMemberProfileView(
+        MemberUserType userType,
+        SubmitConnectionCommand command,
+        [Frozen] Mock<IOuterApiClient> outerApiMock,
+        GetMemberProfileResponse getMemberProfileResponse,
+        Mock<IValidator<SubmitConnectionCommand>> validatorMock,
+        CancellationToken cancellationToken)
+    {
+        //Arrange
+        command.ReasonToGetInTouch = 0;
+        var memberId = Guid.NewGuid();
+        getMemberProfileResponse.UserType = userType;
+        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
+        outerApiMock.Setup(o => o.GetMemberProfile(memberId, memberId, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                    .Returns(Task.FromResult(getMemberProfileResponse));
+        MemberProfileController sut = new MemberProfileController(outerApiMock.Object, validatorMock.Object);
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
+
+        //Act
+        var response = await sut.Post(memberId, command, cancellationToken);
+
+        //Assert
+        Assert.That(response, Is.InstanceOf<ViewResult>());
+    }
+
+    [Test]
+    [MoqInlineAutoData(MemberUserType.Apprentice)]
+    [MoqInlineAutoData(MemberUserType.Employer)]
+    public async Task Post_ValidCommand_ReturnsMemberProfileView(
+        MemberUserType userType,
+        [Frozen] Mock<IOuterApiClient> outerApiMock,
+        GetMemberProfileResponse getMemberProfileResponse,
+        CreateNotificationResponse createNotificationResponse,
+        CancellationToken cancellationToken)
+    {
+        //Arrange
+        SubmitConnectionCommand command = new()
+        {
+            ReasonToGetInTouch = 2,
+            CodeOfConduct = true,
+            DetailShareAllowed = true
+        };
+        var memberId = Guid.NewGuid();
+        getMemberProfileResponse.UserType = userType;
+        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
+        outerApiMock.Setup(o => o.GetMemberProfile(memberId, memberId, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                    .Returns(Task.FromResult(getMemberProfileResponse));
+        var validatorMock = new Mock<IValidator<SubmitConnectionCommand>>();
+        var successfulValidationResult = new ValidationResult();
+        validatorMock.Setup(v => v.ValidateAsync(It.IsAny<SubmitConnectionCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(successfulValidationResult);
+
+        MemberProfileController sut = new MemberProfileController(outerApiMock.Object, validatorMock.Object);
+
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
+        Response<CreateNotificationResponse> expectedReponse = new(string.Empty, new(HttpStatusCode.OK), () => createNotificationResponse);
+        outerApiMock.Setup(c => c.PostNotification(It.IsAny<Guid>(), It.IsAny<CreateNotificationRequest>(), It.IsAny<CancellationToken>())).ReturnsAsync(expectedReponse);
+
+        //Act
+        var response = await sut.Post(memberId, command, cancellationToken);
+
+        //Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(response, Is.TypeOf<RedirectToActionResult>());
+            var redirectToAction = (RedirectToActionResult)response;
+            Assert.That(redirectToAction.ActionName, Is.EqualTo("NotificationSentConfirmation"));
+        });
+    }
+
+    [Test]
+    [MoqAutoData]
+    public void Post_ValidCommand_ThrowsInvalidOperationException(
+        [Frozen] Mock<IOuterApiClient> outerApiMock,
+        GetMemberProfileResponse getMemberProfileResponse,
+        Response<CreateNotificationResponse> createNotificationResponse,
+        CancellationToken cancellationToken)
+    {
+        //Arrange
+        SubmitConnectionCommand command = new()
+        {
+            ReasonToGetInTouch = 2,
+            CodeOfConduct = true,
+            DetailShareAllowed = true
+        };
+        var memberId = Guid.NewGuid();
+        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
+        outerApiMock.Setup(o => o.GetMemberProfile(memberId, memberId, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                    .Returns(Task.FromResult(getMemberProfileResponse));
+        var validatorMock = new Mock<IValidator<SubmitConnectionCommand>>();
+        var successfulValidationResult = new ValidationResult();
+        validatorMock.Setup(v => v.ValidateAsync(It.IsAny<SubmitConnectionCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(successfulValidationResult);
+
+        MemberProfileController sut = new MemberProfileController(outerApiMock.Object, validatorMock.Object);
+
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
+        outerApiMock.Setup(c => c.PostNotification(It.IsAny<Guid>(), It.IsAny<CreateNotificationRequest>(), It.IsAny<CancellationToken>())).ReturnsAsync(createNotificationResponse);
+
+        //Act
+        Assert.That(() => sut.Post(memberId, command, cancellationToken), Throws.InvalidOperationException);
+    }
+
+    [Test]
+    [MoqAutoData]
+    public void NotificationSentConfirmation_Returns_View([Frozen] Mock<IOuterApiClient> outerApiMock)
+    {
+        // Arrange
+        var validatorMock = new Mock<IValidator<SubmitConnectionCommand>>();
+        MemberProfileController sut = new MemberProfileController(outerApiMock.Object, validatorMock.Object);
+        string NetworkDirectoryUrl = Guid.NewGuid().ToString();
+        sut.AddUrlHelperMock()
+            .AddUrlForRoute(SharedRouteNames.NetworkDirectory, NetworkDirectoryUrl);
+
+        // Act
+        IActionResult result = sut.NotificationSentConfirmation();
+
+        // Assert
+        Assert.That(result, Is.InstanceOf<ViewResult>());
+    }
+
+    [Test]
+    [MoqInlineAutoData(MemberUserType.Apprentice)]
+    [MoqInlineAutoData(MemberUserType.Employer)]
+    public async Task MemberProfileMapping_ReturnsMemberProfileViewModelObject(MemberUserType userType, [Frozen] Mock<IOuterApiClient> outerApiMock, GetMemberProfileResponse memberProfiles, bool isLoggedInUserMemberProfile, CancellationToken cancellationToken)
+    {
+        //Arrange
+        memberProfiles.UserType = userType;
+        var validatorMock = new Mock<IValidator<SubmitConnectionCommand>>();
+        MemberProfileController memberProfileController = new MemberProfileController(outerApiMock.Object, validatorMock.Object);
+
+        //Act
+        var sut = await memberProfileController.MemberProfileMapping(memberProfiles, isLoggedInUserMemberProfile, cancellationToken);
+
+        //Assert
+        Assert.That(sut, Is.InstanceOf<MemberProfileViewModel>());
     }
 }
