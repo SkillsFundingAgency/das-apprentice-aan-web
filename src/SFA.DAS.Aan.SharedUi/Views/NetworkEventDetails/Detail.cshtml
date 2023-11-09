@@ -14,12 +14,19 @@
     }
 }
 <partial name="_validationSummary" />
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        @if (@Model.IsPreview && !string.IsNullOrEmpty(Model.CheckYourAnswersUrl))
-        {
-            <p><a href="@Model.CheckYourAnswersUrl" class="govuk-back-link">back to event page</a></p>
-        }
+    @if (@Model.IsPreview && !string.IsNullOrEmpty(Model.BackLinkUrl))
+    {
+        <h1 class="govuk-heading-l">Event preview</h1>
+        <a href="@Model.BackLinkUrl" class="govuk-back-link">back to event page</a>
+        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+    }
+    </div>
+</div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
         <strong class="govuk-tag app-tag app-tag--@Model.EventFormat.ToString()">@Model.EventFormat.GetDescription()</strong> <strong class="govuk-tag app-tag">@Model.CalendarName</strong>
         <h1 class="govuk-heading-xl govuk-!-margin-top-4">@Model.Title</h1>
         <partial name=@Model.PartialViewName/>

@@ -39,7 +39,7 @@ public class NetworkEventDetailsViewModel : INetworkHubLink
 
     public string? NetworkHubLink { get; set; }
 
-    public string? CheckYourAnswersUrl { get; set; }
+    public string? BackLinkUrl { get; set; }
     public bool IsPreview { get; set; }
 
     public NetworkEventDetailsViewModel(string calendarName, DateTime start, DateTime end, string title, string description, string contactName, string contactEmail)
