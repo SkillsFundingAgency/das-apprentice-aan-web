@@ -3,7 +3,14 @@
 
 <h2 class="govuk-heading-m">When and where</h2>
 <p><b>Date and Time:</b> @Model.StartDate @Model.StartTime to @Model.EndTime</p>
-@Html.Partial("_OnlineJoiningDetails",Model)
+@if (Model.IsSignedUp)
+{
+    <p><b>Online</b> via <a target="_blank" href="@Model.EventLink">@Model.EventLink</a></p>
+}
+else
+{
+    <p><b>Online:</b> joining details provided on sign up</p>
+}
 <p>
     <b>In person:</b> @Model.LocationDetails?.Location, <span class="das-no-wrap">@Model.LocationDetails?.Postcode</span>
     <br /><a href="@Model.GoogleMapsLink" rel="noopener" target="_blank" class="govuk-link">Find the location on google maps (opens in a new window)</a>

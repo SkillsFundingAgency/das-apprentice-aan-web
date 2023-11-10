@@ -6,26 +6,26 @@ using SFA.DAS.Aan.SharedUi.UrlHelpers;
 namespace SFA.DAS.Aan.SharedUi.Models;
 public class NetworkEventDetailsViewModel : INetworkHubLink
 {
-    public Guid CalendarEventId { get; init; }
-    public string CalendarName { get; init; }
-    public EventFormat EventFormat { get; init; }
-    public string StartDate { get; init; }
-    public string EndDate { get; init; }
-    public string StartTime { get; init; }
-    public DateTime StartDateTime { get; init; }
+    public Guid CalendarEventId { get; set; }
+    public string CalendarName { get; set; }
+    public EventFormat EventFormat { get; set; }
+    public string StartDate { get; set; }
+    public string EndDate { get; set; }
+    public string StartTime { get; set; }
+    public DateTime StartDateTime { get; set; }
 
-    public string EndTime { get; init; }
-    public string Title { get; init; }
-    public string Description { get; init; }
-    public string? Summary { get; init; }
-    public LocationDetails? LocationDetails { get; init; }
-    public string? EventLink { get; init; }
-    public string ContactName { get; init; }
-    public string ContactEmail { get; init; }
-    public string? CancelReason { get; init; }
-    public IReadOnlyList<Attendee> Attendees { get; }
-    public IReadOnlyList<EventGuest> EventGuests { get; }
-    public bool IsSignedUp { get; init; }
+    public string EndTime { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public string? Summary { get; set; }
+    public LocationDetails? LocationDetails { get; set; }
+    public string? EventLink { get; set; }
+    public string ContactName { get; set; }
+    public string ContactEmail { get; set; }
+    public string? CancelReason { get; set; }
+    public List<Attendee> Attendees { get; set; } = new List<Attendee>();
+    public List<EventGuest> EventGuests { get; set; } = new List<EventGuest>();
+    public bool IsSignedUp { get; set; }
     public string PartialViewName => GetPartialViewName();
 
     public int AttendeeCount => Attendees.Count;
@@ -39,6 +39,23 @@ public class NetworkEventDetailsViewModel : INetworkHubLink
 
     public string? NetworkHubLink { get; set; }
 
+    public string? BackLinkUrl { get; set; }
+    public bool IsPreview { get; set; }
+
+    public NetworkEventDetailsViewModel(string calendarName, DateTime start, DateTime end, string title, string description, string contactName, string contactEmail)
+    {
+        CalendarName = calendarName;
+        StartDateTime = start;
+        StartDate = start.UtcToLocalTime().ToString("dddd, d MMMM yyyy");
+        EndDate = end.UtcToLocalTime().ToString("dddd, d MMMM yyyy");
+        StartTime = start.UtcToLocalTime().ToString("h:mmtt").ToLower();
+        EndTime = end.UtcToLocalTime().ToString("h:mmtt").ToLower();
+        Title = title;
+        Description = description;
+        ContactName = contactName;
+        ContactEmail = contactEmail;
+    }
+
     public NetworkEventDetailsViewModel(CalendarEvent source, Guid memberId)
     {
         CalendarEventId = source.CalendarEventId;
@@ -47,8 +64,8 @@ public class NetworkEventDetailsViewModel : INetworkHubLink
         StartDateTime = source.StartDate;
         StartDate = StartDateTime.UtcToLocalTime().ToString("dddd, d MMMM yyyy");
         EndDate = source.EndDate.UtcToLocalTime().ToString("dddd, d MMMM yyyy");
-        StartTime = StartDateTime.UtcToLocalTime().ToString("h:mm tt");
-        EndTime = source.EndDate.UtcToLocalTime().ToString("h:mm tt");
+        StartTime = StartDateTime.UtcToLocalTime().ToString("h:mmtt").ToLower();
+        EndTime = source.EndDate.UtcToLocalTime().ToString("h:mmtt").ToLower();
         Title = source.Title;
         Description = source.Description;
         Summary = source.Summary;
@@ -59,7 +76,7 @@ public class NetworkEventDetailsViewModel : INetworkHubLink
         Attendees = source.Attendees;
         EventGuests = source.EventGuests;
 
-        IsSignedUp = Attendees.Any(a => a.MemberId == memberId);
+        IsSignedUp = Attendees.Exists(a => a.MemberId == memberId);
 
         if (EventFormat != EventFormat.Online)
         {

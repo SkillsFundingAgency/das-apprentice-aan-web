@@ -51,6 +51,47 @@ public class NetworkEventDetailsViewModelTests
         });
     }
 
+
+    [Test, RecursiveMoqAutoData]
+    public void Constructor_ReceivesParameters_SetsProperties(string calendarName, string title, string description, string contactName, string contactEmail)
+    {
+        var start = DateTime.UtcNow;
+        var end = DateTime.UtcNow.AddHours(1).AddMinutes(15);
+
+        var sut = new NetworkEventDetailsViewModel(calendarName, start, end, title, description, contactName, contactEmail);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut.CalendarName, Is.EqualTo(calendarName));
+            Assert.That(sut.StartDate, Is.EqualTo(start.UtcToLocalTime().ToString("dddd, d MMMM yyyy")));
+            Assert.That(sut.EndDate, Is.EqualTo(end.UtcToLocalTime().ToString("dddd, d MMMM yyyy")));
+            Assert.That(sut.Title, Is.EqualTo(title));
+            Assert.That(sut.Description, Is.EqualTo(description));
+            Assert.That(sut.Summary, Is.Null);
+            Assert.That(sut.LocationDetails?.Location, Is.Null);
+            Assert.That(sut.LocationDetails?.Postcode, Is.Null);
+            Assert.That(sut.LocationDetails?.Longitude, Is.Null);
+            Assert.That(sut.LocationDetails?.Latitude, Is.Null);
+            Assert.That(sut.LocationDetails?.Distance, Is.Null);
+            Assert.That(sut.EventLink, Is.Null);
+            Assert.That(sut.ContactName, Is.EqualTo(contactName));
+            Assert.That(sut.ContactEmail, Is.EqualTo(contactEmail));
+            Assert.That(sut.Attendees, Has.Count.EqualTo(0));
+            Assert.That(sut.AttendeeCount, Is.EqualTo(0));
+            Assert.That(sut.EventGuests, Has.Count.EqualTo(0));
+            Assert.That(sut.StartDateTime, Is.EqualTo(start));
+            if (sut.StartDateTime < DateTime.UtcNow)
+            {
+                Assert.That(sut.IsPastEvent, Is.True);
+            }
+            else
+            {
+                Assert.That(sut.IsPastEvent, Is.False);
+            }
+        });
+    }
+
+
     [Test]
     [MoqInlineAutoData(1, false)]
     [MoqInlineAutoData(-1, true)]
@@ -148,7 +189,7 @@ public class NetworkEventDetailsViewModelTests
     {
         var sut = new NetworkEventDetailsViewModel(calendarEvent, Guid.NewGuid());
 
-        Assert.That(sut.StartTime, Is.EqualTo(calendarEvent.StartDate.UtcToLocalTime().ToString("h:mm tt")));
+        Assert.That(sut.StartTime, Is.EqualTo(calendarEvent.StartDate.UtcToLocalTime().ToString("h:mmtt").ToLower()));
     }
 
     [Test, MoqAutoData]
@@ -156,7 +197,7 @@ public class NetworkEventDetailsViewModelTests
     {
         var sut = new NetworkEventDetailsViewModel(calendarEvent, Guid.NewGuid());
 
-        Assert.That(sut.EndTime, Is.EqualTo(calendarEvent.EndDate.UtcToLocalTime().ToString("h:mm tt")));
+        Assert.That(sut.EndTime, Is.EqualTo(calendarEvent.EndDate.UtcToLocalTime().ToString("h:mmtt").ToLower()));
     }
 
     [Test, MoqAutoData]
