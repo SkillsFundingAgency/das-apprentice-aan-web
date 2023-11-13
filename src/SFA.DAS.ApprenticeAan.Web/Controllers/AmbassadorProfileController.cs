@@ -28,8 +28,8 @@ public class AmbassadorProfileController : Controller
         await Task.WhenAll(profiles, memberProfiles);
         var personalDetails = new PersonalDetailsModel(memberProfiles.Result.FullName, memberProfiles.Result.RegionName, memberProfiles.Result.UserType);
         var apprenticeshipDetails = memberProfiles.Result.Apprenticeship != null ? new ApprenticeshipDetailsModel(memberProfiles.Result.Apprenticeship!.Sector, memberProfiles.Result.Apprenticeship!.Programme, memberProfiles.Result.Apprenticeship!.Level) : null;
-
-        AmbassadorProfileViewModel model = new(personalDetails, memberProfiles.Result.Email, memberProfiles.Result.Profiles, memberProfiles.Result.Preferences, apprenticeshipDetails, profiles.Result.Profiles);
+        string memberProfileUrl = Url.RouteUrl(SharedRouteNames.MemberProfile, new { id = User.GetAanMemberId() })!;
+        AmbassadorProfileViewModel model = new(personalDetails, memberProfiles.Result.Email, memberProfiles.Result.Profiles, memberProfiles.Result.Preferences, apprenticeshipDetails, profiles.Result.Profiles, memberProfileUrl);
         return View(model);
     }
 }
