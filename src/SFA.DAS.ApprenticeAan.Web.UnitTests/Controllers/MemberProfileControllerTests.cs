@@ -187,8 +187,8 @@ public class MemberProfileControllerTests
         SubmitConnectionCommand command = new()
         {
             ReasonToGetInTouch = 2,
-            CodeOfConduct = true,
-            DetailShareAllowed = true
+            HasAgreedToCodeOfConduct = true,
+            HasAgreedToSharePersonalDetails = true
         };
         var memberId = Guid.NewGuid();
         getMemberProfileResponse.UserType = userType;
@@ -230,8 +230,8 @@ public class MemberProfileControllerTests
         SubmitConnectionCommand command = new()
         {
             ReasonToGetInTouch = 2,
-            CodeOfConduct = true,
-            DetailShareAllowed = true
+            HasAgreedToCodeOfConduct = true,
+            HasAgreedToSharePersonalDetails = true
         };
         var memberId = Guid.NewGuid();
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);

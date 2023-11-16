@@ -265,8 +265,8 @@ public class MemberProfileViewModelTest
         Assert.Multiple(() =>
         {
             Assert.That(sut.ReasonToGetInTouch, Is.EqualTo(0));
-            Assert.That(sut.CodeOfConduct, Is.EqualTo(false));
-            Assert.That(sut.DetailShareAllowed, Is.EqualTo(false));
+            Assert.That(sut.HasAgreedToCodeOfConduct, Is.EqualTo(false));
+            Assert.That(sut.HasAgreedToSharePersonalDetails, Is.EqualTo(false));
         });
     }
 }

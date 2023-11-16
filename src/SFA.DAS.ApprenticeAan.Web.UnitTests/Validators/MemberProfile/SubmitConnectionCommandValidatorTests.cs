@@ -14,8 +14,8 @@ public class SubmitConnectionCommandValidatorTests
         var model = new SubmitConnectionCommand
         {
             ReasonToGetInTouch = 0,
-            CodeOfConduct = true,
-            DetailShareAllowed = true
+            HasAgreedToCodeOfConduct = true,
+            HasAgreedToSharePersonalDetails = true
         };
 
         //Act
@@ -34,8 +34,8 @@ public class SubmitConnectionCommandValidatorTests
         var model = new SubmitConnectionCommand
         {
             ReasonToGetInTouch = 1,
-            CodeOfConduct = true,
-            DetailShareAllowed = true
+            HasAgreedToCodeOfConduct = true,
+            HasAgreedToSharePersonalDetails = true
         };
 
         //Act
@@ -43,18 +43,18 @@ public class SubmitConnectionCommandValidatorTests
         var result = sut.TestValidate(model);
 
         //Assert
-        result.ShouldNotHaveValidationErrorFor("ReasonToGetInTouch");
+        result.ShouldNotHaveValidationErrorFor(x => x.ReasonToGetInTouch);
     }
 
     [Test]
-    public void Validate_CodeOfConductIsFalse_ReturnInvalid()
+    public void Validate_HasAgreedToCodeOfConductIsFalse_ReturnInvalid()
     {
         //Arrange
         var model = new SubmitConnectionCommand
         {
             ReasonToGetInTouch = 1,
-            CodeOfConduct = false,
-            DetailShareAllowed = true
+            HasAgreedToCodeOfConduct = false,
+            HasAgreedToSharePersonalDetails = true
         };
 
         //Act
@@ -62,19 +62,19 @@ public class SubmitConnectionCommandValidatorTests
         var result = sut.TestValidate(model);
 
         //Assert
-        result.ShouldHaveValidationErrorFor(c => c.CodeOfConduct)
-            .WithErrorMessage(SubmitConnectionCommandValidator.AcceptCodeOfConductMessage);
+        result.ShouldHaveValidationErrorFor(c => c.HasAgreedToCodeOfConduct)
+            .WithErrorMessage(SubmitConnectionCommandValidator.HasAgreedToCodeOfConductValidationMessage);
     }
 
     [Test]
-    public void Validate_CodeOfConductIsTrue_ReturnValid()
+    public void Validate_HasAgreedToCodeOfConductIsTrue_ReturnValid()
     {
         //Arrange
         var model = new SubmitConnectionCommand
         {
             ReasonToGetInTouch = 1,
-            CodeOfConduct = true,
-            DetailShareAllowed = true
+            HasAgreedToCodeOfConduct = true,
+            HasAgreedToSharePersonalDetails = true
         };
 
         //Act
@@ -82,18 +82,18 @@ public class SubmitConnectionCommandValidatorTests
         var result = sut.TestValidate(model);
 
         //Assert
-        result.ShouldNotHaveValidationErrorFor("CodeOfConduct");
+        result.ShouldNotHaveValidationErrorFor(x => x.HasAgreedToCodeOfConduct);
     }
 
     [Test]
-    public void Validate_DetailShareAllowedIsFalse_ReturnInvalid()
+    public void Validate_HasAgreedToSharePersonalDetailsIsFalse_ReturnInvalid()
     {
         //Arrange
         var model = new SubmitConnectionCommand
         {
             ReasonToGetInTouch = 1,
-            CodeOfConduct = true,
-            DetailShareAllowed = false
+            HasAgreedToCodeOfConduct = true,
+            HasAgreedToSharePersonalDetails = false
         };
 
         //Act
@@ -101,19 +101,19 @@ public class SubmitConnectionCommandValidatorTests
         var result = sut.TestValidate(model);
 
         //Assert
-        result.ShouldHaveValidationErrorFor(c => c.DetailShareAllowed)
-            .WithErrorMessage(SubmitConnectionCommandValidator.AcceptDetailShareAllowedMessage);
+        result.ShouldHaveValidationErrorFor(c => c.HasAgreedToSharePersonalDetails)
+            .WithErrorMessage(SubmitConnectionCommandValidator.HasAgreedToSharePersonalDetailsValidationMessage);
     }
 
     [Test]
-    public void Validate_DetailShareAllowedIsTrue_ReturnValid()
+    public void Validate_HasAgreedToSharePersonalDetailsIsTrue_ReturnValid()
     {
         //Arrange
         var model = new SubmitConnectionCommand
         {
             ReasonToGetInTouch = 1,
-            CodeOfConduct = true,
-            DetailShareAllowed = true
+            HasAgreedToCodeOfConduct = true,
+            HasAgreedToSharePersonalDetails = true
         };
 
         //Act
@@ -121,6 +121,6 @@ public class SubmitConnectionCommandValidatorTests
         var result = sut.TestValidate(model);
 
         //Assert
-        result.ShouldNotHaveValidationErrorFor("CodeOfConduct");
+        result.ShouldNotHaveValidationErrorFor(x => x.HasAgreedToSharePersonalDetails);
     }
 }
