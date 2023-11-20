@@ -3,6 +3,6 @@
 public class SubmitConnectionCommand
 {
     public int ReasonToGetInTouch { get; set; }
-    public bool DetailShareAllowed { get; set; }
-    public bool CodeOfConduct { get; set; }
+    public bool HasAgreedToSharePersonalDetails { get; set; }
+    public bool HasAgreedToCodeOfConduct { get; set; }
 }
