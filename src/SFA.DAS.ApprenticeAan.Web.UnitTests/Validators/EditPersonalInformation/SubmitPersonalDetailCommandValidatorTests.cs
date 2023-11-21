@@ -1,6 +1,5 @@
 ﻿using FluentValidation.TestHelper;
 using SFA.DAS.Aan.SharedUi.Models;
-using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 using SFA.DAS.ApprenticeAan.Web.Validators.MemberProfile;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -10,11 +9,12 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.NetworkEvents;
 public class SubmitPersonalDetailCommandValidatorTests
 {
     [Test]
-    public void Validate_BiographyIsNull_Invalid()
+    public void Validate_BiographyIsLongerThenAllowableCharacters_Invalid()
     {
         var model = new SubmitPersonalDetailCommand
         {
-            Biography = new string('x', 550)
+            Biography = new string('x', 550),
+            JobTitle = "JobTitle"
         };
 
         var sut = new SubmitPersonalDetailCommandValidator();
@@ -29,8 +29,8 @@ public class SubmitPersonalDetailCommandValidatorTests
     {
         var model = new SubmitPersonalDetailCommand
         {
-            Biography = SubmitPersonalDetailCommandValidator.BiographyValidationMessage,
-            UserType = Aan.SharedUi.Models.AmbassadorProfile.MemberUserType.Employer
+            Biography = "Biography",
+            JobTitle = "JobTitle"
         };
 
         var sut = new SubmitPersonalDetailCommandValidator();
@@ -40,7 +40,7 @@ public class SubmitPersonalDetailCommandValidatorTests
     }
 
     [Test]
-    public void Validate_JobTitleIsNull_Invalid()
+    public void Validate_JobTitleIsLongerThenAllowableCharacters_Invalid()
     {
         var model = new SubmitPersonalDetailCommand
         {
@@ -59,8 +59,7 @@ public class SubmitPersonalDetailCommandValidatorTests
     {
         var model = new SubmitPersonalDetailCommand
         {
-            JobTitle = SubmitPersonalDetailCommandValidator.JobTitleValidationMessage,
-            UserType = Aan.SharedUi.Models.AmbassadorProfile.MemberUserType.Employer
+            JobTitle = SubmitPersonalDetailCommandValidator.JobTitleValidationMessage
         };
 
         var sut = new SubmitPersonalDetailCommandValidator();
@@ -69,22 +68,19 @@ public class SubmitPersonalDetailCommandValidatorTests
         result.ShouldNotHaveAnyValidationErrors();
     }
 
-    [MoqInlineAutoData("test", MemberUserType.Apprentice)]
-    [MoqInlineAutoData(null, MemberUserType.Apprentice)]
-    [MoqInlineAutoData("test", MemberUserType.Employer)]
-    [MoqInlineAutoData(null, MemberUserType.Employer)]
-    public void Validate_JobTitleRequired(string? jobTitle, MemberUserType memberUserType)
+    [MoqInlineAutoData("test")]
+    [MoqInlineAutoData(null)]
+    public void Validate_JobTitleRequired(string? jobTitle)
     {
         var model = new SubmitPersonalDetailCommand
         {
-            JobTitle = jobTitle,
-            UserType = memberUserType
+            JobTitle = jobTitle
         };
 
         var sut = new SubmitPersonalDetailCommandValidator();
         var result = sut.TestValidate(model);
 
-        if (string.IsNullOrEmpty(jobTitle) && memberUserType == Aan.SharedUi.Models.AmbassadorProfile.MemberUserType.Apprentice)
+        if (string.IsNullOrEmpty(jobTitle))
         {
             result.ShouldHaveValidationErrorFor(x => x.JobTitle);
         }

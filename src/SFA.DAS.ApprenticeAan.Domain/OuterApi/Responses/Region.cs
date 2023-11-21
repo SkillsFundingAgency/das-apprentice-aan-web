@@ -11,7 +11,7 @@ namespace SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses
         public static List<RegionViewModel> RegionToRegionViewModelMapping(List<Region> regions)
         {
             List<RegionViewModel> regionList = new List<RegionViewModel>();
-            foreach (Region region in regions)
+            foreach (Region region in regions.OrderBy(x => x.Ordering))
             {
                 regionList.Add(new RegionViewModel { Id = region.Id, Area = region.Area });
             }

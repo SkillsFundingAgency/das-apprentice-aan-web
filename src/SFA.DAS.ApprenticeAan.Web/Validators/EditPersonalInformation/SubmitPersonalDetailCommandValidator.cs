@@ -11,15 +11,6 @@ public class SubmitPersonalDetailCommandValidator : AbstractValidator<SubmitPers
     {
         RuleLevelCascadeMode = CascadeMode.Stop;
         RuleFor(x => x.Biography).Length(0, 500).WithMessage(BiographyValidationMessage);
-        RuleFor(x => x.JobTitle).Length(0, 200).WithMessage(JobTitleValidationMessage);
-        RuleFor(x => x.JobTitle)
-        .Custom((model, context) =>
-            {
-                var userType = context.InstanceToValidate.UserType;
-                if (model == null && userType == Aan.SharedUi.Models.AmbassadorProfile.MemberUserType.Apprentice)
-                {
-                    context.AddFailure("Job tittle is compulsory for apprentice user");
-                }
-            });
+        RuleFor(x => x.JobTitle).NotNull().WithMessage("Job tittle is compulsory for apprentice user").Length(0, 200).WithMessage(JobTitleValidationMessage);
     }
 }

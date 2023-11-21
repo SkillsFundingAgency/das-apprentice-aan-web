@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
-using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
@@ -12,6 +11,7 @@ using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
+using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
@@ -49,7 +49,7 @@ public class AmbassadorProfileControllerTests
         var viewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary());
         _sut.ViewData = viewData;
         Mock<ITempDataDictionary> tempDataMock = new Mock<ITempDataDictionary>();
-        tempDataMock.Setup(t => t.ContainsKey(KeyConstant.YourAmbassadorProfileSuccessMessage.ToString())).Returns(true);
+        tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.YourAmbassadorProfileSuccessMessage)).Returns(true);
         _sut.TempData = tempDataMock.Object;
 
         _result = await _sut.Index(_cancellationToken);
@@ -112,7 +112,7 @@ public class AmbassadorProfileControllerTests
         var viewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary());
         sut.ViewData = viewData;
         Mock<ITempDataDictionary> tempDataMock = new Mock<ITempDataDictionary>();
-        tempDataMock.Setup(t => t.ContainsKey(KeyConstant.YourAmbassadorProfileSuccessMessage.ToString())).Returns(true);
+        tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.YourAmbassadorProfileSuccessMessage)).Returns(true);
         sut.TempData = tempDataMock.Object;
 
         //Act
