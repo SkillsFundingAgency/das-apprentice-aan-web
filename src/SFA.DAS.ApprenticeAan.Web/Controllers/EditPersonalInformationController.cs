@@ -75,7 +75,7 @@ public class EditPersonalInformationController : Controller
         return RedirectToRoute(SharedRouteNames.YourAmbassadorProfile);
     }
 
-    public static EditPersonalInformationViewModel EditPersonalInformationViewModelMapping(int regionId, IEnumerable<MemberProfile> memberProfiles, IEnumerable<MemberPreference> memberPreferences, MemberUserType userType, string? organisationName)
+    public static EditPersonalInformationViewModel EditPersonalInformationViewModelMapping(int regionId, IEnumerable<MemberProfile> memberProfiles, IEnumerable<MemberPreference> memberPreferences, MemberUserType userType, string organisationName)
     {
         EditPersonalInformationViewModel memberProfile = new EditPersonalInformationViewModel();
         memberProfile.RegionId = regionId;

@@ -116,7 +116,7 @@ public class EditPersonalInformationControllerGetTests
 
     [Test]
     [MoqAutoData]
-    public void EditPersonalInformationViewModelMapping_ReturnsEditPersonalInformationViewModel(int regionId, MemberUserType userType, string? organisationName)
+    public void EditPersonalInformationViewModelMapping_ReturnsEditPersonalInformationViewModel(int regionId, MemberUserType userType, string organisationName)
     {
         //Arrange
         var fixture = new Fixture();
