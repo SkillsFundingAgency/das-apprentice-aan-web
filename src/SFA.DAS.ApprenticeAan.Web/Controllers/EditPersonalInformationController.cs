@@ -75,7 +75,7 @@ public class EditPersonalInformationController : Controller
         return RedirectToRoute(SharedRouteNames.YourAmbassadorProfile);
     }
 
-    public static EditPersonalInformationViewModel EditPersonalInformationViewModelMapping(int regionId, IEnumerable<MemberProfile> memberProfiles, IEnumerable<MemberPreference> memberPreferences, MemberUserType userType, string organisationName)
+    public static EditPersonalInformationViewModel EditPersonalInformationViewModelMapping(int regionId, IEnumerable<MemberProfile> memberProfiles, IEnumerable<MemberPreference> memberPreferences, MemberUserType userType, string? organisationName)
     {
         EditPersonalInformationViewModel memberProfile = new EditPersonalInformationViewModel();
         memberProfile.RegionId = regionId;
@@ -84,7 +84,7 @@ public class EditPersonalInformationController : Controller
         memberProfile.Biography = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.Biography, memberProfiles);
         memberProfile.JobTitle = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.JobTitle, memberProfiles);
         memberProfile.UserType = userType;
-        memberProfile.OrganisationName = organisationName;
+        memberProfile.OrganisationName = organisationName ?? string.Empty;
 
         return memberProfile;
     }
