@@ -73,4 +73,7 @@ public interface IOuterApiClient
 
     [Post("/notifications")]
     Task<Response<CreateNotificationResponse>> PostNotification([Header(RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId, [Body] CreateNotificationRequest request, CancellationToken cancellationToken);
+
+    [Put("/members/{memberId}")]
+    Task UpdateMemberProfileAndPreferences([Path] Guid memberId, [Body] UpdateMemberProfileAndPreferencesRequest request, CancellationToken cancellationToken);
 }

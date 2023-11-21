@@ -1,8 +1,8 @@
 ﻿using AutoFixture;
-using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
-using FluentAssertions.Execution;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using SFA.DAS.Aan.SharedUi.Constants;
+using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 
 namespace SFA.DAS.Aan.SharedUi.UnitTests.Models.AmbassadorProfileViewModelsTests;
 public class PersonalDetailsViewModelTests
@@ -10,6 +10,7 @@ public class PersonalDetailsViewModelTests
     private PersonalDetailsViewModel sut;
     private string fullName;
     private string regionName;
+    private string personalDetailsChangeUrl = Guid.NewGuid().ToString();
     private IEnumerable<MemberProfile> memberProfiles;
     private IEnumerable<MemberPreference> memberPreferences;
     private MemberUserType userType;
@@ -32,7 +33,7 @@ public class PersonalDetailsViewModelTests
         memberPreferences.ToArray()[1].Value = false;
         userType = MemberUserType.Apprentice;
         var personalDetails = new PersonalDetailsModel(fullName, regionName, userType);
-        sut = new PersonalDetailsViewModel(personalDetails, memberProfiles, memberPreferences);
+        sut = new PersonalDetailsViewModel(personalDetails, memberProfiles, memberPreferences, personalDetailsChangeUrl);
     }
 
     [Test]
@@ -100,6 +101,15 @@ public class PersonalDetailsViewModelTests
         {
             sut.FullNameDisplayClass.Should().Be(PreferenceConstants.DisplayValue.DisplayTagClass);
             sut.FullNameDisplayValue.Should().Be(PreferenceConstants.DisplayValue.DisplayTagName);
+        }
+    }
+
+    [Test]
+    public void PersonalDetailsChangeUrlPropertyAreSet()
+    {
+        using (new AssertionScope())
+        {
+            sut.PersonalDetailsChangeUrl.Should().BeEquivalentTo(personalDetailsChangeUrl);
         }
     }
 }

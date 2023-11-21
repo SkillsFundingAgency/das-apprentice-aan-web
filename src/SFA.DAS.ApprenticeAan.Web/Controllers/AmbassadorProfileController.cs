@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
@@ -14,7 +15,6 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 public class AmbassadorProfileController : Controller
 {
     private readonly IOuterApiClient _apiClient;
-
     public AmbassadorProfileController(IOuterApiClient apiClient)
     {
         _apiClient = apiClient;
@@ -28,8 +28,8 @@ public class AmbassadorProfileController : Controller
         await Task.WhenAll(profiles, memberProfiles);
         var personalDetails = new PersonalDetailsModel(memberProfiles.Result.FullName, memberProfiles.Result.RegionName, memberProfiles.Result.UserType);
         var apprenticeshipDetails = memberProfiles.Result.Apprenticeship != null ? new ApprenticeshipDetailsModel(memberProfiles.Result.Apprenticeship!.Sector, memberProfiles.Result.Apprenticeship!.Programme, memberProfiles.Result.Apprenticeship!.Level) : null;
-        string memberProfileUrl = Url.RouteUrl(SharedRouteNames.MemberProfile, new { id = User.GetAanMemberId() })!;
-        AmbassadorProfileViewModel model = new(personalDetails, memberProfiles.Result.Email, memberProfiles.Result.Profiles, memberProfiles.Result.Preferences, apprenticeshipDetails, profiles.Result.Profiles, memberProfileUrl);
+        AmbassadorProfileViewModel model = new(personalDetails, memberProfiles.Result.Email, memberProfiles.Result.Profiles, memberProfiles.Result.Preferences, apprenticeshipDetails, profiles.Result.Profiles, Url.RouteUrl(SharedRouteNames.MemberProfile)!, Url.RouteUrl(SharedRouteNames.EditPersonalInformation)!);
+        ViewBag.YourAmbassadorProfileSuccessMessage = TempData[KeyConstant.YourAmbassadorProfileSuccessMessage.ToString()];
         return View(model);
     }
 }

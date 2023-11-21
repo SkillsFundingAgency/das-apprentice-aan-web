@@ -4,7 +4,7 @@ using SFA.DAS.Aan.SharedUi.Services;
 namespace SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 public class PersonalDetailsViewModel
 {
-    public PersonalDetailsViewModel(PersonalDetailsModel personalDetails, IEnumerable<MemberProfile> memberProfiles, IEnumerable<MemberPreference> memberPreferences)
+    public PersonalDetailsViewModel(PersonalDetailsModel personalDetails, IEnumerable<MemberProfile> memberProfiles, IEnumerable<MemberPreference> memberPreferences, string personalDetailsChangeUrl)
     {
         FullName = personalDetails.FullName;
         var (displayValue, displayClass) = MapProfilesAndPreferencesService.SetDisplayValue(true);
@@ -25,6 +25,7 @@ public class PersonalDetailsViewModel
         BiographyDisplayValue = biographyDisplayValue;
         BiographyDisplayClass = biographyDisplayClass;
         UserType = personalDetails.UserType;
+        PersonalDetailsChangeUrl = personalDetailsChangeUrl;
     }
 
     public string FullName { get; set; }
@@ -40,4 +41,5 @@ public class PersonalDetailsViewModel
     public string BiographyDisplayValue { get; set; }
     public string BiographyDisplayClass { get; set; }
     public MemberUserType UserType { get; set; }
+    public string PersonalDetailsChangeUrl { get; set; }
 }
