@@ -48,8 +48,8 @@ public class AmbassadorProfileViewModelTests
             new Profile { Id = 10, Description = "Carrying out and writing up case studies", Category = "Promotions", Ordering = 1 },
             new Profile { Id = 11, Description = "Designing and creating marketing materials to champion the network", Category = "Promotions", Ordering = 2 }
         };
-        var personalDetails = new PersonalDetailsModel(fullName, regionName, userType);
-        sut = new AmbassadorProfileViewModel(personalDetails, email, memberProfiles, memberPreferences, apprenticeshipDetails, profiles,memberProfileUrl, personalDetailsChangeUrl);
+        var personalDetails = new PersonalDetailsModel(fullName, regionName, userType, personalDetailsChangeUrl);
+        sut = new AmbassadorProfileViewModel(personalDetails, email, memberProfiles, memberPreferences, apprenticeshipDetails, profiles, memberProfileUrl);
     }
 
     [Test]

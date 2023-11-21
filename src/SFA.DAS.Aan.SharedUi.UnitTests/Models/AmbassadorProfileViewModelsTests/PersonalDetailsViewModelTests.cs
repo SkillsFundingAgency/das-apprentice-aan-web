@@ -32,8 +32,8 @@ public class PersonalDetailsViewModelTests
         memberProfiles.ToArray()[1].PreferenceId = memberPreferences.ToArray()[1].PreferenceId;
         memberPreferences.ToArray()[1].Value = false;
         userType = MemberUserType.Apprentice;
-        var personalDetails = new PersonalDetailsModel(fullName, regionName, userType);
-        sut = new PersonalDetailsViewModel(personalDetails, memberProfiles, memberPreferences, personalDetailsChangeUrl);
+        var personalDetails = new PersonalDetailsModel(fullName, regionName, userType, personalDetailsChangeUrl);
+        sut = new PersonalDetailsViewModel(personalDetails, memberProfiles, memberPreferences);
     }
 
     [Test]

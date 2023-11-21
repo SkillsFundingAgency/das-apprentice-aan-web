@@ -15,7 +15,7 @@ public class SubmitPersonalDetailCommandValidator : AbstractValidator<SubmitPers
         RuleFor(x => x.JobTitle)
         .Custom((model, context) =>
             {
-                var userType = ((SubmitPersonalDetailCommand)context.InstanceToValidate).UserType;
+                var userType = context.InstanceToValidate.UserType;
                 if (model == null && userType == Aan.SharedUi.Models.AmbassadorProfile.MemberUserType.Apprentice)
                 {
                     context.AddFailure("Job tittle is compulsory for apprentice user");
