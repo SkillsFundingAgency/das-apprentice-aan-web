@@ -71,7 +71,7 @@ public class EditPersonalInformationController : Controller
         updateMemberProfileAndPreferencesRequest.updateMemberProfileRequest.Profiles = updateProfileModels;
 
         await _apiClient.UpdateMemberProfileAndPreferences(User.GetAanMemberId(), updateMemberProfileAndPreferencesRequest, cancellationToken);
-        TempData[TempDataKeys.YourAmbassadorProfileSuccessMessage] = "You have successfully updated your ambassador profile.";
+        TempData[TempDataKeys.YourAmbassadorProfileSuccessMessage] = true;
         return RedirectToRoute(SharedRouteNames.YourAmbassadorProfile);
     }
 
