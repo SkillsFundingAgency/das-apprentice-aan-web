@@ -6,4 +6,5 @@ namespace SFA.DAS.ApprenticeAan.Web.Infrastructure;
 public static class TempDataKeys
 {
     public const string HasSeenTermsAndConditions = nameof(HasSeenTermsAndConditions);
+    public const string YourAmbassadorProfileSuccessMessage = nameof(YourAmbassadorProfileSuccessMessage);
 }

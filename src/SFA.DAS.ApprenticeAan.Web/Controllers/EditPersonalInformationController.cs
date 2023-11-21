@@ -11,6 +11,7 @@ using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
+using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using static SFA.DAS.Aan.SharedUi.Constants.ProfileConstants;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
@@ -70,7 +71,7 @@ public class EditPersonalInformationController : Controller
         updateMemberProfileAndPreferencesRequest.updateMemberProfileRequest.Profiles = updateProfileModels;
 
         await _apiClient.UpdateMemberProfileAndPreferences(User.GetAanMemberId(), updateMemberProfileAndPreferencesRequest, cancellationToken);
-        TempData[KeyConstant.YourAmbassadorProfileSuccessMessage.ToString()] = "You have successfully updated your ambassador profile.";
+        TempData[TempDataKeys.YourAmbassadorProfileSuccessMessage] = "You have successfully updated your ambassador profile.";
         return RedirectToRoute(SharedRouteNames.YourAmbassadorProfile);
     }
 
