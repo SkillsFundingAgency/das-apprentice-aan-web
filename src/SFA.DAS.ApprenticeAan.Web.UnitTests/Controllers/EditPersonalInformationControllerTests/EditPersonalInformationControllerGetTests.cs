@@ -115,8 +115,9 @@ public class EditPersonalInformationControllerGetTests
     }
 
     [Test]
-    [MoqAutoData]
-    public void EditPersonalInformationViewModelMapping_ReturnsEditPersonalInformationViewModel(int regionId, MemberUserType userType, string? organisationName)
+    [MoqInlineAutoData("test")]
+    [MoqInlineAutoData(null)]
+    public void EditPersonalInformationViewModelMapping_ReturnsEditPersonalInformationViewModel(string? organisationName, int regionId, MemberUserType userType)
     {
         //Arrange
         var fixture = new Fixture();
@@ -141,7 +142,7 @@ public class EditPersonalInformationControllerGetTests
             Assert.That(sut, Is.InstanceOf(editPersonalInformationViewModel.GetType()));
             Assert.That(sut.RegionId, Is.EqualTo(regionId));
             Assert.That(sut.UserType, Is.EqualTo(userType));
-            Assert.That(sut.OrganisationName, Is.EqualTo(organisationName));
+            Assert.That(sut.OrganisationName, Is.EqualTo(organisationName ?? string.Empty));
             Assert.That(sut.ShowJobTitle, Is.EqualTo(true));
             Assert.That(sut.ShowBiography, Is.EqualTo(false));
             Assert.That(sut.JobTitle, Is.EqualTo(memberProfiles.ToArray()[0].Value));
