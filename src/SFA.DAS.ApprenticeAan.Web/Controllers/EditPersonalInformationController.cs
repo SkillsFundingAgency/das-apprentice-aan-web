@@ -59,7 +59,7 @@ public class EditPersonalInformationController : Controller
         updateMemberProfileAndPreferencesRequest.patchMemberRequest.RegionId = command.RegionId;
         updateMemberProfileAndPreferencesRequest.patchMemberRequest.OrganisationName = command.OrganisationName;
         List<UpdatePreferenceModel> updatePreferenceModels = new List<UpdatePreferenceModel>();
-        updatePreferenceModels.Add(new UpdatePreferenceModel() { Id = PreferenceConstants.PreferenceIds.Biography, Value = command.ShowBiography });
+        updatePreferenceModels.Add(new UpdatePreferenceModel() { Id = PreferenceConstants.PreferenceIds.Biography, Value = command.ShowBiography && !string.IsNullOrEmpty(command.Biography) });
         updatePreferenceModels.Add(new UpdatePreferenceModel() { Id = PreferenceConstants.PreferenceIds.JobTitle, Value = command.ShowJobTitle });
 
         updateMemberProfileAndPreferencesRequest.updateMemberProfileRequest.Preferences = updatePreferenceModels;
