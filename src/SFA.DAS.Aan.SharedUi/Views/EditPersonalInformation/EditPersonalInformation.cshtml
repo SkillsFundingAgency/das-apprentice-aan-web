@@ -66,7 +66,7 @@
                                 </label>
                             </h3>
                             <span asp-validation-for="Biography" class="govuk-error-message"></span>
-                            <textarea asp-for="Biography" maxlength="500" class="govuk-textarea govuk-js-character-count" id="biography" name="biography" rows="5"></textarea>
+                            <textarea asp-for="Biography" class="govuk-textarea govuk-js-character-count" id="biography" name="biography" rows="5"></textarea>
                         </div>
                         <div id="biography-info" class="govuk-hint govuk-character-count__message">
                             You have 500 characters
@@ -90,13 +90,3 @@
         </form>
     </div>
 </div>
-<script>
-    document.querySelectorAll('textarea').forEach(function(textarea) {
-        var maxLength = parseInt(textarea.getAttribute('maxlength'));
-        textarea.addEventListener('input', function() {
-            if (this.value.length > maxLength) {
-                this.value = this.value.substring(0, maxLength);
-            }
-        });
-    });
-</script>
