@@ -59,14 +59,14 @@ public class EditPersonalInformationController : Controller
         updateMemberProfileAndPreferencesRequest.patchMemberRequest.RegionId = command.RegionId;
         updateMemberProfileAndPreferencesRequest.patchMemberRequest.OrganisationName = command.OrganisationName;
         List<UpdatePreferenceModel> updatePreferenceModels = new List<UpdatePreferenceModel>();
-        updatePreferenceModels.Add(new UpdatePreferenceModel() { Id = PreferenceConstants.PreferenceIds.Biography, Value = command.ShowBiography && !string.IsNullOrEmpty(command.Biography) });
-        updatePreferenceModels.Add(new UpdatePreferenceModel() { Id = PreferenceConstants.PreferenceIds.JobTitle, Value = command.ShowJobTitle });
+        updatePreferenceModels.Add(new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.Biography, Value = command.ShowBiography && !string.IsNullOrEmpty(command.Biography) });
+        updatePreferenceModels.Add(new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.JobTitle, Value = command.ShowJobTitle });
 
         updateMemberProfileAndPreferencesRequest.updateMemberProfileRequest.Preferences = updatePreferenceModels;
 
         List<UpdateProfileModel> updateProfileModels = new List<UpdateProfileModel>();
-        updateProfileModels.Add(new UpdateProfileModel() { Id = ProfileIds.Biography, Value = command.Biography });
-        updateProfileModels.Add(new UpdateProfileModel() { Id = ProfileIds.JobTitle, Value = command.JobTitle });
+        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.Biography, Value = command.Biography });
+        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.JobTitle, Value = command.JobTitle });
 
         updateMemberProfileAndPreferencesRequest.updateMemberProfileRequest.Profiles = updateProfileModels;
 
