@@ -52,8 +52,10 @@ public class EditPersonalInformationControllerPostTests
     }
 
     [Test]
-    [RecursiveMoqAutoData]
+    [MoqInlineAutoData("")]
+    [MoqInlineAutoData("biography")]
     public async Task Post_ValidModel_ReturnsMemberProfileView(
+        string biography,
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         CancellationToken cancellationToken)
     {
@@ -61,7 +63,7 @@ public class EditPersonalInformationControllerPostTests
         SubmitPersonalDetailModel submitPersonalDetailModel = new()
         {
             RegionId = 5,
-            Biography = string.Empty,
+            Biography = biography,
             JobTitle = string.Empty,
             ShowBiography = true,
             ShowJobTitle = true,
