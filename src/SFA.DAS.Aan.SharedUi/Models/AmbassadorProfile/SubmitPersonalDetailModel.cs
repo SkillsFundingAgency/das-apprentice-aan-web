@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.Aan.SharedUi.Models;
 
-public class SubmitPersonalDetailCommand
+public class SubmitPersonalDetailModel
 {
     public int RegionId { get; set; }
     public string? Biography { get; set; }

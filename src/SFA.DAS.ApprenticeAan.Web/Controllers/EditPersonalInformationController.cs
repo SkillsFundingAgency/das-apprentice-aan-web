@@ -21,9 +21,9 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 public class EditPersonalInformationController : Controller
 {
     private readonly IOuterApiClient _apiClient;
-    private readonly IValidator<SubmitPersonalDetailCommand> _validator;
+    private readonly IValidator<SubmitPersonalDetailModel> _validator;
     public const string ChangePersonalDetailViewPath = "~/Views/EditPersonalInformation/EditPersonalInformation.cshtml";
-    public EditPersonalInformationController(IOuterApiClient apiClient, IValidator<SubmitPersonalDetailCommand> validator)
+    public EditPersonalInformationController(IOuterApiClient apiClient, IValidator<SubmitPersonalDetailModel> validator)
     {
         _apiClient = apiClient;
         _validator = validator;
@@ -41,9 +41,9 @@ public class EditPersonalInformationController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(SubmitPersonalDetailCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> Post(SubmitPersonalDetailModel submitPersonalDetailModel, CancellationToken cancellationToken)
     {
-        var result = await _validator.ValidateAsync(command, cancellationToken);
+        var result = await _validator.ValidateAsync(submitPersonalDetailModel, cancellationToken);
 
         if (!result.IsValid)
         {
@@ -56,17 +56,17 @@ public class EditPersonalInformationController : Controller
             return View(ChangePersonalDetailViewPath, memberProfile);
         }
         UpdateMemberProfileAndPreferencesRequest updateMemberProfileAndPreferencesRequest = new UpdateMemberProfileAndPreferencesRequest();
-        updateMemberProfileAndPreferencesRequest.patchMemberRequest.RegionId = command.RegionId;
-        updateMemberProfileAndPreferencesRequest.patchMemberRequest.OrganisationName = command.OrganisationName;
+        updateMemberProfileAndPreferencesRequest.patchMemberRequest.RegionId = submitPersonalDetailModel.RegionId;
+        updateMemberProfileAndPreferencesRequest.patchMemberRequest.OrganisationName = submitPersonalDetailModel.OrganisationName;
         List<UpdatePreferenceModel> updatePreferenceModels = new List<UpdatePreferenceModel>();
-        updatePreferenceModels.Add(new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.Biography, Value = command.ShowBiography && !string.IsNullOrEmpty(command.Biography) });
-        updatePreferenceModels.Add(new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.JobTitle, Value = command.ShowJobTitle });
+        updatePreferenceModels.Add(new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.Biography, Value = submitPersonalDetailModel.ShowBiography && !string.IsNullOrEmpty(submitPersonalDetailModel.Biography) });
+        updatePreferenceModels.Add(new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.JobTitle, Value = submitPersonalDetailModel.ShowJobTitle });
 
         updateMemberProfileAndPreferencesRequest.updateMemberProfileRequest.Preferences = updatePreferenceModels;
 
         List<UpdateProfileModel> updateProfileModels = new List<UpdateProfileModel>();
-        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.Biography, Value = command.Biography });
-        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.JobTitle, Value = command.JobTitle });
+        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.Biography, Value = submitPersonalDetailModel.Biography });
+        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.JobTitle, Value = submitPersonalDetailModel.JobTitle });
 
         updateMemberProfileAndPreferencesRequest.updateMemberProfileRequest.Profiles = updateProfileModels;
 

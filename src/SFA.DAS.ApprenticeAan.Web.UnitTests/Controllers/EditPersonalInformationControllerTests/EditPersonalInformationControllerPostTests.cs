@@ -25,15 +25,15 @@ public class EditPersonalInformationControllerPostTests
 
     [Test]
     [MoqInlineAutoData]
-    public async Task Post_InvalidCommand_ReturnsPersonalDetailView(
-        SubmitPersonalDetailCommand command,
+    public async Task Post_InvalidModel_ReturnsPersonalDetailView(
+        SubmitPersonalDetailModel submitPersonalDetailModel,
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         GetMemberProfileResponse getMemberProfileResponse,
-        Mock<IValidator<SubmitPersonalDetailCommand>> validatorMock,
+        Mock<IValidator<SubmitPersonalDetailModel>> validatorMock,
         CancellationToken cancellationToken)
     {
         //Arrange
-        command.Biography = null;
+        submitPersonalDetailModel.Biography = null;
         var memberId = Guid.NewGuid();
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
         outerApiMock.Setup(o => o.GetMemberProfile(memberId, memberId, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
@@ -45,7 +45,7 @@ public class EditPersonalInformationControllerPostTests
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
 
         //Act
-        var response = await sut.Post(command, cancellationToken);
+        var response = await sut.Post(submitPersonalDetailModel, cancellationToken);
 
         //Assert
         Assert.That(response, Is.InstanceOf<ViewResult>());
@@ -53,12 +53,12 @@ public class EditPersonalInformationControllerPostTests
 
     [Test]
     [RecursiveMoqAutoData]
-    public async Task Post_ValidCommand_ReturnsMemberProfileView(
+    public async Task Post_ValidModel_ReturnsMemberProfileView(
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         CancellationToken cancellationToken)
     {
         //Arrange
-        SubmitPersonalDetailCommand command = new()
+        SubmitPersonalDetailModel submitPersonalDetailModel = new()
         {
             RegionId = 5,
             Biography = string.Empty,
@@ -71,9 +71,9 @@ public class EditPersonalInformationControllerPostTests
         var memberId = Guid.NewGuid();
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
 
-        var validatorMock = new Mock<IValidator<SubmitPersonalDetailCommand>>();
+        var validatorMock = new Mock<IValidator<SubmitPersonalDetailModel>>();
         var successfulValidationResult = new ValidationResult();
-        validatorMock.Setup(v => v.ValidateAsync(It.IsAny<SubmitPersonalDetailCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(successfulValidationResult);
+        validatorMock.Setup(v => v.ValidateAsync(It.IsAny<SubmitPersonalDetailModel>(), It.IsAny<CancellationToken>())).ReturnsAsync(successfulValidationResult);
 
         EditPersonalInformationController sut = new EditPersonalInformationController(outerApiMock.Object, validatorMock.Object);
 
@@ -86,7 +86,7 @@ public class EditPersonalInformationControllerPostTests
         sut.TempData = tempDataMock.Object;
 
         //Act
-        var response = await sut.Post(command, cancellationToken);
+        var response = await sut.Post(submitPersonalDetailModel, cancellationToken);
 
         //Assert
         Assert.Multiple(() =>

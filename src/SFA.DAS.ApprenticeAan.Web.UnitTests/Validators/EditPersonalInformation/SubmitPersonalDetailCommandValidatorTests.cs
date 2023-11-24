@@ -11,29 +11,29 @@ public class SubmitPersonalDetailCommandValidatorTests
     [Test]
     public void Validate_BiographyIsLongerThenAllowableCharacters_Invalid()
     {
-        var model = new SubmitPersonalDetailCommand
+        var model = new SubmitPersonalDetailModel
         {
             Biography = new string('x', 550),
             JobTitle = "JobTitle"
         };
 
-        var sut = new SubmitPersonalDetailCommandValidator();
+        var sut = new SubmitPersonalDetailModelValidator();
         var result = sut.TestValidate(model);
 
         result.ShouldHaveValidationErrorFor(c => c.Biography)
-            .WithErrorMessage(SubmitPersonalDetailCommandValidator.BiographyValidationMessage);
+            .WithErrorMessage(SubmitPersonalDetailModelValidator.BiographyValidationMessage);
     }
 
     [Test]
     public void Validate_BiographyIsNotNull_Valid()
     {
-        var model = new SubmitPersonalDetailCommand
+        var model = new SubmitPersonalDetailModel
         {
             Biography = "Biography",
             JobTitle = "JobTitle"
         };
 
-        var sut = new SubmitPersonalDetailCommandValidator();
+        var sut = new SubmitPersonalDetailModelValidator();
         var result = sut.TestValidate(model);
 
         result.ShouldNotHaveAnyValidationErrors();
@@ -42,27 +42,27 @@ public class SubmitPersonalDetailCommandValidatorTests
     [Test]
     public void Validate_JobTitleIsLongerThenAllowableCharacters_Invalid()
     {
-        var model = new SubmitPersonalDetailCommand
+        var model = new SubmitPersonalDetailModel
         {
             JobTitle = new string('x', 250)
         };
 
-        var sut = new SubmitPersonalDetailCommandValidator();
+        var sut = new SubmitPersonalDetailModelValidator();
         var result = sut.TestValidate(model);
 
         result.ShouldHaveValidationErrorFor(c => c.JobTitle)
-            .WithErrorMessage(SubmitPersonalDetailCommandValidator.JobTitleValidationMessage);
+            .WithErrorMessage(SubmitPersonalDetailModelValidator.JobTitleValidationMessage);
     }
 
     [Test]
     public void Validate_JobTitleIsNotNull_Valid()
     {
-        var model = new SubmitPersonalDetailCommand
+        var model = new SubmitPersonalDetailModel
         {
-            JobTitle = SubmitPersonalDetailCommandValidator.JobTitleValidationMessage
+            JobTitle = SubmitPersonalDetailModelValidator.JobTitleValidationMessage
         };
 
-        var sut = new SubmitPersonalDetailCommandValidator();
+        var sut = new SubmitPersonalDetailModelValidator();
         var result = sut.TestValidate(model);
 
         result.ShouldNotHaveAnyValidationErrors();
@@ -72,12 +72,12 @@ public class SubmitPersonalDetailCommandValidatorTests
     [MoqInlineAutoData(null)]
     public void Validate_JobTitleRequired(string? jobTitle)
     {
-        var model = new SubmitPersonalDetailCommand
+        var model = new SubmitPersonalDetailModel
         {
             JobTitle = jobTitle
         };
 
-        var sut = new SubmitPersonalDetailCommandValidator();
+        var sut = new SubmitPersonalDetailModelValidator();
         var result = sut.TestValidate(model);
 
         if (string.IsNullOrEmpty(jobTitle))
