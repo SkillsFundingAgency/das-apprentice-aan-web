@@ -28,7 +28,7 @@ public class AmbassadorProfileController : Controller
         await Task.WhenAll(profiles, memberProfiles);
         var personalDetails = new PersonalDetailsModel(memberProfiles.Result.FullName, memberProfiles.Result.RegionName, memberProfiles.Result.UserType, Url.RouteUrl(SharedRouteNames.EditPersonalInformation)!);
         var apprenticeshipDetails = memberProfiles.Result.Apprenticeship != null ? new ApprenticeshipDetailsModel(memberProfiles.Result.Apprenticeship!.Sector, memberProfiles.Result.Apprenticeship!.Programme, memberProfiles.Result.Apprenticeship!.Level) : null;
-        AmbassadorProfileViewModel model = new(personalDetails, memberProfiles.Result.Email, memberProfiles.Result.Profiles, memberProfiles.Result.Preferences, apprenticeshipDetails, profiles.Result.Profiles, Url.RouteUrl(SharedRouteNames.MemberProfile)!);
+        AmbassadorProfileViewModel model = new(personalDetails, memberProfiles.Result.Email, memberProfiles.Result.Profiles, memberProfiles.Result.Preferences, apprenticeshipDetails, profiles.Result.Profiles, Url.RouteUrl(SharedRouteNames.MemberProfile)!, Url.RouteUrl(SharedRouteNames.EditAreaOfInterest)!);
         ViewBag.YourAmbassadorProfileSuccessMessage = TempData[TempDataKeys.YourAmbassadorProfileSuccessMessage];
         return View(model);
     }

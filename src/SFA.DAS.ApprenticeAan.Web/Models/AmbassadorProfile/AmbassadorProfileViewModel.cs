@@ -4,10 +4,10 @@ using SFA.DAS.ApprenticeAan.Web.Models.AmbassadorProfile;
 namespace SFA.DAS.Aan.SharedUi.Models;
 public class AmbassadorProfileViewModel
 {
-    public AmbassadorProfileViewModel(PersonalDetailsModel personalDetails, string email, IEnumerable<MemberProfile> memberProfiles, IEnumerable<MemberPreference> memberPreferences, ApprenticeshipDetailsModel? apprenticeshipDetails, List<Profile> profiles, string memberProfileUrl)
+    public AmbassadorProfileViewModel(PersonalDetailsModel personalDetails, string email, IEnumerable<MemberProfile> memberProfiles, IEnumerable<MemberPreference> memberPreferences, ApprenticeshipDetailsModel? apprenticeshipDetails, List<Profile> profiles, string memberProfileUrl, string areaOfInterestChangeUrl)
     {
         PersonalDetails = new PersonalDetailsViewModel(personalDetails, memberProfiles, memberPreferences);
-        InterestInTheNetwork = new InterestInTheNetworkViewModel(memberProfiles, profiles);
+        InterestInTheNetwork = new InterestInTheNetworkViewModel(memberProfiles, profiles, areaOfInterestChangeUrl);
         ApprenticeshipDetails = new ApprenticeshipDetailsViewModel(memberProfiles, apprenticeshipDetails, memberPreferences);
         ContactDetails = new ContactDetailsViewModel(email, memberProfiles, memberPreferences);
         ShowApprenticeshipDetails = GetShowApprenticeshipDetails(ApprenticeshipDetails.EmployerName, ApprenticeshipDetails.EmployerAddress, apprenticeshipDetails);

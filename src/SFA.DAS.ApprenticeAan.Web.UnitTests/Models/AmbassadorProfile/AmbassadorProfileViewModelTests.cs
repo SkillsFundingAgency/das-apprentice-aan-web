@@ -20,7 +20,7 @@ public class AmbassadorProfileViewModelTests
     private IEnumerable<MemberPreference> memberPreferences;
     private ApprenticeshipDetailsModel? apprenticeshipDetails;
     private MemberUserType userType;
-
+    private string areaOfInterestChangeUrl = Guid.NewGuid().ToString();
 
     [SetUp]
     public void Setup()
@@ -49,7 +49,7 @@ public class AmbassadorProfileViewModelTests
             new Profile { Id = 11, Description = "Designing and creating marketing materials to champion the network", Category = "Promotions", Ordering = 2 }
         };
         var personalDetails = new PersonalDetailsModel(fullName, regionName, userType, personalDetailsChangeUrl);
-        sut = new AmbassadorProfileViewModel(personalDetails, email, memberProfiles, memberPreferences, apprenticeshipDetails, profiles, memberProfileUrl);
+        sut = new AmbassadorProfileViewModel(personalDetails, email, memberProfiles, memberPreferences, apprenticeshipDetails, profiles, memberProfileUrl, areaOfInterestChangeUrl);
     }
 
     [Test]

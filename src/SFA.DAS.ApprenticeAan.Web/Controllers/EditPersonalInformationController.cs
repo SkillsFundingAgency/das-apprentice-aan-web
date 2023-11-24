@@ -56,8 +56,8 @@ public class EditPersonalInformationController : Controller
             return View(ChangePersonalDetailViewPath, memberProfile);
         }
         UpdateMemberProfileAndPreferencesRequest updateMemberProfileAndPreferencesRequest = new UpdateMemberProfileAndPreferencesRequest();
-        updateMemberProfileAndPreferencesRequest.patchMemberRequest.RegionId = submitPersonalDetailModel.RegionId;
-        updateMemberProfileAndPreferencesRequest.patchMemberRequest.OrganisationName = submitPersonalDetailModel.OrganisationName;
+        updateMemberProfileAndPreferencesRequest.patchMemberRequest!.RegionId = submitPersonalDetailModel.RegionId;
+        updateMemberProfileAndPreferencesRequest.patchMemberRequest!.OrganisationName = submitPersonalDetailModel.OrganisationName;
         List<UpdatePreferenceModel> updatePreferenceModels = new List<UpdatePreferenceModel>();
         updatePreferenceModels.Add(new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.Biography, Value = submitPersonalDetailModel.ShowBiography && !string.IsNullOrEmpty(submitPersonalDetailModel.Biography) });
         updatePreferenceModels.Add(new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.JobTitle, Value = submitPersonalDetailModel.ShowJobTitle });

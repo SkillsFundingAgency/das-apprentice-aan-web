@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="OuterApi\Requests\" />
+    <Folder Include="Views\EditAreaOfInterest\" />
   </ItemGroup>
 
   <ItemGroup>

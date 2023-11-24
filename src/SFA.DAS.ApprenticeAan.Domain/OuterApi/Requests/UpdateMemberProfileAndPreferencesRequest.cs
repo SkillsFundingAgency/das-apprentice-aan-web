@@ -2,7 +2,7 @@
 
 public class UpdateMemberProfileAndPreferencesRequest
 {
-    public PatchMemberRequest patchMemberRequest { get; set; } = new PatchMemberRequest();
+    public PatchMemberRequest? patchMemberRequest { get; set; } = new PatchMemberRequest();
     public UpdateMemberProfileRequest updateMemberProfileRequest { get; set; } = new UpdateMemberProfileRequest();
 
 }

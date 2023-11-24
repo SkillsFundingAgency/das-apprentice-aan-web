@@ -3,7 +3,7 @@ using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.ApprenticeAan.Web.Validators.MemberProfile;
 using SFA.DAS.Testing.AutoFixture;
 
-namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.NetworkEvents;
+namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.EditPersonalInformation;
 
 [TestFixture]
 public class SubmitPersonalDetailCommandValidatorTests

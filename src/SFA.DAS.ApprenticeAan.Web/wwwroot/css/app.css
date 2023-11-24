@@ -64,6 +64,7 @@
     margin: 20px 0;
     color: #0b0c0c;
 }
+
 @media (min-width: 40.0625em) {
     .app-calendar__row {
         display: flex;
@@ -131,25 +132,33 @@
     margin-top: 3px;
 }
 
-.app-calendar__event--Hybrid { border-color: #85994B;}
-.app-calendar__event--InPerson { border-color: #6F72AF;}
-.app-calendar__event--Online { border-color: #912B88;}
+.app-calendar__event--Hybrid {
+    border-color: #85994B;
+}
+
+.app-calendar__event--InPerson {
+    border-color: #6F72AF;
+}
+
+.app-calendar__event--Online {
+    border-color: #912B88;
+}
 
 a.app-calendar__event {
     text-decoration: none;
     color: #0b0c0c;
 }
 
-a.app-calendar__event:hover {
-    color: #0b0c0c;
-    background-color: #ddd;
-}
+    a.app-calendar__event:hover {
+        color: #0b0c0c;
+        background-color: #ddd;
+    }
 
-a.app-calendar__event:focus {
-    background-color: #fd0;
-    color: #0b0c0c;
-    border-color: #0b0c0c;
-}
+    a.app-calendar__event:focus {
+        background-color: #fd0;
+        color: #0b0c0c;
+        border-color: #0b0c0c;
+    }
 
 .app-calendar-legend {
     border-radius: 12px;
@@ -175,9 +184,17 @@ a.app-calendar__event:focus {
     margin-right: 10px;
 }
 
-.app-calendar-legend__colour--hybrid { background-color: #85994b;}
-.app-calendar-legend__colour--inperson { background-color: #6f72af;}
-.app-calendar-legend__colour--online { background-color: #912b88;}
+.app-calendar-legend__colour--hybrid {
+    background-color: #85994b;
+}
+
+.app-calendar-legend__colour--inperson {
+    background-color: #6f72af;
+}
+
+.app-calendar-legend__colour--online {
+    background-color: #912b88;
+}
 
 .app-calendar-nav {
     float: right;
@@ -218,13 +235,13 @@ a.app-calendar__event:focus {
     margin-top: 40px;
 }
 
-.app-icon-list > li {
-    border-bottom: 1px solid #b1b4b6;
-    padding-top: 30px;
-    padding-bottom: 20px;
-    padding-right: 100px;
-    position: relative;
-}
+    .app-icon-list > li {
+        border-bottom: 1px solid #b1b4b6;
+        padding-top: 30px;
+        padding-bottom: 20px;
+        padding-right: 100px;
+        position: relative;
+    }
 
 .app-icon-list__icon {
     position: absolute;
@@ -249,9 +266,17 @@ a.app-calendar__event:focus {
     }
 }
 
-.app-tag--Hybrid { background-color: #85994b;}
-.app-tag--InPerson { background-color: #6f72af;}
-.app-tag--Online { background-color: #912b88;}
+.app-tag--Hybrid {
+    background-color: #85994b;
+}
+
+.app-tag--InPerson {
+    background-color: #6f72af;
+}
+
+.app-tag--Online {
+    background-color: #912b88;
+}
 
 .app-date {
     clear: both;
@@ -264,16 +289,20 @@ a.app-calendar__event:focus {
         text-align: center;
         margin-bottom: 15px;
     }
+
     .app-date__year {
         display: none;
     }
+
     .app-date__day,
     .app-date__month {
         display: block;
     }
+
     .app-date__day {
         font-size: 36px;
     }
+
     .app-date__month {
         text-transform: uppercase;
     }
@@ -293,6 +322,7 @@ a.app-calendar__event:focus {
         align-items: center;
         gap: 5px;
     }
+
     .das-icon-list__icon {
         display: flex;
         position: relative;
@@ -312,6 +342,7 @@ a.app-calendar__event:focus {
     margin-bottom: 20px;
     display: block;
 }
+
 @media (min-width: 40.0625em) {
     .app-speakers {
         display: flex;
@@ -320,12 +351,14 @@ a.app-calendar__event:focus {
         gap: 5%;
         margin-bottom: 30px;
     }
+
     .app-speaker {
         width: 30%;
     }
-    .app-speaker > p {
-        margin-bottom: 0;
-    }
+
+        .app-speaker > p {
+            margin-bottom: 0;
+        }
 }
 
 .app-attendee-list {
@@ -333,13 +366,13 @@ a.app-calendar__event:focus {
     border-top: 1px solid #b1b4b6;
 }
 
-.app-attendee-list > li {
-    padding: 10px 0;
-    border-bottom: 1px solid #b1b4b6;
-}
+    .app-attendee-list > li {
+        padding: 10px 0;
+        border-bottom: 1px solid #b1b4b6;
+    }
 
 .app-details .govuk-details__summary:before,
-.app-details[open]> .govuk-details__summary:before{
+.app-details[open] > .govuk-details__summary:before {
     border-radius: 50%;
     border: 1px solid currentColor;
     width: 17px;
@@ -361,7 +394,7 @@ a.app-calendar__event:focus {
     transform: rotate(-45deg)
 }
 
-.app-details[open]>.govuk-details__summary:after {
+.app-details[open] > .govuk-details__summary:after {
     transform: rotate(135deg);
     top: 10px
 }
@@ -371,35 +404,35 @@ a.das-show-hide__button {
     padding-left: 25px;
 }
 
-a.das-show-hide__button:before{
-    content: "";
-    border-radius: 50%;
-    border: 1px solid currentColor;
-    width: 17px;
-    height: 17px;
-    clip-path: none;
-    position: absolute;
-    left: 0;
-    top: 3px;
-}
+    a.das-show-hide__button:before {
+        content: "";
+        border-radius: 50%;
+        border: 1px solid currentColor;
+        width: 17px;
+        height: 17px;
+        clip-path: none;
+        position: absolute;
+        left: 0;
+        top: 3px;
+    }
 
-a.das-show-hide__button:after {
-    content: "";
-    display: block;
-    width: 5px;
-    height: 5px;
-    position: absolute;
-    top: 8px;
-    left: 6px;
-    border-left: 2px solid currentColor;
-    border-bottom: 2px solid currentColor;
-    transform: rotate(-45deg)
-}
+    a.das-show-hide__button:after {
+        content: "";
+        display: block;
+        width: 5px;
+        height: 5px;
+        position: absolute;
+        top: 8px;
+        left: 6px;
+        border-left: 2px solid currentColor;
+        border-bottom: 2px solid currentColor;
+        transform: rotate(-45deg)
+    }
 
-a.das-show-hide__button[aria-expanded="false"]:after {
-    transform: rotate(135deg);
-    top: 10px
-}
+    a.das-show-hide__button[aria-expanded="false"]:after {
+        transform: rotate(135deg);
+        top: 10px
+    }
 
 .app-user-content ul {
     font-family: "GDS Transport",arial,sans-serif;
@@ -511,3 +544,27 @@ a.das-show-hide__button[aria-expanded="false"]:after {
 .confirmation-message p {
     font-size: 18px;
 }
+.areaofinterest-section-description {
+    line-height: 26px;
+}
+
+.submit-cancel-section {
+    display: flex;
+    align-items: end;
+}
+
+.areaofinterest-cancel-link {
+    margin: 0px;
+    font-weight: 400;
+    font-size: 24px;
+    margin-top: 10px;
+}
+
+.area-of-interest-heading {
+    font-size: 36px;
+}
+
+.change-url {
+    font-weight: normal;
+}
+
