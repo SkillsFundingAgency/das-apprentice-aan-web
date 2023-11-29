@@ -9,7 +9,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.NetworkEvents;
 public class SubmitPersonalDetailCommandValidatorTests
 {
     [Test]
-    public void Validate_BiographyIsLongerThenAllowableCharacters_Invalid()
+    public void Validate_BiographyIsLongerThanAllowableCharacters_Invalid()
     {
         var model = new SubmitPersonalDetailModel
         {
@@ -22,6 +22,34 @@ public class SubmitPersonalDetailCommandValidatorTests
 
         result.ShouldHaveValidationErrorFor(c => c.Biography)
             .WithErrorMessage(SubmitPersonalDetailModelValidator.BiographyValidationMessage);
+    }
+
+    [Test]
+    public void Biography_BoundaryCheck_MaximumLength()
+    {
+        var model = new SubmitPersonalDetailModel
+        {
+            Biography = new string('x', 500)
+        };
+
+        var sut = new SubmitPersonalDetailModelValidator();
+        var result = sut.TestValidate(model);
+
+        result.ShouldNotHaveValidationErrorFor(c => c.Biography);
+    }
+
+    [Test]
+    public void Biography_BoundaryCheck_MinimumLength()
+    {
+        var model = new SubmitPersonalDetailModel
+        {
+            Biography = string.Empty
+        };
+
+        var sut = new SubmitPersonalDetailModelValidator();
+        var result = sut.TestValidate(model);
+
+        result.ShouldNotHaveValidationErrorFor(c => c.Biography);
     }
 
     [Test]
@@ -40,7 +68,7 @@ public class SubmitPersonalDetailCommandValidatorTests
     }
 
     [Test]
-    public void Validate_JobTitleIsLongerThenAllowableCharacters_Invalid()
+    public void Validate_JobTitleIsLongerThanAllowableCharacters_Invalid()
     {
         var model = new SubmitPersonalDetailModel
         {
@@ -52,6 +80,34 @@ public class SubmitPersonalDetailCommandValidatorTests
 
         result.ShouldHaveValidationErrorFor(c => c.JobTitle)
             .WithErrorMessage(SubmitPersonalDetailModelValidator.JobTitleValidationMessage);
+    }
+
+    [Test]
+    public void JobTitle_BoundaryCheck_MaximumLength()
+    {
+        var model = new SubmitPersonalDetailModel
+        {
+            JobTitle = new string('x', 200)
+        };
+
+        var sut = new SubmitPersonalDetailModelValidator();
+        var result = sut.TestValidate(model);
+
+        result.ShouldNotHaveValidationErrorFor(c => c.JobTitle);
+    }
+
+    [Test]
+    public void JobTitle_BoundaryCheck_MinimumLength()
+    {
+        var model = new SubmitPersonalDetailModel
+        {
+            JobTitle = string.Empty
+        };
+
+        var sut = new SubmitPersonalDetailModelValidator();
+        var result = sut.TestValidate(model);
+
+        result.ShouldNotHaveValidationErrorFor(c => c.JobTitle);
     }
 
     [Test]

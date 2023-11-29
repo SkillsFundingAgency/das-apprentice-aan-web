@@ -115,9 +115,15 @@ public class EditPersonalInformationControllerGetTests
     }
 
     [Test]
-    [MoqInlineAutoData("test")]
-    [MoqInlineAutoData(null)]
-    public void EditPersonalInformationViewModelMapping_ReturnsEditPersonalInformationViewModel(string? organisationName, int regionId, MemberUserType userType)
+    [MoqInlineAutoData("test", false, false)]
+    [MoqInlineAutoData(null, false, false)]
+    [MoqInlineAutoData("test", false, true)]
+    [MoqInlineAutoData(null, false, true)]
+    [MoqInlineAutoData("test", true, false)]
+    [MoqInlineAutoData(null, true, false)]
+    [MoqInlineAutoData("test", true, true)]
+    [MoqInlineAutoData(null, true, true)]
+    public void EditPersonalInformationViewModelMapping_ReturnsEditPersonalInformationViewModel(string? organisationName, bool showJobTitle, bool showBiography, int regionId, MemberUserType userType)
     {
         //Arrange
         var fixture = new Fixture();
@@ -127,11 +133,11 @@ public class EditPersonalInformationControllerGetTests
         memberProfiles.ToArray()[0].ProfileId = ProfileConstants.ProfileIds.JobTitle;
         memberPreferences.ToArray()[0].PreferenceId = PreferenceConstants.PreferenceIds.JobTitle;
         memberProfiles.ToArray()[0].PreferenceId = memberPreferences.ToArray()[0].PreferenceId;
-        memberPreferences.ToArray()[0].Value = true;
+        memberPreferences.ToArray()[0].Value = showJobTitle;
         memberProfiles.ToArray()[1].ProfileId = ProfileConstants.ProfileIds.Biography;
         memberPreferences.ToArray()[1].PreferenceId = PreferenceConstants.PreferenceIds.Biography;
         memberProfiles.ToArray()[1].PreferenceId = memberPreferences.ToArray()[1].PreferenceId;
-        memberPreferences.ToArray()[1].Value = false;
+        memberPreferences.ToArray()[1].Value = showBiography;
 
         //Act
         var sut = EditPersonalInformationController.EditPersonalInformationViewModelMapping(regionId, memberProfiles, memberPreferences, userType, organisationName);
@@ -143,8 +149,8 @@ public class EditPersonalInformationControllerGetTests
             Assert.That(sut.RegionId, Is.EqualTo(regionId));
             Assert.That(sut.UserType, Is.EqualTo(userType));
             Assert.That(sut.OrganisationName, Is.EqualTo(organisationName ?? string.Empty));
-            Assert.That(sut.ShowJobTitle, Is.EqualTo(true));
-            Assert.That(sut.ShowBiography, Is.EqualTo(false));
+            Assert.That(sut.ShowJobTitle, Is.EqualTo(showJobTitle));
+            Assert.That(sut.ShowBiography, Is.EqualTo(showBiography));
             Assert.That(sut.JobTitle, Is.EqualTo(memberProfiles.ToArray()[0].Value));
             Assert.That(sut.Biography, Is.EqualTo(memberProfiles.ToArray()[1].Value));
         });

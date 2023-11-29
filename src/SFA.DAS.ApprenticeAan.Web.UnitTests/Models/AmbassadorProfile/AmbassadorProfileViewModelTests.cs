@@ -68,6 +68,12 @@ public class AmbassadorProfileViewModelTests
     }
 
     [Test]
+    public void PersonalDetailsChangeUrlInViewModelIsSet()
+    {
+        sut.PersonalDetails.PersonalDetailsChangeUrl.Should().Be(personalDetailsChangeUrl);
+    }
+
+    [Test]
     public void ApprenticeshipDetailsViewModelIsSet()
     {
         using (new AssertionScope())
