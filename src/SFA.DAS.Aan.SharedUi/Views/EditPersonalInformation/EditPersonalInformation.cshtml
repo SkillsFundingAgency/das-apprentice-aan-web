@@ -15,6 +15,7 @@
 @{
     ViewData["Title"] = "Edit Personal Information";
 }
+<partial name="_validationSummary" />
 <div class="govuk-grid-row govuk-body">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l govuk-!-margin-top-4 govuk-!-margin-bottom-4">Your personal details</h1>
@@ -37,7 +38,7 @@
             </div>
             <hr />
             <div esfa-validation-marker-for="JobTitle">
-                <div class="govuk-form-group">
+                <div id="JobTitle" class="govuk-form-group">
                     <h3 class="govuk-label-wrapper govuk-!-margin-top-4 govuk-!-margin-bottom-4">
                         <label class="govuk-label govuk-label--m" for="job-title">
                             Job title
@@ -57,7 +58,7 @@
             <h1 class="govuk-heading-l  govuk-!-margin-top-7">Biography</h1>
             <p class="govuk-!-margin-top-2 govuk-!-margin-bottom-2">Tell members about yourself, your previous experience and why you joined the network. Uploading a biography is optional and can be edited or removed at any time.</p>
             <div class="govuk-!-margin-top-4 govuk-!-margin-bottom-2" esfa-validation-marker-for="Biography">
-                <div class="govuk-form-group govuk-!-margin-bottom-2">
+                <div id="Biography" class="govuk-form-group govuk-!-margin-bottom-2">
                     <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="500">
                         <div class="govuk-form-group">
                             <h3 class="govuk-label-wrapper">
@@ -66,7 +67,7 @@
                                 </label>
                             </h3>
                             <span asp-validation-for="Biography" class="govuk-error-message"></span>
-                            <textarea asp-for="Biography" class="govuk-textarea govuk-js-character-count" id="biography" name="biography" rows="5"></textarea>
+                            <textarea id="biography" asp-for="Biography" class="govuk-textarea govuk-js-character-count" name="biography" rows="5"></textarea>
                         </div>
                         <div id="biography-info" class="govuk-hint govuk-character-count__message">
                             You have 500 characters

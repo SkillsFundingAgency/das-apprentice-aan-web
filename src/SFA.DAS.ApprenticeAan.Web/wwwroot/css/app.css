@@ -511,3 +511,6 @@ a.das-show-hide__button[aria-expanded="false"]:after {
 .confirmation-message p {
     font-size: 18px;
 }
+.ambassador-profile-url {
+    color: #1D70B8;
+}
