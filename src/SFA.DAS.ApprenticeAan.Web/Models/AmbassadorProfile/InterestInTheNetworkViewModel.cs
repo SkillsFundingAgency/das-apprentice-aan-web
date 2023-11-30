@@ -6,7 +6,7 @@ using SFA.DAS.Aan.SharedUi.Services;
 namespace SFA.DAS.ApprenticeAan.Web.Models.AmbassadorProfile;
 public class InterestInTheNetworkViewModel
 {
-    public InterestInTheNetworkViewModel(IEnumerable<MemberProfile> memberProfiles, List<Profile> profiles)
+    public InterestInTheNetworkViewModel(IEnumerable<MemberProfile> memberProfiles, List<Profile> profiles, string areaOfInterestChangeUrl)
     {
         var interests = GetInterests(memberProfiles, profiles);
         EventsActivities = SetInterests(ProfileConstants.ProfileCategory.Events, interests);
@@ -14,12 +14,13 @@ public class InterestInTheNetworkViewModel
         var (displayValue, displayClass) = MapProfilesAndPreferencesService.SetDisplayValue(true);
         InterestInTheNetworkDisplayed = displayValue;
         InterestInTheNetworkDisplayClass = displayClass;
+        AreaOfInterestChangeUrl = areaOfInterestChangeUrl;
     }
     public IEnumerable<string> EventsActivities { get; set; }
     public IEnumerable<string> PromotionActivities { get; set; }
     public string InterestInTheNetworkDisplayed { get; set; }
     public string InterestInTheNetworkDisplayClass { get; set; }
-
+    public string AreaOfInterestChangeUrl { get; set; }
     private static Dictionary<string, IEnumerable<ProfileValue>> GetInterests(IEnumerable<MemberProfile> memberProfiles, List<Profile> profiles)
     {
         var categories = profiles.Select(x => x.Category).Distinct().ToArray();

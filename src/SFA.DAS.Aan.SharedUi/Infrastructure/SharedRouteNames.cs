@@ -15,4 +15,5 @@ public static class SharedRouteNames
     public const string MemberProfile = nameof(MemberProfile);
     public const string NotificationSentConfirmation = nameof(NotificationSentConfirmation);
     public const string EditPersonalInformation = nameof(EditPersonalInformation);
+    public const string EditAreaOfInterest = nameof(EditAreaOfInterest);
 }

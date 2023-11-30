@@ -7,7 +7,7 @@ public class AmbassadorProfileViewModel
     public AmbassadorProfileViewModel(PersonalDetailsModel personalDetails, string email, IEnumerable<MemberProfile> memberProfiles, IEnumerable<MemberPreference> memberPreferences, ApprenticeshipDetailsModel? apprenticeshipDetails, List<Profile> profiles, string memberProfileUrl)
     {
         PersonalDetails = new PersonalDetailsViewModel(personalDetails, memberProfiles, memberPreferences);
-        InterestInTheNetwork = new InterestInTheNetworkViewModel(memberProfiles, profiles);
+        InterestInTheNetwork = new InterestInTheNetworkViewModel(memberProfiles, profiles, personalDetails.AreaOfInterestChangeUrl);
         ApprenticeshipDetails = new ApprenticeshipDetailsViewModel(memberProfiles, apprenticeshipDetails, memberPreferences);
         ContactDetails = new ContactDetailsViewModel(email, memberProfiles, memberPreferences);
         ShowApprenticeshipDetails = GetShowApprenticeshipDetails(ApprenticeshipDetails.EmployerName, ApprenticeshipDetails.EmployerAddress, apprenticeshipDetails);
