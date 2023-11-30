@@ -5,6 +5,7 @@ using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
+using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models.AmbassadorProfile;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
@@ -14,7 +15,6 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 public class AmbassadorProfileController : Controller
 {
     private readonly IOuterApiClient _apiClient;
-
     public AmbassadorProfileController(IOuterApiClient apiClient)
     {
         _apiClient = apiClient;
@@ -26,10 +26,10 @@ public class AmbassadorProfileController : Controller
         var profiles = _apiClient.GetProfilesByUserType(MemberUserType.Apprentice.ToString(), cancellationToken);
         var memberProfiles = _apiClient.GetMemberProfile(User.GetAanMemberId(), User.GetAanMemberId(), false, cancellationToken);
         await Task.WhenAll(profiles, memberProfiles);
-        var personalDetails = new PersonalDetailsModel(memberProfiles.Result.FullName, memberProfiles.Result.RegionName, memberProfiles.Result.UserType);
+        var personalDetails = new PersonalDetailsModel(memberProfiles.Result.FullName, memberProfiles.Result.RegionName, memberProfiles.Result.UserType, Url.RouteUrl(SharedRouteNames.EditPersonalInformation)!);
         var apprenticeshipDetails = memberProfiles.Result.Apprenticeship != null ? new ApprenticeshipDetailsModel(memberProfiles.Result.Apprenticeship!.Sector, memberProfiles.Result.Apprenticeship!.Programme, memberProfiles.Result.Apprenticeship!.Level) : null;
-        string memberProfileUrl = Url.RouteUrl(SharedRouteNames.MemberProfile, new { id = User.GetAanMemberId() })!;
-        AmbassadorProfileViewModel model = new(personalDetails, memberProfiles.Result.Email, memberProfiles.Result.Profiles, memberProfiles.Result.Preferences, apprenticeshipDetails, profiles.Result.Profiles, memberProfileUrl);
+        AmbassadorProfileViewModel model = new(personalDetails, memberProfiles.Result.Email, memberProfiles.Result.Profiles, memberProfiles.Result.Preferences, apprenticeshipDetails, profiles.Result.Profiles, Url.RouteUrl(SharedRouteNames.MemberProfile)!);
+        ViewBag.YourAmbassadorProfileSuccessMessage = TempData[TempDataKeys.YourAmbassadorProfileSuccessMessage];
         return View(model);
     }
 }

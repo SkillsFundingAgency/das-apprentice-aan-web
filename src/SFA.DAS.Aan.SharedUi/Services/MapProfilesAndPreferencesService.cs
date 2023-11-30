@@ -14,6 +14,8 @@ public static class MapProfilesAndPreferencesService
 
     public static string? GetProfileValue(int profileId, IEnumerable<MemberProfile> memberProfiles) => memberProfiles.FirstOrDefault(p => p.ProfileId == profileId)?.Value;
 
+    public static bool GetPreferenceValue(int preferenceId, IEnumerable<MemberPreference> memberPreferences) => memberPreferences.FirstOrDefault(p => p.PreferenceId == preferenceId)?.Value ?? false;
+
     public static string? GetProfileDescription(MemberProfile memberProfile, IEnumerable<Profile> profiles) => profiles.FirstOrDefault(p => p.Id == memberProfile.ProfileId && memberProfile.Value.ToLower() == "true")?.Description;
 
     public static (string displayValue, string displayClass) SetDisplayValue(bool preference)

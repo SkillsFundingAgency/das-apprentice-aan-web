@@ -15,6 +15,7 @@ public class AmbassadorProfileViewModelTests
     private string regionName;
     private string email;
     private string memberProfileUrl = Guid.NewGuid().ToString();
+    private string personalDetailsChangeUrl = Guid.NewGuid().ToString();
     private IEnumerable<MemberProfile> memberProfiles;
     private IEnumerable<MemberPreference> memberPreferences;
     private ApprenticeshipDetailsModel? apprenticeshipDetails;
@@ -47,7 +48,7 @@ public class AmbassadorProfileViewModelTests
             new Profile { Id = 10, Description = "Carrying out and writing up case studies", Category = "Promotions", Ordering = 1 },
             new Profile { Id = 11, Description = "Designing and creating marketing materials to champion the network", Category = "Promotions", Ordering = 2 }
         };
-        var personalDetails = new PersonalDetailsModel(fullName, regionName, userType);
+        var personalDetails = new PersonalDetailsModel(fullName, regionName, userType, personalDetailsChangeUrl);
         sut = new AmbassadorProfileViewModel(personalDetails, email, memberProfiles, memberPreferences, apprenticeshipDetails, profiles, memberProfileUrl);
     }
 
@@ -62,7 +63,14 @@ public class AmbassadorProfileViewModelTests
             sut.PersonalDetails.Should().NotBeNull();
             sut.ShowApprenticeshipDetails.GetType().Should().Be(typeof(bool));
             sut.MemberProfileUrl.Should().NotBeNull();
+            sut.PersonalDetails.PersonalDetailsChangeUrl.Should().NotBeNull();
         }
+    }
+
+    [Test]
+    public void PersonalDetailsChangeUrlInViewModelIsSet()
+    {
+        sut.PersonalDetails.PersonalDetailsChangeUrl.Should().Be(personalDetailsChangeUrl);
     }
 
     [Test]

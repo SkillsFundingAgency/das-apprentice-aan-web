@@ -167,4 +167,28 @@ public class MapProfilesAndPreferencesServiceTests
             sut.Should().BeNull();
         }
     }
+
+    [Test, MoqAutoData]
+    public void WhenGettingPreferenceValue_AndPreferenceIsValid_ThenItIsReturned(IEnumerable<MemberPreference> memberPreferences)
+    {
+        var preferenceId = memberPreferences.First().PreferenceId;
+
+        var result = MapProfilesAndPreferencesService.GetPreferenceValue(preferenceId, memberPreferences);
+
+        using (new AssertionScope())
+        {
+            result!.GetType().Should().Be<bool>();
+            result!.Should().Be(memberPreferences.First().Value);
+        }
+    }
+
+    [Test, MoqAutoData]
+    public void WhenGettingPreferenceValue_AndPreferenceIsValid_ThenFalseIsReturned(IEnumerable<MemberPreference> memberPreferences)
+    {
+        var preferenceId = 102030405;
+
+        var result = MapProfilesAndPreferencesService.GetPreferenceValue(preferenceId, memberPreferences);
+
+        result.Should().BeFalse();
+    }
 }

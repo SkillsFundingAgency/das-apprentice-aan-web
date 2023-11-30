@@ -25,6 +25,7 @@ public class PersonalDetailsViewModel
         BiographyDisplayValue = biographyDisplayValue;
         BiographyDisplayClass = biographyDisplayClass;
         UserType = personalDetails.UserType;
+        PersonalDetailsChangeUrl = personalDetails.PersonalDetailChangeUrl;
     }
 
     public string FullName { get; set; }
@@ -40,4 +41,5 @@ public class PersonalDetailsViewModel
     public string BiographyDisplayValue { get; set; }
     public string BiographyDisplayClass { get; set; }
     public MemberUserType UserType { get; set; }
+    public string PersonalDetailsChangeUrl { get; set; }
 }

@@ -1,0 +1,93 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.Aan.SharedUi.Constants;
+@using SFA.DAS.Aan.SharedUi.Extensions;
+@using SFA.DAS.Aan.SharedUi.Infrastructure;
+@using SFA.DAS.Aan.SharedUi.Models;
+@using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
+@using SFA.DAS.Aan.SharedUi.TagHelpers;
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, SFA.DAS.Aan.SharedUi
+
+
+@model EditPersonalInformationViewModel;
+
+@{
+    ViewData["Title"] = "Edit Personal Information";
+}
+<partial name="_validationSummary" />
+<div class="govuk-grid-row govuk-body">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l govuk-!-margin-top-4 govuk-!-margin-bottom-4">Your personal details</h1>
+        <p class="personal-section-description">
+            Here is the current personal information the network holds for you. You can change this information and choose what information you display on your ambassador profile.
+        </p>
+        <form method="post" asp-route="@SharedRouteNames.EditPersonalInformation" enctype="multipart/form-data" novalidate>
+            <input type="hidden" asp-for="@Model.OrganisationName" name="OrganisationName" />
+            <div>
+                <div class="govuk-form-group">
+                    <h3 class="govuk-label-wrapper">
+                        <label class="govuk-label govuk-label--m govuk-!-margin-bottom-4" for="region" asp-for="RegionId">
+                            Region where you work
+                        </label>
+                    </h3>
+                    <select asp-for="@Model.RegionId" asp-items="@(new SelectList(Model.Regions, nameof(RegionViewModel.Id), nameof(RegionViewModel.Area)))" class="govuk-select" name="RegionId">
+                    </select>
+                </div>
+                <p class="govuk-!-margin-top-4 govuk-!-margin-bottom-3 personal-section-description">This information is displayed by default and will appear in the network directory.</p>
+            </div>
+            <hr />
+            <div esfa-validation-marker-for="JobTitle">
+                <div id="JobTitle" class="govuk-form-group">
+                    <h3 class="govuk-label-wrapper govuk-!-margin-top-4 govuk-!-margin-bottom-4">
+                        <label class="govuk-label govuk-label--m" for="job-title">
+                            Job title
+                        </label>
+                    </h3>
+                    <span asp-validation-for="JobTitle" class="govuk-error-message"></span>
+                    <input asp-for="JobTitle" maxlength="200" class="govuk-input" id="job-title" name="jobTitle" type="text">
+                </div>
+                <div class="govuk-checkboxes__item govuk-!-margin-top-6 govuk-!-margin-bottom-6">
+                    <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.ShowJobTitle>
+                    <label class="govuk-label govuk-checkboxes__label profile-govuk-checkboxes" for="ShowJobTitle">
+                        Display information on my profile
+                    </label>
+                </div>
+            </div>
+            <hr />
+            <h1 class="govuk-heading-l  govuk-!-margin-top-7">Biography</h1>
+            <p class="govuk-!-margin-top-2 govuk-!-margin-bottom-2">Tell members about yourself, your previous experience and why you joined the network. Uploading a biography is optional and can be edited or removed at any time.</p>
+            <div class="govuk-!-margin-top-4 govuk-!-margin-bottom-2" esfa-validation-marker-for="Biography">
+                <div id="Biography" class="govuk-form-group govuk-!-margin-bottom-2">
+                    <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="500">
+                        <div class="govuk-form-group">
+                            <h3 class="govuk-label-wrapper">
+                                <label class="govuk-label govuk-label--m govuk-!-margin-bottom-3" for="biography">
+                                    Add a biography
+                                </label>
+                            </h3>
+                            <span asp-validation-for="Biography" class="govuk-error-message"></span>
+                            <textarea id="biography" asp-for="Biography" class="govuk-textarea govuk-js-character-count" name="biography" rows="5"></textarea>
+                        </div>
+                        <div id="biography-info" class="govuk-hint govuk-character-count__message">
+                            You have 500 characters
+                        </div>
+                    </div>
+                </div>
+                <div class="govuk-checkboxes__item govuk-!-margin-top-6 govuk-!-margin-bottom-7">
+                    <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.ShowBiography>
+                    <label class="govuk-label govuk-checkboxes__label profile-govuk-checkboxes" for="ShowBiography">
+                        Display information on my profile
+                    </label>
+                </div>
+            </div>
+            <hr />
+            <div class="govuk-!-margin-top-6 submit-cancel-section">
+                <button id="saveChanges" type="submit" data-disable-on-submit="true" class="govuk-button govuk-!-margin-bottom-0 govuk-!-margin-right-3">Save Changes</button>
+                <h6 class="personal-information-cancel-link">
+                    <a href="@Model.YourAmbassadorProfileUrl" class="govuk-link govuk-link--no-visited-state personal-detail-cancel-link">Cancel</a>
+                </h6>
+            </div>
+        </form>
+    </div>
+</div>
