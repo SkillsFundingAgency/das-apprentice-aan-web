@@ -21,8 +21,7 @@ public class EditAreaOfInterestControllerGetTests
 {
     static readonly string YourAmbassadorProfileUrl = Guid.NewGuid().ToString();
 
-    [Test]
-    [MoqAutoData]
+    [Test, MoqAutoData]
     public void Get_ReturnsEditAreaOfInterestViewModel(
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         [Greedy] EditAreaOfInterestController sut,
@@ -48,8 +47,7 @@ public class EditAreaOfInterestControllerGetTests
         Assert.That(result.Model, Is.TypeOf<EditAreaOfInterestViewModel>());
     }
 
-    [Test]
-    [MoqAutoData]
+    [Test, MoqAutoData]
     public void Index_InvokesOuterApiClientGetMemberProfile(
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         [Greedy] EditAreaOfInterestController sut,
@@ -70,8 +68,7 @@ public class EditAreaOfInterestControllerGetTests
         outerApiMock.Verify(o => o.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once());
     }
 
-    [Test]
-    [MoqAutoData]
+    [Test, MoqAutoData]
     public void Index_InvokesOuterApiClientGetProfilesByUserType(
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         [Greedy] EditAreaOfInterestController sut,
@@ -92,8 +89,7 @@ public class EditAreaOfInterestControllerGetTests
         outerApiMock.Verify(o => o.GetProfilesByUserType(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once());
     }
 
-    [Test]
-    [MoqAutoData]
+    [Test, MoqAutoData]
     public void Index_ReturnsEditAreaOfInterestView(
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         GetMemberProfileResponse getMemberProfileResponse,

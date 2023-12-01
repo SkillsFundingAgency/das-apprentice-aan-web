@@ -54,4 +54,13 @@ public class InterestInTheNetworkViewModelTests
             sut.AreaOfInterestChangeUrl.Should().Be(areaOfInterestChangeUrl);
         }
     }
+
+    [Test]
+    public void AreaOfInterestChangeUrlPropertyAreSet()
+    {
+        using (new AssertionScope())
+        {
+            sut.AreaOfInterestChangeUrl.Should().BeEquivalentTo(areaOfInterestChangeUrl);
+        }
+    }
 }

@@ -22,8 +22,7 @@ public class EditAreaOfInterestControllerPostTests
 {
     static readonly string YourAmbassadorProfileUrl = Guid.NewGuid().ToString();
 
-    [Test]
-    [MoqInlineAutoData]
+    [Test, MoqInlineAutoData]
     public async Task Post_InvalidCommand_ReturnsEditAreaOfInterestView(
         SubmitAreaOfInterestModel command,
         [Frozen] Mock<IOuterApiClient> outerApiMock,
@@ -51,8 +50,7 @@ public class EditAreaOfInterestControllerPostTests
         Assert.That(response, Is.InstanceOf<ViewResult>());
     }
 
-    [Test]
-    [RecursiveMoqAutoData]
+    [Test, RecursiveMoqAutoData]
     public async Task Post_ValidCommand_ReturnsMemberProfileView(
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         List<SelectProfileViewModel> selectProfileViewModels,
