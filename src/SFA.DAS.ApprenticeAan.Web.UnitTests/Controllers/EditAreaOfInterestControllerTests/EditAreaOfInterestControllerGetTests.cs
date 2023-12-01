@@ -149,7 +149,7 @@ public class EditAreaOfInterestControllerGetTests
         Assert.Multiple(() =>
         {
             Assert.That(sut, Is.InstanceOf(selectProfileViewModels.GetType()));
-            Assert.That(sut.Count, Is.GreaterThan(0));
+            Assert.That(sut, Has.Count.EqualTo(1));
             Assert.That(sut[0].Id, Is.EqualTo(profiles.ToArray()[0].Id));
             Assert.That(sut[0].Description, Is.EqualTo(profiles.ToArray()[0].Description));
             Assert.That(sut[0].Category, Is.EqualTo(profiles.ToArray()[0].Category));
