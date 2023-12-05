@@ -12,6 +12,7 @@ public class PersonalDetailsViewModelTests
     private string regionName;
     private string personalDetailsChangeUrl = Guid.NewGuid().ToString();
     private string areaOfInterestChangeUrl = Guid.NewGuid().ToString();
+    private string contactDetailsChangeUrl = Guid.NewGuid().ToString();
     private IEnumerable<MemberProfile> memberProfiles;
     private IEnumerable<MemberPreference> memberPreferences;
     private MemberUserType userType;
@@ -33,7 +34,7 @@ public class PersonalDetailsViewModelTests
         memberProfiles.ToArray()[1].PreferenceId = memberPreferences.ToArray()[1].PreferenceId;
         memberPreferences.ToArray()[1].Value = false;
         userType = MemberUserType.Apprentice;
-        var personalDetails = new PersonalDetailsModel(fullName, regionName, userType, personalDetailsChangeUrl, areaOfInterestChangeUrl);
+        var personalDetails = new PersonalDetailsModel(fullName, regionName, userType, personalDetailsChangeUrl, areaOfInterestChangeUrl,contactDetailsChangeUrl);
         sut = new PersonalDetailsViewModel(personalDetails, memberProfiles, memberPreferences);
     }
 

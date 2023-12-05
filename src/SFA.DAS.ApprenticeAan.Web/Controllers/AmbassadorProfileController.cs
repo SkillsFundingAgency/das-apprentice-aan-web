@@ -26,9 +26,9 @@ public class AmbassadorProfileController : Controller
         var profiles = _apiClient.GetProfilesByUserType(MemberUserType.Apprentice.ToString(), cancellationToken);
         var memberProfiles = _apiClient.GetMemberProfile(User.GetAanMemberId(), User.GetAanMemberId(), false, cancellationToken);
         await Task.WhenAll(profiles, memberProfiles);
-        var personalDetails = new PersonalDetailsModel(memberProfiles.Result.FullName, memberProfiles.Result.RegionName, memberProfiles.Result.UserType, Url.RouteUrl(SharedRouteNames.EditPersonalInformation)!, Url.RouteUrl(SharedRouteNames.EditAreaOfInterest)!);
+        var personalDetails = new PersonalDetailsModel(memberProfiles.Result.FullName, memberProfiles.Result.RegionName, memberProfiles.Result.UserType, Url.RouteUrl(SharedRouteNames.EditPersonalInformation)!, Url.RouteUrl(SharedRouteNames.EditAreaOfInterest)!, Url.RouteUrl(SharedRouteNames.EditContactDetail)!);
         var apprenticeshipDetails = memberProfiles.Result.Apprenticeship != null ? new ApprenticeshipDetailsModel(memberProfiles.Result.Apprenticeship!.Sector, memberProfiles.Result.Apprenticeship!.Programme, memberProfiles.Result.Apprenticeship!.Level) : null;
-        AmbassadorProfileViewModel model = new(personalDetails, memberProfiles.Result.Email, memberProfiles.Result.Profiles, memberProfiles.Result.Preferences, apprenticeshipDetails, profiles.Result.Profiles, Url.RouteUrl(SharedRouteNames.MemberProfile)!);
+        AmbassadorProfileViewModel model = new(personalDetails, memberProfiles.Result.Email, memberProfiles.Result.Profiles, memberProfiles.Result.Preferences, apprenticeshipDetails, profiles.Result.Profiles, Url.RouteUrl(SharedRouteNames.MemberProfile, new { id = User.GetAanMemberId() })!);
         ViewBag.YourAmbassadorProfileSuccessMessage = TempData[TempDataKeys.YourAmbassadorProfileSuccessMessage];
         return View(model);
     }

@@ -1,4 +1,5 @@
-﻿using SFA.DAS.Aan.SharedUi.Infrastructure;
+﻿using SFA.DAS.Aan.SharedUi.Constants;
+using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 using SFA.DAS.Aan.SharedUi.Services;
 
@@ -48,7 +49,7 @@ public class MemberProfileViewModel : INetworkHubLink
         UserRole = (memberProfileDetail.IsRegionalChair) ? MemberUserType.RegionalChair : memberProfileDetail.UserType;
         JobTitle = MapProfilesAndPreferencesService.GetProfileValue(memberProfileMappingModel.JobTitleProfileId, memberProfileDetail.Profiles);
         Biography = MapProfilesAndPreferencesService.GetProfileValue(memberProfileMappingModel.BiographyProfileId, memberProfileDetail.Profiles);
-        LinkedinUrl = MapProfilesAndPreferencesService.GetProfileValue(memberProfileMappingModel.LinkedinProfileId, memberProfileDetail.Profiles);
+        LinkedinUrl = (memberProfileDetail.Profiles.Any(x => x.ProfileId == memberProfileMappingModel.LinkedinProfileId && !string.IsNullOrEmpty(x.Value))) ? string.Concat(UrlConstant.LinkedinUrl, MapProfilesAndPreferencesService.GetProfileValue(memberProfileMappingModel.LinkedinProfileId, memberProfileDetail.Profiles)) : string.Empty;
         FirstSectionProfiles = memberProfileDetail.Profiles.Where(x => memberProfileMappingModel.FirstSectionProfileIds.Contains(x.ProfileId)).Select(x => MapProfilesAndPreferencesService.GetProfileDescription(x, memberProfiles)).Where(x => !string.IsNullOrWhiteSpace(x)).ToList()!;
         SecondSectionProfiles = memberProfileDetail.Profiles.Where(x => memberProfileMappingModel.SecondSectionProfileIds.Contains(x.ProfileId)).Select(x => MapProfilesAndPreferencesService.GetProfileDescription(x, memberProfiles)).Where(x => !string.IsNullOrWhiteSpace(x)).ToList()!;
         Address = string.Join(",", memberProfileDetail.Profiles.Where(x => memberProfileMappingModel.AddressProfileIds.Contains(x.ProfileId) && !string.IsNullOrWhiteSpace(x.Value)).Select(x => x.Value).ToList());

@@ -9,7 +9,7 @@ public class AmbassadorProfileViewModel
         PersonalDetails = new PersonalDetailsViewModel(personalDetails, memberProfiles, memberPreferences);
         InterestInTheNetwork = new InterestInTheNetworkViewModel(memberProfiles, profiles, personalDetails.AreaOfInterestChangeUrl);
         ApprenticeshipDetails = new ApprenticeshipDetailsViewModel(memberProfiles, apprenticeshipDetails, memberPreferences);
-        ContactDetails = new ContactDetailsViewModel(email, memberProfiles, memberPreferences);
+        ContactDetails = new ContactDetailsViewModel(email, memberProfiles, memberPreferences, personalDetails.ContactDetailChangeUrl);
         ShowApprenticeshipDetails = GetShowApprenticeshipDetails(ApprenticeshipDetails.EmployerName, ApprenticeshipDetails.EmployerAddress, apprenticeshipDetails);
         MemberProfileUrl = memberProfileUrl;
     }

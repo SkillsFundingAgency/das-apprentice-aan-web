@@ -1,7 +1,10 @@
-﻿using SFA.DAS.Aan.SharedUi.Infrastructure;
+﻿using SFA.DAS.Aan.SharedUi.Constants;
+using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 using SFA.DAS.Testing.AutoFixture;
+using static SFA.DAS.Aan.SharedUi.Constants.PreferenceConstants;
+using static SFA.DAS.Aan.SharedUi.Constants.ProfileConstants;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models;
 
@@ -29,8 +32,7 @@ public class MemberProfileViewModelTest
         };
     }
 
-    [Test]
-    [MoqAutoData]
+    [Test, MoqAutoData]
     public void MemberProfileViewModel_RegionalChairFalse(MemberProfileDetail memberProfile)
     {
         //Arrange
@@ -46,8 +48,7 @@ public class MemberProfileViewModelTest
         });
     }
 
-    [Test]
-    [MoqAutoData]
+    [Test, MoqAutoData]
     public void MemberProfileViewModel_RegionalChairTrue(MemberProfileDetail memberProfile)
     {
         //Arrange
@@ -63,8 +64,7 @@ public class MemberProfileViewModelTest
         });
     }
 
-    [Test]
-    [MoqAutoData]
+    [Test, MoqAutoData]
     public void MemberProfileViewModel_RegionIdNotNull(MemberProfileDetail memberProfile)
     {
         //Arrange
@@ -81,8 +81,7 @@ public class MemberProfileViewModelTest
         });
     }
 
-    [Test]
-    [MoqAutoData]
+    [Test, MoqAutoData]
     public void MemberProfileViewModel_SetAddressValue_ReturnsExpectedValue(MemberProfileDetail memberProfile)
     {
         //Arrange
@@ -267,6 +266,49 @@ public class MemberProfileViewModelTest
             Assert.That(sut.ReasonToGetInTouch, Is.EqualTo(0));
             Assert.That(sut.HasAgreedToCodeOfConduct, Is.EqualTo(false));
             Assert.That(sut.HasAgreedToSharePersonalDetails, Is.EqualTo(false));
+        });
+    }
+
+
+    [Test, MoqAutoData]
+    public void MemberProfileViewModel_SetLinkedinUrl_ReturnsExpectedValue(MemberProfileDetail memberProfile, string linkedinUrl)
+    {
+        // Arrange
+        memberProfile.Profiles = new List<MemberProfile>()
+        {
+            new MemberProfile(){ProfileId=ProfileIds.LinkedIn,Value=linkedinUrl,PreferenceId=PreferenceIds.LinkedIn}
+        };
+        memberProfileMappingModel.LinkedinProfileId = ProfileIds.LinkedIn;
+
+        // Act
+        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, profiles, memberProfileMappingModel);
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut.LinkedinUrl, Is.Not.Null);
+            Assert.That(sut.LinkedinUrl, Is.EqualTo(UrlConstant.LinkedinUrl + linkedinUrl));
+        });
+    }
+
+    [Test, MoqAutoData]
+    public void MemberProfileViewModel_SetLinkedinUrlEmpty_ReturnsEmptyString(MemberProfileDetail memberProfile)
+    {
+        // Arrange
+        memberProfile.Profiles = new List<MemberProfile>()
+        {
+            new MemberProfile(){ProfileId=ProfileIds.LinkedIn,Value=string.Empty,PreferenceId=PreferenceIds.LinkedIn}
+        };
+        memberProfileMappingModel.LinkedinProfileId = ProfileIds.LinkedIn;
+
+        // Act
+        MemberProfileViewModel sut = new MemberProfileViewModel(memberProfile, profiles, memberProfileMappingModel);
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(sut.LinkedinUrl, Is.Not.Null);
+            Assert.That(sut.LinkedinUrl, Is.EqualTo(string.Empty));
         });
     }
 }
