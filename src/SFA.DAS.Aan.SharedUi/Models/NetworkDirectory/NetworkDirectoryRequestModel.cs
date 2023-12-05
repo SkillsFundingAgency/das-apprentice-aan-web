@@ -22,4 +22,20 @@ public class NetworkDirectoryRequestModel
 
     [FromQuery]
     public int? PageSize { get; set; }
+
+    public Dictionary<string, string[]> ToQueryStringParameters()
+    {
+        var parameters = new Dictionary<string, string[]>();
+        if (!string.IsNullOrWhiteSpace(Keyword)) parameters.Add("keyword", new[] { Keyword.Trim() });
+        parameters.Add("regionId", RegionId.Select(region => region.ToString()).ToArray());
+        if (UserRole.Any())
+        {
+            parameters.Add("isRegionalChair", new[] { UserRole.Exists(userRole => userRole == Role.RegionalChair).ToString() }!);
+            parameters.Add("userType", UserRole.Where(userRole => userRole != Role.RegionalChair).Select(userRole => userRole.ToString()).ToArray());
+        }
+        if (Page != null) parameters.Add("page", new[] { Page.ToString() }!);
+        if (PageSize != null) parameters.Add("pageSize", new[] { PageSize.ToString() }!);
+
+        return parameters;
+    }
 }

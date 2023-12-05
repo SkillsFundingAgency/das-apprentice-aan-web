@@ -10,7 +10,6 @@ using SFA.DAS.Aan.SharedUi.Services;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkDirectory;
-using SFA.DAS.ApprenticeAan.Web.Services;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
@@ -28,7 +27,7 @@ public class NetworkDirectoryController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(NetworkDirectoryRequestModel request, CancellationToken cancellationToken)
     {
-        var networkDirectoryTask = _outerApiClient.GetMembers(QueryStringParameterBuilder.BuildQueryStringParameters(request), cancellationToken);
+        var networkDirectoryTask = _outerApiClient.GetMembers(request.ToQueryStringParameters(), cancellationToken);
         var regionTask = _outerApiClient.GetRegions();
 
         List<Task> tasks = new() { networkDirectoryTask, regionTask };
