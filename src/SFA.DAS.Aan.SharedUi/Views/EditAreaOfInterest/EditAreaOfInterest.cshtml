@@ -1,0 +1,82 @@
+@using SFA.DAS.Aan.SharedUi.Models.EditAreaOfInterest;
+@using SFA.DAS.Aan.SharedUi.Infrastructure;
+@using SFA.DAS.Aan.SharedUi.TagHelpers;
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, SFA.DAS.Aan.SharedUi
+
+@model EditAreaOfInterestViewModel
+@{
+    ViewData["Title"] = "Edit Area Of Interest";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_validationSummary" />
+        <form method="post" asp-route="@SharedRouteNames.EditAreaOfInterest" novalidate>
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div esfa-validation-marker-for="@Model.AreasOfInterest" class="govuk-form-group">
+                        <div class="govuk-form-group">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                <h1 class="govuk-fieldset__heading govuk-!-margin-bottom-0">
+                                    Your areas of interest as an ambassador
+                                </h1>
+                            </legend>
+                            <p />
+                            <div id="area-of-interest-hint" class="govuk-hint areaofinterest-section-description govuk-!-margin-bottom-4">
+                                Here are the areas you are most interested in as an ambassador. This information will appear on your ambassador profile and help network chairs identify the most suitable opportunities for you.
+                            </div>
+                            <span asp-validation-for="@Model.AreasOfInterest" class="govuk-error-message"></span>
+                            <div id="AreasOfInterest" class="govuk-checkboxes" data-module="govuk-checkboxes">
+                                <h2 class="govuk-heading-m govuk-!-margin-bottom-6">
+                                    Events
+                                </h2>
+                                @{
+                                    for (int i = 0; i < Model.Events.Count; i++)
+                                    {
+                                        <div class="govuk-checkboxes__item">
+                                            <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.Events[i].IsSelected>
+                                            <label class="govuk-label govuk-checkboxes__label" for="Events[@i].IsSelected">
+                                                @Model.Events[i].Description
+                                            </label>
+                                            <input type="hidden" asp-for="@Model.Events[i].Id" />
+                                            <input type="hidden" asp-for="@Model.Events[i].Ordering" />
+                                        </div>
+                                    }
+                                }
+                            </div>
+                            <p class="govuk-!-margin-bottom-7" />
+                            <div id="promotions-option" class="govuk-checkboxes" data-module="govuk-checkboxes">
+                                <h2 class="govuk-heading-m govuk-!-margin-bottom-6">
+                                    Promoting the network
+                                </h2>
+                                @{
+                                    for (int i = 0; i < Model.Promotions.Count; i++)
+                                    {
+                                        <div class="govuk-checkboxes__item">
+                                            <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.Promotions[i].IsSelected>
+                                            <label class="govuk-label govuk-checkboxes__label" for="Promotions[@i].IsSelected">
+                                                @Model.Promotions[i].Description
+                                            </label>
+                                            <input type="hidden" asp-for="@Model.Promotions[i].Id" />
+                                            <input type="hidden" asp-for="@Model.Promotions[i].Ordering" />
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <p />
+                    </div>
+                </fieldset>
+            </div>
+            <hr />
+            <div class="govuk-!-margin-top-6 submit-cancel-section">
+                <button id="saveChanges" type="submit" data-disable-on-submit="true" class="govuk-button govuk-!-margin-bottom-0 govuk-!-margin-right-6">Save Changes</button>
+                <h6 class="areaofinterest-cancel-link">
+                    <a href="@Model.YourAmbassadorProfileUrl" class="govuk-link govuk-link--no-visited-state personal-detail-cancel-link">Cancel</a>
+                </h6>
+            </div>
+        </form>
+    </div>
+</div>
