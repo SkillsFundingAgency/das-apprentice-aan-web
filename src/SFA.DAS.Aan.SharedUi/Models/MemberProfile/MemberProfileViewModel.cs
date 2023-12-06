@@ -72,7 +72,7 @@ public class MemberProfileViewModel : INetworkHubLink
         IsApprenticeshipInformationAvailable = ((UserType == MemberUserType.Apprentice) ? (!string.IsNullOrEmpty(Sector) || !string.IsNullOrEmpty(Programmes) || !string.IsNullOrEmpty(Level)) : (Sectors.Count > 0 || ActiveApprenticesCount > 0));
     }
 
-    private string GetLinkedInUrl(MemberProfileMappingModel memberProfileMappingModel, MemberProfileDetail memberProfileDetail)
+    private static string GetLinkedInUrl(MemberProfileMappingModel memberProfileMappingModel, MemberProfileDetail memberProfileDetail)
     {
         if (memberProfileDetail.Profiles.Any(x => x.ProfileId == memberProfileMappingModel.LinkedinProfileId && !string.IsNullOrEmpty(x.Value)))
         {
