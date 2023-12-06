@@ -54,7 +54,7 @@ public class EditContactDetailController : Controller
         updateMemberProfileAndPreferencesRequest.updateMemberProfileRequest.MemberPreferences = updatePreferenceModels;
 
         List<UpdateProfileModel> updateProfileModels = new List<UpdateProfileModel>();
-        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.LinkedIn, Value = submitContactDetailModel.LinkedinUrl });
+        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.LinkedIn, Value = StringFormatter.TrimValue(submitContactDetailModel.LinkedinUrl) });
 
         updateMemberProfileAndPreferencesRequest.updateMemberProfileRequest.MemberProfiles = updateProfileModels;
 
