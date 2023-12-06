@@ -23,7 +23,7 @@ public class EditContactDetailControllerGetTests
     static Guid memberId = Guid.NewGuid();
 
     [Test, RecursiveMoqAutoData]
-    public static async Task Index_ShouldReturnEditContactDetailView(
+    public static void Index_ShouldReturnEditContactDetailView(
         [Greedy] EditContactDetailController sut,
         CancellationToken cancellationToken
     )
@@ -36,7 +36,7 @@ public class EditContactDetailControllerGetTests
 .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
 
         // Act
-        var result = await sut.Index(cancellationToken);
+        var result = sut.Index(cancellationToken);
 
         // Assert
         Assert.Multiple(() =>
@@ -69,7 +69,7 @@ public class EditContactDetailControllerGetTests
     }
 
     [Test, RecursiveMoqAutoData]
-    public static async Task Index_ShouldReturnEditContactDetailViewModel(
+    public static void Index_ShouldReturnEditContactDetailViewModel(
         [Greedy] EditContactDetailController sut,
         CancellationToken cancellationToken
     )
@@ -82,7 +82,7 @@ public class EditContactDetailControllerGetTests
 .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
 
         // Act
-        var result = await sut.Index(cancellationToken);
+        var result = sut.Index(cancellationToken);
         var viewResult = result as ViewResult;
 
         // Assert
@@ -90,7 +90,7 @@ public class EditContactDetailControllerGetTests
     }
 
     [Test, RecursiveMoqAutoData]
-    public static async Task Index_PassValidEmailAndLinkedinUrl_ShouldReturnExpectedEmailAndLinkedinUrl(
+    public static void Index_PassValidEmailAndLinkedinUrl_ShouldReturnExpectedEmailAndLinkedinUrl(
         [Frozen] Mock<IOuterApiClient> outerApiClient,
         [Greedy] EditContactDetailController sut,
         GetMemberProfileResponse getMemberProfileResponse,
@@ -114,7 +114,7 @@ public class EditContactDetailControllerGetTests
         outerApiClient.Setup(a => a.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(getMemberProfileResponse));
 
         // Act
-        var result = await sut.Index(cancellationToken);
+        var result = sut.Index(cancellationToken);
         var viewResult = result as ViewResult;
         var viewModel = viewResult!.Model as EditContactDetailViewModel;
 
@@ -129,7 +129,7 @@ public class EditContactDetailControllerGetTests
     [Test]
     [MoqInlineAutoData(true)]
     [MoqInlineAutoData(false)]
-    public static async Task Index_PassValidLinkedinUrlPreference_ShouldReturnExpectedPreferenceValue(
+    public static void Index_PassValidLinkedinUrlPreference_ShouldReturnExpectedPreferenceValue(
         bool showLinkedinUrl,
         [Frozen] Mock<IOuterApiClient> outerApiClient,
         [Greedy] EditContactDetailController sut,
@@ -151,7 +151,7 @@ public class EditContactDetailControllerGetTests
         outerApiClient.Setup(a => a.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(getMemberProfileResponse));
 
         // Act
-        var result = await sut.Index(cancellationToken);
+        var result = sut.Index(cancellationToken);
         var viewResult = result as ViewResult;
         var viewModel = viewResult!.Model as EditContactDetailViewModel;
 
@@ -160,7 +160,7 @@ public class EditContactDetailControllerGetTests
     }
 
     [Test, MoqAutoData]
-    public static async Task Index_EditContactDetailViewModel_ShouldHaveExpectedValueForYourAmbassadorProfileUrl(
+    public static void Index_EditContactDetailViewModel_ShouldHaveExpectedValueForYourAmbassadorProfileUrl(
             [Greedy] EditContactDetailController sut,
             CancellationToken cancellationToken
         )
@@ -173,7 +173,7 @@ public class EditContactDetailControllerGetTests
     .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
 
         // Act
-        var result = await sut.Index(cancellationToken);
+        var result = sut.Index(cancellationToken);
         var viewResult = result as ViewResult;
         var viewModel = viewResult!.Model as EditContactDetailViewModel;
 

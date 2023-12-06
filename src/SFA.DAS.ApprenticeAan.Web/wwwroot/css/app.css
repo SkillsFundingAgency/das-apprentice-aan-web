@@ -547,12 +547,6 @@ a.das-show-hide__button {
 .areaofinterest-section-description {
     line-height: 26px;
 }
-
-.submit-cancel-section {
-    display: flex;
-    align-items: end;
-}
-
 .areaofinterest-cancel-link {
     margin: 0px;
     font-weight: 400;

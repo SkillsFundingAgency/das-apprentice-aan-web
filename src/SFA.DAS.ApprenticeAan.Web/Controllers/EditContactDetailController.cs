@@ -19,7 +19,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 [Route("edit-contact-detail", Name = SharedRouteNames.EditContactDetail)]
 public class EditContactDetailController : Controller
 {
-    private readonly IOuterApiClient _apiClient = null!;
+    private readonly IOuterApiClient _apiClient;
     private readonly IValidator<SubmitContactDetailModel> _validator;
     public const string ChangeContactDetailViewPath = "~/Views/EditContactDetail/EditContactDetail.cshtml";
 
@@ -30,7 +30,7 @@ public class EditContactDetailController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index(CancellationToken cancellationToken)
+    public IActionResult Index(CancellationToken cancellationToken)
     {
         return View(ChangeContactDetailViewPath, GetContactDetailViewModel(cancellationToken).Result);
     }
