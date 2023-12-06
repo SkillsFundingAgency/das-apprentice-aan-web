@@ -49,7 +49,7 @@ public class MemberProfileViewModel : INetworkHubLink
         UserRole = (memberProfileDetail.IsRegionalChair) ? MemberUserType.RegionalChair : memberProfileDetail.UserType;
         JobTitle = MapProfilesAndPreferencesService.GetProfileValue(memberProfileMappingModel.JobTitleProfileId, memberProfileDetail.Profiles);
         Biography = MapProfilesAndPreferencesService.GetProfileValue(memberProfileMappingModel.BiographyProfileId, memberProfileDetail.Profiles);
-        LinkedinUrl = (memberProfileDetail.Profiles.Any(x => x.ProfileId == memberProfileMappingModel.LinkedinProfileId && !string.IsNullOrEmpty(x.Value))) ? string.Concat(UrlConstant.LinkedinUrl, MapProfilesAndPreferencesService.GetProfileValue(memberProfileMappingModel.LinkedinProfileId, memberProfileDetail.Profiles)) : string.Empty;
+        LinkedinUrl = GetLinkedInUrl(memberProfileMappingModel, memberProfileDetail);
         FirstSectionProfiles = memberProfileDetail.Profiles.Where(x => memberProfileMappingModel.FirstSectionProfileIds.Contains(x.ProfileId)).Select(x => MapProfilesAndPreferencesService.GetProfileDescription(x, memberProfiles)).Where(x => !string.IsNullOrWhiteSpace(x)).ToList()!;
         SecondSectionProfiles = memberProfileDetail.Profiles.Where(x => memberProfileMappingModel.SecondSectionProfileIds.Contains(x.ProfileId)).Select(x => MapProfilesAndPreferencesService.GetProfileDescription(x, memberProfiles)).Where(x => !string.IsNullOrWhiteSpace(x)).ToList()!;
         Address = string.Join(",", memberProfileDetail.Profiles.Where(x => memberProfileMappingModel.AddressProfileIds.Contains(x.ProfileId) && !string.IsNullOrWhiteSpace(x.Value)).Select(x => x.Value).ToList());
@@ -70,5 +70,14 @@ public class MemberProfileViewModel : INetworkHubLink
         UserType = memberProfileDetail.UserType;
         IsEmployerInformationAvailable = !string.IsNullOrEmpty(EmployerName) || !string.IsNullOrEmpty(Address);
         IsApprenticeshipInformationAvailable = ((UserType == MemberUserType.Apprentice) ? (!string.IsNullOrEmpty(Sector) || !string.IsNullOrEmpty(Programmes) || !string.IsNullOrEmpty(Level)) : (Sectors.Count > 0 || ActiveApprenticesCount > 0));
+    }
+
+    private string GetLinkedInUrl(MemberProfileMappingModel memberProfileMappingModel, MemberProfileDetail memberProfileDetail)
+    {
+        if (memberProfileDetail.Profiles.Any(x => x.ProfileId == memberProfileMappingModel.LinkedinProfileId && !string.IsNullOrEmpty(x.Value)))
+        {
+            return string.Concat(UrlConstant.LinkedinUrl, MapProfilesAndPreferencesService.GetProfileValue(memberProfileMappingModel.LinkedinProfileId, memberProfileDetail.Profiles));
+        }
+        return string.Empty;
     }
 }
