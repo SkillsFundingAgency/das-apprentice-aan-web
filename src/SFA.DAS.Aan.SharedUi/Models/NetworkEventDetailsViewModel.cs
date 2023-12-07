@@ -23,6 +23,7 @@ public class NetworkEventDetailsViewModel : INetworkHubLink
     public string ContactName { get; set; }
     public string ContactEmail { get; set; }
     public string? CancelReason { get; set; }
+    public bool IsActive { get; set; }
     public List<Attendee> Attendees { get; set; } = new List<Attendee>();
     public List<EventGuest> EventGuests { get; set; } = new List<EventGuest>();
     public bool IsSignedUp { get; set; }
@@ -39,6 +40,8 @@ public class NetworkEventDetailsViewModel : INetworkHubLink
 
     public string? NetworkHubLink { get; set; }
 
+    public string? PreviewHeader { get; set; }
+    public string? BackLinkDescription { get; set; }
     public string? BackLinkUrl { get; set; }
     public bool IsPreview { get; set; }
 
@@ -75,6 +78,7 @@ public class NetworkEventDetailsViewModel : INetworkHubLink
         CancelReason = source.CancelReason;
         Attendees = source.Attendees;
         EventGuests = source.EventGuests;
+        IsActive = source.IsActive;
 
         IsSignedUp = Attendees.Exists(a => a.MemberId == memberId);
 

@@ -19,8 +19,8 @@
     <div class="govuk-grid-column-two-thirds">
     @if (@Model.IsPreview && !string.IsNullOrEmpty(Model.BackLinkUrl))
     {
-        <h1 class="govuk-heading-l">Event preview</h1>
-        <a href="@Model.BackLinkUrl" class="govuk-back-link">back to event page</a>
+        <h1 class="govuk-heading-l">@Model.PreviewHeader</h1>
+        <a href="@Model.BackLinkUrl" class="govuk-back-link">@Model.BackLinkDescription</a>
         <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
     }
     </div>
@@ -68,8 +68,13 @@
     </div>
     <div class="govuk-grid-column-one-third">
         <div class="das-highlight govuk-!-margin-top-0">
-            @if (Model.IsSignedUp)
+            @if (!Model.IsActive)
             {
+                <h3 class="govuk-heading-s">Cancelled event</h3>
+            }
+            else if (Model.IsSignedUp)
+            {
+              
                 <p class="app-green-tick-large">
                     <span class="das-icon-list__icon das-icon-list__icon--tick">Yes: </span>You're signed up
                 </p>
@@ -85,7 +90,7 @@
                         <input type="hidden" asp-for="@Model.StartDateTime"/>
                         <input type="hidden" asp-for="@Model.CalendarEventId"/>
                         <input type="hidden" id="newStatus" name="newStatus" value="false"/>
-                        <button class="govuk-button govuk-button--warning govuk-!-margin-bottom-0 govuk-!-width-full">Cancel your attendance</button>
+                        <button class="govuk-button govuk-button--warning govuk-!-margin-bottom-0 govuk-!-width-full" @disabled>Cancel your attendance</button>
                     </form>
                 }
             }
@@ -129,7 +134,7 @@
             <input type="hidden" asp-for="@Model.StartDateTime"/>
             <input type="hidden" asp-for="@Model.CalendarEventId"/>
             <input type="hidden" id="newStatus" name="newStatus" value="false"/>
-            <button class="govuk-button govuk-!-margin-top-4 govuk-button--warning" data-module="govuk-button" type="submit">
+            <button class="govuk-button govuk-!-margin-top-4 govuk-button--warning" data-module="govuk-button" type="submit" @disabled>
                 Cancel your attendance
             </button>
         </form>
