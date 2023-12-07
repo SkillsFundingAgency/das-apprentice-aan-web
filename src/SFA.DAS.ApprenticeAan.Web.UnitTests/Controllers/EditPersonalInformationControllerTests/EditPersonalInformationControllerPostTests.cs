@@ -52,12 +52,14 @@ public class EditPersonalInformationControllerPostTests
     }
 
     [Test]
-    [MoqInlineAutoData("", true)]
-    [MoqInlineAutoData("biography", true)]
-    [MoqInlineAutoData("", false)]
-    [MoqInlineAutoData("biography", false)]
+    [MoqInlineAutoData(" ", " ", true)]
+    [MoqInlineAutoData("biography", "jobtitle", true)]
+    [MoqInlineAutoData("", " ", false)]
+    [MoqInlineAutoData("biography", "jobtitle", false)]
+    [MoqInlineAutoData(null, null, false)]
     public async Task Post_ValidModel_ReturnsMemberProfileView(
-        string biography,
+        string? biography,
+        string? jobTitle,
         bool showBiography,
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         CancellationToken cancellationToken)
@@ -67,7 +69,7 @@ public class EditPersonalInformationControllerPostTests
         {
             RegionId = 5,
             Biography = biography,
-            JobTitle = string.Empty,
+            JobTitle = jobTitle,
             ShowBiography = showBiography,
             ShowJobTitle = true,
             OrganisationName = string.Empty,

@@ -213,7 +213,7 @@ public class EditContactDetailControllerPostTests
         sut.TempData = tempDataMock.Object;
         SubmitContactDetailModel submitContactDetailModel = new()
         {
-            LinkedinUrl = string.Empty,
+            LinkedinUrl = null,
             ShowLinkedinUrl = true
         };
 
@@ -242,7 +242,7 @@ public class EditContactDetailControllerPostTests
         sut.TempData = tempDataMock.Object;
         SubmitContactDetailModel submitContactDetailModel = new()
         {
-            LinkedinUrl = string.Empty,
+            LinkedinUrl = null,
             ShowLinkedinUrl = true
         };
 
