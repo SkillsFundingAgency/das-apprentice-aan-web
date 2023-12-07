@@ -98,9 +98,14 @@ public class EditContactDetailControllerPostTests
         Assert.That(sut.TempData.ContainsKey(TempDataKeys.YourAmbassadorProfileSuccessMessage), Is.EqualTo(true));
     }
 
-    [Test, RecursiveMoqAutoData]
+    [Test]
+    [MoqInlineAutoData(" ", false)]
+    [MoqInlineAutoData(" test", false)]
+    [MoqInlineAutoData("test ", false)]
+    [MoqInlineAutoData(" test ", false)]
+    [MoqInlineAutoData(null, false)]
     public static async Task Index_PostValidCommand_ShouldInvokeUpdateMemberProfileAndPreferences(
-        string linkedinUrl,
+        string? linkedinUrl,
         bool showLinkedinUrl,
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         CancellationToken cancellationToken
@@ -213,7 +218,7 @@ public class EditContactDetailControllerPostTests
         sut.TempData = tempDataMock.Object;
         SubmitContactDetailModel submitContactDetailModel = new()
         {
-            LinkedinUrl = null,
+            LinkedinUrl = string.Empty,
             ShowLinkedinUrl = true
         };
 
@@ -242,7 +247,7 @@ public class EditContactDetailControllerPostTests
         sut.TempData = tempDataMock.Object;
         SubmitContactDetailModel submitContactDetailModel = new()
         {
-            LinkedinUrl = null,
+            LinkedinUrl = string.Empty,
             ShowLinkedinUrl = true
         };
 
