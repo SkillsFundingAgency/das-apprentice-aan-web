@@ -29,15 +29,20 @@ public class EditPersonalInformationController : Controller
         _validator = validator;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Index(CancellationToken cancellationToken)
+    private async Task<EditPersonalInformationViewModel> BuildMemberProfileModel(CancellationToken cancellationToken)
     {
         var memberProfiles = await _apiClient.GetMemberProfile(User.GetAanMemberId(), User.GetAanMemberId(), false, cancellationToken);
         var regionTask = await _apiClient.GetRegions();
         EditPersonalInformationViewModel memberProfile = EditPersonalInformationViewModelMapping(memberProfiles.RegionId ?? 0, memberProfiles.Profiles, memberProfiles.Preferences, memberProfiles.UserType, memberProfiles.OrganisationName);
         memberProfile.Regions = Region.RegionToRegionViewModelMapping(regionTask.Regions);
         memberProfile.YourAmbassadorProfileUrl = Url.RouteUrl(SharedRouteNames.YourAmbassadorProfile)!;
-        return View(ChangePersonalDetailViewPath, memberProfile);
+        return memberProfile;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Index(CancellationToken cancellationToken)
+    {
+        return View(ChangePersonalDetailViewPath, await BuildMemberProfileModel(cancellationToken));
     }
 
     [HttpPost]
@@ -47,13 +52,8 @@ public class EditPersonalInformationController : Controller
 
         if (!result.IsValid)
         {
-            var memberProfiles = await _apiClient.GetMemberProfile(User.GetAanMemberId(), User.GetAanMemberId(), false, cancellationToken);
-            var regionTask = await _apiClient.GetRegions();
-            EditPersonalInformationViewModel memberProfile = EditPersonalInformationViewModelMapping(memberProfiles.RegionId ?? 0, memberProfiles.Profiles, memberProfiles.Preferences, memberProfiles.UserType, memberProfiles.OrganisationName);
-            memberProfile.Regions = Region.RegionToRegionViewModelMapping(regionTask.Regions);
-            memberProfile.YourAmbassadorProfileUrl = Url.RouteUrl(SharedRouteNames.YourAmbassadorProfile)!;
             result.AddToModelState(ModelState);
-            return View(ChangePersonalDetailViewPath, memberProfile);
+            return View(ChangePersonalDetailViewPath, await BuildMemberProfileModel(cancellationToken));
         }
         UpdateMemberProfileAndPreferencesRequest updateMemberProfileAndPreferencesRequest = new UpdateMemberProfileAndPreferencesRequest();
         updateMemberProfileAndPreferencesRequest.PatchMemberRequest.RegionId = submitPersonalDetailModel.RegionId;

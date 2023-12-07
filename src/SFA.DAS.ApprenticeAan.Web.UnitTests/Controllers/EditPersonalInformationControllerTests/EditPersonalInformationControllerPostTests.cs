@@ -25,7 +25,6 @@ public class EditPersonalInformationControllerPostTests
     private Mock<IValidator<SubmitPersonalDetailModel>> _validatorMock = null!;
     private EditPersonalInformationController _sut = null!;
     private SubmitPersonalDetailModel _submitPersonalDetailModel = null!;
-    private EditPersonalInformationViewModel _editPersonalInformationViewModel = null!;
     private GetMemberProfileResponse _getMemberProfileResponse = null!;
     private GetRegionsResult _getRegionsResult = null!;
     private Guid _memberId = Guid.NewGuid();
