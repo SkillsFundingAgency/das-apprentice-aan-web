@@ -48,7 +48,7 @@ public class EditAreaOfInterestController : Controller
 
         UpdateMemberProfileAndPreferencesRequest updateMemberProfileAndPreferencesRequest = new UpdateMemberProfileAndPreferencesRequest();
 
-        updateMemberProfileAndPreferencesRequest.updateMemberProfileRequest.MemberProfiles = command.AreasOfInterest.Select(x => new UpdateProfileModel()
+        updateMemberProfileAndPreferencesRequest.UpdateMemberProfileRequest.MemberProfiles = command.AreasOfInterest.Select(x => new UpdateProfileModel()
         {
             MemberProfileId = x.Id,
             Value = x.IsSelected ? true.ToString() : null!

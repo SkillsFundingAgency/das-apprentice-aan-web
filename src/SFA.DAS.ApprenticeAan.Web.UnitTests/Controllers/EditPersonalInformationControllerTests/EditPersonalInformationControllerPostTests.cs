@@ -1,4 +1,4 @@
-﻿using AutoFixture.NUnit3;
+﻿//using System.Drawing;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
@@ -9,10 +9,10 @@ using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
-using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
@@ -21,79 +21,104 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
 
 public class EditPersonalInformationControllerPostTests
 {
-    static readonly string YourAmbassadorProfileUrl = Guid.NewGuid().ToString();
+    private Mock<IOuterApiClient> _outerApiMock = null!;
+    private Mock<IValidator<SubmitPersonalDetailModel>> _validatorMock = null!;
+    private EditPersonalInformationController _sut = null!;
+    private SubmitPersonalDetailModel _submitPersonalDetailModel = null!;
+    private EditPersonalInformationViewModel _editPersonalInformationViewModel = null!;
+    private GetMemberProfileResponse _getMemberProfileResponse = null!;
+    private GetRegionsResult _getRegionsResult = null!;
+    private Guid _memberId = Guid.NewGuid();
 
-    [Test]
-    [MoqInlineAutoData]
-    public async Task Post_InvalidModel_ReturnsPersonalDetailView(
-        SubmitPersonalDetailModel submitPersonalDetailModel,
-        [Frozen] Mock<IOuterApiClient> outerApiMock,
-        GetMemberProfileResponse getMemberProfileResponse,
-        Mock<IValidator<SubmitPersonalDetailModel>> validatorMock,
-        CancellationToken cancellationToken)
+    [TearDown]
+    public void TearDown()
     {
-        //Arrange
-        submitPersonalDetailModel.Biography = null;
-        var memberId = Guid.NewGuid();
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        outerApiMock.Setup(o => o.GetMemberProfile(memberId, memberId, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
-                    .Returns(Task.FromResult(getMemberProfileResponse));
-        EditPersonalInformationController sut = new EditPersonalInformationController(outerApiMock.Object, validatorMock.Object);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddUrlHelperMock()
-    .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
-
-        //Act
-        var response = await sut.Post(submitPersonalDetailModel, cancellationToken);
-
-        //Assert
-        Assert.That(response, Is.InstanceOf<ViewResult>());
+        if (_sut != null) _sut.Dispose();
     }
 
-    [Test]
-    [MoqInlineAutoData(" ", " ", true)]
-    [MoqInlineAutoData("biography", "jobtitle", true)]
-    [MoqInlineAutoData("", " ", false)]
-    [MoqInlineAutoData("biography", "jobtitle", false)]
-    [MoqInlineAutoData(null, null, false)]
-    public async Task Post_ValidModel_ReturnsMemberProfileView(
-        string? biography,
-        string? jobTitle,
-        bool showBiography,
-        [Frozen] Mock<IOuterApiClient> outerApiMock,
-        CancellationToken cancellationToken)
+    private void HappyPathSetUp()
     {
-        //Arrange
-        SubmitPersonalDetailModel submitPersonalDetailModel = new()
+        _outerApiMock = new();
+        _validatorMock = new();
+        SetUpControllerWithContext();
+        _submitPersonalDetailModel = new()
         {
             RegionId = 5,
-            Biography = biography,
-            JobTitle = jobTitle,
-            ShowBiography = showBiography,
+            Biography = "biography",
+            JobTitle = "jobTitle",
+            ShowBiography = true,
             ShowJobTitle = true,
             OrganisationName = string.Empty,
             UserType = MemberUserType.Apprentice
         };
-        var memberId = Guid.NewGuid();
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
 
-        var validatorMock = new Mock<IValidator<SubmitPersonalDetailModel>>();
-        var successfulValidationResult = new ValidationResult();
-        validatorMock.Setup(v => v.ValidateAsync(It.IsAny<SubmitPersonalDetailModel>(), It.IsAny<CancellationToken>())).ReturnsAsync(successfulValidationResult);
+        _validatorMock.Setup(v => v.ValidateAsync(It.IsAny<SubmitPersonalDetailModel>(), It.IsAny<CancellationToken>())).ReturnsAsync(new ValidationResult());
+    }
 
-        EditPersonalInformationController sut = new EditPersonalInformationController(outerApiMock.Object, validatorMock.Object);
+    private void ValidationFailureSetUp()
+    {
+        SetUpControllerWithContext();
+        string YourAmbassadorProfileUrl = Guid.NewGuid().ToString();
 
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
-        sut.AddUrlHelperMock()
-.AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
-        Mock<ITempDataDictionary> tempDataMock = new Mock<ITempDataDictionary>();
-        tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.YourAmbassadorProfileSuccessMessage)).Returns(true);
-        sut.TempData = tempDataMock.Object;
+        _getMemberProfileResponse = new()
+        {
+            Profiles = new List<MemberProfile>(),
+            Preferences = new List<MemberPreference>(),
+            RegionId = 1,
+            OrganisationName = string.Empty
+        };
+
+        _getRegionsResult = new()
+        {
+            Regions = new List<Region>()
+        };
+        _outerApiMock.Setup(o => o.GetMemberProfile(_memberId, _memberId, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                    .Returns(Task.FromResult(_getMemberProfileResponse));
+
+        _outerApiMock.Setup(o => o.GetRegions()).Returns(Task.FromResult(_getRegionsResult));
+
+        _sut.AddUrlHelperMock()
+            .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
+
+        _validatorMock.Setup(m => m.ValidateAsync(_submitPersonalDetailModel, CancellationToken.None)).ReturnsAsync(new ValidationResult(new List<ValidationFailure>()
+            {
+                new ValidationFailure("TestField","Test Message"){ErrorCode = "1001"}
+            }));
+
+    }
+
+    private void SetUpControllerWithContext()
+    {
+        _sut = new(_outerApiMock.Object, _validatorMock.Object);
+        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(_memberId);
+        _sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        _sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, _memberId.ToString());
+
+        _sut.TempData = Mock.Of<ITempDataDictionary>();
+    }
+
+    [Test]
+    public async Task Post_ValidModel_InvokeUpdateOnce()
+    {
+        HappyPathSetUp();
 
         //Act
-        var response = await sut.Post(submitPersonalDetailModel, cancellationToken);
+        var response = await _sut.Post(new(), CancellationToken.None);
+
+        //Assert
+        _outerApiMock.Verify(a => a.UpdateMemberProfileAndPreferences(
+            It.IsAny<Guid>(),
+            It.IsAny<UpdateMemberProfileAndPreferencesRequest>(),
+            It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Test]
+    public async Task Post_ValidModel_ReturnsmemberProfileView()
+    {
+        HappyPathSetUp();
+
+        //Act
+        var response = await _sut.Post(new(), CancellationToken.None);
 
         //Assert
         Assert.Multiple(() =>
@@ -103,4 +128,126 @@ public class EditPersonalInformationControllerPostTests
             Assert.That(redirectToAction.RouteName, Does.Contain(SharedRouteNames.YourAmbassadorProfile));
         });
     }
+
+    [Test]
+    public async Task Post_SetsRegionId()
+    {
+        HappyPathSetUp();
+
+        //Act
+        await _sut.Post(_submitPersonalDetailModel, CancellationToken.None);
+
+        //Assert
+        _outerApiMock.Verify(a => a.UpdateMemberProfileAndPreferences(
+            It.IsAny<Guid>(),
+            It.Is<UpdateMemberProfileAndPreferencesRequest>(m => m.PatchMemberRequest.RegionId == _submitPersonalDetailModel.RegionId),
+            It.IsAny<CancellationToken>()));
+    }
+
+    [Test]
+    public async Task Post_SetsOrganisationName()
+    {
+        HappyPathSetUp();
+
+        //Act
+        await _sut.Post(_submitPersonalDetailModel, CancellationToken.None);
+
+        //Assert
+        _outerApiMock.Verify(a => a.UpdateMemberProfileAndPreferences(
+            It.IsAny<Guid>(),
+            It.Is<UpdateMemberProfileAndPreferencesRequest>(m => m.PatchMemberRequest.OrganisationName == _submitPersonalDetailModel.OrganisationName),
+            It.IsAny<CancellationToken>()));
+    }
+
+    [TestCase(true)]
+    [TestCase(false)]
+    public async Task Post_SetsShowBiography(bool showBiography)
+    {
+        HappyPathSetUp();
+        _submitPersonalDetailModel.ShowBiography = showBiography;
+
+        //Act
+        await _sut.Post(_submitPersonalDetailModel, CancellationToken.None);
+
+        //Assert
+        _outerApiMock.Verify(a => a.UpdateMemberProfileAndPreferences(
+            It.IsAny<Guid>(),
+            It.Is<UpdateMemberProfileAndPreferencesRequest>(m => m.UpdateMemberProfileRequest.MemberPreferences.ElementAt(0).Value == _submitPersonalDetailModel.ShowBiography),
+            It.IsAny<CancellationToken>()));
+    }
+
+    [TestCase(true)]
+    [TestCase(false)]
+    public async Task Post_SetsShowJobTitle(bool showJobTitle)
+    {
+        HappyPathSetUp();
+        _submitPersonalDetailModel.ShowJobTitle = showJobTitle;
+
+        //Act
+        await _sut.Post(_submitPersonalDetailModel, CancellationToken.None);
+
+        //Assert
+        _outerApiMock.Verify(a => a.UpdateMemberProfileAndPreferences(
+            It.IsAny<Guid>(),
+            It.Is<UpdateMemberProfileAndPreferencesRequest>(m => m.UpdateMemberProfileRequest.MemberPreferences.ElementAt(1).Value == _submitPersonalDetailModel.ShowJobTitle),
+            It.IsAny<CancellationToken>()));
+    }
+
+    [TestCase("biography  ", "biography")]
+    [TestCase("biography", "biography")]
+    [TestCase("", "")]
+    [TestCase(null, null)]
+    public async Task Post_SetsBiography(string? biography, string? expectedBiography)
+    {
+        HappyPathSetUp();
+        _submitPersonalDetailModel.Biography = biography;
+
+        //Act
+        await _sut.Post(_submitPersonalDetailModel, CancellationToken.None);
+
+        //Assert
+        _outerApiMock.Verify(a => a.UpdateMemberProfileAndPreferences(
+            It.IsAny<Guid>(),
+            It.Is<UpdateMemberProfileAndPreferencesRequest>(m => m.UpdateMemberProfileRequest.MemberProfiles.ElementAt(0).Value == expectedBiography),
+            It.IsAny<CancellationToken>()));
+    }
+
+    [TestCase("jobtitle  ", "jobtitle")]
+    [TestCase("jobtitle", "jobtitle")]
+    [TestCase("", "")]
+    [TestCase(null, null)]
+    public async Task Post_SetsJobTitle(string? jobtitle, string? expectedJobTitle)
+    {
+        HappyPathSetUp();
+        _submitPersonalDetailModel.JobTitle = jobtitle;
+
+        //Act
+        await _sut.Post(_submitPersonalDetailModel, CancellationToken.None);
+
+        //Assert
+        _outerApiMock.Verify(a => a.UpdateMemberProfileAndPreferences(
+            It.IsAny<Guid>(),
+            It.Is<UpdateMemberProfileAndPreferencesRequest>(m => m.UpdateMemberProfileRequest.MemberProfiles.ElementAt(1).Value == expectedJobTitle), It.IsAny<CancellationToken>()));
+    }
+
+    [Test]
+    [MoqInlineAutoData]
+    public async Task Post_InvalidModel_ReturnsPersonalDetailView(
+        GetMemberProfileResponse getMemberProfileResponse,
+        GetRegionsResult getRegionsResult)
+    {
+        //Arrange
+        HappyPathSetUp();
+        ValidationFailureSetUp();
+
+        //Act
+        var response = await _sut.Post(_submitPersonalDetailModel, CancellationToken.None);
+
+        //Assert
+        Assert.That(response, Is.InstanceOf<ViewResult>());
+        _outerApiMock.Verify(a => a.UpdateMemberProfileAndPreferences(
+            It.IsAny<Guid>(),
+            It.IsAny<UpdateMemberProfileAndPreferencesRequest>(), It.IsAny<CancellationToken>()), Times.Never);
+    }
+
 }

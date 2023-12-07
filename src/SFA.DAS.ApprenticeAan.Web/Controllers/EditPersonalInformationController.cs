@@ -56,19 +56,19 @@ public class EditPersonalInformationController : Controller
             return View(ChangePersonalDetailViewPath, memberProfile);
         }
         UpdateMemberProfileAndPreferencesRequest updateMemberProfileAndPreferencesRequest = new UpdateMemberProfileAndPreferencesRequest();
-        updateMemberProfileAndPreferencesRequest.patchMemberRequest.RegionId = submitPersonalDetailModel.RegionId;
-        updateMemberProfileAndPreferencesRequest.patchMemberRequest.OrganisationName = submitPersonalDetailModel.OrganisationName;
+        updateMemberProfileAndPreferencesRequest.PatchMemberRequest.RegionId = submitPersonalDetailModel.RegionId;
+        updateMemberProfileAndPreferencesRequest.PatchMemberRequest.OrganisationName = submitPersonalDetailModel.OrganisationName;
         List<UpdatePreferenceModel> updatePreferenceModels = new List<UpdatePreferenceModel>();
         updatePreferenceModels.Add(new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.Biography, Value = submitPersonalDetailModel.ShowBiography && !string.IsNullOrEmpty(submitPersonalDetailModel.Biography) });
         updatePreferenceModels.Add(new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.JobTitle, Value = submitPersonalDetailModel.ShowJobTitle });
 
-        updateMemberProfileAndPreferencesRequest.updateMemberProfileRequest.MemberPreferences = updatePreferenceModels;
+        updateMemberProfileAndPreferencesRequest.UpdateMemberProfileRequest.MemberPreferences = updatePreferenceModels;
 
         List<UpdateProfileModel> updateProfileModels = new List<UpdateProfileModel>();
         updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.Biography, Value = submitPersonalDetailModel.Biography?.Trim() });
         updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.JobTitle, Value = submitPersonalDetailModel.JobTitle?.Trim() });
 
-        updateMemberProfileAndPreferencesRequest.updateMemberProfileRequest.MemberProfiles = updateProfileModels;
+        updateMemberProfileAndPreferencesRequest.UpdateMemberProfileRequest.MemberProfiles = updateProfileModels;
 
         await _apiClient.UpdateMemberProfileAndPreferences(User.GetAanMemberId(), updateMemberProfileAndPreferencesRequest, cancellationToken);
         TempData[TempDataKeys.YourAmbassadorProfileSuccessMessage] = true;

@@ -1,4 +1,5 @@
 ﻿using AutoFixture.NUnit3;
+using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -66,27 +67,6 @@ public class EditContactDetailControllerGetTests
 
         // Assert
         outerApiMock.Verify(a => a.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), false, cancellationToken), Times.Once);
-    }
-
-    [Test, RecursiveMoqAutoData]
-    public static void Index_ShouldReturnEditContactDetailViewModel(
-        [Greedy] EditContactDetailController sut,
-        CancellationToken cancellationToken
-    )
-    {
-        // Arrange
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
-        sut.AddUrlHelperMock()
-.AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
-
-        // Act
-        var result = sut.Index(cancellationToken);
-        var viewResult = result as ViewResult;
-
-        // Assert
-        Assert.That(viewResult!.Model, Is.InstanceOf(editContactDetailViewModel.GetType()));
     }
 
     [Test, RecursiveMoqAutoData]
@@ -198,7 +178,7 @@ public class EditContactDetailControllerGetTests
         var result = await sut.GetContactDetailViewModel(cancellationToken);
 
         // Assert
-        Assert.That(result, Is.InstanceOf(editContactDetailViewModel.GetType()));
+        result.Should().BeOfType<EditContactDetailViewModel>();
     }
 
     [Test, MoqAutoData]

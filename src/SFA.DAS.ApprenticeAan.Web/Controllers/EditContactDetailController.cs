@@ -51,12 +51,12 @@ public class EditContactDetailController : Controller
         List<UpdatePreferenceModel> updatePreferenceModels = new List<UpdatePreferenceModel>();
         updatePreferenceModels.Add(new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.LinkedIn, Value = submitContactDetailModel.ShowLinkedinUrl });
 
-        updateMemberProfileAndPreferencesRequest.updateMemberProfileRequest.MemberPreferences = updatePreferenceModels;
+        updateMemberProfileAndPreferencesRequest.UpdateMemberProfileRequest.MemberPreferences = updatePreferenceModels;
 
         List<UpdateProfileModel> updateProfileModels = new List<UpdateProfileModel>();
         updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.LinkedIn, Value = submitContactDetailModel.LinkedinUrl?.Trim() });
 
-        updateMemberProfileAndPreferencesRequest.updateMemberProfileRequest.MemberProfiles = updateProfileModels;
+        updateMemberProfileAndPreferencesRequest.UpdateMemberProfileRequest.MemberProfiles = updateProfileModels;
 
         await _apiClient.UpdateMemberProfileAndPreferences(User.GetAanMemberId(), updateMemberProfileAndPreferencesRequest, cancellationToken);
 
