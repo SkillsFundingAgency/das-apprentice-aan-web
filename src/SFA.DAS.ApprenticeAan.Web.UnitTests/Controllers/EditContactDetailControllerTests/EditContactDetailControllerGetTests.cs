@@ -1,5 +1,6 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -19,22 +20,46 @@ using static SFA.DAS.Aan.SharedUi.Constants.ProfileConstants;
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.EditContactDetailControllerTests;
 public class EditContactDetailControllerGetTests
 {
-    static readonly string YourAmbassadorProfileUrl = Guid.NewGuid().ToString();
-    static EditContactDetailViewModel editContactDetailViewModel = new EditContactDetailViewModel();
-    static Guid memberId = Guid.NewGuid();
+    private EditContactDetailController sut = null!;
+    private Mock<IOuterApiClient> outerApiMock = null!;
+    private Mock<IValidator<SubmitContactDetailModel>> validatorMock = null!;
+    private readonly string YourAmbassadorProfileUrl = Guid.NewGuid().ToString();
+    private Guid memberId = Guid.NewGuid();
+    private GetMemberProfileResponse getMemberProfileResponse = null!;
+
+    private void SetUpControllerWithContext()
+    {
+        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
+        sut = new EditContactDetailController(outerApiMock.Object, validatorMock.Object);
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, Guid.NewGuid().ToString());
+        sut.AddUrlHelperMock()
+            .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
+    }
+
+    private void SetUpOuterApiMock()
+    {
+        outerApiMock = new();
+        validatorMock = new();
+        SetUpControllerWithContext();
+
+        getMemberProfileResponse = new()
+        {
+            Profiles = new List<MemberProfile>(),
+            Preferences = new List<MemberPreference>(),
+            RegionId = 1,
+            OrganisationName = string.Empty
+        };
+        outerApiMock.Setup(a => a.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(getMemberProfileResponse));
+    }
 
     [Test, RecursiveMoqAutoData]
-    public static void Index_ShouldReturnEditContactDetailView(
-        [Greedy] EditContactDetailController sut,
+    public void Index_ShouldReturnEditContactDetailView(
         CancellationToken cancellationToken
     )
     {
         // Arrange
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
-        sut.AddUrlHelperMock()
-.AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
+        SetUpOuterApiMock();
 
         // Act
         var result = sut.Index(cancellationToken);
@@ -44,23 +69,17 @@ public class EditContactDetailControllerGetTests
         {
             Assert.That(result, Is.InstanceOf<ViewResult>());
             var viewResult = result as ViewResult;
-            Assert.That(viewResult!.ViewName, Does.Contain("EditContactDetail"));
+            Assert.That(viewResult!.ViewName, Does.Contain(SharedRouteNames.EditContactDetail));
         });
     }
 
     [Test, RecursiveMoqAutoData]
     public void Index_ShouldInvokeGetMemberProfile(
-        [Frozen] Mock<IOuterApiClient> outerApiMock,
-        [Greedy] EditContactDetailController sut,
         CancellationToken cancellationToken
     )
     {
         // Arrange
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
-        sut.AddUrlHelperMock()
-.AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
+        SetUpOuterApiMock();
 
         // Act
         var result = sut.Index(cancellationToken);
@@ -70,21 +89,15 @@ public class EditContactDetailControllerGetTests
     }
 
     [Test, RecursiveMoqAutoData]
-    public static void Index_PassValidEmailAndLinkedinUrl_ShouldReturnExpectedEmailAndLinkedinUrl(
+    public void Index_PassValidEmailAndLinkedinUrl_ShouldReturnExpectedEmailAndLinkedinUrl(
         [Frozen] Mock<IOuterApiClient> outerApiClient,
-        [Greedy] EditContactDetailController sut,
-        GetMemberProfileResponse getMemberProfileResponse,
         string email,
         string linkedinUrl,
         CancellationToken cancellationToken
     )
     {
         // Arrange
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
-        sut.AddUrlHelperMock()
-.AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
+        SetUpOuterApiMock();
         getMemberProfileResponse.Email = email;
         getMemberProfileResponse.Profiles = new List<MemberProfile>() {new()
         {
@@ -109,26 +122,22 @@ public class EditContactDetailControllerGetTests
     [Test]
     [MoqInlineAutoData(true)]
     [MoqInlineAutoData(false)]
-    public static void Index_PassValidLinkedinUrlPreference_ShouldReturnExpectedPreferenceValue(
+    public void Index_PassValidLinkedinUrlPreference_ShouldReturnExpectedPreferenceValue(
         bool showLinkedinUrl,
-        [Frozen] Mock<IOuterApiClient> outerApiClient,
-        [Greedy] EditContactDetailController sut,
         GetMemberProfileResponse getMemberProfileResponse,
         CancellationToken cancellationToken
     )
     {
         // Arrange
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
-        sut.AddUrlHelperMock()
-.AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
+        outerApiMock = new();
+        validatorMock = new();
+        SetUpControllerWithContext();
         getMemberProfileResponse.Preferences = new List<MemberPreference>() {new()
         {
             PreferenceId = PreferenceIds.LinkedIn,
             Value = showLinkedinUrl
         }};
-        outerApiClient.Setup(a => a.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(getMemberProfileResponse));
+        outerApiMock.Setup(a => a.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(getMemberProfileResponse));
 
         // Act
         var result = sut.Index(cancellationToken);
@@ -140,17 +149,12 @@ public class EditContactDetailControllerGetTests
     }
 
     [Test, MoqAutoData]
-    public static void Index_EditContactDetailViewModel_ShouldHaveExpectedValueForYourAmbassadorProfileUrl(
-            [Greedy] EditContactDetailController sut,
-            CancellationToken cancellationToken
-        )
+    public void Index_EditContactDetailViewModel_ShouldHaveExpectedValueForYourAmbassadorProfileUrl(
+         CancellationToken cancellationToken
+       )
     {
         // Arrange
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
-        sut.AddUrlHelperMock()
-    .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
+        SetUpOuterApiMock();
 
         // Act
         var result = sut.Index(cancellationToken);
@@ -162,17 +166,12 @@ public class EditContactDetailControllerGetTests
     }
 
     [Test, MoqAutoData]
-    public static async Task GetContactDetailViewModel_ShouldReturnEditContactDetailViewModel(
-        [Greedy] EditContactDetailController sut,
+    public async Task GetContactDetailViewModel_ShouldReturnEditContactDetailViewModel(
         CancellationToken cancellationToken
     )
     {
         // Arrange
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
-        sut.AddUrlHelperMock()
-    .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
+        SetUpOuterApiMock();
 
         // Act
         var result = await sut.GetContactDetailViewModel(cancellationToken);
@@ -182,23 +181,17 @@ public class EditContactDetailControllerGetTests
     }
 
     [Test, MoqAutoData]
-    public static async Task GetContactDetailViewModel_ShouldInvokeGetMemberProfile(
-        [Frozen] Mock<IOuterApiClient> outerApiClient,
-        [Greedy] EditContactDetailController sut,
+    public async Task GetContactDetailViewModel_ShouldInvokeGetMemberProfile(
         CancellationToken cancellationToken
     )
     {
         // Arrange
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
-        sut.AddUrlHelperMock()
-    .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
+        SetUpOuterApiMock();
 
         // Act
         var result = await sut.GetContactDetailViewModel(cancellationToken);
 
         // Assert
-        outerApiClient.Verify(a => a.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
+        outerApiMock.Verify(a => a.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 }
