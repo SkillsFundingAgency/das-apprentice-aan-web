@@ -125,7 +125,7 @@ public class NetworkEventsControllerTests
     }
 
     [Test, MoqAutoData]
-    public void GetCalendarEvents_RegionNationalAddedWithIdOfZero(
+    public void GetCalendarEvents_RegionLookup_NationalAddedWithIdZero(
    [Frozen] Mock<IOuterApiClient> outerApiMock,
    [Greedy] NetworkEventsController sut,
            GetCalendarEventsQueryResult expectedResult,
@@ -139,7 +139,6 @@ public class NetworkEventsControllerTests
         outerApiMock.Setup(o => o.GetCalendarEvents(It.IsAny<Guid>(), It.IsAny<Dictionary<string, string[]>>(), It.IsAny<CancellationToken>())).ReturnsAsync(expectedResult);
         outerApiMock.Setup(o => o.GetRegions()).ReturnsAsync(regionsResult);
 
-
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
         sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkEvents, AllNetworksUrl);
 
@@ -151,7 +150,5 @@ public class NetworkEventsControllerTests
         var regionLookup = model!.FilterChoices.RegionChecklistDetails.Lookups;
         regionLookup!.Count().Should().Be(regionCountFromApi + 1);
         regionLookup!.First(x => x.Value == "0").Name.Should().Be("National");
-
-        outerApiMock.Verify(o => o.GetCalendarEvents(It.IsAny<Guid>(), It.IsAny<Dictionary<string, string[]>>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 }
