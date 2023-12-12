@@ -2,178 +2,106 @@
 @{
     ViewData["Title"] = "Contact us";
 }
-
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">Contact us</h1>
-        
         <h2 class="govuk-heading-m">General support and queries</h2>
-        
         <p class="govuk-body">
-            Your regional team will be able to help with most queries, including any questions or suggestions you have. They can also provide further information about your region.
+            Your regional team will be able to help with most queries,
+            including any questions or suggestions you have. They can also
+            provide further information about your region.
         </p>
-        <div class="das-search-results govuk-!-margin-top-0">
-            ﻿
-            <div class="govuk-!-margin-top-0">
-                <ol class="das-search-results__list">
-                    <li>
-                        <div class="govuk-grid-row">
-                            <div class="govuk-grid-column-one-half">
-                                <h2 class="govuk-heading-m">Region</h2>
-                            </div>
-                            <div class="govuk-grid-column-one-half">
-                                <h2 class="govuk-heading-m">Email address</h2>
-                            </div>
-                        </div>
-                        <hr>
-                    </li>
-                    <li class="das-search-results__list-item">
-                        <div class="govuk-grid-row">
-                            <div class="govuk-grid-column-one-half">
-                                <label class="govuk-label">
-                                    East of England
-                                </label>
-                            </div>
-                            <div class="govuk-grid-column-one-quarter">
-                                <a href="mailto:eoeaan@gmail.com" class="govuk-link">eoeaan@gmail.com</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="das-search-results__list-item">
-                        <div class="govuk-grid-row">
-                            <div class="govuk-grid-column-one-half">
-                                <label class="govuk-label">
-                                    East Midlands
-                                </label>
-                            </div>
-                            <div class="govuk-grid-column-one-quarter">
-                                <a href="mailto:eastmidsappambassadors@gmail.com" class="govuk-link">eastmidsappambassadors@gmail.com</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="das-search-results__list-item">
-                        <div class="govuk-grid-row">
-                            <div class="govuk-grid-column-one-half">
-                                <label class="govuk-label">
-                                    London
-                                </label>
-                            </div>
-                            <div class="govuk-grid-column-one-quarter">
-                                <a href="mailto:londonaanetwork@gmail.com" class="govuk-link">londonaanetwork@gmail.com</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="das-search-results__list-item">
-                        <div class="govuk-grid-row">
-                            <div class="govuk-grid-column-one-half">
-                                <label class="govuk-label">
-                                    North East
-                                </label>
-                            </div>
-                            <div class="govuk-grid-column-one-quarter">
-                                <a href="mailto:Hello@neaan.org.uk" class="govuk-link">Hello@neaan.org.uk</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="das-search-results__list-item">
-                        <div class="govuk-grid-row">
-                            <div class="govuk-grid-column-one-half">
-                                <label class="govuk-label">
-                                    North West
-                                </label>
-                            </div>
-                            <div class="govuk-grid-column-one-quarter">
-                                <a href="mailto:chair@nwaan.co.uk" class="govuk-link">chair@nwaan.co.uk</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="das-search-results__list-item">
-                        <div class="govuk-grid-row">
-                            <div class="govuk-grid-column-one-half">
-                                <label class="govuk-label">
-                                    South East
-                                </label>
-                            </div>
-                            <div class="govuk-grid-column-one-quarter">
-                                <a href="mailto:info@seaan.org.uk" class="govuk-link">info@seaan.org.uk</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="das-search-results__list-item">
-                        <div class="govuk-grid-row">
-                            <div class="govuk-grid-column-one-half">
-                                <label class="govuk-label">
-                                    South West
-                                </label>
-                            </div>
-                            <div class="govuk-grid-column-one-quarter">
-                                <a href="mailto:swaan@southwestwater.co.uk" class="govuk-link">swaan@southwestwater.co.uk</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="das-search-results__list-item">
-                        <div class="govuk-grid-row">
-                            <div class="govuk-grid-column-one-half">
-                                <label class="govuk-label">
-                                    West Midlands
-                                </label>
-                            </div>
-                            <div class="govuk-grid-column-one-quarter">
-                                <a href="mailto:chair@wmaan.co.uk" class="govuk-link">chair@wmaan.co.uk</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="das-search-results__list-item">
-                        <div class="govuk-grid-row">
-                            <div class="govuk-grid-column-one-half">
-                                <label class="govuk-label">
-                                    Yorkshire and the Humber
-                                </label>
-                            </div>
-                            <div class="govuk-grid-column-one-quarter">
-                                <a href="mailto:chair@yhaan.co.uk" class="govuk-link">chair@yhaan.co.uk</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="das-search-results__list-item"></li>
-                </ol>
-                
-                <h2 class="govuk-heading-m">
-                    Specific event queries
-                </h2>
-                <p class="govuk-body">
-                    For queries about a network event, contact the event host. You can find their details in the event listing.
-                </p>
+        <table class="govuk-table">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header govuk-!-width-one-half">
+                        Region
+                    </th>
+                    <th scope="col" class="govuk-table__header govuk-!-width-one-half">
+                        Email address
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">East of England</td>
+                    <td class="govuk-table__cell">
+                        <a href="mailto:eoeaan@gmail.com" class="govuk-link">eoeaan@gmail.com</a>
+                    </td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">East Midlands</td>
+                    <td class="govuk-table__cell"><a href="mailto:eastmidsappambassadors@gmail.com"
+                            class="govuk-link">eastmidsappambassadors@gmail.com</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">London</td>
+                    <td class="govuk-table__cell"><a href="mailto:londonaanetwork@gmail.com"
+                            class="govuk-link">londonaanetwork@gmail.com</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">North East</td>
+                    <td class="govuk-table__cell"><a href="mailto:Hello@neaan.org.uk"
+                            class="govuk-link">Hello@neaan.org.uk</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell"> North West</td>
+                    <td class="govuk-table__cell"><a href="mailto:chair@nwaan.co.uk"
+                            class="govuk-link">chair@nwaan.co.uk</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">South East </td>
+                    <td class="govuk-table__cell"><a href="mailto:info@seaan.org.uk"
+                            class="govuk-link">info@seaan.org.uk</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">South West </td>
+                    <td class="govuk-table__cell"><a href="mailto:swaan@southwestwater.co.uk"
+                            class="govuk-link">swaan@southwestwater.co.uk</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">West Midlands</td>
+                    <td class="govuk-table__cell"><a href="mailto:chair@wmaan.co.uk"
+                            class="govuk-link">chair@wmaan.co.uk</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">Yorkshire and the Humber</td>
+                    <td class="govuk-table__cell"><a href="mailto:chair@yhaan.co.uk"
+                            class="govuk-link">chair@yhaan.co.uk</a></td>
+                </tr>
+            </tbody>
+        </table>
 
+        <h2 class="govuk-heading-m">Specific event queries</h2>
+        <p class="govuk-body">
+            For queries about a network event, contact the event host. You
+            can find their details in the event listing.
+        </p>
 
-                <h2 class="govuk-heading-m">
-                    Technical support and accessibility
-                </h2>
-                <p class="govuk-body">
-                    For technical support or if you need information on this website in a different format like accessible PDF, large print, easy read, audio recordin or braille:
-                    <ul>
-                        <li>
-                            <p>email <a href="mailto:helpdesk@manage-apprenticeships.service.gov.uk" class="govuk-link">helpdesk@manage-apprenticeships.service.gov.uk</a></p>
-                        </li>
-                        <li>
-                            <p>call 08000 150 600</p>
-                        </li>
-                    </ul>
-                </p>
-                
-                <h2 class="govuk-heading-m">
-                    Feedback and complaints
-                </h2>
-                <p class="govuk-body">
-                    Contact the central network team if you want to give feedback or make a complaint about the network
-                </p>
-                <p class="govuk-body">
-                    <a href="mailto:AAN.Enquiries@education.gov.uk" class="govuk-link">AAN.Enquiries@education.gov.uk</a>
-                </p>
+        <h2 class="govuk-heading-m">
+            Technical support and accessibility
+        </h2>
+        <p class="govuk-body">
+            For technical support or if you need information on this
+            website in a different format like accessible PDF, large
+            print, easy read, audio recordin or braille:
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>
+                email
+                <a href="mailto:helpdesk@manage-apprenticeships.service.gov.uk"
+                    class="govuk-link">helpdesk@manage-apprenticeships.service.gov.uk</a>
+            </li>
+            <li>call 08000 150 600</li>
+        </ul>
 
-            </div>
-        </div>
-
+        <h2 class="govuk-heading-m">Feedback and complaints</h2>
+        <p class="govuk-body">
+            Contact the central network team if you want to give feedback
+            or make a complaint about the network
+        </p>
+        <p class="govuk-body">
+            <a href="mailto:AAN.Enquiries@education.gov.uk" class="govuk-link">AAN.Enquiries@education.gov.uk</a>
+        </p>
     </div>
-
 </div>
