@@ -41,4 +41,22 @@ public class ContactDetailsViewModelTests
             sut.LinkedInDisplayValue.Should().NotBeNullOrEmpty();
         }
     }
+
+    [Test]
+    public void ContactDetailViewModel_InitializationWithParameterlessConstructor_ReturnsExpectedValue()
+    {
+        // Act
+        ContactDetailsViewModel _sut = new ContactDetailsViewModel();
+
+        // Assert
+        using (new AssertionScope())
+        {
+            Assert.That(_sut, Is.Not.Null);
+            Assert.That(_sut.EmailAddress, Is.Null);
+            Assert.That(_sut.LinkedIn, Is.Null);
+            Assert.That(_sut.LinkedInDisplayClass, Is.Null);
+            Assert.That(_sut.LinkedInDisplayValue, Is.Null);
+            Assert.That(_sut.ContactDetailChangeUrl, Is.Null);
+        }
+    }
 }

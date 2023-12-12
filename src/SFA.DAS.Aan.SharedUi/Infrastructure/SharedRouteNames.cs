@@ -17,4 +17,5 @@ public static class SharedRouteNames
     public const string EditPersonalInformation = nameof(EditPersonalInformation);
     public const string EditAreaOfInterest = nameof(EditAreaOfInterest);
     public const string EditContactDetail = nameof(EditContactDetail);
+    public const string EditApprenticeshipInformation = nameof(EditApprenticeshipInformation);
 }

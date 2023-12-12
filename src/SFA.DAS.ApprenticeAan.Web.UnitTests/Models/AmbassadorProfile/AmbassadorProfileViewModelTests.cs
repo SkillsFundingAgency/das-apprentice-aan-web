@@ -1,6 +1,8 @@
 ﻿using AutoFixture;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
 using Pipelines.Sockets.Unofficial.Arenas;
 using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
@@ -50,7 +52,7 @@ public class AmbassadorProfileViewModelTests
             new Profile { Id = 11, Description = "Designing and creating marketing materials to champion the network", Category = "Promotions", Ordering = 2 }
         };
         var personalDetails = new PersonalDetailsModel(fullName, regionName, userType, personalDetailsChangeUrl, areaOfInterestChangeUrl,contactDetailChangeUrl);
-        sut = new AmbassadorProfileViewModel(personalDetails, email, memberProfiles, memberPreferences, apprenticeshipDetails, profiles, memberProfileUrl);
+        sut = new AmbassadorProfileViewModel(personalDetails, email, memberProfiles, memberPreferences, apprenticeshipDetails, profiles, memberProfileUrl, Mock.Of<IUrlHelper>());
     }
 
     [Test]
@@ -89,7 +91,7 @@ public class AmbassadorProfileViewModelTests
     [Test]
     public void ShowApprenticeshipDetailsIsSet()
     {
-        var apprenticeshipDetailsViewModel = new ApprenticeshipDetailsViewModel(memberProfiles, apprenticeshipDetails, memberPreferences);
+        var apprenticeshipDetailsViewModel = new ApprenticeshipDetailsViewModel(memberProfiles, apprenticeshipDetails, memberPreferences, Mock.Of<IUrlHelper>());
         if (apprenticeshipDetails == null && apprenticeshipDetailsViewModel.EmployerAddress == null && apprenticeshipDetailsViewModel.EmployerName == null)
         {
             sut.ShowApprenticeshipDetails.Should().BeFalse();

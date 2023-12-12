@@ -4,6 +4,10 @@ using SFA.DAS.Aan.SharedUi.Services;
 namespace SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 public class PersonalDetailsViewModel
 {
+    public PersonalDetailsViewModel()
+    {
+    }
+
     public PersonalDetailsViewModel(PersonalDetailsModel personalDetails, IEnumerable<MemberProfile> memberProfiles, IEnumerable<MemberPreference> memberPreferences)
     {
         FullName = personalDetails.FullName;
@@ -28,18 +32,18 @@ public class PersonalDetailsViewModel
         PersonalDetailsChangeUrl = personalDetails.PersonalDetailChangeUrl;
     }
 
-    public string FullName { get; set; }
-    public string FullNameDisplayValue { get; set; }
-    public string FullNameDisplayClass { get; set; }
-    public string RegionName { get; set; }
-    public string RegionNameDisplayValue { get; set; }
-    public string RegionNameDisplayClass { get; set; }
+    public string FullName { get; set; } = null!;
+    public string FullNameDisplayValue { get; set; } = null!;
+    public string FullNameDisplayClass { get; set; } = null!;
+    public string RegionName { get; set; } = null!;
+    public string RegionNameDisplayValue { get; set; } = null!;
+    public string RegionNameDisplayClass { get; set; } = null!;
     public string? JobTitle { get; set; }
-    public string JobTitleDisplayValue { get; set; }
-    public string JobTitleDisplayClass { get; set; }
+    public string JobTitleDisplayValue { get; set; } = null!;
+    public string JobTitleDisplayClass { get; set; } = null!;
     public string? Biography { get; set; }
-    public string BiographyDisplayValue { get; set; }
-    public string BiographyDisplayClass { get; set; }
+    public string BiographyDisplayValue { get; set; } = null!;
+    public string BiographyDisplayClass { get; set; } = null!;
     public MemberUserType UserType { get; set; }
-    public string PersonalDetailsChangeUrl { get; set; }
+    public string PersonalDetailsChangeUrl { get; set; } = null!;
 }

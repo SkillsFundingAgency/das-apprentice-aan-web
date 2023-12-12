@@ -60,5 +60,7 @@ public static class ProfileConstants
     {
         public const string Events = "Events";
         public const string Promotions = "Promotions";
+        public const string ReasonToJoin = "ReasonToJoin";
+        public const string Support = "Support";
     }
 }
