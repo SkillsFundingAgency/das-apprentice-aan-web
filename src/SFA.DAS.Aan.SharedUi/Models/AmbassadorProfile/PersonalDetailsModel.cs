@@ -1,13 +1,14 @@
 ﻿namespace SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 public class PersonalDetailsModel
 {
-    public PersonalDetailsModel(string fullName, string regionName, MemberUserType userType, string personalDetailChangeUrl, string areaOfInterestChangeUrl)
+    public PersonalDetailsModel(string fullName, string regionName, MemberUserType userType, string personalDetailChangeUrl, string areaOfInterestChangeUrl,string contactDetailChangeUrl)
     {
         FullName = fullName;
         RegionName = regionName;
         UserType = userType;
         PersonalDetailChangeUrl = personalDetailChangeUrl;
         AreaOfInterestChangeUrl = areaOfInterestChangeUrl;
+        ContactDetailChangeUrl = contactDetailChangeUrl;
     }
 
     public string FullName { get; set; }
@@ -15,4 +16,5 @@ public class PersonalDetailsModel
     public MemberUserType UserType { get; set; }
     public string PersonalDetailChangeUrl { get; set; }
     public string AreaOfInterestChangeUrl { get; set; }
+    public string ContactDetailChangeUrl { get; set; }
 }

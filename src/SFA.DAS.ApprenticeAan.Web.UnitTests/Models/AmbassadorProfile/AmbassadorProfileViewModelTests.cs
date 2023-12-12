@@ -17,6 +17,7 @@ public class AmbassadorProfileViewModelTests
     private string memberProfileUrl = Guid.NewGuid().ToString();
     private string personalDetailsChangeUrl = Guid.NewGuid().ToString();
     private string areaOfInterestChangeUrl = Guid.NewGuid().ToString();
+    private string contactDetailChangeUrl = Guid.NewGuid().ToString();
     private IEnumerable<MemberProfile> memberProfiles;
     private IEnumerable<MemberPreference> memberPreferences;
     private ApprenticeshipDetailsModel? apprenticeshipDetails;
@@ -48,7 +49,7 @@ public class AmbassadorProfileViewModelTests
             new Profile { Id = 10, Description = "Carrying out and writing up case studies", Category = "Promotions", Ordering = 1 },
             new Profile { Id = 11, Description = "Designing and creating marketing materials to champion the network", Category = "Promotions", Ordering = 2 }
         };
-        var personalDetails = new PersonalDetailsModel(fullName, regionName, userType, personalDetailsChangeUrl, areaOfInterestChangeUrl);
+        var personalDetails = new PersonalDetailsModel(fullName, regionName, userType, personalDetailsChangeUrl, areaOfInterestChangeUrl,contactDetailChangeUrl);
         sut = new AmbassadorProfileViewModel(personalDetails, email, memberProfiles, memberPreferences, apprenticeshipDetails, profiles, memberProfileUrl);
     }
 

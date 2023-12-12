@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
-using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
-using FluentAssertions.Execution;
 using FluentAssertions;
+using FluentAssertions.Execution;
+using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 
 namespace SFA.DAS.Aan.SharedUi.UnitTests.Models.AmbassadorProfileViewModelsTests;
 public class ContactDetailsViewModelTests
@@ -10,6 +10,7 @@ public class ContactDetailsViewModelTests
     private string email;
     private IEnumerable<MemberProfile> memberProfiles;
     private IEnumerable<MemberPreference> memberPreferences;
+    private string contactDetailChangeUrl = Guid.NewGuid().ToString();
 
     [SetUp]
     public void Setup()
@@ -26,7 +27,7 @@ public class ContactDetailsViewModelTests
         memberProfiles.ToArray()[3].ProfileId = 11;
         memberProfiles.ToArray()[3].Value = "true";
         memberPreferences = fixture.CreateMany<MemberPreference>();
-        sut = new ContactDetailsViewModel(email, memberProfiles, memberPreferences);
+        sut = new ContactDetailsViewModel(email, memberProfiles, memberPreferences, contactDetailChangeUrl);
     }
 
     [Test]

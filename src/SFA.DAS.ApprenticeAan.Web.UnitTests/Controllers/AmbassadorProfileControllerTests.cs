@@ -88,6 +88,11 @@ public class AmbassadorProfileControllerTests
     public void ThenSetsViewModelWithPersonalDetails()
         => _result.Invoking(r => r.As<ViewResult>().Model.As<AmbassadorProfileViewModel>().PersonalDetails.FullName.Should().Be(memberProfile.FullName));
 
+    [Test]
+    public void ThenSetsViewModelWithMemberProfileUrl()
+        => _result.Invoking(r => r.As<ViewResult>().Model.As<AmbassadorProfileViewModel>().MemberProfileUrl.Should().Contain(SharedRouteNames.MemberProfile));
+
+
     private static IEnumerable<ApprenticeshipDetails?> GetApprenticeshipDetails()
     {
         yield return new ApprenticeshipDetails { Sector = string.Empty, Level = string.Empty, Programme = string.Empty };

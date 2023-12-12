@@ -29,15 +29,20 @@ public class EditPersonalInformationController : Controller
         _validator = validator;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Index(CancellationToken cancellationToken)
+    private async Task<EditPersonalInformationViewModel> BuildMemberProfileModel(CancellationToken cancellationToken)
     {
         var memberProfiles = await _apiClient.GetMemberProfile(User.GetAanMemberId(), User.GetAanMemberId(), false, cancellationToken);
         var regionTask = await _apiClient.GetRegions();
         EditPersonalInformationViewModel memberProfile = EditPersonalInformationViewModelMapping(memberProfiles.RegionId ?? 0, memberProfiles.Profiles, memberProfiles.Preferences, memberProfiles.UserType, memberProfiles.OrganisationName);
         memberProfile.Regions = Region.RegionToRegionViewModelMapping(regionTask.Regions);
         memberProfile.YourAmbassadorProfileUrl = Url.RouteUrl(SharedRouteNames.YourAmbassadorProfile)!;
-        return View(ChangePersonalDetailViewPath, memberProfile);
+        return memberProfile;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Index(CancellationToken cancellationToken)
+    {
+        return View(ChangePersonalDetailViewPath, await BuildMemberProfileModel(cancellationToken));
     }
 
     [HttpPost]
@@ -47,28 +52,23 @@ public class EditPersonalInformationController : Controller
 
         if (!result.IsValid)
         {
-            var memberProfiles = await _apiClient.GetMemberProfile(User.GetAanMemberId(), User.GetAanMemberId(), false, cancellationToken);
-            var regionTask = await _apiClient.GetRegions();
-            EditPersonalInformationViewModel memberProfile = EditPersonalInformationViewModelMapping(memberProfiles.RegionId ?? 0, memberProfiles.Profiles, memberProfiles.Preferences, memberProfiles.UserType, memberProfiles.OrganisationName);
-            memberProfile.Regions = Region.RegionToRegionViewModelMapping(regionTask.Regions);
-            memberProfile.YourAmbassadorProfileUrl = Url.RouteUrl(SharedRouteNames.YourAmbassadorProfile)!;
             result.AddToModelState(ModelState);
-            return View(ChangePersonalDetailViewPath, memberProfile);
+            return View(ChangePersonalDetailViewPath, await BuildMemberProfileModel(cancellationToken));
         }
         UpdateMemberProfileAndPreferencesRequest updateMemberProfileAndPreferencesRequest = new UpdateMemberProfileAndPreferencesRequest();
-        updateMemberProfileAndPreferencesRequest.patchMemberRequest.RegionId = submitPersonalDetailModel.RegionId;
-        updateMemberProfileAndPreferencesRequest.patchMemberRequest.OrganisationName = submitPersonalDetailModel.OrganisationName;
+        updateMemberProfileAndPreferencesRequest.PatchMemberRequest.RegionId = submitPersonalDetailModel.RegionId;
+        updateMemberProfileAndPreferencesRequest.PatchMemberRequest.OrganisationName = submitPersonalDetailModel.OrganisationName;
         List<UpdatePreferenceModel> updatePreferenceModels = new List<UpdatePreferenceModel>();
         updatePreferenceModels.Add(new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.Biography, Value = submitPersonalDetailModel.ShowBiography && !string.IsNullOrEmpty(submitPersonalDetailModel.Biography) });
         updatePreferenceModels.Add(new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.JobTitle, Value = submitPersonalDetailModel.ShowJobTitle });
 
-        updateMemberProfileAndPreferencesRequest.updateMemberProfileRequest.MemberPreferences = updatePreferenceModels;
+        updateMemberProfileAndPreferencesRequest.UpdateMemberProfileRequest.MemberPreferences = updatePreferenceModels;
 
         List<UpdateProfileModel> updateProfileModels = new List<UpdateProfileModel>();
-        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.Biography, Value = submitPersonalDetailModel.Biography });
-        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.JobTitle, Value = submitPersonalDetailModel.JobTitle });
+        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.Biography, Value = submitPersonalDetailModel.Biography?.Trim() });
+        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.JobTitle, Value = submitPersonalDetailModel.JobTitle?.Trim() });
 
-        updateMemberProfileAndPreferencesRequest.updateMemberProfileRequest.MemberProfiles = updateProfileModels;
+        updateMemberProfileAndPreferencesRequest.UpdateMemberProfileRequest.MemberProfiles = updateProfileModels;
 
         await _apiClient.UpdateMemberProfileAndPreferences(User.GetAanMemberId(), updateMemberProfileAndPreferencesRequest, cancellationToken);
         TempData[TempDataKeys.YourAmbassadorProfileSuccessMessage] = true;
