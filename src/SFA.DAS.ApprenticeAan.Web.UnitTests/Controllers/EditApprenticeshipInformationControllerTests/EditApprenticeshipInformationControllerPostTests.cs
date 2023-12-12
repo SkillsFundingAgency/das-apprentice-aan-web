@@ -111,8 +111,11 @@ public class EditApprenticeshipInformationControllerPostTests
         var result = response as ViewResult;
 
         //Assert
-        Assert.That(response, Is.InstanceOf<ViewResult>());
-        Assert.That(result!.ViewName, Does.Contain(SharedRouteNames.EditApprenticeshipInformation));
+        Assert.Multiple(() =>
+        {
+            Assert.That(response, Is.InstanceOf<ViewResult>());
+            Assert.That(result!.ViewName, Does.Contain(SharedRouteNames.EditApprenticeshipInformation));
+        });
     }
 
     [Test, MoqInlineAutoData]

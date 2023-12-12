@@ -43,6 +43,15 @@ public class ContactDetailsViewModelTests
     }
 
     [Test]
+    public void PersonalDetailsChangeUrlPropertyAreSet()
+    {
+        using (new AssertionScope())
+        {
+            sut.ContactDetailChangeUrl.Should().BeEquivalentTo(contactDetailChangeUrl);
+        }
+    }
+
+    [Test]
     public void ContactDetailViewModel_InitializationWithParameterlessConstructor_ReturnsExpectedValue()
     {
         // Act
@@ -51,12 +60,15 @@ public class ContactDetailsViewModelTests
         // Assert
         using (new AssertionScope())
         {
-            Assert.That(_sut, Is.Not.Null);
-            Assert.That(_sut.EmailAddress, Is.Null);
-            Assert.That(_sut.LinkedIn, Is.Null);
-            Assert.That(_sut.LinkedInDisplayClass, Is.Null);
-            Assert.That(_sut.LinkedInDisplayValue, Is.Null);
-            Assert.That(_sut.ContactDetailChangeUrl, Is.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(_sut, Is.Not.Null);
+                Assert.That(_sut.EmailAddress, Is.Null);
+                Assert.That(_sut.LinkedIn, Is.Null);
+                Assert.That(_sut.LinkedInDisplayClass, Is.Null);
+                Assert.That(_sut.LinkedInDisplayValue, Is.Null);
+                Assert.That(_sut.ContactDetailChangeUrl, Is.Null);
+            });
         }
     }
 }
