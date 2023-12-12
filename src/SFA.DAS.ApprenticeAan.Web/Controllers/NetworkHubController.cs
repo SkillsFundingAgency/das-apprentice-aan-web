@@ -17,7 +17,8 @@ public class NetworkHubController : Controller
         {
             EventsHubUrl = Url.RouteUrl(SharedRouteNames.EventsHub)!,
             NetworkDirectoryUrl = Url.RouteUrl(SharedRouteNames.NetworkDirectory)!,
-            ProfileSettingsUrl = Url.RouteUrl(SharedRouteNames.ProfileSettings)!
+            ProfileSettingsUrl = Url.RouteUrl(SharedRouteNames.ProfileSettings)!,
+            ContactUsUrl = Url.RouteUrl(SharedRouteNames.ContactUs)!
         };
         return View(model);
     }
