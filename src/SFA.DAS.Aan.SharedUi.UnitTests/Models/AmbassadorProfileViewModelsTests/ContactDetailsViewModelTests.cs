@@ -43,7 +43,7 @@ public class ContactDetailsViewModelTests
     }
 
     [Test]
-    public void PersonalDetailsChangeUrlPropertyAreSet()
+    public void ContactDetailChangeUrlPropertyIsSet()
     {
         using (new AssertionScope())
         {

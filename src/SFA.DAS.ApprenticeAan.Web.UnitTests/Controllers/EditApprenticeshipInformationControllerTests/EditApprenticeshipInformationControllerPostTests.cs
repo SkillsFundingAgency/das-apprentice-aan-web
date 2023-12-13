@@ -28,77 +28,6 @@ public class EditApprenticeshipInformationControllerPostTests
     private SubmitApprenticeshipInformationModel submitApprenticeshipInformationModel = null!;
     private GetMemberProfileResponse getMemberProfileResponse = null!;
 
-    [TearDown]
-    public void TearDown()
-    {
-        if (sut != null) sut.Dispose();
-    }
-
-    private void SetUpControllerWithContext()
-    {
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        sut = new EditApprenticeshipInformationController(outerApiMock.Object, validatorMock.Object);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, Guid.NewGuid().ToString());
-        sut.AddUrlHelperMock()
-            .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
-    }
-    private void SetUpModelValidateTrue()
-    {
-        outerApiMock = new();
-        validatorMock = new();
-        SetUpControllerWithContext();
-
-        submitApprenticeshipInformationModel = new()
-        {
-            EmployerName = "EmployerName",
-            EmployerAddress1 = "EmployerAddress1",
-            EmployerAddress2 = "EmployerAddress2",
-            EmployerCounty = "EmployerCounty",
-            EmployerTownOrCity = "EmployerTownOrCity",
-            EmployerPostcode = "EmployerPostcode"
-        };
-
-        Mock<ITempDataDictionary> tempDataMock = new Mock<ITempDataDictionary>();
-        tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.YourAmbassadorProfileSuccessMessage)).Returns(true);
-        sut.TempData = tempDataMock.Object;
-        validatorMock.Setup(v => v.ValidateAsync(It.IsAny<SubmitApprenticeshipInformationModel>(), It.IsAny<CancellationToken>())).ReturnsAsync(new ValidationResult());
-    }
-
-    private void SetUpModelValidateFalse()
-    {
-        outerApiMock = new();
-        validatorMock = new();
-        SetUpControllerWithContext();
-
-        submitApprenticeshipInformationModel = new()
-        {
-            EmployerName = string.Empty,
-            EmployerAddress1 = string.Empty,
-            EmployerAddress2 = string.Empty,
-            EmployerCounty = string.Empty,
-            EmployerTownOrCity = string.Empty,
-            EmployerPostcode = string.Empty
-        };
-
-        Mock<ITempDataDictionary> tempDataMock = new Mock<ITempDataDictionary>();
-        tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.YourAmbassadorProfileSuccessMessage)).Returns(true);
-        sut.TempData = tempDataMock.Object;
-        validatorMock.Setup(v => v.ValidateAsync(It.IsAny<SubmitApprenticeshipInformationModel>(), It.IsAny<CancellationToken>())).ReturnsAsync(new ValidationResult(new List<ValidationFailure>()
-            {
-                new ValidationFailure("TestField","Test Message"){ErrorCode = "1001"}
-            }));
-
-        getMemberProfileResponse = new()
-        {
-            Profiles = new List<MemberProfile>(),
-            Preferences = new List<MemberPreference>(),
-            RegionId = 1,
-            OrganisationName = string.Empty
-        };
-        outerApiMock.Setup(a => a.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(getMemberProfileResponse));
-    }
-
     [Test, MoqInlineAutoData]
     public async Task Post_InvalidCommand_ShouldReturnsEditApprenticeshipInformationView(
         CancellationToken cancellationToken)
@@ -200,6 +129,7 @@ public class EditApprenticeshipInformationControllerPostTests
 
     [TestCase("employername  ", "employername")]
     [TestCase("employername", "employername")]
+    [TestCase("  employername", "employername")]
     [TestCase("", "")]
     [TestCase(null, null)]
     public async Task Post_SetsEmployerName(string? employerName, string? expectedEmployerName)
@@ -220,6 +150,7 @@ public class EditApprenticeshipInformationControllerPostTests
 
     [TestCase("employeraddress1  ", "employeraddress1")]
     [TestCase("employeraddress1", "employeraddress1")]
+    [TestCase("  employeraddress1", "employeraddress1")]
     [TestCase("", "")]
     [TestCase(null, null)]
     public async Task Post_SetsEmployerAddress1(string? employerAddress1, string? expectedEmployerAddress1)
@@ -240,6 +171,7 @@ public class EditApprenticeshipInformationControllerPostTests
 
     [TestCase("employeraddress2  ", "employeraddress2")]
     [TestCase("employeraddress2", "employeraddress2")]
+    [TestCase("  employeraddress2", "employeraddress2")]
     [TestCase("", "")]
     [TestCase(null, null)]
     public async Task Post_SetsEmployerAddress2(string? employerAddress2, string? expectedEmployerAddress2)
@@ -260,6 +192,7 @@ public class EditApprenticeshipInformationControllerPostTests
 
     [TestCase("employercounty  ", "employercounty")]
     [TestCase("employercounty", "employercounty")]
+    [TestCase("  employercounty", "employercounty")]
     [TestCase("", "")]
     [TestCase(null, null)]
     public async Task Post_SetsEmployerCounty(string? employerCounty, string? expectedEmployerCounty)
@@ -280,6 +213,7 @@ public class EditApprenticeshipInformationControllerPostTests
 
     [TestCase("employertownorcity  ", "employertownorcity")]
     [TestCase("employertownorcity", "employertownorcity")]
+    [TestCase("  employertownorcity", "employertownorcity")]
     [TestCase("", "")]
     [TestCase(null, null)]
     public async Task Post_SetsEmployerTownOrCity(string? employerTownOrCity, string? expectedEmployerTownOrCity)
@@ -300,6 +234,7 @@ public class EditApprenticeshipInformationControllerPostTests
 
     [TestCase("employerpostcode  ", "employerpostcode")]
     [TestCase("employerpostcode", "employerpostcode")]
+    [TestCase("  employerpostcode", "employerpostcode")]
     [TestCase("", "")]
     [TestCase(null, null)]
     public async Task Post_SetsEmployerPostcode(string? employerPostcode, string? expectedEmployerPostcode)
@@ -316,5 +251,76 @@ public class EditApprenticeshipInformationControllerPostTests
             It.IsAny<Guid>(),
             It.Is<UpdateMemberProfileAndPreferencesRequest>(m => m.UpdateMemberProfileRequest.MemberProfiles.ElementAt(5).Value == expectedEmployerPostcode),
             It.IsAny<CancellationToken>()));
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        if (sut != null) sut.Dispose();
+    }
+
+    private void SetUpControllerWithContext()
+    {
+        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
+        sut = new EditApprenticeshipInformationController(outerApiMock.Object, validatorMock.Object);
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, Guid.NewGuid().ToString());
+        sut.AddUrlHelperMock()
+            .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
+    }
+    private void SetUpModelValidateTrue()
+    {
+        outerApiMock = new();
+        validatorMock = new();
+        SetUpControllerWithContext();
+
+        submitApprenticeshipInformationModel = new()
+        {
+            EmployerName = "EmployerName",
+            EmployerAddress1 = "EmployerAddress1",
+            EmployerAddress2 = "EmployerAddress2",
+            EmployerCounty = "EmployerCounty",
+            EmployerTownOrCity = "EmployerTownOrCity",
+            EmployerPostcode = "EmployerPostcode"
+        };
+
+        Mock<ITempDataDictionary> tempDataMock = new Mock<ITempDataDictionary>();
+        tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.YourAmbassadorProfileSuccessMessage)).Returns(true);
+        sut.TempData = tempDataMock.Object;
+        validatorMock.Setup(v => v.ValidateAsync(It.IsAny<SubmitApprenticeshipInformationModel>(), It.IsAny<CancellationToken>())).ReturnsAsync(new ValidationResult());
+    }
+
+    private void SetUpModelValidateFalse()
+    {
+        outerApiMock = new();
+        validatorMock = new();
+        SetUpControllerWithContext();
+
+        submitApprenticeshipInformationModel = new()
+        {
+            EmployerName = string.Empty,
+            EmployerAddress1 = string.Empty,
+            EmployerAddress2 = string.Empty,
+            EmployerCounty = string.Empty,
+            EmployerTownOrCity = string.Empty,
+            EmployerPostcode = string.Empty
+        };
+
+        Mock<ITempDataDictionary> tempDataMock = new Mock<ITempDataDictionary>();
+        tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.YourAmbassadorProfileSuccessMessage)).Returns(true);
+        sut.TempData = tempDataMock.Object;
+        validatorMock.Setup(v => v.ValidateAsync(It.IsAny<SubmitApprenticeshipInformationModel>(), It.IsAny<CancellationToken>())).ReturnsAsync(new ValidationResult(new List<ValidationFailure>()
+            {
+                new ValidationFailure("TestField","Test Message"){ErrorCode = "1001"}
+            }));
+
+        getMemberProfileResponse = new()
+        {
+            Profiles = new List<MemberProfile>(),
+            Preferences = new List<MemberPreference>(),
+            RegionId = 1,
+            OrganisationName = string.Empty
+        };
+        outerApiMock.Setup(a => a.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(getMemberProfileResponse));
     }
 }

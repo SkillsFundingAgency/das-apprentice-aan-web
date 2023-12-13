@@ -25,38 +25,6 @@ public class EditApprenticeshipInformationControllerGetTests
     private readonly string YourAmbassadorProfileUrl = Guid.NewGuid().ToString();
     private GetMemberProfileResponse getMemberProfileResponse = null!;
 
-    [TearDown]
-    public void TearDown()
-    {
-        if (sut != null) sut.Dispose();
-    }
-
-    private void SetUpControllerWithContext()
-    {
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        sut = new EditApprenticeshipInformationController(outerApiMock.Object, validatorMock.Object);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, Guid.NewGuid().ToString());
-        sut.AddUrlHelperMock()
-            .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
-    }
-
-    private void SetUpOuterApiMock()
-    {
-        outerApiMock = new();
-        validatorMock = new();
-        SetUpControllerWithContext();
-
-        getMemberProfileResponse = new()
-        {
-            Profiles = new List<MemberProfile>(),
-            Preferences = new List<MemberPreference>(),
-            RegionId = 1,
-            OrganisationName = string.Empty
-        };
-        outerApiMock.Setup(a => a.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(getMemberProfileResponse));
-    }
-
     [Test, MoqAutoData]
     public void Index_ShouldReturnEditApprenticeshipInformationView(
         CancellationToken cancellationToken)
@@ -196,12 +164,6 @@ public class EditApprenticeshipInformationControllerGetTests
         // Assert
         Assert.Multiple(() =>
         {
-            Assert.That(viewModel!.EmployerName, Is.EqualTo(employerName));
-            Assert.That(viewModel!.EmployerAddress1, Is.EqualTo(employerAddress1));
-            Assert.That(viewModel!.EmployerAddress2, Is.EqualTo(employerAddress2));
-            Assert.That(viewModel!.EmployerTownOrCity, Is.EqualTo(employerTownOrCity));
-            Assert.That(viewModel!.EmployerCounty, Is.EqualTo(employerCounty));
-            Assert.That(viewModel!.EmployerPostcode, Is.EqualTo(employerPostcode));
             Assert.That(viewModel!.ShowApprenticeshipInformation, Is.EqualTo(showApprenticeshipInformation));
             Assert.That(viewModel!.Sector, Is.EqualTo(null));
             Assert.That(viewModel!.Programmes, Is.EqualTo(null));
@@ -421,5 +383,37 @@ public class EditApprenticeshipInformationControllerGetTests
 
         // Assert
         Assert.That(result.YourAmbassadorProfileUrl, Is.EqualTo(YourAmbassadorProfileUrl));
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        if (sut != null) sut.Dispose();
+    }
+
+    private void SetUpControllerWithContext()
+    {
+        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
+        sut = new EditApprenticeshipInformationController(outerApiMock.Object, validatorMock.Object);
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, Guid.NewGuid().ToString());
+        sut.AddUrlHelperMock()
+            .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
+    }
+
+    private void SetUpOuterApiMock()
+    {
+        outerApiMock = new();
+        validatorMock = new();
+        SetUpControllerWithContext();
+
+        getMemberProfileResponse = new()
+        {
+            Profiles = new List<MemberProfile>(),
+            Preferences = new List<MemberPreference>(),
+            RegionId = 1,
+            OrganisationName = string.Empty
+        };
+        outerApiMock.Setup(a => a.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(getMemberProfileResponse));
     }
 }

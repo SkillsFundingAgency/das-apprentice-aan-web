@@ -11,7 +11,7 @@ public class SubmitApprenticeshipInformationModelValidator : AbstractValidator<S
     public const string EmployerNameMaxLengthMessage = "Your Employer Name must be up to 200 characters";
     public const string EmployerNameHasExcludedCharacter = "Your Employer Name must not include any special characters: @, #, $, ^, =, +, \\, /, <, >, %";
 
-    public const string AddressLine1EmptyMessage = "Enter the Building and Street";
+    public const string AddressLine1EmptyMessage = "Enter the Employer Address Line 1";
     public const string AddressLine1MaxLengthMessage = "Your Employer Address Line 1 must be up to 200 characters";
     public const string AddressLine1HasExcludedCharacter = "Your Employer Address Line 1 must not include any special characters: @, #, $, ^, =, +, \\, /, <, >, %";
 
