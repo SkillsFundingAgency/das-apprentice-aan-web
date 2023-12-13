@@ -1,7 +1,8 @@
-﻿@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
+﻿@model ContactUsViewModel
 @{
     ViewData["Title"] = "Contact us";
 }
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">Contact us</h1>
@@ -26,48 +27,48 @@
                 <tr class="govuk-table__row">
                     <td class="govuk-table__cell">East of England</td>
                     <td class="govuk-table__cell">
-                        <a href="mailto:eoeaan@gmail.com" class="govuk-link">eoeaan@gmail.com</a>
+                        <a href="mailto:@Model.EastOfEnglandEmailAddress" class="govuk-link">@Model.EastOfEnglandEmailAddress</a>
                     </td>
                 </tr>
                 <tr class="govuk-table__row">
                     <td class="govuk-table__cell">East Midlands</td>
-                    <td class="govuk-table__cell"><a href="mailto:eastmidsappambassadors@gmail.com"
-                            class="govuk-link">eastmidsappambassadors@gmail.com</a></td>
+                    <td class="govuk-table__cell"><a href="mailto:@Model.EastMidlandsEmailAddress"
+                            class="govuk-link">@Model.EastMidlandsEmailAddress</a></td>
                 </tr>
                 <tr class="govuk-table__row">
                     <td class="govuk-table__cell">London</td>
-                    <td class="govuk-table__cell"><a href="mailto:londonaanetwork@gmail.com"
-                            class="govuk-link">londonaanetwork@gmail.com</a></td>
+                    <td class="govuk-table__cell"><a href="mailto:@Model.LondonEmailAddress"
+                            class="govuk-link">@Model.LondonEmailAddress</a></td>
                 </tr>
                 <tr class="govuk-table__row">
                     <td class="govuk-table__cell">North East</td>
-                    <td class="govuk-table__cell"><a href="mailto:Hello@neaan.org.uk"
-                            class="govuk-link">Hello@neaan.org.uk</a></td>
+                    <td class="govuk-table__cell"><a href="mailto:@Model.NorthEastEmailAddress"
+                            class="govuk-link">@Model.NorthEastEmailAddress</a></td>
                 </tr>
                 <tr class="govuk-table__row">
                     <td class="govuk-table__cell"> North West</td>
-                    <td class="govuk-table__cell"><a href="mailto:chair@nwaan.co.uk"
-                            class="govuk-link">chair@nwaan.co.uk</a></td>
+                    <td class="govuk-table__cell"><a href="mailto:@Model.NorthWestEmailAddress"
+                            class="govuk-link">@Model.NorthWestEmailAddress</a></td>
                 </tr>
                 <tr class="govuk-table__row">
                     <td class="govuk-table__cell">South East </td>
-                    <td class="govuk-table__cell"><a href="mailto:info@seaan.org.uk"
-                            class="govuk-link">info@seaan.org.uk</a></td>
+                    <td class="govuk-table__cell"><a href="mailto:@Model.SouthEastEmailAddress"
+                            class="govuk-link">@Model.SouthEastEmailAddress</a></td>
                 </tr>
                 <tr class="govuk-table__row">
                     <td class="govuk-table__cell">South West </td>
-                    <td class="govuk-table__cell"><a href="mailto:swaan@southwestwater.co.uk"
-                            class="govuk-link">swaan@southwestwater.co.uk</a></td>
+                    <td class="govuk-table__cell"><a href="mailto:@Model.SouthWestEmailAddress"
+                            class="govuk-link">@Model.SouthWestEmailAddress</a></td>
                 </tr>
                 <tr class="govuk-table__row">
                     <td class="govuk-table__cell">West Midlands</td>
-                    <td class="govuk-table__cell"><a href="mailto:chair@wmaan.co.uk"
-                            class="govuk-link">chair@wmaan.co.uk</a></td>
+                    <td class="govuk-table__cell"><a href="mailto:@Model.WestMidlandsEmailAddress"
+                            class="govuk-link">@Model.WestMidlandsEmailAddress</a></td>
                 </tr>
                 <tr class="govuk-table__row">
                     <td class="govuk-table__cell">Yorkshire and the Humber</td>
-                    <td class="govuk-table__cell"><a href="mailto:chair@yhaan.co.uk"
-                            class="govuk-link">chair@yhaan.co.uk</a></td>
+                    <td class="govuk-table__cell"><a href="mailto:@Model.YorkshireAndTheHumberEmailAddress"
+                            class="govuk-link">@Model.YorkshireAndTheHumberEmailAddress</a></td>
                 </tr>
             </tbody>
         </table>
