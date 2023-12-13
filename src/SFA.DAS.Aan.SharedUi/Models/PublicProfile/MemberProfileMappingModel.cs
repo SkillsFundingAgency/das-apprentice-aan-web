@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.Aan.SharedUi.Models;
+﻿namespace SFA.DAS.Aan.SharedUi.Models.PublicProfile;
 public class MemberProfileMappingModel
 {
     public int LinkedinProfileId { get; set; }
@@ -8,5 +8,4 @@ public class MemberProfileMappingModel
     public List<int> SecondSectionProfileIds { get; set; } = new List<int>();
     public List<int> AddressProfileIds { get; set; } = new List<int>();
     public int EmployerNameProfileId { get; set; }
-    public bool IsLoggedInUserMemberProfile { get; set; }
 }

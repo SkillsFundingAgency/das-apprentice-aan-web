@@ -1,0 +1,14 @@
+﻿@using SFA.DAS.Aan.SharedUi.Models.PublicProfile;
+
+@model ILinkedInViewModel
+
+@if (!string.IsNullOrEmpty(Model.LinkedInUrl))
+{
+    <ul class="govuk-list app-icon-list">
+        <li>
+            <h2 class="govuk-heading-m">Connect with @Model.FirstName on Linkedin</h2>
+            <p>Send @Model.FirstName a connection request: <a href="@Model.LinkedInUrl" class="govuk-link govuk-link--no-visited-state">@Model.LinkedInUrl</a></p>
+            <img alt="" class="app-icon-list__icon" src="/img/linkedin.svg" />
+        </li>
+    </ul>
+}

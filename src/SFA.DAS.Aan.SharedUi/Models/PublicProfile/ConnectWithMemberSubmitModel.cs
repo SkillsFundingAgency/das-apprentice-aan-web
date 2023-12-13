@@ -1,6 +1,6 @@
-﻿namespace SFA.DAS.Aan.SharedUi.Models;
+﻿namespace SFA.DAS.Aan.SharedUi.Models.PublicProfile;
 
-public class SubmitConnectionCommand
+public class ConnectWithMemberSubmitModel
 {
     public int ReasonToGetInTouch { get; set; }
     public bool HasAgreedToSharePersonalDetails { get; set; }

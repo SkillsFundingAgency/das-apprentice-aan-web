@@ -1,0 +1,21 @@
+﻿@using SFA.DAS.Aan.SharedUi.Extensions;
+@using SFA.DAS.Aan.SharedUi.Models.PublicProfile;
+
+@model MemberPersonalInformationViewModel
+
+<strong class="govuk-tag app-tag app-tag--@Model.UserRole">@Model.UserRole</strong>
+<h1 class="govuk-heading-xl govuk-!-margin-top-4 govuk-!-margin-bottom-0">@Model.FullName</h1>
+<p class="profile-job-title govuk-!-margin-bottom-0">@Model.JobTitle</p>
+<p>@Model.RegionName</p>
+
+@if (!string.IsNullOrEmpty(Model.Biography))
+{
+    <div class="profile-about-me-section govuk-!-padding-5">
+        <h3 class="govuk-heading-m">
+            About me
+        </h3>
+        <p>
+            @Model.Biography
+        </p>
+    </div>
+}

@@ -1,6 +1,7 @@
 ﻿using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 
-namespace SFA.DAS.Aan.SharedUi.Models;
+namespace SFA.DAS.Aan.SharedUi.Models.PublicProfile;
+
 public class MemberProfileDetail
 {
     public string FullName { get; set; } = null!;

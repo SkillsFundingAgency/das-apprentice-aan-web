@@ -1,17 +1,17 @@
 ﻿using FluentValidation.TestHelper;
-using SFA.DAS.Aan.SharedUi.Models;
+using SFA.DAS.Aan.SharedUi.Models.PublicProfile;
 using SFA.DAS.ApprenticeAan.Web.Validators.MemberProfile;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.MemberProfile;
 
 [TestFixture]
-public class SubmitConnectionCommandValidatorTests
+public class ConnectWithMemberSubmitModelValidatorTests
 {
     [Test]
     public void Validate_ReasonToGetInTouchIsZero_ReturnInvalid()
     {
         //Arrange
-        var model = new SubmitConnectionCommand
+        var model = new ConnectWithMemberSubmitModel
         {
             ReasonToGetInTouch = 0,
             HasAgreedToCodeOfConduct = true,
@@ -19,19 +19,19 @@ public class SubmitConnectionCommandValidatorTests
         };
 
         //Act
-        var sut = new SubmitConnectionCommandValidator();
+        var sut = new MemberProfileSubmitValidator();
         var result = sut.TestValidate(model);
 
         //Assert
         result.ShouldHaveValidationErrorFor(c => c.ReasonToGetInTouch)
-            .WithErrorMessage(SubmitConnectionCommandValidator.ReasonToConnectValidationMessage);
+            .WithErrorMessage(MemberProfileSubmitValidator.ReasonToConnectValidationMessage);
     }
 
     [Test]
     public void Validate_ReasonToGetInTouchIsValid_ReturnValid()
     {
         //Arrange
-        var model = new SubmitConnectionCommand
+        var model = new ConnectWithMemberSubmitModel
         {
             ReasonToGetInTouch = 1,
             HasAgreedToCodeOfConduct = true,
@@ -39,7 +39,7 @@ public class SubmitConnectionCommandValidatorTests
         };
 
         //Act
-        var sut = new SubmitConnectionCommandValidator();
+        var sut = new MemberProfileSubmitValidator();
         var result = sut.TestValidate(model);
 
         //Assert
@@ -50,7 +50,7 @@ public class SubmitConnectionCommandValidatorTests
     public void Validate_HasAgreedToCodeOfConductIsFalse_ReturnInvalid()
     {
         //Arrange
-        var model = new SubmitConnectionCommand
+        var model = new ConnectWithMemberSubmitModel
         {
             ReasonToGetInTouch = 1,
             HasAgreedToCodeOfConduct = false,
@@ -58,19 +58,19 @@ public class SubmitConnectionCommandValidatorTests
         };
 
         //Act
-        var sut = new SubmitConnectionCommandValidator();
+        var sut = new MemberProfileSubmitValidator();
         var result = sut.TestValidate(model);
 
         //Assert
         result.ShouldHaveValidationErrorFor(c => c.HasAgreedToCodeOfConduct)
-            .WithErrorMessage(SubmitConnectionCommandValidator.HasAgreedToCodeOfConductValidationMessage);
+            .WithErrorMessage(MemberProfileSubmitValidator.HasAgreedToCodeOfConductValidationMessage);
     }
 
     [Test]
     public void Validate_HasAgreedToCodeOfConductIsTrue_ReturnValid()
     {
         //Arrange
-        var model = new SubmitConnectionCommand
+        var model = new ConnectWithMemberSubmitModel
         {
             ReasonToGetInTouch = 1,
             HasAgreedToCodeOfConduct = true,
@@ -78,7 +78,7 @@ public class SubmitConnectionCommandValidatorTests
         };
 
         //Act
-        var sut = new SubmitConnectionCommandValidator();
+        var sut = new MemberProfileSubmitValidator();
         var result = sut.TestValidate(model);
 
         //Assert
@@ -89,7 +89,7 @@ public class SubmitConnectionCommandValidatorTests
     public void Validate_HasAgreedToSharePersonalDetailsIsFalse_ReturnInvalid()
     {
         //Arrange
-        var model = new SubmitConnectionCommand
+        var model = new ConnectWithMemberSubmitModel
         {
             ReasonToGetInTouch = 1,
             HasAgreedToCodeOfConduct = true,
@@ -97,19 +97,19 @@ public class SubmitConnectionCommandValidatorTests
         };
 
         //Act
-        var sut = new SubmitConnectionCommandValidator();
+        var sut = new MemberProfileSubmitValidator();
         var result = sut.TestValidate(model);
 
         //Assert
         result.ShouldHaveValidationErrorFor(c => c.HasAgreedToSharePersonalDetails)
-            .WithErrorMessage(SubmitConnectionCommandValidator.HasAgreedToSharePersonalDetailsValidationMessage);
+            .WithErrorMessage(MemberProfileSubmitValidator.HasAgreedToSharePersonalDetailsValidationMessage);
     }
 
     [Test]
     public void Validate_HasAgreedToSharePersonalDetailsIsTrue_ReturnValid()
     {
         //Arrange
-        var model = new SubmitConnectionCommand
+        var model = new ConnectWithMemberSubmitModel
         {
             ReasonToGetInTouch = 1,
             HasAgreedToCodeOfConduct = true,
@@ -117,7 +117,7 @@ public class SubmitConnectionCommandValidatorTests
         };
 
         //Act
-        var sut = new SubmitConnectionCommandValidator();
+        var sut = new MemberProfileSubmitValidator();
         var result = sut.TestValidate(model);
 
         //Assert
