@@ -82,10 +82,10 @@ public class NetworkEventsControllerTests
         model.FilterChoices.ToDate?.ToApiString().Should().Be(toDateFormatted);
         model.FilterChoices.Keyword.Should().Be(keyword);
         model.FilterChoices.EventFormatChecklistDetails.Lookups.Should().BeEquivalentTo(expectedEventFormatChecklistLookup);
-        model.SelectedFiltersModel.ClearSelectedFiltersLink.Should().Be(AllNetworksUrl);
-
+        model.SelectedFiltersModel.ClearSelectedFiltersLink.Should().Be(AllNetworksUrl); ;
         outerApiMock.Verify(o => o.GetCalendarEvents(It.IsAny<Guid>(), It.IsAny<Dictionary<string, string[]>>(), It.IsAny<CancellationToken>()), Times.Once);
     }
+
     [Test, MoqAutoData]
     public void GetCalendarEventsNoFilters_ReturnsApiResponse(
    [Frozen] Mock<IOuterApiClient> outerApiMock,
@@ -124,4 +124,31 @@ public class NetworkEventsControllerTests
         outerApiMock.Verify(o => o.GetCalendarEvents(It.IsAny<Guid>(), It.IsAny<Dictionary<string, string[]>>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
+    [Test, MoqAutoData]
+    public void GetCalendarEvents_RegionLookup_NationalAddedWithIdZero(
+   [Frozen] Mock<IOuterApiClient> outerApiMock,
+   [Greedy] NetworkEventsController sut,
+           GetCalendarEventsQueryResult expectedResult,
+           GetRegionsResult regionsResult,
+           Guid apprenticeId)
+    {
+        var request = new GetNetworkEventsRequest();
+
+        var regionCountFromApi = regionsResult.Regions.Count;
+        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
+        outerApiMock.Setup(o => o.GetCalendarEvents(It.IsAny<Guid>(), It.IsAny<Dictionary<string, string[]>>(), It.IsAny<CancellationToken>())).ReturnsAsync(expectedResult);
+        outerApiMock.Setup(o => o.GetRegions()).ReturnsAsync(regionsResult);
+
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkEvents, AllNetworksUrl);
+
+        var actualResult = sut.Index(request, new CancellationToken());
+
+        var viewResult = actualResult.Result.As<ViewResult>();
+        var model = viewResult.Model as NetworkEventsViewModel;
+
+        var regionLookup = model!.FilterChoices.RegionChecklistDetails.Lookups;
+        regionLookup!.Count().Should().Be(regionCountFromApi + 1);
+        regionLookup!.First(x => x.Value == "0").Name.Should().Be("National");
+    }
 }

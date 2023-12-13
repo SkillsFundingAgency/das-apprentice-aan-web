@@ -39,6 +39,7 @@ public class NetworkEventsController : Controller
 
         var calendars = calendarTask.Result;
         var regions = regionTask.Result.Regions;
+        regions.Add(new Region { Area = "National", Id = 0, Ordering = regions.Select(region => region.Ordering).Max() + 1 });
 
         var model = InitialiseViewModel(calendarEventsTask.Result);
         var filterUrl = FilterBuilder.BuildFullQueryString(request, () => Url.RouteUrl(SharedRouteNames.NetworkEvents)!);
