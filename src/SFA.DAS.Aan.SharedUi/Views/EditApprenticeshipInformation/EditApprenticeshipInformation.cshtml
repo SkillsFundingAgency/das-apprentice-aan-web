@@ -1,0 +1,148 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.Aan.SharedUi.Constants;
+@using SFA.DAS.Aan.SharedUi.Extensions;
+@using SFA.DAS.Aan.SharedUi.Infrastructure;
+@using SFA.DAS.Aan.SharedUi.Models;
+@using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
+@using SFA.DAS.Aan.SharedUi.Models.EditApprenticeshipInformation;
+@using SFA.DAS.Aan.SharedUi.TagHelpers;
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, SFA.DAS.Aan.SharedUi
+
+
+@model EditApprenticeshipInformationViewModel;
+
+@{
+    ViewData["Title"] = "Edit Personal Information";
+}
+<partial name="_validationSummary" />
+<div class="govuk-grid-row govuk-body">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l govuk-!-margin-top-4 govuk-!-margin-bottom-4">Your apprenticeship information</h1>
+        <p class="personal-section-description">
+            Here is the current information the network holds about your employer. You can edit your employer’s name and address. Your apprenticeship sector, programme and level is taken from your existing apprenticeship account and cannot be changed on this page.
+        </p>
+        <form method="post" asp-route="@SharedRouteNames.EditApprenticeshipInformation" enctype="multipart/form-data" novalidate>
+            <div esfa-validation-marker-for="EmployerName">
+                <div id="JobTitle" class="govuk-form-group">
+                    <h3 class="govuk-label-wrapper govuk-!-margin-top-4 govuk-!-margin-bottom-4">
+                        <label class="govuk-label govuk-label--m" for="EmployerName">
+                            Employer's name
+                        </label>
+                    </h3>
+                    <span asp-validation-for="EmployerName" class="govuk-error-message"></span>
+                    <input type="text" asp-for="EmployerName" class="govuk-input" id="EmployerName" name="employerName">
+                </div>
+            </div>
+            <hr />
+            <fieldset class="govuk-fieldset">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                    <h3 class="govuk-label-wrapper govuk-!-margin-top-4 govuk-!-margin-bottom-4">
+                        What is your address?
+                    </h3>
+                </legend>
+                <div esfa-validation-marker-for="EmployerAddress1">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="EmployerTownOrCity">
+                            Address line 1
+                        </label>
+                        <span asp-validation-for="EmployerAddress1" class="govuk-error-message"></span>
+                        <input asp-for="EmployerAddress1" class="govuk-input" id="EmployerAddress1" name="EmployerAddress1" type="text" autocomplete="employer-address-1">
+                    </div>
+                </div>
+                <div esfa-validation-marker-for="EmployerAddress2">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="EmployerAddress2">
+                            Address line 2 (optional)
+                        </label>
+                        <span asp-validation-for="EmployerAddress2" class="govuk-error-message"></span>
+                        <input asp-for="EmployerAddress2" class="govuk-input" id="EmployerAddress2" name="EmployerAddress2" type="text" autocomplete="employer-address-2">
+                    </div>
+                </div>
+                <div esfa-validation-marker-for="EmployerTownOrCity">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="EmployerTownOrCity">
+                            Town or city
+                        </label>
+                        <span asp-validation-for="EmployerTownOrCity" class="govuk-error-message"></span>
+                        <input asp-for="EmployerTownOrCity" class="govuk-input govuk-!-width-two-thirds" id="EmployerTownOrCity" name="EmployerTownOrCity" type="text" autocomplete="EmployerTownOrCity">
+                    </div>
+                </div>
+                <div esfa-validation-marker-for="EmployerCounty">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="EmployerCounty">
+                            County (optional)
+                        </label>
+                        <span asp-validation-for="EmployerCounty" class="govuk-error-message"></span>
+                        <input asp-for="EmployerCounty" class="govuk-input govuk-!-width-two-thirds" id="EmployerCounty" name="EmployerCounty" type="text">
+                    </div>
+                </div>
+                <div esfa-validation-marker-for="EmployerPostcode">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="EmployerPostcode">
+                            Postcode
+                        </label>
+                        <span asp-validation-for="EmployerPostcode" class="govuk-error-message"></span>
+                        <input asp-for="EmployerPostcode" class="govuk-input govuk-input--width-10" id="EmployerPostcode" name="EmployerPostcode" type="text" autocomplete="employer-post-code">
+                    </div>
+                </div>
+            </fieldset>
+            <hr />
+            @if (Model.Sector != null)
+            {
+                <div id="sector" class="govuk-form-group">
+                    <h3 class="govuk-label-wrapper govuk-!-margin-top-4 govuk-!-margin-bottom-4">
+                        <label class="govuk-label govuk-label--m" for="apprenticeship-sector">
+                            Apprenticeship sector
+                        </label>
+                    </h3>
+                    <span>
+                        @Model.Sector
+                    </span>
+                </div>
+                <hr />
+            }
+            @if (Model.Programmes != null)
+            {
+                <div id="programmes" class="govuk-form-group">
+                    <h3 class="govuk-label-wrapper govuk-!-margin-top-4 govuk-!-margin-bottom-4">
+                        <label class="govuk-label govuk-label--m" for="apprenticeship-programme">
+                            Apprenticeship programme
+                        </label>
+                    </h3>
+                    <span>
+                        @Model.Programmes
+                    </span>
+                </div>
+                <hr />
+            }
+            @if (Model.Level != null)
+            {
+                <div id="level" class="govuk-form-group">
+                    <h3 class="govuk-label-wrapper govuk-!-margin-top-4 govuk-!-margin-bottom-4">
+                        <label class="govuk-label govuk-label--m" for="apprenticeship-level">
+                            Apprenticeship level
+                        </label>
+                    </h3>
+                    @Model.Level
+                </div>
+                <hr />
+            }
+
+            <div class="govuk-checkboxes__item govuk-!-margin-top-6 govuk-!-margin-bottom-6">
+                <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.ShowApprenticeshipInformation>
+                <label class="govuk-label govuk-checkboxes__label profile-govuk-checkboxes" for="ShowApprenticeshipInformation">
+                    Display all my apprenticeship information on my profile
+                </label>
+            </div>
+            <hr />
+            <div class="govuk-!-margin-top-6 submit-cancel-section">
+                <button id="saveChanges" type="submit" data-disable-on-submit="true" class="govuk-button govuk-!-margin-bottom-0 govuk-!-margin-right-3">Save Changes</button>
+                <h6 class="personal-information-cancel-link">
+                    <a href="@Model.YourAmbassadorProfileUrl" class="govuk-link govuk-link--no-visited-state personal-detail-cancel-link">Cancel</a>
+                </h6>
+            </div>
+        </form>
+    </div>
+</div>

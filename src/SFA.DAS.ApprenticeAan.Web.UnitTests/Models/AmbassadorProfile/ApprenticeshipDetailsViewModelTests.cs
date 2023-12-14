@@ -1,9 +1,11 @@
 ﻿using AutoFixture;
+using FluentAssertions;
+using FluentAssertions.Execution;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 using SFA.DAS.ApprenticeAan.Web.Models.AmbassadorProfile;
-using FluentAssertions.Execution;
-using FluentAssertions;
-using SFA.DAS.Aan.SharedUi.Constants;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models.AmbassadorProfile;
 public class ApprenticeshipDetailsViewModelTests
@@ -29,7 +31,7 @@ public class ApprenticeshipDetailsViewModelTests
         memberPreferences = fixture.CreateMany<MemberPreference>();
         memberPreferences.ToArray()[0].PreferenceId = PreferenceConstants.PreferenceIds.Apprenticeship;
         apprenticeshipDetails = fixture.Create<ApprenticeshipDetailsModel>();
-        sut = new ApprenticeshipDetailsViewModel(memberProfiles, apprenticeshipDetails, memberPreferences);
+        sut = new ApprenticeshipDetailsViewModel(memberProfiles, apprenticeshipDetails, memberPreferences, Mock.Of<IUrlHelper>());
     }
 
     [Test]

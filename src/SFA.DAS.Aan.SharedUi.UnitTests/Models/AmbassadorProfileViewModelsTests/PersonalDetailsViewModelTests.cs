@@ -13,6 +13,7 @@ public class PersonalDetailsViewModelTests
     private string personalDetailsChangeUrl = Guid.NewGuid().ToString();
     private string areaOfInterestChangeUrl = Guid.NewGuid().ToString();
     private string contactDetailsChangeUrl = Guid.NewGuid().ToString();
+    private string memberProfileUrl = Guid.NewGuid().ToString();
     private IEnumerable<MemberProfile> memberProfiles;
     private IEnumerable<MemberPreference> memberPreferences;
     private MemberUserType userType;
@@ -34,7 +35,7 @@ public class PersonalDetailsViewModelTests
         memberProfiles.ToArray()[1].PreferenceId = memberPreferences.ToArray()[1].PreferenceId;
         memberPreferences.ToArray()[1].Value = false;
         userType = MemberUserType.Apprentice;
-        var personalDetails = new PersonalDetailsModel(fullName, regionName, userType, personalDetailsChangeUrl, areaOfInterestChangeUrl,contactDetailsChangeUrl);
+        var personalDetails = new PersonalDetailsModel(fullName, regionName, userType, personalDetailsChangeUrl, areaOfInterestChangeUrl, contactDetailsChangeUrl, memberProfileUrl);
         sut = new PersonalDetailsViewModel(personalDetails, memberProfiles, memberPreferences);
     }
 
@@ -112,6 +113,36 @@ public class PersonalDetailsViewModelTests
         using (new AssertionScope())
         {
             sut.PersonalDetailsChangeUrl.Should().BeEquivalentTo(personalDetailsChangeUrl);
+        }
+    }
+
+    [Test]
+    public void PersonalDetailsViewModel_InitializationWithParameterlessConstructor_ReturnsExpectedValue()
+    {
+        // Act
+        PersonalDetailsViewModel _sut = new PersonalDetailsViewModel();
+
+        // Assert
+        using (new AssertionScope())
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(_sut, Is.Not.Null);
+                Assert.That(_sut.FullName, Is.Null);
+                Assert.That(_sut.FullNameDisplayValue, Is.Null);
+                Assert.That(_sut.FullNameDisplayClass, Is.Null);
+                Assert.That(_sut.RegionName, Is.Null);
+                Assert.That(_sut.RegionNameDisplayValue, Is.Null);
+                Assert.That(_sut.RegionNameDisplayClass, Is.Null);
+                Assert.That(_sut.JobTitle, Is.Null);
+                Assert.That(_sut.JobTitleDisplayValue, Is.Null);
+                Assert.That(_sut.JobTitleDisplayClass, Is.Null);
+                Assert.That(_sut.Biography, Is.Null);
+                Assert.That(_sut.BiographyDisplayValue, Is.Null);
+                Assert.That(_sut.BiographyDisplayClass, Is.Null);
+                Assert.That(_sut.UserType, Is.EqualTo(MemberUserType.Apprentice));
+                Assert.That(_sut.PersonalDetailsChangeUrl, Is.Null);
+            });
         }
     }
 }
