@@ -68,6 +68,7 @@ public class MemberProfileController : Controller
         {
             model.ApprenticeshipSectionTitle = memberProfiles.UserType == MemberUserType.Apprentice ? string.Format(ApprenticeMemberApprenticeshipSectionTitle, memberProfiles.FirstName) : EmployerMemberApprenticeshipSectionTitle;
             model.EmployerName = memberProfiles.OrganisationName;
+            model.EmployerAddress = GetEmployerAddress(memberProfiles.Profiles);
 
             if (memberProfiles.Apprenticeship != null)
             {
@@ -85,6 +86,13 @@ public class MemberProfileController : Controller
         model.AreasOfInterest = CreateAreasOfInterestViewModel(memberProfiles.UserType, profilesResult.Profiles, memberProfiles.Profiles);
 
         return model;
+    }
+
+    private static string? GetEmployerAddress(IEnumerable<MemberProfile> memberProfiles)
+    {
+        var employerAddressProfileIds = new int[] { 31, 32, 33, 34, 35 };
+        var addressProfiles = memberProfiles.Where(m => employerAddressProfileIds.Contains(m.ProfileId) && !string.IsNullOrWhiteSpace(m.Value)).Select(m => m.Value);
+        return addressProfiles.Any() ? string.Join(", ", addressProfiles) : null;
     }
 
     private static string GetLinkedInUrl(List<Profile> profiles, IEnumerable<MemberProfile> memberProfiles)

@@ -11,6 +11,7 @@ public class MemberProfileViewModel : ConnectWithMemberViewModel, INetworkHubLin
     public bool IsEmployerInformationAvailable { get; set; }
     public bool IsApprenticeshipInformationAvailable { get; set; }
     public string? EmployerName { get; set; }
+    public string? EmployerAddress { get; set; }
     public string Sector { get; set; } = null!;
     public string Programme { get; set; } = null!;
     public string Level { get; set; } = null!;
