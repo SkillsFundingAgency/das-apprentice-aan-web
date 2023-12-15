@@ -55,7 +55,7 @@ public class MemberProfileController : Controller
         model.PersonalInformation.UserRole = memberProfiles.IsRegionalChair ? MemberProfileConstants.RegionalChair : memberProfiles.UserType.ToString();
         model.PersonalInformation.Biography = GetProfileValueByDescription(MemberProfileConstants.MemberProfileDescription.Biography, profilesResult.Profiles, memberProfiles.Profiles);
         model.PersonalInformation.JobTitle = GetProfileValueByDescription(MemberProfileConstants.MemberProfileDescription.JobTitle, profilesResult.Profiles, memberProfiles.Profiles);
-        model.LinkedInUrl = GetProfileValueByDescription(MemberProfileConstants.MemberProfileDescription.LinkedIn, profilesResult.Profiles, memberProfiles.Profiles);
+        model.LinkedInUrl = GetLinkedInUrl(profilesResult.Profiles, memberProfiles.Profiles);
         model.Email = memberProfiles.Email;
         model.FirstName = memberProfiles.FirstName;
 
@@ -85,6 +85,12 @@ public class MemberProfileController : Controller
         model.AreasOfInterest = CreateAreasOfInterestViewModel(memberProfiles.UserType, profilesResult.Profiles, memberProfiles.Profiles);
 
         return model;
+    }
+
+    private static string GetLinkedInUrl(List<Profile> profiles, IEnumerable<MemberProfile> memberProfiles)
+    {
+        var linkedInHandle = GetProfileValueByDescription(MemberProfileConstants.MemberProfileDescription.LinkedIn, profiles, memberProfiles);
+        return string.IsNullOrEmpty(linkedInHandle) ? string.Empty : string.Concat(UrlConstant.LinkedinUrl, linkedInHandle);
     }
 
     private static AreasOfInterestViewModel CreateAreasOfInterestViewModel(MemberUserType memberUserType, List<Profile> profiles, IEnumerable<MemberProfile> memberProfiles)
@@ -126,7 +132,7 @@ public class MemberProfileController : Controller
             select profile.Description;
     }
 
-    private string? GetProfileValueByDescription(string profileDescription, List<Profile> profiles, IEnumerable<MemberProfile> memberProfiles)
+    private static string? GetProfileValueByDescription(string profileDescription, List<Profile> profiles, IEnumerable<MemberProfile> memberProfiles)
     {
         var profileId = profiles.Single(p => p.Description.Equals(profileDescription, StringComparison.OrdinalIgnoreCase)).Id;
         return memberProfiles.FirstOrDefault(m => m.ProfileId == profileId)?.Value;

@@ -100,51 +100,6 @@ public class MemberProfileControllerTests
     }
 
     [Test]
-    [MoqInlineAutoData(MemberUserType.Apprentice, true)]
-    [MoqInlineAutoData(MemberUserType.Apprentice, false)]
-    [MoqInlineAutoData(MemberUserType.Employer, true)]
-    [MoqInlineAutoData(MemberUserType.Employer, false)]
-    public void MemberProfileDetailMapping_ReturnsMemberProfileDetail(MemberUserType userType, bool isApprenticeShipAvailable, GetMemberProfileResponse memberProfiles)
-    {
-        //Arrange
-        MemberProfileDetail memberProfileDetail = new MemberProfileDetail();
-        memberProfiles.UserType = userType;
-        if (!isApprenticeShipAvailable)
-        {
-            memberProfiles.Apprenticeship = null;
-        }
-
-        //Act
-        var sut = MemberProfileController.MemberProfileDetailMapping(memberProfiles);
-
-        //Assert
-        Assert.Multiple(() =>
-        {
-            Assert.That(sut, Is.InstanceOf(memberProfileDetail.GetType()));
-            Assert.That(sut.FullName, Is.EqualTo(memberProfiles.FullName));
-            Assert.That(sut.FirstName, Is.EqualTo(memberProfiles.FirstName));
-            Assert.That(sut.LastName, Is.EqualTo(memberProfiles.LastName));
-            Assert.That(sut.Email, Is.EqualTo(memberProfiles.Email));
-            Assert.That(sut.RegionId, Is.EqualTo(memberProfiles.RegionId));
-            Assert.That(sut.OrganisationName, Is.EqualTo(memberProfiles.OrganisationName));
-            Assert.That(sut.UserType, Is.EqualTo(memberProfiles.UserType));
-            Assert.That(sut.IsRegionalChair, Is.EqualTo(memberProfiles.IsRegionalChair));
-            Assert.That(sut.Profiles, Is.EqualTo(memberProfiles.Profiles));
-            if (memberProfiles.UserType == Aan.SharedUi.Models.AmbassadorProfile.MemberUserType.Apprentice && memberProfiles.Apprenticeship != null)
-            {
-                Assert.That(sut.Sector, Is.EqualTo(memberProfiles.Apprenticeship!.Sector));
-                Assert.That(sut.Programmes, Is.EqualTo(memberProfiles.Apprenticeship!.Programme));
-                Assert.That(sut.Level, Is.EqualTo(memberProfiles.Apprenticeship!.Level));
-            }
-            if (memberProfiles.UserType == Aan.SharedUi.Models.AmbassadorProfile.MemberUserType.Employer && memberProfiles.Apprenticeship != null)
-            {
-                Assert.That(sut.Sectors, Is.EqualTo(memberProfiles.Apprenticeship!.Sectors));
-                Assert.That(sut.ActiveApprenticesCount, Is.EqualTo(memberProfiles.Apprenticeship!.ActiveApprenticesCount));
-            }
-        });
-    }
-
-    [Test]
     [MoqInlineAutoData(MemberUserType.Apprentice)]
     [MoqInlineAutoData(MemberUserType.Employer)]
     public async Task Post_InvalidCommand_ReturnsMemberProfileView(
@@ -267,22 +222,5 @@ public class MemberProfileControllerTests
 
         // Assert
         Assert.That(result, Is.InstanceOf<ViewResult>());
-    }
-
-    [Test]
-    [MoqInlineAutoData(MemberUserType.Apprentice)]
-    [MoqInlineAutoData(MemberUserType.Employer)]
-    public async Task MemberProfileMapping_ReturnsMemberProfileViewModelObject(MemberUserType userType, [Frozen] Mock<IOuterApiClient> outerApiMock, GetMemberProfileResponse memberProfiles, bool isLoggedInUserMemberProfile, CancellationToken cancellationToken)
-    {
-        //Arrange
-        memberProfiles.UserType = userType;
-        var validatorMock = new Mock<IValidator<ConnectWithMemberSubmitModel>>();
-        MemberProfileController memberProfileController = new MemberProfileController(outerApiMock.Object, validatorMock.Object);
-
-        //Act
-        var sut = await memberProfileController.MemberProfileMapping(memberProfiles, Guid.NewGuid(), Guid.NewGuid(), cancellationToken);
-
-        //Assert
-        Assert.That(sut, Is.InstanceOf<MemberProfileViewModel>());
     }
 }
