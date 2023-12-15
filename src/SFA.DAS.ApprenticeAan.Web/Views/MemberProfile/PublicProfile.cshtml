@@ -1,18 +1,10 @@
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using SFA.DAS.Aan.SharedUi.Constants;
-@using SFA.DAS.Aan.SharedUi.Extensions;
-@using SFA.DAS.Aan.SharedUi.Infrastructure;
-@using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
-@using SFA.DAS.Aan.SharedUi.TagHelpers;
-@using SFA.DAS.Aan.SharedUi.Models.PublicProfile;
-
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@addTagHelper *, SFA.DAS.Aan.SharedUi
+﻿@using SFA.DAS.Aan.SharedUi.Models.PublicProfile;
 
 @model MemberProfileViewModel
 @{
     ViewData["Title"] = "Member Profile";
 }
+
 <partial name="_validationSummary" />
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -33,8 +25,8 @@
         }
 
         @{
-          await Html.RenderPartialAsync("~/Views/MemberProfile/_ConnectWithMember.cshtml", Model);
-          await Html.RenderPartialAsync("~/Views/MemberProfile/_LinkedInSection.cshtml", Model);
+            await Html.RenderPartialAsync("~/Views/MemberProfile/_ConnectWithMember.cshtml", Model);
+            await Html.RenderPartialAsync("~/Views/MemberProfile/_LinkedInSection.cshtml", Model);
         }
     </div>
 </div>

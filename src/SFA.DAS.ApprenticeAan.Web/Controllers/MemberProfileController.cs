@@ -17,7 +17,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 [Route("member-profile")]
 public class MemberProfileController : Controller
 {
-    public const string MemberProfileViewPath = "~/Views/MemberProfile/Profile.cshtml";
+    public const string MemberProfileViewPath = "~/Views/MemberProfile/PublicProfile.cshtml";
     public const string NotificationSentConfirmationViewPath = "~/Views/MemberProfile/NotificationSentConfirmation.cshtml";
     public const string ApprenticeMemberAreasOfInterestTitle = "Here are the areas I’m most interested in as an ambassador.";
     public const string EmployerMemberAreasOfInterestTitle = "Here are my reasons for becoming an ambassador, what support I need and how I can help other members.";
@@ -159,13 +159,9 @@ public class MemberProfileController : Controller
             return View(MemberProfileViewPath, model);
         }
         CreateNotificationRequest createNotificationRequest = new CreateNotificationRequest(id, command.ReasonToGetInTouch);
-        var response = await _outerApiClient.PostNotification(User.GetAanMemberId(), createNotificationRequest, cancellationToken);
+        await _outerApiClient.PostNotification(User.GetAanMemberId(), createNotificationRequest, cancellationToken);
 
-        if (response.ResponseMessage.IsSuccessStatusCode)
-        {
-            return RedirectToAction("NotificationSentConfirmation");
-        }
-        throw new InvalidOperationException($"A problem occured while sending notification.");
+        return RedirectToRoute(SharedRouteNames.NotificationSentConfirmation);
     }
 
 
