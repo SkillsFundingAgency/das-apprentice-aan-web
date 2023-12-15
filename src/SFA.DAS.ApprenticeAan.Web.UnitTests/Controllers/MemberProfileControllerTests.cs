@@ -1,11 +1,9 @@
-﻿using System.Net;
-using AutoFixture.NUnit3;
+﻿using AutoFixture.NUnit3;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using RestEase;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 using SFA.DAS.Aan.SharedUi.Models.PublicProfile;
@@ -158,8 +156,7 @@ public class MemberProfileControllerTests
 
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
-        Response<CreateNotificationResponse> expectedReponse = new(string.Empty, new(HttpStatusCode.OK), () => createNotificationResponse);
-        outerApiMock.Setup(c => c.PostNotification(It.IsAny<Guid>(), It.IsAny<CreateNotificationRequest>(), It.IsAny<CancellationToken>())).ReturnsAsync(expectedReponse);
+        outerApiMock.Setup(c => c.PostNotification(It.IsAny<Guid>(), It.IsAny<CreateNotificationRequest>(), It.IsAny<CancellationToken>())).ReturnsAsync(createNotificationResponse);
 
         //Act
         var response = await sut.Post(memberId, command, cancellationToken);
@@ -178,7 +175,7 @@ public class MemberProfileControllerTests
     public void Post_ValidCommand_ThrowsInvalidOperationException(
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         GetMemberProfileResponse getMemberProfileResponse,
-        Response<CreateNotificationResponse> createNotificationResponse,
+        CreateNotificationResponse createNotificationResponse,
         CancellationToken cancellationToken)
     {
         //Arrange
