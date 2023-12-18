@@ -1,0 +1,108 @@
+﻿@model ContactUsViewModel
+@{
+    ViewData["Title"] = "Contact us";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Contact us</h1>
+        <h2 class="govuk-heading-m">General support and queries</h2>
+        <p class="govuk-body">
+            Your regional team will be able to help with most queries,
+            including any questions or suggestions you have. They can also
+            provide further information about your region.
+        </p>
+        <table class="govuk-table">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header govuk-!-width-one-half">
+                        Region
+                    </th>
+                    <th scope="col" class="govuk-table__header govuk-!-width-one-half">
+                        Email address
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">East of England</td>
+                    <td class="govuk-table__cell">
+                        <a href="mailto:@Model.EastOfEnglandEmailAddress" class="govuk-link">@Model.EastOfEnglandEmailAddress</a>
+                    </td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">East Midlands</td>
+                    <td class="govuk-table__cell"><a href="mailto:@Model.EastMidlandsEmailAddress"
+                            class="govuk-link">@Model.EastMidlandsEmailAddress</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">London</td>
+                    <td class="govuk-table__cell"><a href="mailto:@Model.LondonEmailAddress"
+                            class="govuk-link">@Model.LondonEmailAddress</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">North East</td>
+                    <td class="govuk-table__cell"><a href="mailto:@Model.NorthEastEmailAddress"
+                            class="govuk-link">@Model.NorthEastEmailAddress</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell"> North West</td>
+                    <td class="govuk-table__cell"><a href="mailto:@Model.NorthWestEmailAddress"
+                            class="govuk-link">@Model.NorthWestEmailAddress</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">South East </td>
+                    <td class="govuk-table__cell"><a href="mailto:@Model.SouthEastEmailAddress"
+                            class="govuk-link">@Model.SouthEastEmailAddress</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">South West </td>
+                    <td class="govuk-table__cell"><a href="mailto:@Model.SouthWestEmailAddress"
+                            class="govuk-link">@Model.SouthWestEmailAddress</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">West Midlands</td>
+                    <td class="govuk-table__cell"><a href="mailto:@Model.WestMidlandsEmailAddress"
+                            class="govuk-link">@Model.WestMidlandsEmailAddress</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">Yorkshire and the Humber</td>
+                    <td class="govuk-table__cell"><a href="mailto:@Model.YorkshireAndTheHumberEmailAddress"
+                            class="govuk-link">@Model.YorkshireAndTheHumberEmailAddress</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="govuk-heading-m">Specific event queries</h2>
+        <p class="govuk-body">
+            For queries about a network event, contact the event host. You
+            can find their details in the event listing.
+        </p>
+
+        <h2 class="govuk-heading-m">
+            Technical support and accessibility
+        </h2>
+        <p class="govuk-body">
+            For technical support or if you need information on this
+            website in a different format like accessible PDF, large
+            print, easy read, audio recordin or braille:
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>
+                email
+                <a href="mailto:helpdesk@manage-apprenticeships.service.gov.uk"
+                    class="govuk-link">helpdesk@manage-apprenticeships.service.gov.uk</a>
+            </li>
+            <li>call 08000 150 600</li>
+        </ul>
+
+        <h2 class="govuk-heading-m">Feedback and complaints</h2>
+        <p class="govuk-body">
+            Contact the central network team if you want to give feedback
+            or make a complaint about the network
+        </p>
+        <p class="govuk-body">
+            <a href="mailto:AAN.Enquiries@education.gov.uk" class="govuk-link">AAN.Enquiries@education.gov.uk</a>
+        </p>
+    </div>
+</div>
