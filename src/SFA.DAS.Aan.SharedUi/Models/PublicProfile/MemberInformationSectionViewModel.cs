@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.Aan.SharedUi.Models.PublicProfile;
 
-public class MemberPersonalInformationViewModel
+public class MemberInformationSectionViewModel
 {
     public Role UserRole { get; set; }
     public string FullName { get; set; } = null!;

@@ -33,7 +33,7 @@ public class MemberProfileController : Controller
     [Route("{id}", Name = SharedRouteNames.MemberProfile)]
     public async Task<IActionResult> Get([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        MemberProfileViewModel model = await GetViewModel(id, cancellationToken);
+        var model = await GetViewModel(id, cancellationToken);
 
         return View(MemberProfileViewPath, model);
     }
@@ -44,46 +44,46 @@ public class MemberProfileController : Controller
         var profilesResult = await _outerApiClient.GetProfilesByUserType(memberProfiles.UserType.ToString(), cancellationToken);
         var userId = User.GetAanMemberId();
 
-        MemberProfileViewModel model = new();
-        model.MemberId = id;
+        MemberProfileViewModel memberProfileViewModel = new();
+        memberProfileViewModel.MemberId = id;
+        memberProfileViewModel.IsLoggedInUserMemberProfile = id == userId;
+        memberProfileViewModel.IsConnectWithMemberVisible = true;
 
-        model.PersonalInformation.FullName = memberProfiles.FullName;
-        model.PersonalInformation.RegionName = memberProfiles.RegionName;
-        model.PersonalInformation.UserRole = memberProfiles.UserType.ConvertToRole(memberProfiles.IsRegionalChair);
-        model.PersonalInformation.Biography = MemberProfileHelper.GetProfileValueByDescription(MemberProfileConstants.MemberProfileDescription.Biography, profilesResult.Profiles, memberProfiles.Profiles);
-        model.PersonalInformation.JobTitle = MemberProfileHelper.GetProfileValueByDescription(MemberProfileConstants.MemberProfileDescription.JobTitle, profilesResult.Profiles, memberProfiles.Profiles);
-        model.LinkedInUrl = MemberProfileHelper.GetLinkedInUrl(profilesResult.Profiles, memberProfiles.Profiles);
-        model.Email = memberProfiles.Email;
-        model.FirstName = memberProfiles.FirstName;
+        memberProfileViewModel.ConnectViaLinkedIn.LinkedInUrl = MemberProfileHelper.GetLinkedInUrl(profilesResult.Profiles, memberProfiles.Profiles);
+        memberProfileViewModel.ConnectViaLinkedIn.FirstName = memberProfiles.FirstName;
 
-        model.IsLoggedInUserMemberProfile = id == userId;
-        model.IsConnectWithMemberVisible = true;
+        memberProfileViewModel.MemberInformation.FullName = memberProfiles.FullName;
+        memberProfileViewModel.MemberInformation.RegionName = memberProfiles.RegionName;
+        memberProfileViewModel.MemberInformation.UserRole = memberProfiles.UserType.ConvertToRole(memberProfiles.IsRegionalChair);
+        memberProfileViewModel.MemberInformation.Biography = MemberProfileHelper.GetProfileValueByDescription(MemberProfileConstants.MemberProfileDescription.Biography, profilesResult.Profiles, memberProfiles.Profiles);
+        memberProfileViewModel.MemberInformation.JobTitle = MemberProfileHelper.GetProfileValueByDescription(MemberProfileConstants.MemberProfileDescription.JobTitle, profilesResult.Profiles, memberProfiles.Profiles);
 
-        model.IsEmployerInformationAvailable = memberProfiles.UserType == MemberUserType.Employer && MemberProfileHelper.IsApprenticeshipInformationShared(memberProfiles.Preferences);
-        model.IsApprenticeshipInformationAvailable = memberProfiles.UserType == MemberUserType.Apprentice && MemberProfileHelper.IsApprenticeshipInformationShared(memberProfiles.Preferences);
 
-        if (model.IsEmployerInformationAvailable || model.IsApprenticeshipInformationAvailable)
+        memberProfileViewModel.ApprenticeshipInformation.IsEmployerInformationAvailable = memberProfiles.UserType == MemberUserType.Employer && MemberProfileHelper.IsApprenticeshipInformationShared(memberProfiles.Preferences);
+        memberProfileViewModel.ApprenticeshipInformation.IsApprenticeshipInformationAvailable = memberProfiles.UserType == MemberUserType.Apprentice && MemberProfileHelper.IsApprenticeshipInformationShared(memberProfiles.Preferences);
+
+        if (memberProfileViewModel.ApprenticeshipInformation.IsEmployerInformationAvailable || memberProfileViewModel.ApprenticeshipInformation.IsApprenticeshipInformationAvailable)
         {
-            model.ApprenticeshipSectionTitle = MemberProfileHelper.GetApprenticeshipSectionTitle(memberProfiles.UserType, memberProfiles.FirstName);
-            model.EmployerName = memberProfiles.OrganisationName;
-            model.EmployerAddress = MemberProfileHelper.GetEmployerAddress(memberProfiles.Profiles);
+            memberProfileViewModel.ApprenticeshipInformation.ApprenticeshipSectionTitle = MemberProfileHelper.GetApprenticeshipSectionTitle(memberProfiles.UserType, memberProfiles.FirstName);
+            memberProfileViewModel.ApprenticeshipInformation.EmployerName = memberProfiles.OrganisationName;
+            memberProfileViewModel.ApprenticeshipInformation.EmployerAddress = MemberProfileHelper.GetEmployerAddress(memberProfiles.Profiles);
 
             if (memberProfiles.Apprenticeship != null)
             {
                 //following are only applicable to Apprentice user, the values are assumed to be null otherwise
-                model.Sector = memberProfiles.Apprenticeship.Sector;
-                model.Programme = memberProfiles.Apprenticeship.Programme;
-                model.Level = memberProfiles.Apprenticeship.Level;
+                memberProfileViewModel.ApprenticeshipInformation.Sector = memberProfiles.Apprenticeship.Sector;
+                memberProfileViewModel.ApprenticeshipInformation.Programme = memberProfiles.Apprenticeship.Programme;
+                memberProfileViewModel.ApprenticeshipInformation.Level = memberProfiles.Apprenticeship.Level;
 
                 //following are only applicable to Employer user, the values are assumed to be null otherwise
-                model.Sectors = memberProfiles.Apprenticeship.Sectors;
-                model.ActiveApprenticesCount = memberProfiles.Apprenticeship.ActiveApprenticesCount;
+                memberProfileViewModel.ApprenticeshipInformation.Sectors = memberProfiles.Apprenticeship.Sectors;
+                memberProfileViewModel.ApprenticeshipInformation.ActiveApprenticesCount = memberProfiles.Apprenticeship.ActiveApprenticesCount;
             }
         }
 
-        model.AreasOfInterest = MemberProfileHelper.CreateAreasOfInterestViewModel(memberProfiles.UserType, profilesResult.Profiles, memberProfiles.Profiles);
+        memberProfileViewModel.AreasOfInterest = MemberProfileHelper.CreateAreasOfInterestViewModel(memberProfiles.UserType, profilesResult.Profiles, memberProfiles.Profiles);
 
-        return model;
+        return memberProfileViewModel;
     }
 
     [HttpPost]
@@ -95,7 +95,7 @@ public class MemberProfileController : Controller
         if (!result.IsValid)
         {
             result.AddToModelState(ModelState);
-            MemberProfileViewModel model = await GetViewModel(id, cancellationToken);
+            var model = await GetViewModel(id, cancellationToken);
             return View(MemberProfileViewPath, model);
         }
         CreateNotificationRequest createNotificationRequest = new CreateNotificationRequest(id, command.ReasonToGetInTouch);

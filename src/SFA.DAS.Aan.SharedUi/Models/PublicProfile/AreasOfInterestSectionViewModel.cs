@@ -1,6 +1,6 @@
 ﻿namespace SFA.DAS.Aan.SharedUi.Models.PublicProfile;
 
-public class AreasOfInterestViewModel
+public class AreasOfInterestSectionViewModel
 {
     public string Title { get; set; } = null!;
     public List<AreasOfInterestSection> Sections { get; set; } = new();

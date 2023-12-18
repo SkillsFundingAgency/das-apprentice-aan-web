@@ -19,12 +19,12 @@ public class ConnectWithMemberSubmitModelValidatorTests
         };
 
         //Act
-        var sut = new MemberProfileSubmitValidator();
+        var sut = new ConnectWithMemberSubmitModelValidator();
         var result = sut.TestValidate(model);
 
         //Assert
         result.ShouldHaveValidationErrorFor(c => c.ReasonToGetInTouch)
-            .WithErrorMessage(MemberProfileSubmitValidator.ReasonToConnectValidationMessage);
+            .WithErrorMessage(ConnectWithMemberSubmitModelValidator.ReasonToConnectValidationMessage);
     }
 
     [Test]
@@ -39,7 +39,7 @@ public class ConnectWithMemberSubmitModelValidatorTests
         };
 
         //Act
-        var sut = new MemberProfileSubmitValidator();
+        var sut = new ConnectWithMemberSubmitModelValidator();
         var result = sut.TestValidate(model);
 
         //Assert
@@ -58,12 +58,12 @@ public class ConnectWithMemberSubmitModelValidatorTests
         };
 
         //Act
-        var sut = new MemberProfileSubmitValidator();
+        var sut = new ConnectWithMemberSubmitModelValidator();
         var result = sut.TestValidate(model);
 
         //Assert
         result.ShouldHaveValidationErrorFor(c => c.HasAgreedToCodeOfConduct)
-            .WithErrorMessage(MemberProfileSubmitValidator.HasAgreedToCodeOfConductValidationMessage);
+            .WithErrorMessage(ConnectWithMemberSubmitModelValidator.HasAgreedToCodeOfConductValidationMessage);
     }
 
     [Test]
@@ -78,7 +78,7 @@ public class ConnectWithMemberSubmitModelValidatorTests
         };
 
         //Act
-        var sut = new MemberProfileSubmitValidator();
+        var sut = new ConnectWithMemberSubmitModelValidator();
         var result = sut.TestValidate(model);
 
         //Assert
@@ -97,12 +97,12 @@ public class ConnectWithMemberSubmitModelValidatorTests
         };
 
         //Act
-        var sut = new MemberProfileSubmitValidator();
+        var sut = new ConnectWithMemberSubmitModelValidator();
         var result = sut.TestValidate(model);
 
         //Assert
         result.ShouldHaveValidationErrorFor(c => c.HasAgreedToSharePersonalDetails)
-            .WithErrorMessage(MemberProfileSubmitValidator.HasAgreedToSharePersonalDetailsValidationMessage);
+            .WithErrorMessage(ConnectWithMemberSubmitModelValidator.HasAgreedToSharePersonalDetailsValidationMessage);
     }
 
     [Test]
@@ -117,7 +117,7 @@ public class ConnectWithMemberSubmitModelValidatorTests
         };
 
         //Act
-        var sut = new MemberProfileSubmitValidator();
+        var sut = new ConnectWithMemberSubmitModelValidator();
         var result = sut.TestValidate(model);
 
         //Assert

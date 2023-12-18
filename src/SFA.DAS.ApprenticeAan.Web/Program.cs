@@ -6,6 +6,7 @@ using SFA.DAS.ApprenticeAan.Web.Authentication;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Filters;
 using SFA.DAS.ApprenticeAan.Web.HealthCheck;
+using SFA.DAS.ApprenticeAan.Web.Validators.MemberProfile;
 using SFA.DAS.ApprenticeAan.Web.Validators.Onboarding;
 using SFA.DAS.ApprenticePortal.SharedUi.Startup;
 using SFA.DAS.Telemetry.Startup;
@@ -25,6 +26,7 @@ builder.Services
     .AddTelemetryUriRedaction("firstName,lastName,dateOfBirth,email")
     .AddHttpContextAccessor()
     .AddValidatorsFromAssembly(typeof(RegionsSubmitModelValidator).Assembly)
+    .AddValidatorsFromAssembly(typeof(ConnectWithMemberSubmitModelValidator).Assembly)
     .AddSession(environmentName, applicationConfiguration.ConnectionStrings)
     .AddDataProtection(applicationConfiguration.ConnectionStrings, builder.Environment)
     .AddAuthentication(applicationConfiguration.Authentication, builder.Environment)

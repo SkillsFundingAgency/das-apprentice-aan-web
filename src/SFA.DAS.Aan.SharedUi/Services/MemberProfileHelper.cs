@@ -31,11 +31,11 @@ public static class MemberProfileHelper
         return addressProfiles.Any() ? string.Join(", ", addressProfiles) : null;
     }
 
-    public static AreasOfInterestViewModel CreateAreasOfInterestViewModel(MemberUserType memberUserType, List<Profile> profiles, IEnumerable<MemberProfile> memberProfiles)
+    public static AreasOfInterestSectionViewModel CreateAreasOfInterestViewModel(MemberUserType memberUserType, List<Profile> profiles, IEnumerable<MemberProfile> memberProfiles)
     {
         if (memberUserType == MemberUserType.Apprentice)
         {
-            return new AreasOfInterestViewModel()
+            return new AreasOfInterestSectionViewModel()
             {
                 Title = ApprenticeMemberAreasOfInterestTitle,
                 Sections = new()
@@ -47,7 +47,7 @@ public static class MemberProfileHelper
         }
         else
         {
-            return new AreasOfInterestViewModel()
+            return new AreasOfInterestSectionViewModel()
             {
                 Title = EmployerMemberAreasOfInterestTitle,
                 Sections = new()
@@ -59,7 +59,7 @@ public static class MemberProfileHelper
         }
     }
 
-    public static IEnumerable<string> GetSelectedInterests(string category, IEnumerable<Profile> profiles, IEnumerable<MemberProfile> memberProfiles)
+    private static IEnumerable<string> GetSelectedInterests(string category, IEnumerable<Profile> profiles, IEnumerable<MemberProfile> memberProfiles)
     {
         return
             from profile in profiles

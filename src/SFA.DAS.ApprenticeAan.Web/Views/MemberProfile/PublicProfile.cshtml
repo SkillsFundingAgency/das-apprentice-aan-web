@@ -8,25 +8,16 @@
 <partial name="_validationSummary" />
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        @{
-            await Html.RenderPartialAsync("~/Views/MemberProfile/_MemberPersonalInfo.cshtml", Model.PersonalInformation);
+    @{
+        await Html.RenderPartialAsync("~/Views/MemberProfile/_MemberPersonalInfo.cshtml", Model.MemberInformation);
 
-            await Html.RenderPartialAsync("~/Views/MemberProfile/_AreasOfInterest.cshtml", Model.AreasOfInterest);
-        }
+        await Html.RenderPartialAsync("~/Views/MemberProfile/_AreasOfInterest.cshtml", Model.AreasOfInterest);
 
-        @if (Model.IsEmployerInformationAvailable)
-        {
-            await Html.RenderPartialAsync("~/Views/MemberProfile/_EmployerInformationSection.cshtml", Model);
-        }
+        await Html.RenderPartialAsync("~/Views/MemberProfile/_EmployerInformationSection.cshtml", Model.ApprenticeshipInformation);
+        await Html.RenderPartialAsync("~/Views/MemberProfile/_ApprenticeInformationSection.cshtml", Model.ApprenticeshipInformation);
 
-        @if (Model.IsApprenticeshipInformationAvailable)
-        {
-            await Html.RenderPartialAsync("~/Views/MemberProfile/_ApprenticeInformationSection.cshtml", Model);
-        }
-
-        @{
-            await Html.RenderPartialAsync("~/Views/MemberProfile/_ConnectWithMember.cshtml", Model);
-            await Html.RenderPartialAsync("~/Views/MemberProfile/_LinkedInSection.cshtml", Model);
-        }
+        await Html.RenderPartialAsync("~/Views/MemberProfile/_ConnectWithMember.cshtml", Model);
+        await Html.RenderPartialAsync("~/Views/MemberProfile/_ConnectViaLinkedInSection.cshtml", Model.ConnectViaLinkedIn);
+    }
     </div>
 </div>
