@@ -7,7 +7,7 @@ public class ConnectWithMemberSubmitModelValidator : AbstractValidator<ConnectWi
 {
     public const string ReasonToConnectValidationMessage = "You must tell us why you want to get in touch";
     public const string HasAgreedToSharePersonalDetailsValidationMessage = "You must agree to sharing your details";
-    public const string HasAgreedToCodeOfConductValidationMessage = "You must agree to adhere the code of conduct";
+    public const string HasAgreedToCodeOfConductValidationMessage = "You must agree to adhering to the code of conduct";
 
     public ConnectWithMemberSubmitModelValidator()
     {

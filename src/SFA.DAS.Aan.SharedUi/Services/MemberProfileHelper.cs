@@ -20,7 +20,8 @@ public static class MemberProfileHelper
 
     public static string? GetProfileValueByDescription(string profileDescription, List<Profile> profiles, IEnumerable<MemberProfile> memberProfiles)
     {
-        var profileId = profiles.Single(p => p.Description.Equals(profileDescription, StringComparison.OrdinalIgnoreCase)).Id;
+        var profileId = profiles.SingleOrDefault(p => p.Description.Equals(profileDescription, StringComparison.OrdinalIgnoreCase))?.Id;
+        if (profileId == null) return null;
         return memberProfiles.FirstOrDefault(m => m.ProfileId == profileId)?.Value;
     }
 
@@ -33,6 +34,13 @@ public static class MemberProfileHelper
 
     public static AreasOfInterestSectionViewModel CreateAreasOfInterestViewModel(MemberUserType memberUserType, List<Profile> profiles, IEnumerable<MemberProfile> memberProfiles, string firstName)
     {
+        Func<string, IEnumerable<string>> getSelectedInterests =
+            category => from profile in profiles
+                        join memberProfile in memberProfiles on profile.Id equals memberProfile.ProfileId
+                        where profile.Category == category
+                        orderby profile.Ordering
+                        select profile.Description;
+
         if (memberUserType == MemberUserType.Apprentice)
         {
             return new AreasOfInterestSectionViewModel()
@@ -41,8 +49,8 @@ public static class MemberProfileHelper
                 SubText = ApprenticeMemberAreasOfInterestTitle,
                 Sections = new()
                 {
-                    new AreasOfInterestSection(MemberProfileConstants.AreasOfInterest.ApprenticeAreasOfInterestFirstSection.Title, GetSelectedInterests(MemberProfileConstants.AreasOfInterest.ApprenticeAreasOfInterestFirstSection.Category, profiles, memberProfiles)),
-                    new AreasOfInterestSection(MemberProfileConstants.AreasOfInterest.ApprenticeAreasOfInterestSecondSection.Title, GetSelectedInterests(MemberProfileConstants.AreasOfInterest.ApprenticeAreasOfInterestSecondSection.Category, profiles, memberProfiles)),
+                    new AreasOfInterestSection(MemberProfileConstants.AreasOfInterest.ApprenticeAreasOfInterestFirstSection.Title, getSelectedInterests(MemberProfileConstants.AreasOfInterest.ApprenticeAreasOfInterestFirstSection.Category)),
+                    new AreasOfInterestSection(MemberProfileConstants.AreasOfInterest.ApprenticeAreasOfInterestSecondSection.Title, getSelectedInterests(MemberProfileConstants.AreasOfInterest.ApprenticeAreasOfInterestSecondSection.Category)),
                 }
             };
         }
@@ -54,21 +62,11 @@ public static class MemberProfileHelper
                 SubText = EmployerMemberAreasOfInterestTitle,
                 Sections = new()
                 {
-                    new AreasOfInterestSection(MemberProfileConstants.AreasOfInterest.EmployerAreasOfInterestFirstSection.Title, GetSelectedInterests(MemberProfileConstants.AreasOfInterest.EmployerAreasOfInterestFirstSection.Category, profiles, memberProfiles)),
-                    new AreasOfInterestSection(MemberProfileConstants.AreasOfInterest.EmployerAreasOfInterestSecondSection.Title, GetSelectedInterests(MemberProfileConstants.AreasOfInterest.EmployerAreasOfInterestSecondSection.Category, profiles, memberProfiles)),
+                    new AreasOfInterestSection(MemberProfileConstants.AreasOfInterest.EmployerAreasOfInterestFirstSection.Title, getSelectedInterests(MemberProfileConstants.AreasOfInterest.EmployerAreasOfInterestFirstSection.Category)),
+                    new AreasOfInterestSection(MemberProfileConstants.AreasOfInterest.EmployerAreasOfInterestSecondSection.Title, getSelectedInterests(MemberProfileConstants.AreasOfInterest.EmployerAreasOfInterestSecondSection.Category)),
                 }
             };
         }
-    }
-
-    private static IEnumerable<string> GetSelectedInterests(string category, IEnumerable<Profile> profiles, IEnumerable<MemberProfile> memberProfiles)
-    {
-        return
-            from profile in profiles
-            join memberProfile in memberProfiles on profile.Id equals memberProfile.ProfileId
-            where profile.Category == category
-            orderby profile.Ordering
-            select profile.Description;
     }
 
     public static bool IsApprenticeshipInformationShared(IEnumerable<MemberPreference> preferences) => preferences.Single(p => p.PreferenceId == PreferenceConstants.PreferenceIds.Apprenticeship).Value;

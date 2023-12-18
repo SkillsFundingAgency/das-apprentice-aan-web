@@ -3,5 +3,5 @@
 public class ConnectViaLinkedInViewModel
 {
     public string? LinkedInUrl { get; set; }
-    public string FirstName { get; set; }
+    public string FirstName { get; set; } = null!;
 }
