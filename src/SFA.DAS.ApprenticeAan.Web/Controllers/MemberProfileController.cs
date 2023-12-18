@@ -38,6 +38,32 @@ public class MemberProfileController : Controller
         return View(MemberProfileViewPath, model);
     }
 
+    [HttpPost]
+    [Route("{id}", Name = SharedRouteNames.MemberProfile)]
+    public async Task<IActionResult> Post([FromRoute] Guid id, ConnectWithMemberSubmitModel command, CancellationToken cancellationToken)
+    {
+        var result = await _validator.ValidateAsync(command, cancellationToken);
+
+        if (!result.IsValid)
+        {
+            result.AddToModelState(ModelState);
+            var model = await GetViewModel(id, cancellationToken);
+            return View(MemberProfileViewPath, model);
+        }
+        CreateNotificationRequest createNotificationRequest = new CreateNotificationRequest(id, command.ReasonToGetInTouch);
+        await _outerApiClient.PostNotification(User.GetAanMemberId(), createNotificationRequest, cancellationToken);
+
+        return RedirectToRoute(SharedRouteNames.NotificationSentConfirmation);
+    }
+
+    [HttpGet]
+    [Route("notification-sent-confirmation", Name = SharedRouteNames.NotificationSentConfirmation)]
+    public IActionResult NotificationSentConfirmation()
+    {
+        NotificationSentConfirmationViewModel model = new(Url.RouteUrl(SharedRouteNames.NetworkDirectory)!);
+        return View(NotificationSentConfirmationViewPath, model);
+    }
+
     private async Task<MemberProfileViewModel> GetViewModel(Guid id, CancellationToken cancellationToken)
     {
         var memberProfiles = await _outerApiClient.GetMemberProfile(id, User.GetAanMemberId(), true, cancellationToken);
@@ -50,14 +76,13 @@ public class MemberProfileController : Controller
         memberProfileViewModel.IsConnectWithMemberVisible = true;
 
         memberProfileViewModel.ConnectViaLinkedIn.LinkedInUrl = MemberProfileHelper.GetLinkedInUrl(profilesResult.Profiles, memberProfiles.Profiles);
-        memberProfileViewModel.ConnectViaLinkedIn.FirstName = memberProfiles.FirstName;
+        memberProfileViewModel.FirstName = memberProfileViewModel.ConnectViaLinkedIn.FirstName = memberProfiles.FirstName;
 
         memberProfileViewModel.MemberInformation.FullName = memberProfiles.FullName;
         memberProfileViewModel.MemberInformation.RegionName = memberProfiles.RegionName;
         memberProfileViewModel.MemberInformation.UserRole = memberProfiles.UserType.ConvertToRole(memberProfiles.IsRegionalChair);
         memberProfileViewModel.MemberInformation.Biography = MemberProfileHelper.GetProfileValueByDescription(MemberProfileConstants.MemberProfileDescription.Biography, profilesResult.Profiles, memberProfiles.Profiles);
         memberProfileViewModel.MemberInformation.JobTitle = MemberProfileHelper.GetProfileValueByDescription(MemberProfileConstants.MemberProfileDescription.JobTitle, profilesResult.Profiles, memberProfiles.Profiles);
-
 
         memberProfileViewModel.ApprenticeshipInformation.IsEmployerInformationAvailable = memberProfiles.UserType == MemberUserType.Employer && MemberProfileHelper.IsApprenticeshipInformationShared(memberProfiles.Preferences);
         memberProfileViewModel.ApprenticeshipInformation.IsApprenticeshipInformationAvailable = memberProfiles.UserType == MemberUserType.Apprentice && MemberProfileHelper.IsApprenticeshipInformationShared(memberProfiles.Preferences);
@@ -81,35 +106,8 @@ public class MemberProfileController : Controller
             }
         }
 
-        memberProfileViewModel.AreasOfInterest = MemberProfileHelper.CreateAreasOfInterestViewModel(memberProfiles.UserType, profilesResult.Profiles, memberProfiles.Profiles);
+        memberProfileViewModel.AreasOfInterest = MemberProfileHelper.CreateAreasOfInterestViewModel(memberProfiles.UserType, profilesResult.Profiles, memberProfiles.Profiles, memberProfiles.FirstName);
 
         return memberProfileViewModel;
-    }
-
-    [HttpPost]
-    [Route("{id}", Name = SharedRouteNames.MemberProfile)]
-    public async Task<IActionResult> Post([FromRoute] Guid id, ConnectWithMemberSubmitModel command, CancellationToken cancellationToken)
-    {
-        var result = await _validator.ValidateAsync(command, cancellationToken);
-
-        if (!result.IsValid)
-        {
-            result.AddToModelState(ModelState);
-            var model = await GetViewModel(id, cancellationToken);
-            return View(MemberProfileViewPath, model);
-        }
-        CreateNotificationRequest createNotificationRequest = new CreateNotificationRequest(id, command.ReasonToGetInTouch);
-        await _outerApiClient.PostNotification(User.GetAanMemberId(), createNotificationRequest, cancellationToken);
-
-        return RedirectToRoute(SharedRouteNames.NotificationSentConfirmation);
-    }
-
-
-    [HttpGet]
-    [Route("notification-sent-confirmation", Name = SharedRouteNames.NotificationSentConfirmation)]
-    public IActionResult NotificationSentConfirmation()
-    {
-        NotificationSentConfirmationViewModel model = new(Url.RouteUrl(SharedRouteNames.NetworkDirectory)!);
-        return View(NotificationSentConfirmationViewPath, model);
     }
 }

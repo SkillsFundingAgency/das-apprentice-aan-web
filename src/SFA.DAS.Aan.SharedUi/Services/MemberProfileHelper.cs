@@ -31,13 +31,14 @@ public static class MemberProfileHelper
         return addressProfiles.Any() ? string.Join(", ", addressProfiles) : null;
     }
 
-    public static AreasOfInterestSectionViewModel CreateAreasOfInterestViewModel(MemberUserType memberUserType, List<Profile> profiles, IEnumerable<MemberProfile> memberProfiles)
+    public static AreasOfInterestSectionViewModel CreateAreasOfInterestViewModel(MemberUserType memberUserType, List<Profile> profiles, IEnumerable<MemberProfile> memberProfiles, string firstName)
     {
         if (memberUserType == MemberUserType.Apprentice)
         {
             return new AreasOfInterestSectionViewModel()
             {
-                Title = ApprenticeMemberAreasOfInterestTitle,
+                FirstName = firstName,
+                SubText = ApprenticeMemberAreasOfInterestTitle,
                 Sections = new()
                 {
                     new AreasOfInterestSection(MemberProfileConstants.AreasOfInterest.ApprenticeAreasOfInterestFirstSection.Title, GetSelectedInterests(MemberProfileConstants.AreasOfInterest.ApprenticeAreasOfInterestFirstSection.Category, profiles, memberProfiles)),
@@ -49,7 +50,8 @@ public static class MemberProfileHelper
         {
             return new AreasOfInterestSectionViewModel()
             {
-                Title = EmployerMemberAreasOfInterestTitle,
+                FirstName = firstName,
+                SubText = EmployerMemberAreasOfInterestTitle,
                 Sections = new()
                 {
                     new AreasOfInterestSection(MemberProfileConstants.AreasOfInterest.EmployerAreasOfInterestFirstSection.Title, GetSelectedInterests(MemberProfileConstants.AreasOfInterest.EmployerAreasOfInterestFirstSection.Category, profiles, memberProfiles)),

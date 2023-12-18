@@ -4,8 +4,8 @@
 
 @if (Model.HasItems)
 {
-    <h1 class="govuk-heading-l govuk-!-margin-top-7">My areas of interest</h1>
-    <p>@Model.Title</p>
+    <h1 class="govuk-heading-l govuk-!-margin-top-7">@Model.Title</h1>
+    <p>@Model.SubText</p>
 
     foreach (var interestSection in Model.Sections)
     {

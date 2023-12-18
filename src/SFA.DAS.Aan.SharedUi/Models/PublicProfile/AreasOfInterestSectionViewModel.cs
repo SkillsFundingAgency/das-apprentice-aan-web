@@ -2,8 +2,10 @@
 
 public class AreasOfInterestSectionViewModel
 {
-    public string Title { get; set; } = null!;
+    public string FirstName { get; set; } = null!;
+    public string SubText { get; set; } = null!;
     public List<AreasOfInterestSection> Sections { get; set; } = new();
+    public string Title => $"{FirstName}'s areas of interest";
     public bool HasItems => Sections.SelectMany(s => s.Interests).Any();
 }
 
