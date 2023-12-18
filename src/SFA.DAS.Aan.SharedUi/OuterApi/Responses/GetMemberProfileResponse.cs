@@ -1,6 +1,6 @@
 ﻿using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 
-namespace SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+namespace SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 public class GetMemberProfileResponse
 {
     public string FullName { get; set; } = null!;
