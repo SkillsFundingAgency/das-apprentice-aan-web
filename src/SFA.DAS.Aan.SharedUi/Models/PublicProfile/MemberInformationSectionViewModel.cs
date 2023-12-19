@@ -9,4 +9,6 @@ public class MemberInformationSectionViewModel
     public string? JobTitle { get; set; }
     public string RegionName { get; set; } = null!;
     public string? Biography { get; set; }
+    public MemberMaturityStatus MaturityStatus { get; set; }
+    public bool ShowMaturityStatus { get; set; }
 }
