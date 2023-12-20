@@ -1,0 +1,23 @@
+﻿@using SFA.DAS.Aan.SharedUi.Models.PublicProfile;
+
+@model MemberProfileViewModel
+@{
+    ViewData["Title"] = "Member Profile";
+}
+
+<partial name="_validationSummary" />
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+    @{
+        await Html.RenderPartialAsync("~/Views/MemberProfile/_MemberInformationSection.cshtml", Model.MemberInformation);
+
+        await Html.RenderPartialAsync("~/Views/MemberProfile/_AreasOfInterestSection.cshtml", Model.AreasOfInterest);
+
+        await Html.RenderPartialAsync("~/Views/MemberProfile/_EmployerInformationSection.cshtml", Model.ApprenticeshipInformation);
+        await Html.RenderPartialAsync("~/Views/MemberProfile/_ApprenticeInformationSection.cshtml", Model.ApprenticeshipInformation);
+
+        await Html.RenderPartialAsync("~/Views/MemberProfile/_ConnectWithMemberSection.cshtml", Model);
+        await Html.RenderPartialAsync("~/Views/MemberProfile/_ConnectViaLinkedInSection.cshtml", Model.ConnectViaLinkedIn);
+    }
+    </div>
+</div>

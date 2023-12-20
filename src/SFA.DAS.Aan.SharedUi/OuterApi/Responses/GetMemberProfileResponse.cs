@@ -1,7 +1,7 @@
 ﻿using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 
-namespace SFA.DAS.Aan.SharedUi.Models;
-public class MemberProfileDetail
+namespace SFA.DAS.Aan.SharedUi.OuterApi.Responses;
+public class GetMemberProfileResponse
 {
     public string FullName { get; set; } = null!;
     public string Email { get; set; } = null!;
@@ -12,10 +12,7 @@ public class MemberProfileDetail
     public string RegionName { get; set; } = null!;
     public MemberUserType UserType { get; set; }
     public bool IsRegionalChair { get; set; }
-    public string Sector { get; set; } = null!;
-    public string Programmes { get; set; } = null!;
-    public string Level { get; set; } = null!;
-    public List<string> Sectors { get; set; } = new List<string>();
-    public int ActiveApprenticesCount { get; set; }
+    public ApprenticeshipDetails? Apprenticeship { get; set; }
     public IEnumerable<MemberProfile> Profiles { get; set; } = null!;
+    public IEnumerable<MemberPreference> Preferences { get; set; } = null!;
 }

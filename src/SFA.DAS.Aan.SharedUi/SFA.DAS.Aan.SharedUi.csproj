@@ -12,7 +12,7 @@
     <Company>ESFA</Company>
     <License>https://github.com/SkillsFundingAgency/das-shared-packages/blob/master/LICENSE</License>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>3.0.1-prerelease-local</Version>
+    <Version>3.0.7-prerelease-local</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="OuterApi\Requests\" />
     <Folder Include="Views\EditAreaOfInterest\" />
   </ItemGroup>
 

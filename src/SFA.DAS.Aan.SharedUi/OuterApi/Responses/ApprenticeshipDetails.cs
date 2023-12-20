@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+﻿namespace SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 public class ApprenticeshipDetails
 {
     public string Sector { get; set; } = null!;

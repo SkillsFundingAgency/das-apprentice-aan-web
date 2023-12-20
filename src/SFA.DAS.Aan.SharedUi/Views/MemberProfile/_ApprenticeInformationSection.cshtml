@@ -1,40 +1,70 @@
-﻿@using SFA.DAS.Aan.SharedUi.Models;
-@model MemberProfileViewModel
-<dl class="govuk-summary-list">
-    @if (!string.IsNullOrEmpty(Model.Sector))
-    {
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key apprenticeship-sector">
-                Apprenticeship sectors
-            </dt>
-            <dd class="govuk-summary-list__value">
-                @Model.Sector
-            </dd>
-        </div>
-    }
+﻿@using SFA.DAS.Aan.SharedUi.Models.PublicProfile;
 
-    @if (!string.IsNullOrEmpty(Model.Programmes))
-    {
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-                Apprenticeship programme
-            </dt>
-            <dd class="govuk-summary-list__value">
-                @Model.Programmes
-            </dd>
-        </div>
-    }
+@model ApprenticeshipSectionViewModel
 
-    @if (!string.IsNullOrEmpty(Model.Level))
-    {
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-                Apprenticeship level
-            </dt>
-            <dd class="govuk-summary-list__value">
-                @Model.Level
-            </dd>
-        </div>
-    }
-</dl>
+@if (Model.IsApprenticeshipInformationAvailable)
+{
+    <h1 class="govuk-heading-l govuk-!-margin-top-7">@Model.ApprenticeshipSectionTitle</h1>
+    <dl class="govuk-summary-list govuk-!-margin-bottom-0">
+        @if (!string.IsNullOrEmpty(Model.EmployerName))
+        {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Employer's name
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.EmployerName
+                </dd>
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(Model.EmployerAddress))
+        {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Employer's address and postcode
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.EmployerAddress
+                </dd>
+            </div>
+        }
+    </dl>
 
+    <dl class="govuk-summary-list">
+        @if (!string.IsNullOrEmpty(Model.Sector))
+        {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key apprenticeship-sector">
+                    Apprenticeship sectors
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.Sector
+                </dd>
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.Programme))
+        {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Apprenticeship programme
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.Programme
+                </dd>
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.Level))
+        {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Apprenticeship level
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.Level
+                </dd>
+            </div>
+        }
+    </dl>
+}
