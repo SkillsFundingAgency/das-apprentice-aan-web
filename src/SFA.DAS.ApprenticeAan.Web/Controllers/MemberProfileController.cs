@@ -81,6 +81,7 @@ public class MemberProfileController : Controller
         memberProfileViewModel.MemberInformation.FullName = memberProfiles.FullName;
         memberProfileViewModel.MemberInformation.RegionName = memberProfiles.RegionName;
         memberProfileViewModel.MemberInformation.UserRole = memberProfiles.UserType.ConvertToRole(memberProfiles.IsRegionalChair);
+        memberProfileViewModel.MemberInformation.JoinedDate = memberProfiles.JoinedDate;
         memberProfileViewModel.MemberInformation.Biography = MemberProfileHelper.GetProfileValueByDescription(MemberProfileConstants.MemberProfileDescription.Biography, profilesResult.Profiles, memberProfiles.Profiles);
         memberProfileViewModel.MemberInformation.JobTitle = MemberProfileHelper.GetProfileValueByDescription(MemberProfileConstants.MemberProfileDescription.JobTitle, profilesResult.Profiles, memberProfiles.Profiles);
 
