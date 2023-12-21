@@ -65,7 +65,7 @@ public static class FilterBuilder
         return BuildQueryString(getNetworkDirectoryUrl, fullQueryParameters, "none")!;
     }
 
-    private static void AddFilterItems(this ICollection<SelectedFilter> filters, Func<string> getNetworkEventsUrl, List<string> fullQueryParameters, IEnumerable<string> selectedValues, string fieldName, string parameterName, IEnumerable<ChecklistLookup> lookups)
+    public static void AddFilterItems(this ICollection<SelectedFilter> filters, Func<string> getNetworkEventsUrl, List<string> fullQueryParameters, IEnumerable<string> selectedValues, string fieldName, string parameterName, IEnumerable<ChecklistLookup> lookups)
     {
         if (!selectedValues.Any()) return;
 
@@ -112,7 +112,7 @@ public static class FilterBuilder
         return queryParameters;
     }
 
-    private static List<string> BuildQueryParameters(NetworkDirectoryRequestModel request)
+    public static List<string> BuildQueryParameters(NetworkDirectoryRequestModel request)
     {
         var queryParameters = new List<string>();
 
@@ -129,6 +129,11 @@ public static class FilterBuilder
         if (request.RegionId != null && request.RegionId.Any())
         {
             queryParameters.AddRange(request.RegionId.Select(region => "regionId=" + region));
+        }
+
+        if (request.Status != null && request.Status.Any())
+        {
+            queryParameters.AddRange(request.Status.Select(s => "status=" + s));
         }
 
         return queryParameters;
