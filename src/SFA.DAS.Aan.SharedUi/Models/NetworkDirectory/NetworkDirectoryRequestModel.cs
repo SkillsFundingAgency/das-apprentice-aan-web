@@ -15,6 +15,9 @@ public class NetworkDirectoryRequestModel
     public List<Role> UserRole { get; set; } = new List<Role>();
 
     [FromQuery]
+    public List<MemberMaturityStatus> Status { get; set; } = new List<MemberMaturityStatus>();
+
+    [FromQuery]
     public bool? IsRegionalChair { get; set; } = null;
 
     [FromQuery]
@@ -32,6 +35,11 @@ public class NetworkDirectoryRequestModel
         {
             parameters.Add("isRegionalChair", new[] { UserRole.Exists(userRole => userRole == Role.RegionalChair).ToString() }!);
             parameters.Add("userType", UserRole.Where(userRole => userRole != Role.RegionalChair).Select(userRole => userRole.ToString()).ToArray());
+        }
+        if (Status.Count == 1)
+        {
+            var value = Status.First() == MemberMaturityStatus.New;
+            parameters.Add("isNew", new[] { value.ToString() });
         }
         if (Page != null) parameters.Add("page", new[] { Page.ToString() }!);
         if (PageSize != null) parameters.Add("pageSize", new[] { PageSize.ToString() }!);

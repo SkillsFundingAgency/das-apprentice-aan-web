@@ -2,7 +2,7 @@
 using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 
 namespace SFA.DAS.Aan.SharedUi.Models.NetworkDirectory;
-public class MembersViewModel
+public class MembersViewModel : MaturityViewModelBase
 {
     public Guid MemberId { get; set; }
     public string? FullName { get; set; }
@@ -10,7 +10,6 @@ public class MembersViewModel
     public string? RegionName { get; set; }
     public Role UserRole { get; set; }
     public bool? IsRegionalChair { get; set; }
-    public DateTime JoinedDate { get; set; }
     public string MemberProfileLink { get; set; } = null!;
 
     public static implicit operator MembersViewModel(MemberSummary source)

@@ -7,4 +7,5 @@ public class DirectoryFilterChoices
     public string? Keyword { get; set; }
     public ChecklistDetails RoleChecklistDetails { get; set; } = new ChecklistDetails();
     public ChecklistDetails RegionChecklistDetails { get; set; } = new ChecklistDetails();
+    public ChecklistDetails StatusChecklistDetails { get; set; } = new ChecklistDetails();
 }
