@@ -6,6 +6,6 @@ public class NotificationSentConfirmationViewModel : INetworkHubLink
     {
         NetworkDirectoryUrl = networkDirectoryUrl;
     }
-    public string NetworkDirectoryUrl { get; set; } = null!;
+    public string NetworkDirectoryUrl { get; set; }
     public string? NetworkHubLink { get; set; }
 };
