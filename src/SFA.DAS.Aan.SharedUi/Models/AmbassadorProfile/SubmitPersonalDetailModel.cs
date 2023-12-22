@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.Aan.SharedUi.Models;
 
-public class SubmitPersonalDetailModel : INetworkHubLink
+public class SubmitPersonalDetailModel
 {
     public int RegionId { get; set; }
     public string? JobTitle { get; set; }
@@ -11,5 +11,4 @@ public class SubmitPersonalDetailModel : INetworkHubLink
     public bool ShowBiography { get; set; }
     public string OrganisationName { get; set; } = null!;
     public MemberUserType UserType { get; set; }
-    public string? NetworkHubLink { get; set; }
 }
