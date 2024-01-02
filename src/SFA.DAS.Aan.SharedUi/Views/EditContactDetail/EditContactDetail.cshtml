@@ -28,19 +28,19 @@
             Your email address is not visible to other ambassadors. However, you will receive network updates, communications and messages from other members to this email address.
         </p>
         <form method="post" asp-route="@SharedRouteNames.EditContactDetail" enctype="multipart/form-data" novalidate>
-            <hr />
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
             <div class="govuk-form-group">
-                <h3 class="govuk-label-wrapper govuk-!-margin-top-7 govuk-!-margin-bottom-4">
-                    <label class="govuk-label govuk-label--m" for="linkedin-url">
-                        LinkedIn profile url
-                    </label>
-                </h3>
+                <label class="govuk-label govuk-label--m" for="linkedin">
+                    LinkedIn profile url
+                </label>
                 <span asp-validation-for="LinkedinUrl" class="govuk-error-message"></span>
-                <div class="contact-input-linkedin">
-                    <label>@UrlConstant.LinkedinUrl</label>
-                    <input type="text" asp-for="LinkedinUrl" class="govuk-input" id="linkedin-url" name="linkedinUrl">
+                <div class="govuk-input__wrapper">
+                    <div class="govuk-input__prefix" aria-hidden="true">@UrlConstant.LinkedinUrl</div>
+                    <input asp-for="LinkedinUrl" class="govuk-input" name="LinkedinUrl" type="text" spellcheck="false">
                 </div>
             </div>
+
             <div esfa-validation-marker-for="ShowLinkedinUrl">
                 <div class="govuk-!-margin-top-7 govuk-!-margin-bottom-7">
                     <span asp-validation-for="ShowLinkedinUrl" class="govuk-error-message"></span>
@@ -52,12 +52,12 @@
                     </div>
                 </div>
             </div>
-            <hr />
-            <div class="govuk-!-margin-top-6 submit-cancel-section">
-                <button id="saveChanges" type="submit" data-disable-on-submit="true" class="govuk-button govuk-!-margin-bottom-0 govuk-!-margin-right-3">Save Changes</button>
-                <h6 class="personal-information-cancel-link">
-                    <a href="@Model.YourAmbassadorProfileUrl" class="govuk-link govuk-link--no-visited-state personal-detail-cancel-link">Cancel</a>
-                </h6>
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+            <div class="govuk-button-group">
+                <button id="saveChanges" type="submit" data-disable-on-submit="true" class="govuk-button" data-module="govuk-button">
+                    Save changes
+                </button>
+                <a class="govuk-link" href="@Model.YourAmbassadorProfileUrl">Cancel</a>
             </div>
         </form>
     </div>
