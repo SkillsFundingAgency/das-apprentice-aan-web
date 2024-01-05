@@ -70,12 +70,12 @@
                     </div>
                 </fieldset>
             </div>
-            <hr />
-            <div class="govuk-!-margin-top-6 submit-cancel-section">
-                <button id="saveChanges" type="submit" data-disable-on-submit="true" class="govuk-button govuk-!-margin-bottom-0 govuk-!-margin-right-6">Save Changes</button>
-                <h6 class="areaofinterest-cancel-link">
-                    <a href="@Model.YourAmbassadorProfileUrl" class="govuk-link govuk-link--no-visited-state personal-detail-cancel-link">Cancel</a>
-                </h6>
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+            <div class="govuk-button-group">
+                <button id="saveChanges" type="submit" data-disable-on-submit="true" class="govuk-button" data-module="govuk-button">
+                    Save changes
+                </button>
+                <a class="govuk-link" href="@Model.YourAmbassadorProfileUrl">Cancel</a>
             </div>
         </form>
     </div>

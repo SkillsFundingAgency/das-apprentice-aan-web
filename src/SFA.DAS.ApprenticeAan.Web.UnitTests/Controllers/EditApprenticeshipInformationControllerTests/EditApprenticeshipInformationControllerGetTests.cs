@@ -385,6 +385,23 @@ public class EditApprenticeshipInformationControllerGetTests
         Assert.That(result.YourAmbassadorProfileUrl, Is.EqualTo(YourAmbassadorProfileUrl));
     }
 
+    [Test, MoqAutoData]
+    public void Index_EditApprenticeshipInformationViewModel_ShouldHaveNullValueForNetworkHubLink(
+        CancellationToken cancellationToken
+    )
+    {
+        // Arrange
+        SetUpOuterApiMock();
+
+        // Act
+        var result = sut.Index(cancellationToken);
+        var viewResult = result as ViewResult;
+        var viewModel = viewResult!.Model as EditApprenticeshipInformationViewModel;
+
+        // Assert
+        Assert.That(viewModel!.NetworkHubLink, Is.Null);
+    }
+
     [TearDown]
     public void TearDown()
     {

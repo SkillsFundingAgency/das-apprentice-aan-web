@@ -8,16 +8,16 @@
     <div class="govuk-grid-column-two-thirds">
         @if (ViewBag.YourAmbassadorProfileSuccessMessage != null)
         {
-            <div class="confirmation-message govuk-!-margin-bottom-6">
-                <div class="govuk-panel--confirmation">
-                    <h3 class="govuk-panel__title govuk-!-padding-top-1 govuk-!-padding-left-2 govuk-!-padding-bottom-2">
+            <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
                         Success
-                    </h3>
+                    </h2>
                 </div>
-                <div class="govuk-panel__body">
-                    <p class="govuk-!-margin-bottom-0 govuk-!-padding-top-2 govuk-!-padding-left-2 govuk-!-padding-bottom-2">
+                <div class="govuk-notification-banner__content">
+                    <h3 class="govuk-notification-banner__heading">
                         <b>You have successfully updated your ambassador profile.</b>
-                    </p>
+                    </h3>
                 </div>
             </div>
         }

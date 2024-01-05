@@ -194,4 +194,21 @@ public class EditContactDetailControllerGetTests
         // Assert
         outerApiMock.Verify(a => a.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
     }
+
+    [Test, MoqAutoData]
+    public void Index_EditContactDetailViewModel_ShouldHaveNullValueForNetworkHubLink(
+        CancellationToken cancellationToken
+    )
+    {
+        // Arrange
+        SetUpOuterApiMock();
+
+        // Act
+        var result = sut.Index(cancellationToken);
+        var viewResult = result as ViewResult;
+        var viewModel = viewResult!.Model as EditContactDetailViewModel;
+
+        // Assert
+        Assert.That(viewModel!.NetworkHubLink, Is.Null);
+    }
 }

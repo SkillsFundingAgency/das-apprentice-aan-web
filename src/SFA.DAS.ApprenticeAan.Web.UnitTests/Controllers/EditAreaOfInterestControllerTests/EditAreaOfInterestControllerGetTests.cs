@@ -154,4 +154,33 @@ public class EditAreaOfInterestControllerGetTests
             Assert.That(sut[0].IsSelected, Is.EqualTo(profileValue));
         });
     }
+
+    [Test, MoqAutoData]
+    public void Index_EditAreaOfInterestViewModel_ShouldHaveNullValueForNetworkHubLink(
+    [Frozen] Mock<IOuterApiClient> outerApiMock,
+    GetMemberProfileResponse getMemberProfileResponse,
+    GetProfilesResult getProfilesResult,
+    [Greedy] EditAreaOfInterestController sut
+ )
+    {
+        // Arrange
+        var memberId = Guid.NewGuid();
+        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
+        outerApiMock.Setup(o => o.GetMemberProfile(memberId, memberId, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                    .Returns(Task.FromResult(getMemberProfileResponse));
+        outerApiMock.Setup(o => o.GetProfilesByUserType(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                    .Returns(Task.FromResult(getProfilesResult));
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
+        sut.AddUrlHelperMock()
+    .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
+
+        // Act
+        var result = sut.Get(new CancellationToken());
+        var viewResult = result as ViewResult;
+        var viewModel = viewResult!.Model as EditAreaOfInterestViewModel;
+
+        // Assert
+        Assert.That(viewModel!.NetworkHubLink, Is.Null);
+    }
 }
