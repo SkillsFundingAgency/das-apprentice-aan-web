@@ -4,6 +4,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
@@ -28,10 +29,10 @@ public class EditAreaOfInterestControllerGetTests
     private GetMemberProfileResponse memberProfileResponse = null!;
     private readonly List<Profile> profiles = new()
     {
-        new Profile { Id = 1, Description = "Networking at events in person", Category = "Events", Ordering = 1 },
-        new Profile { Id = 2, Description = "Presenting at events in person", Category = "Events", Ordering = 2 },
-        new Profile { Id = 10, Description = "Carrying out and writing up case studies", Category = "Promotions", Ordering = 1 },
-        new Profile { Id = 11, Description = "Designing and creating marketing materials to champion the network", Category = "Promotions", Ordering = 2 }
+        new Profile { Id = 1, Description = "Networking at events in person", Category = AreaOfInterestTitleConstant.FirstSectionTitleForApprentice, Ordering = 1 },
+        new Profile { Id = 2, Description = "Presenting at events in person", Category = AreaOfInterestTitleConstant.FirstSectionTitleForApprentice, Ordering = 2 },
+        new Profile { Id = 10, Description = "Carrying out and writing up case studies", Category = AreaOfInterestTitleConstant.SecondSectionTitleForApprentice, Ordering = 1 },
+        new Profile { Id = 11, Description = "Designing and creating marketing materials to champion the network", Category = AreaOfInterestTitleConstant.SecondSectionTitleForApprentice, Ordering = 2 }
     };
 
     [Test]
@@ -86,7 +87,7 @@ public class EditAreaOfInterestControllerGetTests
         Assert.Multiple(() =>
         {
             var viewResult = result as ViewResult;
-            Assert.That(viewResult!.ViewName, Does.Contain("EditAreaOfInterest"));
+            Assert.That(viewResult!.ViewName, Does.Contain(SharedRouteNames.EditAreaOfInterest));
         });
     }
 
@@ -149,8 +150,8 @@ public class EditAreaOfInterestControllerGetTests
         {
             Assert.Multiple(() =>
             {
-                Assert.That(viewModel!.FirstSectionTitle, Is.EqualTo("Events"));
-                Assert.That(viewModel!.SecondSectionTitle, Is.EqualTo("Promoting the network"));
+                Assert.That(viewModel!.FirstSectionTitle, Is.EqualTo(AreaOfInterestTitleConstant.FirstSectionTitleForApprentice));
+                Assert.That(viewModel!.SecondSectionTitle, Is.EqualTo(AreaOfInterestTitleConstant.SecondSectionTitleForApprentice));
             });
         }
     }
