@@ -14,8 +14,8 @@ public class SubmitAreaOfInterestModelValidatorTests
         // Arrange
         var model = new SubmitAreaOfInterestModel
         {
-            Events = new List<SelectProfileViewModel>(),
-            Promotions = new List<SelectProfileViewModel>()
+            FirstSectionInterests = new List<SelectProfileViewModel>(),
+            SecondSectionInterests = new List<SelectProfileViewModel>()
         };
         var sut = new SubmitAreaOfInterestModelValidator();
 
@@ -33,8 +33,8 @@ public class SubmitAreaOfInterestModelValidatorTests
         // Arrange
         var model = new SubmitAreaOfInterestModel
         {
-            Events = selectProfileViewModels,
-            Promotions = new List<SelectProfileViewModel>()
+            FirstSectionInterests = selectProfileViewModels,
+            SecondSectionInterests = new List<SelectProfileViewModel>()
         };
         var sut = new SubmitAreaOfInterestModelValidator();
 
@@ -51,8 +51,8 @@ public class SubmitAreaOfInterestModelValidatorTests
         // Arrange
         var model = new SubmitAreaOfInterestModel
         {
-            Events = new List<SelectProfileViewModel>(),
-            Promotions = selectProfileViewModels
+            FirstSectionInterests = new List<SelectProfileViewModel>(),
+            SecondSectionInterests = selectProfileViewModels
         };
         var sut = new SubmitAreaOfInterestModelValidator();
 
@@ -69,8 +69,8 @@ public class SubmitAreaOfInterestModelValidatorTests
         // Arrange
         var model = new SubmitAreaOfInterestModel
         {
-            Events = selectProfileViewModels,
-            Promotions = selectProfileViewModels
+            FirstSectionInterests = selectProfileViewModels,
+            SecondSectionInterests = selectProfileViewModels
         };
         var sut = new SubmitAreaOfInterestModelValidator();
 

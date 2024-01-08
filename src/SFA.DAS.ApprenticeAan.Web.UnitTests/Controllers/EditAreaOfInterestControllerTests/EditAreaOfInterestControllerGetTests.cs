@@ -1,5 +1,6 @@
-﻿using AutoFixture;
-using AutoFixture.NUnit3;
+﻿using AutoFixture.NUnit3;
+using FluentAssertions.Execution;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -14,32 +15,30 @@ using SFA.DAS.ApprenticeAan.Web.Controllers;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
 
 public class EditAreaOfInterestControllerGetTests
 {
     static readonly string YourAmbassadorProfileUrl = Guid.NewGuid().ToString();
+    private static Guid memberId = Guid.NewGuid();
+    private EditAreaOfInterestController sut = null!;
+    private Mock<IOuterApiClient> _outerApiMock = null!;
+    private Mock<IValidator<SubmitAreaOfInterestModel>> _validatorMock = null!;
+    private GetMemberProfileResponse memberProfileResponse = null!;
+    private readonly List<Profile> profiles = new()
+    {
+        new Profile { Id = 1, Description = "Networking at events in person", Category = "Events", Ordering = 1 },
+        new Profile { Id = 2, Description = "Presenting at events in person", Category = "Events", Ordering = 2 },
+        new Profile { Id = 10, Description = "Carrying out and writing up case studies", Category = "Promotions", Ordering = 1 },
+        new Profile { Id = 11, Description = "Designing and creating marketing materials to champion the network", Category = "Promotions", Ordering = 2 }
+    };
 
-    [Test, MoqAutoData]
-    public void Get_ReturnsEditAreaOfInterestViewModel(
-        [Frozen] Mock<IOuterApiClient> outerApiMock,
-        [Greedy] EditAreaOfInterestController sut,
-        GetMemberProfileResponse memberProfile,
-        GetProfilesResult getProfilesResult)
+    [Test]
+    public void Get_ReturnsEditAreaOfInterestViewModel()
     {
         //Arrange
-        var memberId = Guid.NewGuid();
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, Guid.NewGuid().ToString());
-        sut.AddUrlHelperMock()
-            .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
-        outerApiMock.Setup(o => o.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
-                    .Returns(Task.FromResult(memberProfile));
-        outerApiMock.Setup(o => o.GetProfilesByUserType(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .Returns(Task.FromResult(getProfilesResult));
+        HappyPathSetUp();
 
         //Act
         var result = (ViewResult)sut.Get(new CancellationToken());
@@ -48,67 +47,37 @@ public class EditAreaOfInterestControllerGetTests
         Assert.That(result.Model, Is.TypeOf<EditAreaOfInterestViewModel>());
     }
 
-    [Test, MoqAutoData]
-    public void Index_InvokesOuterApiClientGetMemberProfile(
-        [Frozen] Mock<IOuterApiClient> outerApiMock,
-        [Greedy] EditAreaOfInterestController sut,
-        CancellationToken cancellationToken)
+    [Test]
+    public void Index_InvokesOuterApiClientGetMemberProfile()
     {
         //Arrange
-        var memberId = Guid.NewGuid();
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
-        sut.AddUrlHelperMock()
-.AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
+        HappyPathSetUp();
 
         //Act
-        var result = sut.GetAreaOfInterests(cancellationToken);
+        var result = sut.GetAreaOfInterests(CancellationToken.None);
 
         //Assert
-        outerApiMock.Verify(o => o.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once());
+        _outerApiMock.Verify(o => o.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once());
     }
 
-    [Test, MoqAutoData]
-    public void Index_InvokesOuterApiClientGetProfilesByUserType(
-        [Frozen] Mock<IOuterApiClient> outerApiMock,
-        [Greedy] EditAreaOfInterestController sut,
-        CancellationToken cancellationToken)
+    [Test]
+    public void Index_InvokesOuterApiClientGetProfilesByUserType()
     {
         //Arrange
-        var memberId = Guid.NewGuid();
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
-        sut.AddUrlHelperMock()
-.AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
+        HappyPathSetUp();
 
         //Act
-        var result = sut.GetAreaOfInterests(cancellationToken);
+        var result = sut.GetAreaOfInterests(CancellationToken.None);
 
         //Assert
-        outerApiMock.Verify(o => o.GetProfilesByUserType(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once());
+        _outerApiMock.Verify(o => o.GetProfilesByUserType(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once());
     }
 
-    [Test, MoqAutoData]
-    public void Index_ReturnsEditAreaOfInterestView(
-        [Frozen] Mock<IOuterApiClient> outerApiMock,
-        GetMemberProfileResponse getMemberProfileResponse,
-        GetProfilesResult getProfilesResult,
-        [Greedy] EditAreaOfInterestController sut
-    )
+    [Test]
+    public void Index_ReturnsEditAreaOfInterestView()
     {
         //Arrange
-        var memberId = Guid.NewGuid();
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        outerApiMock.Setup(o => o.GetMemberProfile(memberId, memberId, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
-                    .Returns(Task.FromResult(getMemberProfileResponse));
-        outerApiMock.Setup(o => o.GetProfilesByUserType(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                    .Returns(Task.FromResult(getProfilesResult));
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
-        sut.AddUrlHelperMock()
-    .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
+        HappyPathSetUp();
 
         //Act
         var result = sut.Get(new CancellationToken());
@@ -121,18 +90,12 @@ public class EditAreaOfInterestControllerGetTests
         });
     }
 
-    [Test]
-    [MoqInlineAutoData(true)]
-    [MoqInlineAutoData(false)]
-    public void SelectProfileViewModelMapping_ReturnsSelectProfileViewModelList(bool profileValue)
+    [Test, AutoData]
+    public void SelectProfileViewModelMapping_ReturnsSelectProfileViewModelList(bool profileValue, IEnumerable<MemberProfile> memberProfiles)
     {
         //Arrange
-        var fixture = new Fixture();
         EditPersonalInformationViewModel editPersonalInformationViewModel = new EditPersonalInformationViewModel();
-        IEnumerable<MemberProfile> memberProfiles = fixture.CreateMany<MemberProfile>(1);
-
         List<SelectProfileViewModel> selectProfileViewModels = new List<SelectProfileViewModel>();
-
         memberProfiles.FirstOrDefault()!.Value = profileValue.ToString();
         List<Profile> profiles = new List<Profile>()
         {
@@ -155,25 +118,11 @@ public class EditAreaOfInterestControllerGetTests
         });
     }
 
-    [Test, MoqAutoData]
-    public void Index_EditAreaOfInterestViewModel_ShouldHaveNullValueForNetworkHubLink(
-    [Frozen] Mock<IOuterApiClient> outerApiMock,
-    GetMemberProfileResponse getMemberProfileResponse,
-    GetProfilesResult getProfilesResult,
-    [Greedy] EditAreaOfInterestController sut
- )
+    [Test]
+    public void Index_EditAreaOfInterestViewModel_ShouldHaveNullValueForNetworkHubLink()
     {
         // Arrange
-        var memberId = Guid.NewGuid();
-        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        outerApiMock.Setup(o => o.GetMemberProfile(memberId, memberId, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
-                    .Returns(Task.FromResult(getMemberProfileResponse));
-        outerApiMock.Setup(o => o.GetProfilesByUserType(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                    .Returns(Task.FromResult(getProfilesResult));
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
-        sut.AddUrlHelperMock()
-    .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
+        HappyPathSetUp();
 
         // Act
         var result = sut.Get(new CancellationToken());
@@ -182,5 +131,80 @@ public class EditAreaOfInterestControllerGetTests
 
         // Assert
         Assert.That(viewModel!.NetworkHubLink, Is.Null);
+    }
+
+    [Test]
+    public void Index_EditAreaOfInterestViewModel_ShouldHaveExpectedValueForTitles()
+    {
+        // Arrange
+        HappyPathSetUp();
+
+        // Act
+        var result = sut.Get(CancellationToken.None);
+        var viewResult = result as ViewResult;
+        var viewModel = viewResult!.Model as EditAreaOfInterestViewModel;
+
+        // Assert
+        using (new AssertionScope())
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(viewModel!.FirstSectionTitle, Is.EqualTo("Events"));
+                Assert.That(viewModel!.SecondSectionTitle, Is.EqualTo("Promoting the network"));
+            });
+        }
+    }
+
+    [Test]
+    public void Index_EditAreaOfInterestViewModel_ShouldHaveExpectedValueForYourAmbassadorProfileUrl()
+    {
+        // Arrange
+        HappyPathSetUp();
+
+        // Act
+        var result = sut.Get(CancellationToken.None);
+        var viewResult = result as ViewResult;
+        var viewModel = viewResult!.Model as EditAreaOfInterestViewModel;
+
+        // Assert
+        using (new AssertionScope())
+        {
+            Assert.That(viewModel!.YourAmbassadorProfileUrl, Is.EqualTo(YourAmbassadorProfileUrl));
+        }
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        if (sut != null) sut.Dispose();
+    }
+
+    private void SetUpControllerWithContext()
+    {
+        sut = new(_validatorMock.Object, _outerApiMock.Object);
+        var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
+        sut.AddUrlHelperMock()
+.AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
+    }
+
+    private void HappyPathSetUp()
+    {
+        _outerApiMock = new();
+        _validatorMock = new();
+        SetUpControllerWithContext();
+        memberProfileResponse = new()
+        {
+            Profiles = new List<MemberProfile>(),
+            Preferences = new List<MemberPreference>(),
+            RegionId = 1,
+            OrganisationName = string.Empty
+        };
+
+        _outerApiMock.Setup(o => o.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+               .Returns(Task.FromResult(memberProfileResponse));
+        _outerApiMock.Setup(o => o.GetProfilesByUserType(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.FromResult(new GetProfilesResult() { Profiles = profiles }));
     }
 }

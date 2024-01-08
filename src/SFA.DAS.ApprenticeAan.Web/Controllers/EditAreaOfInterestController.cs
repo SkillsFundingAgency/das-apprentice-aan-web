@@ -65,10 +65,13 @@ public class EditAreaOfInterestController : Controller
         var memberProfiles = await _outerApiClient.GetMemberProfile(User.GetAanMemberId(), User.GetAanMemberId(), false, cancellationToken);
         var profilesResult = await _outerApiClient.GetProfilesByUserType(MemberUserType.Apprentice.ToString(), cancellationToken);
 
-        editAreaOfInterestViewModel.Events = SelectProfileViewModelMapping(profilesResult.Profiles.Where(x => x.Category == Category.Events).ToList(), memberProfiles.Profiles);
+        editAreaOfInterestViewModel.FirstSectionInterests = SelectProfileViewModelMapping(profilesResult.Profiles.Where(x => x.Category == Category.Events).ToList(), memberProfiles.Profiles);
 
-        editAreaOfInterestViewModel.Promotions = SelectProfileViewModelMapping(profilesResult.Profiles.Where(x => x.Category == Category.Promotions).ToList(), memberProfiles.Profiles);
+        editAreaOfInterestViewModel.SecondSectionInterests = SelectProfileViewModelMapping(profilesResult.Profiles.Where(x => x.Category == Category.Promotions).ToList(), memberProfiles.Profiles);
         editAreaOfInterestViewModel.YourAmbassadorProfileUrl = Url.RouteUrl(SharedRouteNames.YourAmbassadorProfile)!;
+
+        editAreaOfInterestViewModel.FirstSectionTitle = "Events";
+        editAreaOfInterestViewModel.SecondSectionTitle = "Promoting the network";
         return editAreaOfInterestViewModel;
     }
 
