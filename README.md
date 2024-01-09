@@ -14,7 +14,7 @@ This web solution is part of Apprentice Ambassador Network (AAN) project. Here t
 ### Pre-Requisites
 * A clone of this repository
 * An Azure Active Directory account with the appropriate roles as per the [config](https://github.com/SkillsFundingAgency/das-employer-config/blob/master/das-tools-servicebus-support/SFA.DAS.Tools.Servicebus.Support.json).
-* The Outer API [das-apim-endpoints](https://github.com/SkillsFundingAgency/das-apim-endpoints/tree/master/src/AdminAan) should be available either running locally or accessible in an Azure tenancy.
+* The Outer API [das-apim-endpoints](https://github.com/SkillsFundingAgency/das-apim-endpoints/tree/master/src/ApprenticeAan) should be available either running locally or accessible in an Azure tenancy.
 * The Inner API [das-aan-hub-api](https://github.com/SkillsFundingAgency/das-aan-hub-api) should be available either running locally or accessible in an Azure tenancy.
 
 ### Config
