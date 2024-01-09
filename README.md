@@ -9,13 +9,17 @@
 
 This web solution is part of Apprentice Ambassador Network (AAN) project. Here the apprentice users can onboard to become ambassadors, find and sign-up for network events, find and collaborate with other ambassadors.
 
+## How It Works
+Users are expected to register themselves in the Apprentice portal. Once registered they will have access to on-boarding journey for AAN. Users who are already apprentices will also have access to on-board. Currently the Apprentice portal is using [das-apprentice-login-service](https://github.com/SkillsFundingAgency/das-apprentice-login-service) for authentication. The user registration happens in the [das-apprentice-accounts-web](https://github.com/SkillsFundingAgency/das-apprentice-accounts-web). 
+
 ## 🚀 Installation
 
 ### Pre-Requisites
 * A clone of this repository
 * An Azure Active Directory account with the appropriate roles as per the [config](https://github.com/SkillsFundingAgency/das-employer-config/blob/master/das-tools-servicebus-support/SFA.DAS.Tools.Servicebus.Support.json).
 * The Outer API [das-apim-endpoints](https://github.com/SkillsFundingAgency/das-apim-endpoints/tree/master/src/ApprenticeAan) should be available either running locally or accessible in an Azure tenancy.
-* The Inner API [das-aan-hub-api](https://github.com/SkillsFundingAgency/das-aan-hub-api) should be available either running locally or accessible in an Azure tenancy.
+* The [das-apprentice-login-service](https://github.com/SkillsFundingAgency/das-apprentice-login-service) should be available either running locally or accessible in an Azure tenancy.
+* The [das-apprentice-accounts-web](https://github.com/SkillsFundingAgency/das-apprentice-accounts-web) should be available either running locally or accessible in an Azure tenancy.
 
 ### Config
 You can find the latest config file in [das-employer-config repository](https://github.com/SkillsFundingAgency/das-employer-config/blob/master/das-apprentice-aan-web/SFA.DAS.ApprenticeAan.Web.json)
