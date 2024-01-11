@@ -13,18 +13,20 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 public class NotificationsController : Controller
 {
     private readonly IOuterApiClient _outerApiClient;
+    private readonly ISessionService _sessionService;
 
-    public NotificationsController(IOuterApiClient outerApiClient)
+    public NotificationsController(IOuterApiClient outerApiClient, ISessionService sessionService)
     {
         _outerApiClient = outerApiClient;
+        _sessionService = sessionService;
     }
 
     [Route("links/{id}")]
     public async Task<IActionResult> Index(Guid id, CancellationToken cancellationToken)
     {
-        var response = await _outerApiClient.GetNotification(User.GetAanMemberId(), id, cancellationToken);
+        var response = await _outerApiClient.GetNotification(_sessionService.GetMemberId(), id, cancellationToken);
 
-        if (response.ResponseMessage.StatusCode != HttpStatusCode.OK) return RedirectToRoute(RouteNames.Home);
+        if (response.ResponseMessage.StatusCode != HttpStatusCode.OK) return RedirectToRoute(SharedRouteNames.Home);
 
         var notification = response.GetContent()!;
 
@@ -47,7 +49,7 @@ public class NotificationsController : Controller
             or NotificationTemplateNames.AANGetInTouch
                 => (SharedRouteNames.MemberProfile, new { id = notification.ReferenceId }),
 
-            _ => (RouteNames.Home, null)
+            _ => (SharedRouteNames.Home, null)
         };
 
         return RedirectToRoute(route.RouteName, route.RouteValues);

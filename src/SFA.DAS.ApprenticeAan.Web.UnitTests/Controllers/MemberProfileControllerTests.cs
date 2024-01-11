@@ -29,6 +29,7 @@ public class MemberProfileControllerTests
     public void MemberProfile_ReturnsMemberProfileViewModel(
         MemberUserType memberUserType,
         [Frozen] Mock<IOuterApiClient> outerApiMock,
+        [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] MemberProfileController sut,
         GetMemberProfileResponse memberProfile)
     {
@@ -37,10 +38,10 @@ public class MemberProfileControllerTests
         var memberId = Guid.NewGuid();
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, Guid.NewGuid().ToString());
+
         memberProfile.UserType = memberUserType;
         outerApiMock.Setup(o => o.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).ReturnsAsync(memberProfile);
-
+        sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.Member.MemberId)).Returns(memberId.ToString());
         //Act
         var result = (ViewResult)sut.Get(memberId, new CancellationToken()).Result;
 
@@ -77,6 +78,7 @@ public class MemberProfileControllerTests
     public void Get_ReturnsProfileView(
         MemberUserType memberUserType,
         [Frozen] Mock<IOuterApiClient> outerApiMock,
+        [Frozen] Mock<ISessionService> sessionServiceMock,
         GetMemberProfileResponse getMemberProfileResponse,
         Mock<IValidator<ConnectWithMemberSubmitModel>> validatorMock,
         CancellationToken cancellationToken
@@ -89,7 +91,8 @@ public class MemberProfileControllerTests
         getMemberProfileResponse.UserType = memberUserType;
         outerApiMock.Setup(o => o.GetMemberProfile(memberId, memberId, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(getMemberProfileResponse));
-        MemberProfileController sut = new MemberProfileController(outerApiMock.Object, validatorMock.Object);
+        sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.Member.MemberId)).Returns(memberId.ToString());
+        MemberProfileController sut = new MemberProfileController(outerApiMock.Object, validatorMock.Object, sessionServiceMock.Object);
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
 
@@ -111,6 +114,7 @@ public class MemberProfileControllerTests
         MemberUserType userType,
         ConnectWithMemberSubmitModel command,
         [Frozen] Mock<IOuterApiClient> outerApiMock,
+        [Frozen] Mock<ISessionService> sessionServiceMock,
         GetMemberProfileResponse getMemberProfileResponse,
         Mock<IValidator<ConnectWithMemberSubmitModel>> validatorMock,
         CancellationToken cancellationToken)
@@ -123,7 +127,8 @@ public class MemberProfileControllerTests
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
         outerApiMock.Setup(o => o.GetMemberProfile(memberId, memberId, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(getMemberProfileResponse));
-        MemberProfileController sut = new MemberProfileController(outerApiMock.Object, validatorMock.Object);
+        sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.Member.MemberId)).Returns(memberId.ToString());
+        MemberProfileController sut = new MemberProfileController(outerApiMock.Object, validatorMock.Object, sessionServiceMock.Object);
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
 
@@ -161,7 +166,7 @@ public class MemberProfileControllerTests
         var successfulValidationResult = new ValidationResult();
         validatorMock.Setup(v => v.ValidateAsync(It.IsAny<ConnectWithMemberSubmitModel>(), It.IsAny<CancellationToken>())).ReturnsAsync(successfulValidationResult);
 
-        MemberProfileController sut = new MemberProfileController(outerApiMock.Object, validatorMock.Object);
+        MemberProfileController sut = new MemberProfileController(outerApiMock.Object, validatorMock.Object, Mock.Of<ISessionService>());
 
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
@@ -184,7 +189,7 @@ public class MemberProfileControllerTests
     {
         // Arrange
         var validatorMock = new Mock<IValidator<ConnectWithMemberSubmitModel>>();
-        MemberProfileController sut = new MemberProfileController(outerApiMock.Object, validatorMock.Object);
+        MemberProfileController sut = new MemberProfileController(outerApiMock.Object, validatorMock.Object, Mock.Of<ISessionService>());
         string NetworkDirectoryUrl = Guid.NewGuid().ToString();
         sut.AddUrlHelperMock()
             .AddUrlForRoute(SharedRouteNames.NetworkDirectory, NetworkDirectoryUrl);

@@ -20,13 +20,15 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 public class EditApprenticeshipInformationController : Controller
 {
     private readonly IOuterApiClient _apiClient;
+    private readonly ISessionService _sessionService;
     private readonly IValidator<SubmitApprenticeshipInformationModel> _validator;
     public const string ChangeApprenticeshipInformationViewPath = "~/Views/EditApprenticeshipInformation/EditApprenticeshipInformation.cshtml";
 
-    public EditApprenticeshipInformationController(IOuterApiClient apiClient, IValidator<SubmitApprenticeshipInformationModel> validator)
+    public EditApprenticeshipInformationController(IOuterApiClient apiClient, IValidator<SubmitApprenticeshipInformationModel> validator, ISessionService sessionService)
     {
         _apiClient = apiClient;
         _validator = validator;
+        _sessionService = sessionService;
     }
 
     [HttpGet]
@@ -65,7 +67,7 @@ public class EditApprenticeshipInformationController : Controller
         updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.EmployerPostcode, Value = submitApprenticeshipInformationModel.EmployerPostcode?.Trim() });
         updateMemberProfileAndPreferencesRequest.UpdateMemberProfileRequest.MemberProfiles = updateProfileModels;
 
-        await _apiClient.UpdateMemberProfileAndPreferences(User.GetAanMemberId(), updateMemberProfileAndPreferencesRequest, cancellationToken);
+        await _apiClient.UpdateMemberProfileAndPreferences(_sessionService.GetMemberId(), updateMemberProfileAndPreferencesRequest, cancellationToken);
 
         TempData[TempDataKeys.YourAmbassadorProfileSuccessMessage] = true;
         return RedirectToRoute(SharedRouteNames.YourAmbassadorProfile);
@@ -73,7 +75,7 @@ public class EditApprenticeshipInformationController : Controller
 
     public async Task<EditApprenticeshipInformationViewModel> GetEditApprenticeshipInformationViewModel(CancellationToken cancellationToken)
     {
-        var memberProfiles = await _apiClient.GetMemberProfile(User.GetAanMemberId(), User.GetAanMemberId(), false, cancellationToken);
+        var memberProfiles = await _apiClient.GetMemberProfile(_sessionService.GetMemberId(), _sessionService.GetMemberId(), false, cancellationToken);
         EditApprenticeshipInformationViewModel editApprenticeshipInformationViewModel = new EditApprenticeshipInformationViewModel();
 
         editApprenticeshipInformationViewModel.EmployerName = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.EmployerName, memberProfiles.Profiles);

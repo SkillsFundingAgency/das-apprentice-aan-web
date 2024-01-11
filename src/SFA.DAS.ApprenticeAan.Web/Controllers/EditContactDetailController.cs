@@ -20,13 +20,15 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 public class EditContactDetailController : Controller
 {
     private readonly IOuterApiClient _apiClient;
+    private readonly ISessionService _sessionService;
     private readonly IValidator<SubmitContactDetailModel> _validator;
     public const string ChangeContactDetailViewPath = "~/Views/EditContactDetail/EditContactDetail.cshtml";
 
-    public EditContactDetailController(IOuterApiClient apiClient, IValidator<SubmitContactDetailModel> validator)
+    public EditContactDetailController(IOuterApiClient apiClient, IValidator<SubmitContactDetailModel> validator, ISessionService sessionService)
     {
         _apiClient = apiClient;
         _validator = validator;
+        _sessionService = sessionService;
     }
 
     [HttpGet]
@@ -58,7 +60,7 @@ public class EditContactDetailController : Controller
 
         updateMemberProfileAndPreferencesRequest.UpdateMemberProfileRequest.MemberProfiles = updateProfileModels;
 
-        await _apiClient.UpdateMemberProfileAndPreferences(User.GetAanMemberId(), updateMemberProfileAndPreferencesRequest, cancellationToken);
+        await _apiClient.UpdateMemberProfileAndPreferences(_sessionService.GetMemberId(), updateMemberProfileAndPreferencesRequest, cancellationToken);
 
         TempData[TempDataKeys.YourAmbassadorProfileSuccessMessage] = true;
         return RedirectToRoute(SharedRouteNames.YourAmbassadorProfile);
@@ -66,7 +68,7 @@ public class EditContactDetailController : Controller
 
     public async Task<EditContactDetailViewModel> GetContactDetailViewModel(CancellationToken cancellationToken)
     {
-        var memberProfile = await _apiClient.GetMemberProfile(User.GetAanMemberId(), User.GetAanMemberId(), false, cancellationToken);
+        var memberProfile = await _apiClient.GetMemberProfile(_sessionService.GetMemberId(), _sessionService.GetMemberId(), false, cancellationToken);
 
         EditContactDetailViewModel editContactDetailViewModel = new EditContactDetailViewModel();
         editContactDetailViewModel.Email = memberProfile.Email;

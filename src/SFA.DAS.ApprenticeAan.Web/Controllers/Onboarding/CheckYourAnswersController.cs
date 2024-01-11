@@ -1,11 +1,9 @@
 ﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
-using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
@@ -45,9 +43,8 @@ public class CheckYourAnswersController : Controller
         var onboardingSessionModel = _sessionService.Get<OnboardingSessionModel>();
         var result = await _outerApiClient.PostApprenticeMember(GenerateCreateApprenticeMemberRequest(onboardingSessionModel));
 
-        User.AddAanMemberIdClaim(result.MemberId);
-
-        await HttpContext.SignInAsync(User);
+        _sessionService.Set(Constants.SessionKeys.Member.MemberId, result.MemberId.ToString().ToLower());
+        _sessionService.Set(Constants.SessionKeys.Member.Status, MemberStatus.Live.ToString());
 
         return View(ApplicationSubmittedViewPath);
     }

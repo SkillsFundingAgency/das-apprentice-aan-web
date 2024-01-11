@@ -1,0 +1,22 @@
+﻿@model SFA.DAS.Aan.SharedUi.Models.LeaveTheNetwork.LeaveTheNetworkConfirmedViewModel
+@{
+    ViewData["Title"] = "Leave the network confirmed";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-panel govuk-panel--confirmation">
+            <h1 class="govuk-panel__title">
+                You have successfully left the network
+            </h1>
+        </div>
+
+        <h2 class="govuk-heading-m">What happens next?</h2>
+
+        <p class="govuk-body">We have sent you a confirmation email.</p>
+
+        <p class="govuk-body">
+            We'll keep your membership details on file for 14 days.  If you want to rejoin the network, you can <a href="@Model.HomeUrl">restore your membership</a>
+        </p>
+    </div>
+</div>

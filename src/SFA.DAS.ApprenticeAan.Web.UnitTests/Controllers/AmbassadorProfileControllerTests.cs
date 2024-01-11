@@ -11,7 +11,6 @@ using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
-using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 
@@ -21,6 +20,7 @@ public class AmbassadorProfileControllerTests
     static readonly string YourAmbassadorProfileUrl = Guid.NewGuid().ToString();
     private IActionResult _result = null!;
     private Mock<IOuterApiClient> _outerApiClientMock = null!;
+    private Mock<ISessionService> _sessionServiceMock = null!;
     private AmbassadorProfileController _sut = null!;
     private GetMemberProfileResponse memberProfile = null!;
     private CancellationToken _cancellationToken;
@@ -41,12 +41,14 @@ public class AmbassadorProfileControllerTests
         Fixture fixture = new();
         memberProfile = fixture.Create<GetMemberProfileResponse>();
         _outerApiClientMock = new();
+        _sessionServiceMock = new();
         _outerApiClientMock.Setup(o => o.GetMemberProfile(memberId, memberId, false, _cancellationToken)).ReturnsAsync(memberProfile);
         _outerApiClientMock.Setup(o => o.GetProfilesByUserType(MemberUserType.Apprentice.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(new GetProfilesResult() { Profiles = profiles });
+        _sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.Member.MemberId)).Returns(memberId.ToString());
 
-        _sut = new(_outerApiClientMock.Object);
+        _sut = new(_outerApiClientMock.Object, _sessionServiceMock.Object);
         _sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
-        _sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
+
         var viewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary());
         _sut.ViewData = viewData;
         Mock<ITempDataDictionary> tempDataMock = new Mock<ITempDataDictionary>();
@@ -112,9 +114,9 @@ public class AmbassadorProfileControllerTests
         _outerApiClientMock = new();
         _outerApiClientMock.Setup(o => o.GetMemberProfile(memberId, memberId, false, _cancellationToken)).ReturnsAsync(memberProfile);
         _outerApiClientMock.Setup(o => o.GetProfilesByUserType(MemberUserType.Apprentice.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(new GetProfilesResult() { Profiles = profiles });
-        sut = new(_outerApiClientMock.Object);
+        _sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.Member.MemberId)).Returns(memberId.ToString());
+        sut = new(_outerApiClientMock.Object, _sessionServiceMock.Object);
         sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
         var viewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary());
         sut.ViewData = viewData;
         Mock<ITempDataDictionary> tempDataMock = new Mock<ITempDataDictionary>();
