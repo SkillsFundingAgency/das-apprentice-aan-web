@@ -30,18 +30,18 @@
                             <span asp-validation-for="@Model.AreasOfInterest" class="govuk-error-message"></span>
                             <div id="AreasOfInterest" class="govuk-checkboxes" data-module="govuk-checkboxes">
                                 <h2 class="govuk-heading-m govuk-!-margin-bottom-6">
-                                    Events
+                                    @Model.FirstSectionTitle
                                 </h2>
                                 @{
-                                    for (int i = 0; i < Model.Events.Count; i++)
+                                    for (int i = 0; i < Model.FirstSectionInterests.Count; i++)
                                     {
                                         <div class="govuk-checkboxes__item">
-                                            <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.Events[i].IsSelected>
-                                            <label class="govuk-label govuk-checkboxes__label" for="Events[@i].IsSelected">
-                                                @Model.Events[i].Description
+                                            <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.FirstSectionInterests[i].IsSelected>
+                                            <label class="govuk-label govuk-checkboxes__label" for="FirstSectionInterests[@i].IsSelected">
+                                                @Model.FirstSectionInterests[i].Description
                                             </label>
-                                            <input type="hidden" asp-for="@Model.Events[i].Id" />
-                                            <input type="hidden" asp-for="@Model.Events[i].Ordering" />
+                                            <input type="hidden" asp-for="@Model.FirstSectionInterests[i].Id" />
+                                            <input type="hidden" asp-for="@Model.FirstSectionInterests[i].Ordering" />
                                         </div>
                                     }
                                 }
@@ -49,18 +49,18 @@
                             <p class="govuk-!-margin-bottom-7" />
                             <div id="promotions-option" class="govuk-checkboxes" data-module="govuk-checkboxes">
                                 <h2 class="govuk-heading-m govuk-!-margin-bottom-6">
-                                    Promoting the network
+                                    @Model.SecondSectionTitle
                                 </h2>
                                 @{
-                                    for (int i = 0; i < Model.Promotions.Count; i++)
+                                    for (int i = 0; i < Model.SecondSectionInterests.Count; i++)
                                     {
                                         <div class="govuk-checkboxes__item">
-                                            <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.Promotions[i].IsSelected>
-                                            <label class="govuk-label govuk-checkboxes__label" for="Promotions[@i].IsSelected">
-                                                @Model.Promotions[i].Description
+                                            <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.SecondSectionInterests[i].IsSelected>
+                                            <label class="govuk-label govuk-checkboxes__label" for="SecondSectionInterests[@i].IsSelected">
+                                                @Model.SecondSectionInterests[i].Description
                                             </label>
-                                            <input type="hidden" asp-for="@Model.Promotions[i].Id" />
-                                            <input type="hidden" asp-for="@Model.Promotions[i].Ordering" />
+                                            <input type="hidden" asp-for="@Model.SecondSectionInterests[i].Id" />
+                                            <input type="hidden" asp-for="@Model.SecondSectionInterests[i].Ordering" />
                                         </div>
                                     }
                                 }

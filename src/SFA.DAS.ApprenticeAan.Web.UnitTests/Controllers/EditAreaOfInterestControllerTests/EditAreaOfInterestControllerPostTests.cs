@@ -21,8 +21,9 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
 public class EditAreaOfInterestControllerPostTests
 {
     static readonly string YourAmbassadorProfileUrl = Guid.NewGuid().ToString();
+    private Guid memberId = Guid.NewGuid();
 
-    [Test, MoqInlineAutoData]
+    [Test, MoqAutoData]
     public async Task Post_InvalidCommand_ReturnsEditAreaOfInterestView(
         SubmitAreaOfInterestModel command,
         [Frozen] Mock<IOuterApiClient> outerApiMock,
@@ -31,9 +32,8 @@ public class EditAreaOfInterestControllerPostTests
         CancellationToken cancellationToken)
     {
         //Arrange
-        command.Events = new List<SelectProfileViewModel>();
-        command.Promotions = new List<SelectProfileViewModel>();
-        var memberId = Guid.NewGuid();
+        command.FirstSectionInterests = new List<SelectProfileViewModel>();
+        command.SecondSectionInterests = new List<SelectProfileViewModel>();
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
         outerApiMock.Setup(o => o.GetMemberProfile(memberId, memberId, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(getMemberProfileResponse));
@@ -50,8 +50,10 @@ public class EditAreaOfInterestControllerPostTests
         Assert.That(response, Is.InstanceOf<ViewResult>());
     }
 
-    [Test, RecursiveMoqAutoData]
+    [Test, MoqAutoData]
     public async Task Post_ValidCommand_ReturnsMemberProfileView(
+        [Frozen] Mock<IValidator<SubmitAreaOfInterestModel>> validatorMock,
+        [Frozen] Mock<ITempDataDictionary> tempDataMock,
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         List<SelectProfileViewModel> selectProfileViewModels,
         CancellationToken cancellationToken)
@@ -59,13 +61,11 @@ public class EditAreaOfInterestControllerPostTests
         //Arrange
         SubmitAreaOfInterestModel command = new()
         {
-            Events = selectProfileViewModels,
-            Promotions = selectProfileViewModels
+            FirstSectionInterests = selectProfileViewModels,
+            SecondSectionInterests = selectProfileViewModels
         };
-        var memberId = Guid.NewGuid();
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
 
-        var validatorMock = new Mock<IValidator<SubmitAreaOfInterestModel>>();
         var successfulValidationResult = new ValidationResult();
         validatorMock.Setup(v => v.ValidateAsync(It.IsAny<SubmitAreaOfInterestModel>(), It.IsAny<CancellationToken>())).ReturnsAsync(successfulValidationResult);
 
@@ -75,18 +75,18 @@ public class EditAreaOfInterestControllerPostTests
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
         sut.AddUrlHelperMock()
 .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
-        Mock<ITempDataDictionary> tempDataMock = new Mock<ITempDataDictionary>();
+
         tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.YourAmbassadorProfileSuccessMessage)).Returns(true);
         sut.TempData = tempDataMock.Object;
 
         //Act
         var response = await sut.Post(command, cancellationToken);
+        var redirectToAction = (RedirectToRouteResult)response;
 
         //Assert
         Assert.Multiple(() =>
         {
             Assert.That(response, Is.TypeOf<RedirectToRouteResult>());
-            var redirectToAction = (RedirectToRouteResult)response;
             Assert.That(redirectToAction.RouteName, Does.Contain(SharedRouteNames.YourAmbassadorProfile));
         });
     }
