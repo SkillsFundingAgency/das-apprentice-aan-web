@@ -6,6 +6,7 @@
         {
             public const string ExcludedCharactersRegex = @"^[^@#$^=+\\\/<>%]*$";
             public const string PostcodeRegex = @"^[a-zA-z]{1,2}\d[a-zA-z\d]?\s*\d[a-zA-Z]{2}$";
+            public const string AlphaNumericCharactersRegex = "^[a-zA-Z0-9]*$";
         }
 
         public static class NotificationTemplateNames

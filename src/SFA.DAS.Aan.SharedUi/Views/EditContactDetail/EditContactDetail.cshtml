@@ -30,14 +30,16 @@
         <form method="post" asp-route="@SharedRouteNames.EditContactDetail" enctype="multipart/form-data" novalidate>
             <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
 
-            <div class="govuk-form-group">
-                <label class="govuk-label govuk-label--m" for="linkedin">
-                    LinkedIn profile url
-                </label>
-                <span asp-validation-for="LinkedinUrl" class="govuk-error-message"></span>
-                <div class="govuk-input__wrapper">
-                    <div class="govuk-input__prefix" aria-hidden="true">@UrlConstant.LinkedinUrl</div>
-                    <input asp-for="LinkedinUrl" class="govuk-input" name="LinkedinUrl" type="text" spellcheck="false">
+            <div esfa-validation-marker-for="LinkedinUrl">
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-label--m" for="linkedin">
+                        LinkedIn profile url
+                    </label>
+                    <span asp-validation-for="LinkedinUrl" class="govuk-error-message"></span>
+                    <div class="govuk-input__wrapper">
+                        <div class="govuk-input__prefix" aria-hidden="true">@UrlConstant.LinkedinUrl</div>
+                        <input type="text" asp-for="LinkedinUrl" class="govuk-input" maxlength="100" name="LinkedinUrl" spellcheck="false">
+                    </div>
                 </div>
             </div>
 
