@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="SFA.DAS.ApprenticePortal.SharedUi" Version="1.1.68" />
     <PackageReference Include="RestEase" Version="1.6.4" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.35.0" />
   </ItemGroup>
   
   <ItemGroup>
