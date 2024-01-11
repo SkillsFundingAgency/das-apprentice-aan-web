@@ -12,8 +12,13 @@ public class SubmitContactDetailModelValidator : AbstractValidator<SubmitContact
     public SubmitContactDetailModelValidator()
     {
         RuleLevelCascadeMode = CascadeMode.Stop;
-        RuleFor(x => x.LinkedinUrl).NotNull().WithMessage(LinkedinUrlLengthValidationMessage).Length(3, 100).WithMessage(LinkedinUrlLengthValidationMessage).Matches(AlphaNumericCharactersRegex)
+        RuleFor(x => x.LinkedinUrl).NotNull()
+            .WithMessage(LinkedinUrlLengthValidationMessage)
+            .Length(3, 100)
+            .WithMessage(LinkedinUrlLengthValidationMessage)
+            .Matches(AlphaNumericCharactersRegex)
             .WithMessage(LinkedinUrlPatternValidationMessage);
+
         RuleFor(x => x.ShowLinkedinUrl)
             .Must((contactdetail, showlinkedinurl) => !showlinkedinurl)
             .When(x => string.IsNullOrEmpty(x.LinkedinUrl))
