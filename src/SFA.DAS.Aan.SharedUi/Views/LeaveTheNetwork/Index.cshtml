@@ -1,0 +1,101 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.Aan.SharedUi.Models.LeaveTheNetwork.LeaveTheNetworkViewModel
+@{
+    ViewData["Title"] = "Leaving the network";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form method="post">
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div  class="govuk-form-group">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h1 class="govuk-fieldset__heading">
+                                Leaving the network
+                            </h1>
+                        </legend>
+                        <p />
+                        <p id="leaving-hint" class="govuk-body">
+                            We're sorry that you're leaving the network. We would like to invite you to give us some feedback about why you're leaving. 
+                            This will be shared with the central team to help the network develop and evolve.
+                            This feedback is optional and you can leave this form blank.
+                        </p>
+                        <div id="LeavingReasons" class="govuk-checkboxes" data-module="govuk-checkboxes">
+                            <h2 class="govuk-heading-m">
+                                @Model.LeavingReasonsTitle
+                            </h2>
+                            @{
+                                for (var i = 0; i < Model.LeavingReasons!.Count; i++)
+                                {
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.LeavingReasons[i].IsSelected>
+                                        <label class="govuk-label govuk-checkboxes__label" for="@Model.LeavingReasons[@i].IsSelected">
+                                            @Model.LeavingReasons[i].Description
+                                        </label>
+                                        <input type="hidden" asp-for="@Model.LeavingReasons[i].Description" />
+                                        <input type="hidden" asp-for="@Model.LeavingReasons[i].Id" />
+                                        <input type="hidden" asp-for="@Model.LeavingReasons[i].Ordering" />
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <p />
+                        <div id="LeavingExperienceRating" class="govuk-form-group">
+                            <h3 class="govuk-heading-m govuk-!-margin-bottom-4">@Model.LeavingExperienceTitle</h3>
+                            <div class="govuk-radios" data-module="govuk-radios">
+                                @{
+                                    for (var i = 0; i < Model.LeavingExperience!.Count; i++)
+                                    {
+                                        var forVariable = Model.LeavingExperience[i].Description;
+                                        <div class="govuk-radios__item">
+                                            <input type="radio" asp-for="@Model.LeavingExperienceRating" id="@forVariable" class="govuk-radios__input" value="@Model.LeavingExperience[i].Id">
+                                            <label class="govuk-label govuk-radios__label profile-govuk-radios" for="@forVariable">
+                                                @Model.LeavingExperience[i].Description
+                                            </label>
+                                            <input type="hidden" asp-for="@Model.LeavingReasons[i].Description"/>
+                                            <input type="hidden" asp-for="@Model.LeavingExperience[i].Id"/>
+                                            <input type="hidden" asp-for="@Model.LeavingExperience[i].Ordering"/>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+
+                        <p />
+                        <div id="LeavingBenefits" class="govuk-checkboxes" data-module="govuk-checkboxes">
+                            <h2 class="govuk-heading-m">
+                                @Model.LeavingBenefitsTitle
+                            </h2>
+                            @{
+                                for (var i = 0; i < Model.LeavingBenefits!.Count; i++)
+                                {
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.LeavingBenefits[i].IsSelected>
+                                        <label class="govuk-label govuk-checkboxes__label" for="LeavingBenefits[@i].IsSelected">
+                                            @Model.LeavingBenefits[i].Description
+                                        </label>
+                                        <input type="hidden" asp-for="@Model.LeavingBenefits[i].Id" />
+                                        <input type="hidden" asp-for="@Model.LeavingBenefits[i].Ordering" />
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+
+                    <p />
+                    <p id="leaving-note" class="govuk-body">
+                        By submitting your feedback, you agree to your information being kept on file for 14 days. After this time, your data will be deleted.
+                    </p>
+                </fieldset>
+            </div>
+            <div class="govuk-button-group">
+                <button id="continue-button" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true">
+                    Continue
+                </button>
+                <a class="govuk-link" href="@Model.ProfileSettingsLink">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

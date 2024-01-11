@@ -1,0 +1,40 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.Aan.SharedUi.Models.LeaveTheNetwork.LeaveTheNetworkAreYouSureViewModel
+@{
+    ViewData["Title"] = "Leave the network - are you sure";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form method="post">
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                   
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <h1 class="govuk-fieldset__heading">
+                                Are you sure you want to leave?
+                            </h1>
+                        </legend>
+                    <p class="govuk-body">
+                        By leaving the network, you will no longer have access to networking events or contacting other members.
+                    </p>
+                    <p class="govuk-body">
+                        Your details will be kept on file for 14 days in case you wish to rejoin the network.
+                    </p>
+                    <ul class="govuk-list app-icon-list">
+                        <li>
+                            By leaving the network, you agree to your information being kept on file by the Apprentice ambassador network in line with current <a href="https://www.gov.uk/government/organisations/department-for-education/about/personal-information-charter" rel="noopener" target="_blank">Privacy Notice</a>.
+                        </li>
+                    </ul>
+                </fieldset>
+            </div>
+            <div class="govuk-button-group">
+                <button id="continue-button" type="submit" class="govuk-button govuk-button--warning" data-module="govuk-button" data-disable-on-submit="true">
+                    Leave network
+                </button>
+                <a class="govuk-link" href="@Model.ProfileSettingsLink">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

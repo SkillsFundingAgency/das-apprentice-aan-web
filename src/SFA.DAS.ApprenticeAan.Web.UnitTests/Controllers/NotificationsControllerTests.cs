@@ -27,7 +27,7 @@ public class NotificationsControllerTests
 
         var result = await sut.Index(Guid.NewGuid(), CancellationToken.None);
 
-        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Home);
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(SharedRouteNames.Home);
     }
 
     [Test]
@@ -40,7 +40,7 @@ public class NotificationsControllerTests
     [InlineAutoData(NotificationTemplateNames.AANAskForHelp, SharedRouteNames.MemberProfile)]
     [InlineAutoData(NotificationTemplateNames.AANRequestCaseStudy, SharedRouteNames.MemberProfile)]
     [InlineAutoData(NotificationTemplateNames.AANGetInTouch, SharedRouteNames.MemberProfile)]
-    [InlineAutoData("unknown template", RouteNames.Home)]
+    [InlineAutoData("unknown template", SharedRouteNames.Home)]
     public async Task Index_OnAANApprenticeOnboardingTemplate_ReturnsNetworkHubRoute(string templateName, string routeName, GetNotificationResult result)
     {
         result.TemplateName = templateName;

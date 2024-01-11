@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.Controllers;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
-using System.Diagnostics.CodeAnalysis;
 
 namespace SFA.DAS.ApprenticeAan.Web.Filters;
 
@@ -23,7 +23,7 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
 
     private bool BypassCheck(ControllerActionDescriptor controllerActionDescriptor)
     {
-        var controllersToByPass = new[] { nameof(HomeController), nameof(LocationsController), nameof(AccessDeniedController) };
+        var controllersToByPass = new[] { nameof(HomeController), nameof(LocationsController), nameof(AccessDeniedController), nameof(LeavingTheNetworkConfirmationController) };
 
         return controllersToByPass.Contains(controllerActionDescriptor.ControllerTypeInfo.Name);
     }

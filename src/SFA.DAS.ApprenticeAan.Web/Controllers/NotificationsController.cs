@@ -24,7 +24,7 @@ public class NotificationsController : Controller
     {
         var response = await _outerApiClient.GetNotification(User.GetAanMemberId(), id, cancellationToken);
 
-        if (response.ResponseMessage.StatusCode != HttpStatusCode.OK) return RedirectToRoute(RouteNames.Home);
+        if (response.ResponseMessage.StatusCode != HttpStatusCode.OK) return RedirectToRoute(SharedRouteNames.Home);
 
         var notification = response.GetContent()!;
 
@@ -47,7 +47,7 @@ public class NotificationsController : Controller
             or NotificationTemplateNames.AANGetInTouch
                 => (SharedRouteNames.MemberProfile, new { id = notification.ReferenceId }),
 
-            _ => (RouteNames.Home, null)
+            _ => (SharedRouteNames.Home, null)
         };
 
         return RedirectToRoute(route.RouteName, route.RouteValues);
