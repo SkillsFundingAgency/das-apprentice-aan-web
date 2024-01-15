@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
+using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
-using SFA.DAS.ApprenticeAan.Web.Models;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
@@ -11,7 +11,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 public class ContactUsController : Controller
 {
     private readonly ApplicationConfiguration _applicationConfiguration;
-
+    public const string ContactUsViewPath = "~/Views/ContactUs/Index.cshtml";
 
     public ContactUsController(ApplicationConfiguration applicationConfiguration)
     {
@@ -36,6 +36,6 @@ public class ContactUsController : Controller
             YorkshireAndTheHumberEmailAddress = contactUsEmails.YorkshireAndTheHumber
         };
 
-        return View(viewModel);
+        return View(ContactUsViewPath, viewModel);
     }
 }

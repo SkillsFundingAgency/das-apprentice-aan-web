@@ -1,9 +1,9 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
-using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
@@ -31,5 +31,6 @@ public class ContactUsControllerTests
         result!.SouthWestEmailAddress.Should().Be(contactUsEmails.SouthWest);
         result!.WestMidlandsEmailAddress.Should().Be(contactUsEmails.WestMidlands);
         result!.YorkshireAndTheHumberEmailAddress.Should().Be(contactUsEmails.YorkshireAndTheHumber);
+        result!.NetworkHubLink.Should().BeNull();
     }
 }
