@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
@@ -28,6 +29,15 @@ public class HomeController : Controller
         }
         else
         {
+        /*
+            var member = await _outerApiClient.GetApprentice(User.GetApprenticeId());
+            var status = member.GetContent()!.Status;
+
+            if (status == MemberStatus.Withdrawn || status == MemberStatus.Deleted)
+            {
+                return new RedirectToRouteResult(SharedRouteNames.RejoinTheNetwork, null);
+            }
+*/
             return new RedirectToRouteResult(RouteNames.NetworkHub, null);
         }
     }

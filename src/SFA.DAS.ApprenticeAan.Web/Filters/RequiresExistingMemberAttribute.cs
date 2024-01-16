@@ -33,7 +33,11 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
 
     private bool BypassCheck(ControllerActionDescriptor controllerActionDescriptor)
     {
-        var controllersToByPass = new[] { nameof(HomeController), nameof(LocationsController), nameof(AccessDeniedController), nameof(LeavingTheNetworkConfirmationController) };
+        var controllersToByPass = new[] { nameof(HomeController),
+            nameof(LocationsController),
+            nameof(AccessDeniedController),
+            nameof(LeavingTheNetworkConfirmationController),
+            nameof(RejoinTheNetworkController) };
 
         return controllersToByPass.Contains(controllerActionDescriptor.ControllerTypeInfo.Name);
     }
