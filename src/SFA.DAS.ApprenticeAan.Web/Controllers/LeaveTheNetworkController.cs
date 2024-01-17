@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models.LeaveTheNetwork;
@@ -7,6 +6,7 @@ using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Models;
+using static SFA.DAS.ApprenticeAan.Web.Constants;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
@@ -88,12 +88,11 @@ public class LeaveTheNetworkController : Controller
     {
         var sessionModel = _sessionService.Get<ReasonsForLeavingSessionModel>();
 
-        await _apiClient.PostMemberLeaving(User.GetAanMemberId(),
+        await _apiClient.PostMemberLeaving(_sessionService.GetMemberId(),
             new MemberLeavingRequest { LeavingReasons = sessionModel.ReasonsForLeaving }, cancellationToken);
 
-        User.RemoveAanMemberIdClaim(User.GetAanMemberId());
+        _sessionService.Set(SessionKeys.MemberStatus, MemberStatus.Withdrawn);
 
-        await HttpContext.SignInAsync(User);
         _sessionService.Delete<ReasonsForLeavingSessionModel>();
 
         return RedirectToRoute(SharedRouteNames.LeaveTheNetworkComplete);

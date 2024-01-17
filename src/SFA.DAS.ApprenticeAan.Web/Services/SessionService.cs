@@ -25,9 +25,9 @@ public class SessionService : ISessionService
         return result.GetValueOrDefault();
     }
 
-    private void Set(string value, string key) => _httpContextAccessor.HttpContext?.Session.SetString(key, value);
+    public void Set(string value, string key) => _httpContextAccessor.HttpContext?.Session.SetString(key, value);
 
-    private string Get(string key) => _httpContextAccessor.HttpContext?.Session.GetString(key)!;
+    public string Get(string key) => _httpContextAccessor.HttpContext?.Session.GetString(key)!;
 
     private void Delete(string key)
     {

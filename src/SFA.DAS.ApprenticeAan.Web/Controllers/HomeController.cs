@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
+using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 
@@ -11,9 +12,16 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 [Route("[controller]")]
 public class HomeController : Controller
 {
+    private readonly ISessionService _sessionService;
+
+    public HomeController(ISessionService sessionService)
+    {
+        _sessionService = sessionService;
+    }
+
     public IActionResult Index()
     {
-        if (User.GetAanMemberId() == Guid.Empty)
+        if (_sessionService.GetMemberId() == Guid.Empty)
         {
             return new RedirectToRouteResult(RouteNames.Onboarding.BeforeYouStart, null);
         }

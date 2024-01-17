@@ -23,11 +23,13 @@ public class EditAreaOfInterestController : Controller
     public const string ChangeAreaOfInterestViewPath = "~/Views/EditAreaOfInterest/EditAreaOfInterest.cshtml";
 
     private readonly IValidator<SubmitAreaOfInterestModel> _validator;
+    private readonly ISessionService _sessionService;
     private readonly IOuterApiClient _outerApiClient;
-    public EditAreaOfInterestController(IValidator<SubmitAreaOfInterestModel> validator, IOuterApiClient outerApiClient)
+    public EditAreaOfInterestController(IValidator<SubmitAreaOfInterestModel> validator, IOuterApiClient outerApiClient, ISessionService sessionService)
     {
         _validator = validator;
         _outerApiClient = outerApiClient;
+        _sessionService = sessionService;
     }
 
     [HttpGet]
@@ -55,7 +57,7 @@ public class EditAreaOfInterestController : Controller
             Value = x.IsSelected ? true.ToString() : null!
         }).ToList();
 
-        await _outerApiClient.UpdateMemberProfileAndPreferences(User.GetAanMemberId(), updateMemberProfileAndPreferencesRequest, cancellationToken);
+        await _outerApiClient.UpdateMemberProfileAndPreferences(_sessionService.GetMemberId(), updateMemberProfileAndPreferencesRequest, cancellationToken);
         TempData[TempDataKeys.YourAmbassadorProfileSuccessMessage] = true;
         return RedirectToRoute(SharedRouteNames.YourAmbassadorProfile);
     }
@@ -63,7 +65,7 @@ public class EditAreaOfInterestController : Controller
     public async Task<EditAreaOfInterestViewModel> GetAreaOfInterests(CancellationToken cancellationToken)
     {
         EditAreaOfInterestViewModel editAreaOfInterestViewModel = new EditAreaOfInterestViewModel();
-        var memberProfiles = await _outerApiClient.GetMemberProfile(User.GetAanMemberId(), User.GetAanMemberId(), false, cancellationToken);
+        var memberProfiles = await _outerApiClient.GetMemberProfile(_sessionService.GetMemberId(), _sessionService.GetMemberId(), false, cancellationToken);
         var profilesResult = await _outerApiClient.GetProfilesByUserType(MemberUserType.Apprentice.ToString(), cancellationToken);
 
         editAreaOfInterestViewModel.FirstSectionInterests = SelectProfileViewModelMapping(profilesResult.Profiles.Where(x => x.Category == Category.Events).ToList(), memberProfiles.Profiles);

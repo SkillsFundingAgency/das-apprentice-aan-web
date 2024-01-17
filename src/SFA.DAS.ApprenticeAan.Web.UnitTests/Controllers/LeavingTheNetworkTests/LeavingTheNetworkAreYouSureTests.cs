@@ -89,7 +89,7 @@ public class LeavingTheNetworkAreYouSureTests
         var actualResult = result as RedirectToRouteResult;
 
         actualResult!.RouteName.Should().Be(SharedRouteNames.LeaveTheNetworkComplete);
-        outerApiMock.Verify(x => x.PostMemberLeaving(user.GetAanMemberId(),
+        outerApiMock.Verify(x => x.PostMemberLeaving(_sessionService.GetMemberId(),
             It.Is<MemberLeavingRequest>(r => r.LeavingReasons == sessionModel.ReasonsForLeaving),
             cancellationToken));
         sessionServiceMock.Verify(s => s.Delete<ReasonsForLeavingSessionModel>());

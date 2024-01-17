@@ -21,12 +21,13 @@ public class MemberProfileController : Controller
     public const string NotificationSentConfirmationViewPath = "~/Views/MemberProfile/NotificationSentConfirmation.cshtml";
 
     private readonly IOuterApiClient _outerApiClient;
-
+    private readonly ISessionService _sessionService;
     private readonly IValidator<ConnectWithMemberSubmitModel> _validator;
-    public MemberProfileController(IOuterApiClient outerApiClient, IValidator<ConnectWithMemberSubmitModel> validator)
+    public MemberProfileController(IOuterApiClient outerApiClient, IValidator<ConnectWithMemberSubmitModel> validator, ISessionService sessionService)
     {
         _outerApiClient = outerApiClient;
         _validator = validator;
+        _sessionService = sessionService;
     }
 
     [HttpGet]
@@ -51,7 +52,7 @@ public class MemberProfileController : Controller
             return View(MemberProfileViewPath, model);
         }
         CreateNotificationRequest createNotificationRequest = new CreateNotificationRequest(id, command.ReasonToGetInTouch);
-        await _outerApiClient.PostNotification(User.GetAanMemberId(), createNotificationRequest, cancellationToken);
+        await _outerApiClient.PostNotification(_sessionService.GetMemberId(), createNotificationRequest, cancellationToken);
 
         return RedirectToRoute(SharedRouteNames.NotificationSentConfirmation);
     }
@@ -66,9 +67,9 @@ public class MemberProfileController : Controller
 
     private async Task<MemberProfileViewModel> GetViewModel(Guid id, CancellationToken cancellationToken)
     {
-        var memberProfiles = await _outerApiClient.GetMemberProfile(id, User.GetAanMemberId(), true, cancellationToken);
+        var memberProfiles = await _outerApiClient.GetMemberProfile(id, _sessionService.GetMemberId(), true, cancellationToken);
         var profilesResult = await _outerApiClient.GetProfilesByUserType(memberProfiles.UserType.ToString(), cancellationToken);
-        var userId = User.GetAanMemberId();
+        var userId = _sessionService.GetMemberId();
 
         MemberProfileViewModel memberProfileViewModel = new();
         memberProfileViewModel.MemberId = id;

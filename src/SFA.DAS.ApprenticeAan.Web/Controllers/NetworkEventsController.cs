@@ -19,17 +19,19 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 public class NetworkEventsController : Controller
 {
     private readonly IOuterApiClient _outerApiClient;
+    private readonly ISessionService _sessionService;
 
-    public NetworkEventsController(IOuterApiClient outerApiClient)
+    public NetworkEventsController(IOuterApiClient outerApiClient, ISessionService sessionService)
     {
         _outerApiClient = outerApiClient;
+        _sessionService = sessionService;
     }
 
     [HttpGet]
     [Route("", Name = SharedRouteNames.NetworkEvents)]
     public async Task<IActionResult> Index(GetNetworkEventsRequest request, CancellationToken cancellationToken)
     {
-        var calendarEventsTask = _outerApiClient.GetCalendarEvents(User.GetAanMemberId(), QueryStringParameterBuilder.BuildQueryStringParameters(request), cancellationToken);
+        var calendarEventsTask = _outerApiClient.GetCalendarEvents(_sessionService.GetMemberId(), QueryStringParameterBuilder.BuildQueryStringParameters(request), cancellationToken);
         var calendarTask = _outerApiClient.GetCalendars();
         var regionTask = _outerApiClient.GetRegions();
 

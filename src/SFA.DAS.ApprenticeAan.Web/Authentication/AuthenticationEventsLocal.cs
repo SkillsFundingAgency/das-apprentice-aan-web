@@ -36,7 +36,6 @@ public class AuthenticationEventsLocal : OpenIdConnectEvents
         if (apprentice == null) return;
 
         AddApprenticeAccountClaims(principal, apprentice);
-        await AddAanMemberClaims(principal, apprenticeId);
     }
 
     private void AddApprenticeAccountClaims(ClaimsPrincipal principal, ApprenticeAccount apprentice)
@@ -44,15 +43,6 @@ public class AuthenticationEventsLocal : OpenIdConnectEvents
         principal.AddAccountCreatedClaim();
 
         AddNameClaims(principal, apprentice);
-    }
-
-    private async Task AddAanMemberClaims(ClaimsPrincipal principal, Guid apprenticeId)
-    {
-        var apprentice = await _apprenticesService.GetApprentice(apprenticeId);
-        // User has registered but not been through on-boarding journey
-        if (apprentice == null) return;
-
-        principal.AddAanMemberIdClaim(apprentice.MemberId);
     }
 
     private static void AddNameClaims(ClaimsPrincipal principal, IApprenticeAccount apprentice)

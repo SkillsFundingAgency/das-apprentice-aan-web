@@ -22,19 +22,21 @@ public class NetworkEventDetailsController : Controller
     public const string CancellationConfirmationViewPath = "~/Views/NetworkEventDetails/CancellationConfirmation.cshtml";
 
     private readonly IOuterApiClient _outerApiClient;
+    private readonly ISessionService _sessionService;
     private readonly IValidator<SubmitAttendanceCommand> _validator;
 
-    public NetworkEventDetailsController(IOuterApiClient outerApiClient, IValidator<SubmitAttendanceCommand> validator)
+    public NetworkEventDetailsController(IOuterApiClient outerApiClient, IValidator<SubmitAttendanceCommand> validator, ISessionService sessionService)
     {
         _outerApiClient = outerApiClient;
         _validator = validator;
+        _sessionService = sessionService;
     }
 
     [HttpGet]
     [Route("{id}", Name = SharedRouteNames.NetworkEventDetails)]
     public async Task<IActionResult> Get([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var memberId = User.GetAanMemberId();
+        var memberId = _sessionService.GetMemberId();
         var eventDetailsResponse = await _outerApiClient.GetCalendarEventDetails(id, memberId, cancellationToken);
 
         if (eventDetailsResponse.ResponseMessage.IsSuccessStatusCode)
@@ -65,7 +67,7 @@ public class NetworkEventDetailsController : Controller
     [Route("{id}", Name = SharedRouteNames.NetworkEventDetails)]
     public async Task<IActionResult> Post(SubmitAttendanceCommand command, CancellationToken cancellationToken)
     {
-        var memberId = User.GetAanMemberId();
+        var memberId = _sessionService.GetMemberId();
         var result = await _validator.ValidateAsync(command, cancellationToken);
 
         if (!result.IsValid)
