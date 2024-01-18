@@ -48,7 +48,7 @@ public class SessionServiceExtensionsTests
 
         sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.Member.Status)).Returns(memberStatus);
 
-        var isMemberLive = sessionServiceMock.Object.IsMemberLive();
+        var isMemberLive = sessionServiceMock.Object.GetMemberStatus() == Constants.MemberStatus.Live;
         isMemberLive.Should().Be(expectedResult);
     }
 }

@@ -1,17 +1,21 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
-using SFA.DAS.ApprenticeAan.Web.Extensions;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
+
+[Authorize]
 public class RejoinTheNetworkController : Controller
 {
     private readonly IOuterApiClient _apiClient;
+    private readonly ISessionService _sessionService;
 
-    public RejoinTheNetworkController(IOuterApiClient apiClient)
+    public RejoinTheNetworkController(IOuterApiClient apiClient, ISessionService sessionService)
     {
         _apiClient = apiClient;
+        _sessionService = sessionService;
     }
 
     public const string LeaveTheNetworkViewPath = "~/Views/RejoinTheNetwork/Index.cshtml";
@@ -29,8 +33,9 @@ public class RejoinTheNetworkController : Controller
     {
         // update record
 
-        User.AddAanMemberIdClaim(User.GetAanMemberId());
-        await HttpContext.SignInAsync(User);
+
+        // if all goes well....
+        _sessionService.Set(Constants.SessionKeys.MemberStatus, MemberStatus.Live);
 
         return RedirectToRoute(SharedRouteNames.Home);
     }

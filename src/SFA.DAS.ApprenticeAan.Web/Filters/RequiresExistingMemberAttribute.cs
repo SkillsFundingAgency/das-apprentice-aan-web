@@ -20,6 +20,7 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
     }
 
     public override void OnActionExecuting(ActionExecutingContext context)
+
     {
         if (context.ActionDescriptor is not ControllerActionDescriptor controllerActionDescriptor) return;
 
@@ -45,7 +46,7 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
     private bool IsValidRequest(ActionExecutingContext context, ControllerActionDescriptor controllerActionDescriptor)
     {
         var memberId = _sessionService.Get(Constants.SessionKeys.Member.MemberId);
-        var isLive = _sessionService.IsMemberLive();
+        var isLive = _sessionService.GetMemberStatus() == Constants.MemberStatus.Live;
 
         if (memberId == null)
         {
@@ -58,7 +59,7 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
                 _sessionService.Set(Constants.SessionKeys.Member.MemberId, memberId);
                 var memberStatus = apprentice.Status;
                 _sessionService.Set(Constants.SessionKeys.Member.Status, memberStatus);
-                isLive = _sessionService.IsMemberLive();
+                isLive = memberStatus == Constants.MemberStatus.Live;
             }
         }
 
@@ -68,6 +69,7 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
 
         var isRequestingOnboardingPage = IsRequestForOnboardingAction(controllerActionDescriptor);
 
-        return (isMember && !isRequestingOnboardingPage) || (!isMember && isRequestingOnboardingPage);
+        return (isMember && isLive && !isRequestingOnboardingPage)
+               || (!isMember && isRequestingOnboardingPage);
     }
 }

@@ -22,23 +22,19 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-
-        if (_sessionService.GetMemberId() == Guid.Empty || !_sessionService.IsMemberLive())
+        if (_sessionService.GetMemberId() == Guid.Empty)
         {
             return new RedirectToRouteResult(RouteNames.Onboarding.BeforeYouStart, null);
         }
-        else
-        {
-        /*
-            var member = await _outerApiClient.GetApprentice(User.GetApprenticeId());
-            var status = member.GetContent()!.Status;
 
-            if (status == MemberStatus.Withdrawn || status == MemberStatus.Deleted)
-            {
-                return new RedirectToRouteResult(SharedRouteNames.RejoinTheNetwork, null);
-            }
-*/
-            return new RedirectToRouteResult(RouteNames.NetworkHub, null);
+        var status = _sessionService.GetMemberStatus();
+
+        if (status == MemberStatus.Withdrawn || status == MemberStatus.Deleted)
+        {
+            return new RedirectToRouteResult(SharedRouteNames.RejoinTheNetwork, null);
         }
+
+        return new RedirectToRouteResult(RouteNames.NetworkHub, null);
+
     }
 }
