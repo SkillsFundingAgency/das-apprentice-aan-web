@@ -37,8 +37,8 @@ public class EventsHubControllerTests
         _outerApiClientMock.Setup(o => o.GetAttendances(memberId, fromDate, toDate, _cancellationToken)).ReturnsAsync(attendances);
         _sessionServiceMock = new Mock<ISessionService>();
 
-        _sessionServiceMock.Setup(s => s.Get(Constants.SessionKeys.Member.MemberId)).Returns(memberId.ToString());
-        _sessionServiceMock.Setup(o => o.Get(Constants.SessionKeys.Member.Status)).Returns(MemberStatus.Live.ToString());
+        _sessionServiceMock.Setup(s => s.Get(Constants.SessionKeys.MemberId)).Returns(memberId.ToString());
+        _sessionServiceMock.Setup(o => o.Get(Constants.SessionKeys.MemberStatus)).Returns(Constants.MemberStatus.Live);
         _sut = new(_outerApiClientMock.Object, _sessionServiceMock.Object);
         _sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkEvents, AllNetworksUrl);
 

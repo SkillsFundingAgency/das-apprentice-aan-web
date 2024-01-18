@@ -64,10 +64,6 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
 
         var isRequestingOnboardingPage = IsRequestForOnboardingAction(controllerActionDescriptor);
 
-        return (isMember && isLive && !isRequestingOnboardingPage)
-               || (!isMember && isRequestingOnboardingPage)
-               || (isMember && !isLive && isRequestingOnboardingPage);
-        // NOTE: The last condition is a temporary measure to all a non-live member to go to onboarding. This will be updated in story
-        // CSP-1221 shutter page for removed member
+        return (isMember && !isRequestingOnboardingPage) || (!isMember && isRequestingOnboardingPage);
     }
 }
