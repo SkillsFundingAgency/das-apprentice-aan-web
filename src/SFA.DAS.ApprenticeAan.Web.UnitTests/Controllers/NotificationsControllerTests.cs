@@ -62,7 +62,7 @@ public class NotificationsControllerTests
             .Setup(o => o.GetNotification(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(response);
 
-        var sut = new NotificationsController(outerApiClientMock.Object);
+        var sut = new NotificationsController(outerApiClientMock.Object, Mock.Of<ISessionService>());
         sut.ControllerContext = new() { HttpContext = new DefaultHttpContext() { User = user } };
         return sut;
     }

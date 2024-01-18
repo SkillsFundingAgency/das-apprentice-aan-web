@@ -41,7 +41,10 @@ public class CheckYourAnswersController : Controller
     public async Task<IActionResult> Post()
     {
         var onboardingSessionModel = _sessionService.Get<OnboardingSessionModel>();
-        await _outerApiClient.PostApprenticeMember(GenerateCreateApprenticeMemberRequest(onboardingSessionModel));
+        var result = await _outerApiClient.PostApprenticeMember(GenerateCreateApprenticeMemberRequest(onboardingSessionModel));
+
+        _sessionService.Set(Constants.SessionKeys.MemberId, result.MemberId.ToString().ToLower());
+        _sessionService.Set(Constants.SessionKeys.MemberStatus, Constants.MemberStatus.Live);
 
         return View(ApplicationSubmittedViewPath);
     }

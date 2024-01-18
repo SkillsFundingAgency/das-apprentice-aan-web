@@ -13,7 +13,6 @@ using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
-using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
@@ -23,6 +22,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
 public class EditPersonalInformationControllerPostTests
 {
     private Mock<IOuterApiClient> _outerApiMock = null!;
+    private Mock<ISessionService> _sessionServiceMock = null!;
     private Mock<IValidator<SubmitPersonalDetailModel>> _validatorMock = null!;
     private EditPersonalInformationController _sut = null!;
     private SubmitPersonalDetailModel _submitPersonalDetailModel = null!;
@@ -39,6 +39,7 @@ public class EditPersonalInformationControllerPostTests
     private void HappyPathSetUp()
     {
         _outerApiMock = new();
+        _sessionServiceMock = new();
         _validatorMock = new();
         SetUpControllerWithContext();
         _submitPersonalDetailModel = new()
@@ -89,10 +90,10 @@ public class EditPersonalInformationControllerPostTests
 
     private void SetUpControllerWithContext()
     {
-        _sut = new(_outerApiMock.Object, _validatorMock.Object);
+        _sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.MemberId)).Returns(_memberId.ToString());
+        _sut = new(_outerApiMock.Object, _validatorMock.Object, _sessionServiceMock.Object);
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(_memberId);
         _sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
-        _sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, _memberId.ToString());
 
         _sut.TempData = Mock.Of<ITempDataDictionary>();
     }

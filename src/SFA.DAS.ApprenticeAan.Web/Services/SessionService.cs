@@ -11,7 +11,8 @@ public class SessionService : ISessionService
 
     public SessionService(IHttpContextAccessor httpContextAccessor) => _httpContextAccessor = httpContextAccessor;
 
-    public void Set<T>(T model) => Set(JsonSerializer.Serialize(model), typeof(T).Name);
+    public void Set<T>(T model) => Set(typeof(T).Name, JsonSerializer.Serialize(model));
+
     public T Get<T>()
     {
         var json = Get(typeof(T).Name);
@@ -25,7 +26,7 @@ public class SessionService : ISessionService
         return result.GetValueOrDefault();
     }
 
-    public void Set(string value, string key) => _httpContextAccessor.HttpContext?.Session.SetString(key, value);
+    public void Set(string key, string value) => _httpContextAccessor.HttpContext?.Session.SetString(key, value);
 
     public string Get(string key) => _httpContextAccessor.HttpContext?.Session.GetString(key)!;
 

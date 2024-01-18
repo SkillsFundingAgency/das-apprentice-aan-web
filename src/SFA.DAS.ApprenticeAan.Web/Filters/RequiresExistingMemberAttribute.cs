@@ -19,17 +19,13 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
         _outerApiClient = outerApiClient;
     }
 
-    public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+    public override void OnActionExecuting(ActionExecutingContext context)
     {
-        return;
-
         if (context.ActionDescriptor is not ControllerActionDescriptor controllerActionDescriptor) return;
 
         if (BypassCheck(controllerActionDescriptor)) return;
 
-        var isValidRequest = await IsValidRequest(context, controllerActionDescriptor);
-
-        if (!isValidRequest)
+        if (!IsValidRequest(context, controllerActionDescriptor))
         {
             context.Result = RedirectToHome;
         }
@@ -42,47 +38,23 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
         return controllersToByPass.Contains(controllerActionDescriptor.ControllerTypeInfo.Name);
     }
 
-    // private static bool IsValidRequest(ActionExecutingContext context, ControllerActionDescriptor controllerActionDescriptor)
-    // {
-    //     var isMember = context.HttpContext._sessionService.GetMemberId() != Guid.Empty;
-    //
-    //     var isRequestingOnboardingPage = IsRequestForOnboardingAction(controllerActionDescriptor);
-    //
-    //     return (isMember && !isRequestingOnboardingPage) || (!isMember && isRequestingOnboardingPage);
-    // }
-
-    private async Task<bool> IsValidRequest(ActionExecutingContext context, ControllerActionDescriptor controllerActionDescriptor)
+    private bool IsValidRequest(ActionExecutingContext context, ControllerActionDescriptor controllerActionDescriptor)
     {
-        return true;
-
-        var isLive = false;
         var memberId = _sessionService.Get(Constants.SessionKeys.MemberId);
-        var currentMemberStatus = _sessionService.Get(Constants.SessionKeys.MemberStatus);
-
-        if (!string.IsNullOrEmpty(currentMemberStatus))
-        {
-            if (currentMemberStatus == Constants.MemberStatus.Live)
-            {
-                isLive = true;
-            }
-        }
+        var isLive = _sessionService.IsMemberLive();
 
         if (memberId == null)
         {
-            var response = await _outerApiClient.GetApprentice(context.HttpContext.User.GetApprenticeId());
+            var response = _outerApiClient.GetApprentice(context.HttpContext.User.GetApprenticeId());
 
-            if (response.ResponseMessage.IsSuccessStatusCode)
+            if (response.Result.ResponseMessage.IsSuccessStatusCode)
             {
-                var apprentice = response.GetContent();
+                var apprentice = response.Result.GetContent();
                 memberId = apprentice!.MemberId.ToString().ToLower();
                 _sessionService.Set(Constants.SessionKeys.MemberId, memberId);
                 var memberStatus = apprentice.Status;
                 _sessionService.Set(Constants.SessionKeys.MemberStatus, memberStatus);
-
-                if (memberStatus == Constants.MemberStatus.Live)
-                {
-                    isLive = true;
-                }
+                isLive = _sessionService.IsMemberLive();
             }
         }
 
@@ -92,7 +64,10 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
 
         var isRequestingOnboardingPage = IsRequestForOnboardingAction(controllerActionDescriptor);
 
-        return (isMember && isLive && !isRequestingOnboardingPage) || (!isMember && isRequestingOnboardingPage);
+        return (isMember && isLive && !isRequestingOnboardingPage)
+               || (!isMember && isRequestingOnboardingPage)
+               || (isMember && !isLive && isRequestingOnboardingPage);
+        // NOTE: The last condition is a temporary measure to all a non-live member to go to onboarding. This will be updated in story
+        // CSP-1221 shutter page for removed member
     }
-
 }

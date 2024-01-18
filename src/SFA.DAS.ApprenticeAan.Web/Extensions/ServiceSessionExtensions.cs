@@ -9,7 +9,7 @@ public static class SessionServiceExtensions
     {
         var id = Guid.Empty;
 
-        var memberId = sessionService.Get(SessionKeys.MemberId);
+        var memberId = sessionService.Get(Constants.SessionKeys.MemberId);
 
         if (Guid.TryParse(memberId, out var newGuid))
         {
@@ -24,5 +24,12 @@ public static class SessionServiceExtensions
         var status = sessionService.Get(SessionKeys.MemberStatus);
 
         return string.IsNullOrEmpty(status) ? string.Empty : status;
+    }
+
+
+    public static bool IsMemberLive(this ISessionService sessionService)
+    {
+        var status = sessionService.Get(SessionKeys.MemberStatus);
+        return !string.IsNullOrEmpty(status) && status == MemberStatus.Live;
     }
 }

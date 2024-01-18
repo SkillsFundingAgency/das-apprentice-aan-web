@@ -21,7 +21,8 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        if (_sessionService.GetMemberId() == Guid.Empty)
+
+        if (_sessionService.GetMemberId() == Guid.Empty || !_sessionService.IsMemberLive())
         {
             return new RedirectToRouteResult(RouteNames.Onboarding.BeforeYouStart, null);
         }

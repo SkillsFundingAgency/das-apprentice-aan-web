@@ -37,7 +37,7 @@ public class EditAreaOfInterestControllerPostTests
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
         outerApiMock.Setup(o => o.GetMemberProfile(memberId, memberId, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(getMemberProfileResponse));
-        EditAreaOfInterestController sut = new EditAreaOfInterestController(validatorMock.Object, outerApiMock.Object);
+        EditAreaOfInterestController sut = new EditAreaOfInterestController(validatorMock.Object, outerApiMock.Object, Mock.Of<ISessionService>());
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
         sut.AddUrlHelperMock()
     .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
@@ -69,7 +69,7 @@ public class EditAreaOfInterestControllerPostTests
         var successfulValidationResult = new ValidationResult();
         validatorMock.Setup(v => v.ValidateAsync(It.IsAny<SubmitAreaOfInterestModel>(), It.IsAny<CancellationToken>())).ReturnsAsync(successfulValidationResult);
 
-        EditAreaOfInterestController sut = new EditAreaOfInterestController(validatorMock.Object, outerApiMock.Object);
+        EditAreaOfInterestController sut = new EditAreaOfInterestController(validatorMock.Object, outerApiMock.Object, Mock.Of<ISessionService>());
 
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
