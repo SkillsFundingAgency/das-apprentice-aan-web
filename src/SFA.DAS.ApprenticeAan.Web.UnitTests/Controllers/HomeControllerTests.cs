@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
@@ -15,8 +16,8 @@ public class HomeControllerTests
     {
         var memberId = Guid.NewGuid().ToString();
         var sessionServiceMock = new Mock<ISessionService>();
-        sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.MemberId)).Returns(memberId.ToString());
-        sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.MemberStatus)).Returns(Constants.MemberStatus.Live);
+        sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.Member.MemberId)).Returns(memberId.ToString());
+        sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.Member.Status)).Returns(MemberStatus.Live.ToString());
 
 
         var sut = new HomeController(sessionServiceMock.Object);
