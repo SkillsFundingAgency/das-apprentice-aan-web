@@ -35,7 +35,7 @@ public class RejoinTheNetworkController : Controller
 
 
         // if all goes well....
-        _sessionService.Set(Constants.SessionKeys.MemberStatus, MemberStatus.Live);
+        _sessionService.Set(Constants.SessionKeys.Member.Status, MemberStatus.Live.ToString());
 
         return RedirectToRoute(SharedRouteNames.Home);
     }

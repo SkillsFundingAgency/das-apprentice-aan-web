@@ -29,7 +29,7 @@ public class HomeController : Controller
 
         var status = _sessionService.GetMemberStatus();
 
-        if (status == MemberStatus.Withdrawn || status == MemberStatus.Deleted)
+        if (status == MemberStatus.Withdrawn.ToString() || status == MemberStatus.Deleted.ToString())
         {
             return new RedirectToRouteResult(SharedRouteNames.RejoinTheNetwork, null);
         }

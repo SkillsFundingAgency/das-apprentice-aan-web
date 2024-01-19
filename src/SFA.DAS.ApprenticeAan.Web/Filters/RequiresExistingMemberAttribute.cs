@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
@@ -46,7 +47,7 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
     private bool IsValidRequest(ActionExecutingContext context, ControllerActionDescriptor controllerActionDescriptor)
     {
         var memberId = _sessionService.Get(Constants.SessionKeys.Member.MemberId);
-        var isLive = _sessionService.GetMemberStatus() == Constants.MemberStatus.Live;
+        var isLive = _sessionService.GetMemberStatus() == MemberStatus.Live.ToString();
 
         if (memberId == null)
         {
@@ -59,7 +60,7 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
                 _sessionService.Set(Constants.SessionKeys.Member.MemberId, memberId);
                 var memberStatus = apprentice.Status;
                 _sessionService.Set(Constants.SessionKeys.Member.Status, memberStatus);
-                isLive = memberStatus == Constants.MemberStatus.Live;
+                isLive = memberStatus == MemberStatus.Live.ToString();
             }
         }
 
