@@ -47,7 +47,7 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
     private bool IsValidRequest(ActionExecutingContext context, ControllerActionDescriptor controllerActionDescriptor)
     {
         var memberId = _sessionService.Get(Constants.SessionKeys.Member.MemberId);
-        var isLive = _sessionService.GetMemberStatus() == MemberStatus.Live.ToString();
+        var isLive = _sessionService.GetMemberStatus() == MemberStatus.Live;
 
         if (memberId == null)
         {

@@ -1,4 +1,5 @@
-﻿using SFA.DAS.ApprenticeAan.Domain.Interfaces;
+﻿using SFA.DAS.Aan.SharedUi.Constants;
+using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using static SFA.DAS.ApprenticeAan.Web.Constants;
 
 namespace SFA.DAS.ApprenticeAan.Web.Extensions;
@@ -19,10 +20,18 @@ public static class SessionServiceExtensions
         return id;
     }
 
-    public static string GetMemberStatus(this ISessionService sessionService)
+    public static MemberStatus GetMemberStatus(this ISessionService sessionService)
     {
-        if (GetMemberId(sessionService) == Guid.Empty) return string.Empty;
+        if (GetMemberId(sessionService) == Guid.Empty) return MemberStatus.NotSet;
         var status = sessionService.Get(SessionKeys.Member.Status);
-        return string.IsNullOrEmpty(status) ? string.Empty : status;
+
+
+        foreach (var val in Enum.GetValues(typeof(MemberStatus)))
+        {
+            if (status == val.ToString())
+                return (MemberStatus)val;
+        }
+
+        return MemberStatus.NotSet;
     }
 }
