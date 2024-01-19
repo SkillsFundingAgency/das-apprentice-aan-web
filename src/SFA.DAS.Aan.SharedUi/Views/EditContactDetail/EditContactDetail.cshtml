@@ -48,7 +48,7 @@
                     <span asp-validation-for="ShowLinkedinUrl" class="govuk-error-message"></span>
                     <div id="DisplayLinkedinUrl" class="govuk-checkboxes__item">
                         <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.ShowLinkedinUrl>
-                        <label class="govuk-label govuk-checkboxes__label profile-govuk-checkboxes" for="ShowLinkedinUrl">
+                        <label class="govuk-label govuk-checkboxes__label profile-govuk-checkboxes" asp-for="ShowLinkedinUrl">
                             Display LinkedIn information on my profile page
                         </label>
                     </div>
