@@ -86,4 +86,8 @@ public interface IOuterApiClient
     [AllowAnyStatusCode]
     Task PostMemberLeaving([Path] Guid memberId, [Body] MemberLeavingRequest request, CancellationToken cancellationToken);
 
+    [Post("/members/{memberId}/reinstate")]
+    [AllowAnyStatusCode]
+    Task PostMemberReinstate([Path] Guid memberId, CancellationToken cancellationToken);
+
 }

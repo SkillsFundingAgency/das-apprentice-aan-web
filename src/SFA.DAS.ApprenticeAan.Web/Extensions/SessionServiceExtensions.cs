@@ -20,12 +20,18 @@ public static class SessionServiceExtensions
         return id;
     }
 
-    public static bool IsMemberLive(this ISessionService sessionService)
+    public static MemberStatus? GetMemberStatus(this ISessionService sessionService)
     {
-        var memberId = GetMemberId(sessionService);
-        if (memberId == Guid.Empty) return false;
-
+        if (GetMemberId(sessionService) == Guid.Empty) return null;
         var status = sessionService.Get(SessionKeys.Member.Status);
-        return !string.IsNullOrEmpty(status) && status == MemberStatus.Live.ToString();
+
+
+        foreach (var val in Enum.GetValues(typeof(MemberStatus)))
+        {
+            if (status == val.ToString())
+                return (MemberStatus)val;
+        }
+
+        return null;
     }
 }
