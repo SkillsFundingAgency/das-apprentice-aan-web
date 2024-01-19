@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
@@ -21,14 +22,20 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-
-        if (_sessionService.GetMemberId() == Guid.Empty || !_sessionService.IsMemberLive())
+        if (_sessionService.GetMemberId() == Guid.Empty)
         {
             return new RedirectToRouteResult(RouteNames.Onboarding.BeforeYouStart, null);
         }
-        else
+
+        var status = _sessionService.GetMemberStatus();
+
+        if (status is MemberStatus.Withdrawn or MemberStatus.Deleted)
         {
-            return new RedirectToRouteResult(RouteNames.NetworkHub, null);
+            return new RedirectToRouteResult(SharedRouteNames.RejoinTheNetwork, null);
         }
+
+        return new RedirectToRouteResult(RouteNames.NetworkHub, null);
+
     }
 }
+
