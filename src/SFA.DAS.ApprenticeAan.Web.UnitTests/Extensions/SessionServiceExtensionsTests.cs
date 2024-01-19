@@ -48,7 +48,30 @@ public class SessionServiceExtensionsTests
 
         sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.Member.Status)).Returns(memberStatus);
 
-        var isMemberLive = sessionServiceMock.Object.IsMemberLive();
+        var isMemberLive = sessionServiceMock.Object.GetMemberStatus() == MemberStatus.Live;
         isMemberLive.Should().Be(expectedResult);
+    }
+
+    [TestCase(false, null, MemberStatus.NotSet)]
+    [TestCase(true, "Live", MemberStatus.Live)]
+    [TestCase(true, "Removed", MemberStatus.Removed)]
+    [TestCase(true, "Deleted", MemberStatus.Deleted)]
+    [TestCase(true, "Withdrawn", MemberStatus.Withdrawn)]
+    [TestCase(true, "other", MemberStatus.NotSet)]
+    public void CheckMemberStatus(bool memberExists, string memberStatusSet, MemberStatus expectedMemberStatus)
+    {
+        var memberId = Guid.NewGuid();
+
+        var sessionServiceMock = new Mock<ISessionService>();
+
+        if (memberExists)
+        {
+            sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.Member.MemberId)).Returns(memberId.ToString);
+            sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.Member.Status)).Returns(memberStatusSet.ToString);
+        }
+
+        var actualStatus = sessionServiceMock.Object.GetMemberStatus();
+
+        actualStatus.Should().Be(expectedMemberStatus);
     }
 }

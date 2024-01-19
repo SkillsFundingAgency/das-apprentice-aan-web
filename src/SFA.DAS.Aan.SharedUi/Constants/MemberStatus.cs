@@ -2,6 +2,7 @@
 
 public enum MemberStatus
 {
+    NotSet = -1,
     Live,
     Withdrawn,
     Removed,

@@ -15,6 +15,7 @@ public static class SharedRouteNames
     public const string LeaveTheNetwork = nameof(LeaveTheNetwork);
     public const string LeaveTheNetworkConfirmation = nameof(LeaveTheNetworkConfirmation);
     public const string LeaveTheNetworkComplete = nameof(LeaveTheNetworkComplete);
+    public const string RejoinTheNetwork = nameof(RejoinTheNetwork);
     public const string MemberProfile = nameof(MemberProfile);
     public const string NotificationSentConfirmation = nameof(NotificationSentConfirmation);
     public const string EditPersonalInformation = nameof(EditPersonalInformation);

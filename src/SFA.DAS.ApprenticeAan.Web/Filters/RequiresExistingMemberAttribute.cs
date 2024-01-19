@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
@@ -20,6 +21,7 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
     }
 
     public override void OnActionExecuting(ActionExecutingContext context)
+
     {
         if (context.ActionDescriptor is not ControllerActionDescriptor controllerActionDescriptor) return;
 
@@ -33,7 +35,11 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
 
     private bool BypassCheck(ControllerActionDescriptor controllerActionDescriptor)
     {
-        var controllersToByPass = new[] { nameof(HomeController), nameof(LocationsController), nameof(AccessDeniedController), nameof(LeavingTheNetworkConfirmationController) };
+        var controllersToByPass = new[] { nameof(HomeController),
+            nameof(LocationsController),
+            nameof(AccessDeniedController),
+            nameof(LeavingTheNetworkConfirmationController),
+            nameof(RejoinTheNetworkController) };
 
         return controllersToByPass.Contains(controllerActionDescriptor.ControllerTypeInfo.Name);
     }
@@ -41,7 +47,7 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
     private bool IsValidRequest(ActionExecutingContext context, ControllerActionDescriptor controllerActionDescriptor)
     {
         var memberId = _sessionService.Get(Constants.SessionKeys.Member.MemberId);
-        var isLive = _sessionService.IsMemberLive();
+        var isLive = _sessionService.GetMemberStatus() == MemberStatus.Live;
 
         if (memberId == null)
         {
@@ -54,7 +60,7 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
                 _sessionService.Set(Constants.SessionKeys.Member.MemberId, memberId);
                 var memberStatus = apprentice.Status;
                 _sessionService.Set(Constants.SessionKeys.Member.Status, memberStatus);
-                isLive = _sessionService.IsMemberLive();
+                isLive = memberStatus == MemberStatus.Live.ToString();
             }
         }
 
@@ -65,9 +71,6 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
         var isRequestingOnboardingPage = IsRequestForOnboardingAction(controllerActionDescriptor);
 
         return (isMember && isLive && !isRequestingOnboardingPage)
-               || (!isMember && isRequestingOnboardingPage)
-               || (isMember && !isLive && isRequestingOnboardingPage);
-        // NOTE: The last condition is a temporary measure to all a non-live member to go to onboarding. This will be updated in story
-        // CSP-1221 shutter page for removed member
+               || (!isMember && isRequestingOnboardingPage);
     }
 }
