@@ -46,9 +46,9 @@
             <div esfa-validation-marker-for="ShowLinkedinUrl">
                 <div class="govuk-!-margin-top-7 govuk-!-margin-bottom-7">
                     <span asp-validation-for="ShowLinkedinUrl" class="govuk-error-message"></span>
-                    <div id="ShowLinkedinUrl" class="govuk-checkboxes__item">
+                    <div id="DisplayLinkedinUrl" class="govuk-checkboxes__item">
                         <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.ShowLinkedinUrl>
-                        <label class="govuk-label govuk-checkboxes__label profile-govuk-checkboxes" for="ShowJobTitle">
+                        <label class="govuk-label govuk-checkboxes__label profile-govuk-checkboxes" asp-for="ShowLinkedinUrl">
                             Display LinkedIn information on my profile page
                         </label>
                     </div>
