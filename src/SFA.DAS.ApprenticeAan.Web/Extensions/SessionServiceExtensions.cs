@@ -20,9 +20,9 @@ public static class SessionServiceExtensions
         return id;
     }
 
-    public static MemberStatus GetMemberStatus(this ISessionService sessionService)
+    public static MemberStatus? GetMemberStatus(this ISessionService sessionService)
     {
-        if (GetMemberId(sessionService) == Guid.Empty) return MemberStatus.NotSet;
+        if (GetMemberId(sessionService) == Guid.Empty) return null;
         var status = sessionService.Get(SessionKeys.Member.Status);
 
 
@@ -32,6 +32,6 @@ public static class SessionServiceExtensions
                 return (MemberStatus)val;
         }
 
-        return MemberStatus.NotSet;
+        return null;
     }
 }

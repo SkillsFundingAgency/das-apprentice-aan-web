@@ -52,13 +52,13 @@ public class SessionServiceExtensionsTests
         isMemberLive.Should().Be(expectedResult);
     }
 
-    [TestCase(false, null, MemberStatus.NotSet)]
+    [TestCase(false, null, null)]
     [TestCase(true, "Live", MemberStatus.Live)]
     [TestCase(true, "Removed", MemberStatus.Removed)]
     [TestCase(true, "Deleted", MemberStatus.Deleted)]
     [TestCase(true, "Withdrawn", MemberStatus.Withdrawn)]
-    [TestCase(true, "other", MemberStatus.NotSet)]
-    public void CheckMemberStatus(bool memberExists, string memberStatusSet, MemberStatus expectedMemberStatus)
+    [TestCase(true, "other", null)]
+    public void CheckMemberStatus(bool memberExists, string memberStatusSet, MemberStatus? expectedMemberStatus)
     {
         var memberId = Guid.NewGuid();
 
