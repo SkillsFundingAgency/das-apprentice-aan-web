@@ -35,9 +35,10 @@ public class HomeControllerTests
         result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.BeforeYouStart);
     }
 
-    [TestCase(MemberStatus.Withdrawn)]
-    [TestCase(MemberStatus.Deleted)]
-    public void Index_MemberIsNotLive_RedirectsToRejoinTheNetwork(MemberStatus memberStatus)
+    [TestCase(MemberStatus.Withdrawn, SharedRouteNames.RejoinTheNetwork)]
+    [TestCase(MemberStatus.Deleted, SharedRouteNames.RejoinTheNetwork)]
+    [TestCase(MemberStatus.Removed, SharedRouteNames.RemovedShutter)]
+    public void Index_MemberIsNotLive_RedirectsToRejoinTheNetwork(MemberStatus memberStatus, string routeName)
     {
         var memberId = Guid.NewGuid().ToString();
         var sessionServiceMock = new Mock<ISessionService>();
@@ -48,6 +49,6 @@ public class HomeControllerTests
 
         var result = sut.Index();
 
-        result.As<RedirectToRouteResult>().RouteName.Should().Be(SharedRouteNames.RejoinTheNetwork);
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(routeName);
     }
 }
