@@ -31,7 +31,7 @@ public class RejoinTheNetworkControllerTests
         var response = await sut.Post(cancellationToken);
 
         outerApiClientMock.Verify(x => x.PostMemberReinstate(memberId, cancellationToken), Times.Once);
-        sessionServiceMock.Verify(x => x.Delete(Constants.SessionKeys.Member.MemberId), Times.Once);
+        sessionServiceMock.Verify(x => x.Clear(), Times.Once);
 
         Assert.Multiple(() =>
         {

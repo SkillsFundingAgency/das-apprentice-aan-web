@@ -30,7 +30,7 @@ public class RejoinTheNetworkController : Controller
     public async Task<IActionResult> Post(CancellationToken cancellationToken)
     {
         await _apiClient.PostMemberReinstate(_sessionService.GetMemberId(), cancellationToken);
-        _sessionService.Delete(Constants.SessionKeys.Member.MemberId);
+        _sessionService.Clear();
         return RedirectToRoute(SharedRouteNames.Home);
     }
 }
