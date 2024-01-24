@@ -5,13 +5,14 @@ using SFA.DAS.Aan.SharedUi.Infrastructure;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
-[AllowAnonymous]
-[ExcludeFromCodeCoverage]
+[Authorize]
 public class AccessDeniedController : Controller
 {
 
     public const string RemovedShutterPath = "~/Views/AccessDenied/RemovedMember.cshtml";
 
+    [AllowAnonymous]
+    [ExcludeFromCodeCoverage]
     [Route("accessdenied")]
     public IActionResult Index()
     {
