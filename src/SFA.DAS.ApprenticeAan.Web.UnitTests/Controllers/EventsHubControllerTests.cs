@@ -2,12 +2,12 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
-using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
@@ -18,6 +18,7 @@ public class EventsHubControllerTests
 
     private IActionResult _result = null!;
     private Mock<IOuterApiClient> _outerApiClientMock = null!;
+    private Mock<ISessionService> _sessionServiceMock = null!;
     private EventsHubController _sut = null!;
     private CancellationToken _cancellationToken;
 
@@ -34,10 +35,12 @@ public class EventsHubControllerTests
 
         _outerApiClientMock = new();
         _outerApiClientMock.Setup(o => o.GetAttendances(memberId, fromDate, toDate, _cancellationToken)).ReturnsAsync(attendances);
+        _sessionServiceMock = new Mock<ISessionService>();
 
-        _sut = new(_outerApiClientMock.Object);
+        _sessionServiceMock.Setup(s => s.Get(Constants.SessionKeys.Member.MemberId)).Returns(memberId.ToString());
+        _sessionServiceMock.Setup(o => o.Get(Constants.SessionKeys.Member.Status)).Returns(MemberStatus.Live.ToString());
+        _sut = new(_outerApiClientMock.Object, _sessionServiceMock.Object);
         _sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkEvents, AllNetworksUrl);
-        _sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
 
         _result = await _sut.Index(null, null, _cancellationToken);
     }

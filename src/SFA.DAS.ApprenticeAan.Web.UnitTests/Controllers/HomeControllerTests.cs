@@ -1,9 +1,10 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
+using SFA.DAS.Aan.SharedUi.Constants;
+using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
-using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
-using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
 
@@ -12,8 +13,13 @@ public class HomeControllerTests
     [Test]
     public void Index_ApprenticeIsMember_RedirectsToNetworkHub()
     {
-        var sut = new HomeController();
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, Guid.NewGuid().ToString());
+        var memberId = Guid.NewGuid().ToString();
+        var sessionServiceMock = new Mock<ISessionService>();
+        sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.Member.MemberId)).Returns(memberId.ToString());
+        sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.Member.Status)).Returns(MemberStatus.Live.ToString());
+
+
+        var sut = new HomeController(sessionServiceMock.Object);
 
         var result = sut.Index();
 
@@ -23,11 +29,8 @@ public class HomeControllerTests
     [Test]
     public void Index_ApprenticeIsMember_RedirectsToOnboardingBeforeYouStart()
     {
-        var sut = new HomeController();
-        sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, Guid.Empty.ToString());
-
+        var sut = new HomeController(Mock.Of<ISessionService>());
         var result = sut.Index();
-
         result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.BeforeYouStart);
     }
 }

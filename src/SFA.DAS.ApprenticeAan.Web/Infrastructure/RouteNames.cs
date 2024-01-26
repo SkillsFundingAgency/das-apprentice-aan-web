@@ -5,7 +5,6 @@ namespace SFA.DAS.ApprenticeAan.Web.Infrastructure;
 [ExcludeFromCodeCoverage]
 public static class RouteNames
 {
-    public const string Home = nameof(Home);
     public const string NetworkHub = nameof(NetworkHub);
 
     public static class Onboarding

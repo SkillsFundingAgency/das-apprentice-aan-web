@@ -14,10 +14,12 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 public class EventsHubController : Controller
 {
     private readonly IOuterApiClient _apiClient;
+    private readonly ISessionService _sessionService;
 
-    public EventsHubController(IOuterApiClient apiClient)
+    public EventsHubController(IOuterApiClient apiClient, ISessionService sessionService)
     {
         _apiClient = apiClient;
+        _sessionService = sessionService;
     }
 
     [HttpGet]
@@ -30,7 +32,7 @@ public class EventsHubController : Controller
         var firstDayOfTheMonth = new DateOnly(year.GetValueOrDefault(), month.GetValueOrDefault(), 1);
         var lastDayOfTheMonth = new DateOnly(firstDayOfTheMonth.Year, firstDayOfTheMonth.Month, DateTime.DaysInMonth(firstDayOfTheMonth.Year, firstDayOfTheMonth.Month));
 
-        var response = await _apiClient.GetAttendances(User.GetAanMemberId(), firstDayOfTheMonth.ToApiString(), lastDayOfTheMonth.ToApiString(), cancellationToken);
+        var response = await _apiClient.GetAttendances(_sessionService.GetMemberId(), firstDayOfTheMonth.ToApiString(), lastDayOfTheMonth.ToApiString(), cancellationToken);
 
         EventsHubViewModel model = new(firstDayOfTheMonth, Url, GetAppointments(response.Attendances), () => Url.RouteUrl(SharedRouteNames.NetworkEvents)!);
         return View(model);

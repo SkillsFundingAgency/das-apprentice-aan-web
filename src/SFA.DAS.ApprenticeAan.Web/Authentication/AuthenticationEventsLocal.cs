@@ -12,12 +12,11 @@ namespace SFA.DAS.ApprenticeAan.Web.Authentication;
 public class AuthenticationEventsLocal : OpenIdConnectEvents
 {
     private readonly IApprenticeAccountService _apprenticeAccountService;
-    private readonly IApprenticeService _apprenticesService;
 
-    public AuthenticationEventsLocal(IApprenticeAccountService apprenticeAccountService, IApprenticeService apprenticesService)
+
+    public AuthenticationEventsLocal(IApprenticeAccountService apprenticeAccountService)
     {
         _apprenticeAccountService = apprenticeAccountService;
-        _apprenticesService = apprenticesService;
     }
 
     public override async Task TokenValidated(TokenValidatedContext context)
@@ -36,7 +35,6 @@ public class AuthenticationEventsLocal : OpenIdConnectEvents
         if (apprentice == null) return;
 
         AddApprenticeAccountClaims(principal, apprentice);
-        await AddAanMemberClaims(principal, apprenticeId);
     }
 
     private void AddApprenticeAccountClaims(ClaimsPrincipal principal, ApprenticeAccount apprentice)
@@ -44,15 +42,6 @@ public class AuthenticationEventsLocal : OpenIdConnectEvents
         principal.AddAccountCreatedClaim();
 
         AddNameClaims(principal, apprentice);
-    }
-
-    private async Task AddAanMemberClaims(ClaimsPrincipal principal, Guid apprenticeId)
-    {
-        var apprentice = await _apprenticesService.GetApprentice(apprenticeId);
-        // User has registered but not been through on-boarding journey
-        if (apprentice == null) return;
-
-        principal.AddAanMemberIdClaim(apprentice.MemberId);
     }
 
     private static void AddNameClaims(ClaimsPrincipal principal, IApprenticeAccount apprentice)

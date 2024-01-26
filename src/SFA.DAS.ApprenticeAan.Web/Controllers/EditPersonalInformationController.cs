@@ -21,17 +21,19 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 public class EditPersonalInformationController : Controller
 {
     private readonly IOuterApiClient _apiClient;
+    private readonly ISessionService _sessionService;
     private readonly IValidator<SubmitPersonalDetailModel> _validator;
     public const string ChangePersonalDetailViewPath = "~/Views/EditPersonalInformation/EditPersonalInformation.cshtml";
-    public EditPersonalInformationController(IOuterApiClient apiClient, IValidator<SubmitPersonalDetailModel> validator)
+    public EditPersonalInformationController(IOuterApiClient apiClient, IValidator<SubmitPersonalDetailModel> validator, ISessionService sessionService)
     {
         _apiClient = apiClient;
         _validator = validator;
+        _sessionService = sessionService;
     }
 
     private async Task<EditPersonalInformationViewModel> BuildMemberProfileModel(CancellationToken cancellationToken)
     {
-        var memberProfiles = await _apiClient.GetMemberProfile(User.GetAanMemberId(), User.GetAanMemberId(), false, cancellationToken);
+        var memberProfiles = await _apiClient.GetMemberProfile(_sessionService.GetMemberId(), _sessionService.GetMemberId(), false, cancellationToken);
         var regionTask = await _apiClient.GetRegions();
         EditPersonalInformationViewModel memberProfile = EditPersonalInformationViewModelMapping(memberProfiles.RegionId ?? 0, memberProfiles.Profiles, memberProfiles.Preferences, memberProfiles.UserType, memberProfiles.OrganisationName);
         memberProfile.Regions = Region.RegionToRegionViewModelMapping(regionTask.Regions);
@@ -70,7 +72,7 @@ public class EditPersonalInformationController : Controller
 
         updateMemberProfileAndPreferencesRequest.UpdateMemberProfileRequest.MemberProfiles = updateProfileModels;
 
-        await _apiClient.UpdateMemberProfileAndPreferences(User.GetAanMemberId(), updateMemberProfileAndPreferencesRequest, cancellationToken);
+        await _apiClient.UpdateMemberProfileAndPreferences(_sessionService.GetMemberId(), updateMemberProfileAndPreferencesRequest, cancellationToken);
         TempData[TempDataKeys.YourAmbassadorProfileSuccessMessage] = true;
         return RedirectToRoute(SharedRouteNames.YourAmbassadorProfile);
     }

@@ -182,7 +182,7 @@ public class EditAreaOfInterestControllerGetTests
 
     private void SetUpControllerWithContext()
     {
-        sut = new(_validatorMock.Object, _outerApiMock.Object);
+        sut = new(_validatorMock.Object, _outerApiMock.Object, Mock.Of<ISessionService>());
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
