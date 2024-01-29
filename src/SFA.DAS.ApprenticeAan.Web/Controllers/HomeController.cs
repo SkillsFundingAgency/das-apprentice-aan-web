@@ -29,13 +29,12 @@ public class HomeController : Controller
 
         var status = _sessionService.GetMemberStatus();
 
-        if (status is MemberStatus.Withdrawn or MemberStatus.Deleted)
+        return status switch
         {
-            return new RedirectToRouteResult(SharedRouteNames.RejoinTheNetwork, null);
-        }
-
-        return new RedirectToRouteResult(RouteNames.NetworkHub, null);
-
+            MemberStatus.Withdrawn or MemberStatus.Deleted => new RedirectToRouteResult(SharedRouteNames.RejoinTheNetwork, null),
+            MemberStatus.Removed => new RedirectToRouteResult(SharedRouteNames.RemovedShutter, null),
+            _ => new RedirectToRouteResult(RouteNames.NetworkHub, null),
+        };
     }
 }
 

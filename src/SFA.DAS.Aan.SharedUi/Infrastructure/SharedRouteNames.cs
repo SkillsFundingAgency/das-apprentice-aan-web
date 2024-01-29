@@ -23,4 +23,5 @@ public static class SharedRouteNames
     public const string EditContactDetail = nameof(EditContactDetail);
     public const string EditApprenticeshipInformation = nameof(EditApprenticeshipInformation);
     public const string ContactUs = nameof(ContactUs);
+    public const string RemovedShutter = nameof(RemovedShutter);
 }
