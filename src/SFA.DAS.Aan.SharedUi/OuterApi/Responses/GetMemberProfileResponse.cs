@@ -13,6 +13,7 @@ public class GetMemberProfileResponse
     public string RegionName { get; set; } = null!;
     public MemberUserType UserType { get; set; }
     public bool IsRegionalChair { get; set; }
+    public MemberActivities Activities { get; set; } = null!;
     public ApprenticeshipDetails? Apprenticeship { get; set; }
     public IEnumerable<MemberProfile> Profiles { get; set; } = null!;
     public IEnumerable<MemberPreference> Preferences { get; set; } = null!;
