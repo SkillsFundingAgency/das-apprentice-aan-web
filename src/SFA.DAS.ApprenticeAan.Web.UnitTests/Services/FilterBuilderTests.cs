@@ -894,13 +894,13 @@ public class FilterBuilderTests
         }
     }
 
-    [TestCase(null, null, null, null, NetworkDirectoryLocationUrl)]
-    [TestCase(Role.Employer, null, null, null, NetworkDirectoryLocationUrl + "?userRole=Employer")]
-    [TestCase(Role.RegionalChair, Role.Apprentice, null, null, NetworkDirectoryLocationUrl + "?userRole=RegionalChair&userRole=Apprentice")]
-    [TestCase(null, null, 1, null, NetworkDirectoryLocationUrl + "?regionId=1")]
-    [TestCase(null, null, 1, 2, NetworkDirectoryLocationUrl + "?regionId=1&regionId=2")]
-    [TestCase(Role.Employer, Role.RegionalChair, 3, 4, NetworkDirectoryLocationUrl + "?userRole=Employer&userRole=RegionalChair&regionId=3&regionId=4")]
-    public void Build_SearchFiltersWithAllInput_QueryStringAndExpectedUrlIsEqual(Role? role, Role? role2, int? regionId, int? regionId2, string expectedUrl)
+    [TestCase(null, null, null, null, NetworkDirectoryLocationUrl, null)]
+    [TestCase(Role.Employer, null, null, null, NetworkDirectoryLocationUrl + "?userRole=Employer", null)]
+    [TestCase(Role.RegionalChair, Role.Apprentice, null, null, NetworkDirectoryLocationUrl + "?userRole=RegionalChair&userRole=Apprentice", null)]
+    [TestCase(null, null, 1, null, NetworkDirectoryLocationUrl + "?regionId=1", null)]
+    [TestCase(null, null, 1, 2, NetworkDirectoryLocationUrl + "?regionId=1&regionId=2&status=New", MemberMaturityStatus.New)]
+    [TestCase(Role.Employer, Role.RegionalChair, 3, 4, NetworkDirectoryLocationUrl + "?userRole=Employer&userRole=RegionalChair&regionId=3&regionId=4&status=Active", MemberMaturityStatus.Active)]
+    public void Build_SearchFiltersWithAllInput_QueryStringAndExpectedUrlIsEqual(Role? role, Role? role2, int? regionId, int? regionId2, string expectedUrl, MemberMaturityStatus? memberMaturityStatus)
     {
         var request = new NetworkDirectoryRequestModel
         {
@@ -917,6 +917,11 @@ public class FilterBuilderTests
             var regionIds = new List<int> { regionId.Value };
             if (regionId2 != null) regionIds.Add(regionId2.Value);
             request.RegionId = regionIds;
+        }
+
+        if (memberMaturityStatus != null)
+        {
+            request.Status = [memberMaturityStatus.Value];
         }
 
         var sut = FilterBuilder.BuildFullQueryString(request, () => { return NetworkDirectoryLocationUrl; });

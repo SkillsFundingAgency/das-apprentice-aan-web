@@ -23,8 +23,7 @@ public class NetworkEventDetailsControllerTests
     private static readonly string AllNetworksUrl = Guid.NewGuid().ToString();
     private static readonly string MemberProfileUrl = Guid.NewGuid().ToString();
 
-    [Test]
-    [MoqAutoData]
+    [Test, MoqAutoData]
     public void Details_ReturnsEventDetailsViewModel(
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         [Greedy] NetworkEventDetailsController sut,
@@ -45,8 +44,7 @@ public class NetworkEventDetailsControllerTests
         Assert.That(result.Model, Is.TypeOf<NetworkEventDetailsViewModel>());
     }
 
-    [Test]
-    [MoqAutoData]
+    [Test, MoqAutoData]
     public void Details_InvokesOuterApiClientGetEventDetails(
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         [Greedy] NetworkEventDetailsController sut,
@@ -61,8 +59,7 @@ public class NetworkEventDetailsControllerTests
         outerApiMock.Verify(o => o.GetCalendarEventDetails(apprenticeId, It.IsAny<Guid>(), cancellationToken), Times.Once());
     }
 
-    [Test]
-    [MoqAutoData]
+    [Test, MoqAutoData]
     public void Details_CalendarEventIdIsNotFound_ThrowsInvalidOperationException(
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         [Greedy] NetworkEventDetailsController sut,
@@ -80,8 +77,7 @@ public class NetworkEventDetailsControllerTests
         Assert.That(() => sut.Get(apprenticeId, cancellationToken), Throws.InvalidOperationException);
     }
 
-    [Test]
-    [MoqAutoData]
+    [Test, MoqAutoData]
     public void SignUpConfirmation_ReturnsSignUpConfirmationView(
         [Greedy] NetworkEventDetailsController sut,
         Guid apprenticeId)
@@ -99,8 +95,7 @@ public class NetworkEventDetailsControllerTests
         });
     }
 
-    [Test]
-    [MoqAutoData]
+    [Test, MoqAutoData]
     public void CancellationConfirmation_ReturnsCancellationConfirmationView(
         [Greedy] NetworkEventDetailsController sut,
         Guid apprenticeId)
@@ -118,8 +113,7 @@ public class NetworkEventDetailsControllerTests
         });
     }
 
-    [Test]
-    [MoqAutoData]
+    [Test, MoqAutoData]
     public async Task SetAttendanceStatus_InvokesOuterApiClientPutAttendance(
         Mock<IOuterApiClient> outerApiMock,
         Guid apprenticeId,
@@ -136,12 +130,11 @@ public class NetworkEventDetailsControllerTests
 
         var command = new SubmitAttendanceCommand
         {
-            CalendarEventId = calendarEventId,
             NewStatus = newStatus,
             StartDateTime = DateTime.Now.AddDays(1)
         };
 
-        await sut.Post(command, new CancellationToken());
+        await sut.Post(calendarEventId, command, new CancellationToken());
 
         outerApiMock.Verify(o => o.PutAttendance(calendarEventId,
                                                  It.IsAny<Guid>(),
@@ -172,14 +165,13 @@ public class NetworkEventDetailsControllerTests
 
         var command = new SubmitAttendanceCommand();
 
-        var result = await sut.Post(command, new CancellationToken()) as ViewResult;
+        var result = await sut.Post(calendarEventId, command, new CancellationToken()) as ViewResult;
 
         sut.ModelState.IsValid.Should().BeFalse();
         result!.ViewName.Should().Be(NetworkEventDetailsController.DetailsViewPath);
     }
 
-    [Test]
-    [MoqAutoData]
+    [Test, MoqAutoData]
     public async Task SetAttendanceStatus_NewStatusIsTrue_RedirectsToSignUpConfirmation(
         [Greedy] NetworkEventDetailsController sut,
         Guid apprenticeId,
@@ -189,17 +181,15 @@ public class NetworkEventDetailsControllerTests
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
         var command = new SubmitAttendanceCommand
         {
-            CalendarEventId = calendarEventId,
             NewStatus = true,
             StartDateTime = DateTime.Now.AddDays(1)
         };
-        var result = await sut.Post(command, new CancellationToken());
+        var result = await sut.Post(calendarEventId, command, new CancellationToken());
 
         Assert.That(result.As<RedirectToActionResult>().ActionName, Is.EqualTo("SignUpConfirmation"));
     }
 
-    [Test]
-    [MoqAutoData]
+    [Test, MoqAutoData]
     public async Task SetAttendanceStatus_NewStatusIsFalse_RedirectsToCancellationConfirmation(
         [Greedy] NetworkEventDetailsController sut,
         Guid apprenticeId,
@@ -209,11 +199,10 @@ public class NetworkEventDetailsControllerTests
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
         var command = new SubmitAttendanceCommand
         {
-            CalendarEventId = calendarEventId,
             NewStatus = false,
             StartDateTime = DateTime.Now.AddDays(1)
         };
-        var result = await sut.Post(command, new CancellationToken());
+        var result = await sut.Post(calendarEventId, command, new CancellationToken());
 
         Assert.That(result.As<RedirectToActionResult>().ActionName, Is.EqualTo("CancellationConfirmation"));
     }
