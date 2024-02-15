@@ -15,12 +15,18 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 [Route("onboarding/current-job-title", Name = RouteNames.Onboarding.CurrentJobTitle)]
 [Authorize]
 [HideNavigationBar(true, true)]
-public class CurrentJobTitleController(ISessionService sessionService,
-IValidator<CurrentJobTitleSubmitModel> validator) : Controller
+public class CurrentJobTitleController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/CurrentJobTitle.cshtml";
-    private readonly ISessionService _sessionService = sessionService;
-    private readonly IValidator<CurrentJobTitleSubmitModel> _validator = validator;
+    private readonly ISessionService _sessionService;
+    private readonly IValidator<CurrentJobTitleSubmitModel> _validator;
+
+    public CurrentJobTitleController(ISessionService sessionService,
+    IValidator<CurrentJobTitleSubmitModel> validator)
+    {
+        _sessionService = sessionService;
+        _validator = validator;
+    }
 
     [HttpGet]
     public IActionResult Get()

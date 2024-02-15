@@ -3,9 +3,11 @@ using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 
 namespace SFA.DAS.ApprenticeAan.Application.Services;
 
-public class CalendarService(IOuterApiClient outerApiClient) : ICalendarService
+public class CalendarService : ICalendarService
 {
-    private readonly IOuterApiClient _outerApiClient = outerApiClient;
+    private readonly IOuterApiClient _outerApiClient;
+
+    public CalendarService(IOuterApiClient outerApiClient) => _outerApiClient = outerApiClient;
 
     public async Task<List<Calendar>> GetCalendars()
     {

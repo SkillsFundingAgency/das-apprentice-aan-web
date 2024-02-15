@@ -7,10 +7,15 @@ using SFA.DAS.ApprenticePortal.Authentication;
 
 namespace SFA.DAS.ApprenticeAan.Web.Filters;
 
-public class RequiresRegistrationAuthorizationFilter(AuthenticatedUser user, ApplicationConfiguration configuration) : IAuthorizationFilter
+public class RequiresRegistrationAuthorizationFilter : IAuthorizationFilter
 {
-    private readonly AuthenticatedUser _user = user;
-    private readonly string _apprenticeAccountsUrl = configuration.ApplicationUrls.ApprenticeAccountsUrl.ToString().TrimEnd('/');
+    private readonly AuthenticatedUser _user;
+    private readonly string _apprenticeAccountsUrl;
+    public RequiresRegistrationAuthorizationFilter(AuthenticatedUser user, ApplicationConfiguration configuration)
+    {
+        _apprenticeAccountsUrl = configuration.ApplicationUrls.ApprenticeAccountsUrl.ToString().TrimEnd('/');
+        _user = user;
+    }
 
     public void OnAuthorization(AuthorizationFilterContext context)
     {

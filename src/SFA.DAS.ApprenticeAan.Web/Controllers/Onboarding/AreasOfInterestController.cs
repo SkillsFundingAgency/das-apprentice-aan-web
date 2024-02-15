@@ -15,11 +15,17 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 [Authorize]
 [Route("onboarding/areas-of-interest", Name = RouteNames.Onboarding.AreasOfInterest)]
 [HideNavigationBar(true, true)]
-public class AreasOfInterestController(ISessionService sessionService, IValidator<AreasOfInterestSubmitModel> validator) : Controller
+public class AreasOfInterestController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/AreasOfInterest.cshtml";
-    private readonly ISessionService _sessionService = sessionService;
-    private readonly IValidator<AreasOfInterestSubmitModel> _validator = validator;
+    private readonly ISessionService _sessionService;
+    private readonly IValidator<AreasOfInterestSubmitModel> _validator;
+
+    public AreasOfInterestController(ISessionService sessionService, IValidator<AreasOfInterestSubmitModel> validator)
+    {
+        _sessionService = sessionService;
+        _validator = validator;
+    }
 
     [HttpGet]
     public IActionResult Get()

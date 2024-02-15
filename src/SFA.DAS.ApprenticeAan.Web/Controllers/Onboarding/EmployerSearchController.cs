@@ -14,11 +14,17 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 [Authorize]
 [Route("onboarding/employer-search", Name = RouteNames.Onboarding.EmployerSearch)]
 [HideNavigationBar(true, true)]
-public class EmployerSearchController(ISessionService sessionService, IValidator<EmployerSearchSubmitModel> validator) : Controller
+public class EmployerSearchController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/EmployerSearch.cshtml";
-    private readonly ISessionService _sessionService = sessionService;
-    private readonly IValidator<EmployerSearchSubmitModel> _validator = validator;
+    private readonly ISessionService _sessionService;
+    private readonly IValidator<EmployerSearchSubmitModel> _validator;
+
+    public EmployerSearchController(ISessionService sessionService, IValidator<EmployerSearchSubmitModel> validator)
+    {
+        _sessionService = sessionService;
+        _validator = validator;
+    }
 
     [HttpGet]
     public IActionResult Get()

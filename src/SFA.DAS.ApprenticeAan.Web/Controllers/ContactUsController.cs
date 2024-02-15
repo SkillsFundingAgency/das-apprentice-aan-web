@@ -8,10 +8,15 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
 [Route("contact-us", Name = SharedRouteNames.ContactUs)]
-public class ContactUsController(ApplicationConfiguration applicationConfiguration) : Controller
+public class ContactUsController : Controller
 {
-    private readonly ApplicationConfiguration _applicationConfiguration = applicationConfiguration;
+    private readonly ApplicationConfiguration _applicationConfiguration;
     public const string ContactUsViewPath = "~/Views/ContactUs/Index.cshtml";
+
+    public ContactUsController(ApplicationConfiguration applicationConfiguration)
+    {
+        _applicationConfiguration = applicationConfiguration;
+    }
 
     [HttpGet]
     public IActionResult Index()

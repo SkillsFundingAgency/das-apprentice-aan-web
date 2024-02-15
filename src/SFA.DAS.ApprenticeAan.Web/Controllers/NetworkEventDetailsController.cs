@@ -15,15 +15,22 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
 [Route("network-events")]
-public class NetworkEventDetailsController(IOuterApiClient outerApiClient, IValidator<SubmitAttendanceCommand> validator, ISessionService sessionService) : Controller
+public class NetworkEventDetailsController : Controller
 {
     public const string DetailsViewPath = "~/Views/NetworkEventDetails/Detail.cshtml";
     public const string SignUpConfirmationViewPath = "~/Views/NetworkEventDetails/SignUpConfirmation.cshtml";
     public const string CancellationConfirmationViewPath = "~/Views/NetworkEventDetails/CancellationConfirmation.cshtml";
 
-    private readonly IOuterApiClient _outerApiClient = outerApiClient;
-    private readonly ISessionService _sessionService = sessionService;
-    private readonly IValidator<SubmitAttendanceCommand> _validator = validator;
+    private readonly IOuterApiClient _outerApiClient;
+    private readonly ISessionService _sessionService;
+    private readonly IValidator<SubmitAttendanceCommand> _validator;
+
+    public NetworkEventDetailsController(IOuterApiClient outerApiClient, IValidator<SubmitAttendanceCommand> validator, ISessionService sessionService)
+    {
+        _outerApiClient = outerApiClient;
+        _validator = validator;
+        _sessionService = sessionService;
+    }
 
     [HttpGet]
     [Route("{id}", Name = SharedRouteNames.NetworkEventDetails)]

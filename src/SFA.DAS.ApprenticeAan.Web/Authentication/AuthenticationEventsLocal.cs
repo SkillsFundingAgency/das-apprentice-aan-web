@@ -9,9 +9,14 @@ using SFA.DAS.ApprenticePortal.Authentication;
 namespace SFA.DAS.ApprenticeAan.Web.Authentication;
 
 [ExcludeFromCodeCoverage]
-public class AuthenticationEventsLocal(IApprenticeAccountService apprenticeAccountService) : OpenIdConnectEvents
+public class AuthenticationEventsLocal : OpenIdConnectEvents
 {
-    private readonly IApprenticeAccountService _apprenticeAccountService = apprenticeAccountService;
+    private readonly IApprenticeAccountService _apprenticeAccountService;
+
+    public AuthenticationEventsLocal(IApprenticeAccountService apprenticeAccountService)
+    {
+        _apprenticeAccountService = apprenticeAccountService;
+    }
 
     public override async Task TokenValidated(TokenValidatedContext context)
     {

@@ -18,18 +18,26 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 [Authorize]
 [Route("onboarding/line-manager", Name = RouteNames.Onboarding.LineManager)]
 [HideNavigationBar(true, true)]
-public class LineManagerController(
-    ISessionService sessionService,
-    IOuterApiClient apiClient,
-    IValidator<LineManagerSubmitModel> validator,
-    ApplicationConfiguration applicationConfiguration) : Controller
+public class LineManagerController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/LineManager.cshtml";
     public const string ShutterPageViewPath = "~/Views/Onboarding/ShutterPage.cshtml";
-    private readonly ISessionService _sessionService = sessionService;
-    private readonly IOuterApiClient _apiClient = apiClient;
-    private readonly IValidator<LineManagerSubmitModel> _validator = validator;
-    private readonly ApplicationConfiguration _applicationConfiguration = applicationConfiguration;
+    private readonly ISessionService _sessionService;
+    private readonly IOuterApiClient _apiClient;
+    private readonly IValidator<LineManagerSubmitModel> _validator;
+    private readonly ApplicationConfiguration _applicationConfiguration;
+
+    public LineManagerController(
+        ISessionService sessionService,
+        IOuterApiClient apiClient,
+        IValidator<LineManagerSubmitModel> validator,
+        ApplicationConfiguration applicationConfiguration)
+    {
+        _apiClient = apiClient;
+        _validator = validator;
+        _sessionService = sessionService;
+        _applicationConfiguration = applicationConfiguration;
+    }
 
     [HttpGet]
     public IActionResult Get()
