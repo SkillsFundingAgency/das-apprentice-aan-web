@@ -65,14 +65,14 @@ public class NetworkEventDetailsController : Controller
 
     [HttpPost]
     [Route("{id}", Name = SharedRouteNames.NetworkEventDetails)]
-    public async Task<IActionResult> Post([FromRoute] Guid id, SubmitAttendanceCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> Post(SubmitAttendanceCommand command, CancellationToken cancellationToken)
     {
         var memberId = _sessionService.GetMemberId();
         var result = await _validator.ValidateAsync(command, cancellationToken);
 
         if (!result.IsValid)
         {
-            var eventDetailsResponse = await _outerApiClient.GetCalendarEventDetails(id, memberId, cancellationToken);
+            var eventDetailsResponse = await _outerApiClient.GetCalendarEventDetails(command.CalendarEventId, memberId, cancellationToken);
             var model = new NetworkEventDetailsViewModel(
                 eventDetailsResponse.GetContent(),
                 memberId);
@@ -85,7 +85,7 @@ public class NetworkEventDetailsController : Controller
             }
         }
 
-        await _outerApiClient.PutAttendance(id, memberId, new SetAttendanceStatusRequest(command.NewStatus), cancellationToken);
+        await _outerApiClient.PutAttendance(command.CalendarEventId, memberId, new SetAttendanceStatusRequest(command.NewStatus), cancellationToken);
 
         return command.NewStatus
             ? RedirectToAction("SignUpConfirmation")

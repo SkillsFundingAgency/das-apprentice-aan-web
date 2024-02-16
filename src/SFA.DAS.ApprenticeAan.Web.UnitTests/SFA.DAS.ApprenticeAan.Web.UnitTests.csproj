@@ -32,14 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Transitive updates -->
-    <PackageReference Include="System.Drawing.Common" Version="8.0.1" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.3.1" />
-    <PackageReference Include="System.Security.Cryptography.Xml" Version="8.0.0" />
-    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.Aan.SharedTestHelpers\SFA.DAS.Aan.UnitTests.Shared.csproj" />
     <ProjectReference Include="..\SFA.DAS.Aan.SharedUi.UnitTests\SFA.DAS.Aan.SharedUi.UnitTests.csproj" />
     <ProjectReference Include="..\SFA.DAS.ApprenticeAan.Web\SFA.DAS.ApprenticeAan.Web.csproj" />

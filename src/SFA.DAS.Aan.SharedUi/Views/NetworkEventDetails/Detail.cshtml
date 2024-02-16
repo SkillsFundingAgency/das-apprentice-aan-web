@@ -88,6 +88,7 @@
 
                     <form method="post">
                         <input type="hidden" asp-for="@Model.StartDateTime"/>
+                        <input type="hidden" asp-for="@Model.CalendarEventId" />
                         <input type="hidden" id="newStatus" name="newStatus" value="false"/>
                         <button class="govuk-button govuk-button--warning govuk-!-margin-bottom-0 govuk-!-width-full" @disabled>Cancel your attendance</button>
                     </form>
@@ -104,6 +105,7 @@
                     <h3 class="govuk-heading-m">Want to be involved in this event?</h3>
                     <form method="post">
                         <input type="hidden" asp-for="@Model.StartDateTime"/>
+                        <input type="hidden" asp-for="@Model.CalendarEventId" />
                         <input type="hidden" id="newStatus" name="newStatus" value="true"/>
                         <button class="govuk-button govuk-!-margin-bottom-0 govuk-!-width-full" data-module="govuk-button" type="submit" @disabled>Sign up</button>
                     </form>
