@@ -3,7 +3,6 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.Aan.SharedUi.Constants;
-using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
@@ -23,7 +22,7 @@ public class CurrentJobTitleControllerGetTests
         [Greedy] CurrentJobTitleController sut)
     {
         sut.AddUrlHelperMock();
-        OnboardingSessionModel sessionModel = new OnboardingSessionModel();
+        OnboardingSessionModel sessionModel = new();
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
@@ -38,7 +37,7 @@ public class CurrentJobTitleControllerGetTests
         [Greedy] CurrentJobTitleController sut)
     {
         sut.AddUrlHelperMock();
-        OnboardingSessionModel sessionModel = new OnboardingSessionModel();
+        OnboardingSessionModel sessionModel = new();
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
@@ -71,8 +70,10 @@ public class CurrentJobTitleControllerGetTests
         string employerSearchUrl)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerSearch, employerSearchUrl);
-        OnboardingSessionModel sessionModel = new();
-        sessionModel.HasSeenPreview = false;
+        OnboardingSessionModel sessionModel = new()
+        {
+            HasSeenPreview = false
+        };
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
@@ -87,7 +88,7 @@ public class CurrentJobTitleControllerGetTests
         [Greedy] CurrentJobTitleController sut)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.EmployerSearch);
-        OnboardingSessionModel sessionModel = new OnboardingSessionModel();
+        OnboardingSessionModel sessionModel = new();
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.JobTitle, Value = "Some Title" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 

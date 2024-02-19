@@ -5,14 +5,9 @@ using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
-public class LocationsController : Controller
+public class LocationsController(IOuterApiClient outerApiClient) : Controller
 {
-    private readonly IOuterApiClient _outerApiClient;
-
-    public LocationsController(IOuterApiClient outerApiClient)
-    {
-        _outerApiClient = outerApiClient;
-    }
+    private readonly IOuterApiClient _outerApiClient = outerApiClient;
 
     [HttpGet]
     [Route("/locations")]

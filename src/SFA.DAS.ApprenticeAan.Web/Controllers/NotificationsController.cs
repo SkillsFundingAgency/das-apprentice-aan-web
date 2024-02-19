@@ -10,16 +10,10 @@ using static SFA.DAS.ApprenticeAan.Application.Constants;
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
-public class NotificationsController : Controller
+public class NotificationsController(IOuterApiClient outerApiClient, ISessionService sessionService) : Controller
 {
-    private readonly IOuterApiClient _outerApiClient;
-    private readonly ISessionService _sessionService;
-
-    public NotificationsController(IOuterApiClient outerApiClient, ISessionService sessionService)
-    {
-        _outerApiClient = outerApiClient;
-        _sessionService = sessionService;
-    }
+    private readonly IOuterApiClient _outerApiClient = outerApiClient;
+    private readonly ISessionService _sessionService = sessionService;
 
     [Route("links/{id}")]
     public async Task<IActionResult> Index(Guid id, CancellationToken cancellationToken)
@@ -30,7 +24,7 @@ public class NotificationsController : Controller
 
         var notification = response.GetContent()!;
 
-        (string RouteName, object? RouteValues) route = notification.TemplateName switch
+        (string RouteName, object? RouteValues) = notification.TemplateName switch
         {
             NotificationTemplateNames.AANApprenticeOnboarding
                 => (RouteNames.NetworkHub, null),
@@ -52,6 +46,6 @@ public class NotificationsController : Controller
             _ => (SharedRouteNames.Home, null)
         };
 
-        return RedirectToRoute(route.RouteName, route.RouteValues);
+        return RedirectToRoute(RouteName, RouteValues);
     }
 }

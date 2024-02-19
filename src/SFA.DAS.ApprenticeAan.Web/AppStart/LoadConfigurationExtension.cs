@@ -15,11 +15,11 @@ public static class LoadConfigurationExtension
             .AddEnvironmentVariables();
 
 
-        if (!config["EnvironmentName"].Equals("DEV", StringComparison.CurrentCultureIgnoreCase))
+        if (!config["EnvironmentName"]!.Equals("DEV", StringComparison.CurrentCultureIgnoreCase))
         {
             configBuilder.AddAzureTableStorage(options =>
             {
-                options.ConfigurationKeys = config["ConfigNames"].Split(",");
+                options.ConfigurationKeys = config["ConfigNames"]!.Split(",");
                 options.StorageConnectionString = config["ConfigurationStorageConnectionString"];
                 options.EnvironmentName = config["EnvironmentName"];
                 options.PreFixConfigurationKeys = false;
@@ -29,7 +29,7 @@ public static class LoadConfigurationExtension
         var configuration = configBuilder.Build();
 
         var appConfig = configuration.Get<ApplicationConfiguration>();
-        services.AddSingleton(appConfig);
+        services.AddSingleton(appConfig!);
 
         return configuration;
     }

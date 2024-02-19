@@ -24,6 +24,6 @@ public class CalendarEvent
     public bool IsActive { get; set; }
     public string? CancelReason { get; set; } = null!;
 
-    public List<Attendee> Attendees { get; set; } = new();
-    public List<EventGuest> EventGuests { get; set; } = new();
+    public List<Attendee> Attendees { get; set; } = [];
+    public List<EventGuest> EventGuests { get; set; } = [];
 }

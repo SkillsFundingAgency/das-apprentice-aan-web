@@ -18,19 +18,13 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
 [Route("edit-area-of-interest", Name = SharedRouteNames.EditAreaOfInterest)]
-public class EditAreaOfInterestController : Controller
+public class EditAreaOfInterestController(IValidator<SubmitAreaOfInterestModel> validator, IOuterApiClient outerApiClient, ISessionService sessionService) : Controller
 {
     public const string ChangeAreaOfInterestViewPath = "~/Views/EditAreaOfInterest/EditAreaOfInterest.cshtml";
 
-    private readonly IValidator<SubmitAreaOfInterestModel> _validator;
-    private readonly ISessionService _sessionService;
-    private readonly IOuterApiClient _outerApiClient;
-    public EditAreaOfInterestController(IValidator<SubmitAreaOfInterestModel> validator, IOuterApiClient outerApiClient, ISessionService sessionService)
-    {
-        _validator = validator;
-        _outerApiClient = outerApiClient;
-        _sessionService = sessionService;
-    }
+    private readonly IValidator<SubmitAreaOfInterestModel> _validator = validator;
+    private readonly ISessionService _sessionService = sessionService;
+    private readonly IOuterApiClient _outerApiClient = outerApiClient;
 
     [HttpGet]
     public IActionResult Get(CancellationToken cancellationToken)
@@ -49,7 +43,7 @@ public class EditAreaOfInterestController : Controller
             return View(ChangeAreaOfInterestViewPath, GetAreaOfInterests(cancellationToken).Result);
         }
 
-        UpdateMemberProfileAndPreferencesRequest updateMemberProfileAndPreferencesRequest = new UpdateMemberProfileAndPreferencesRequest();
+        UpdateMemberProfileAndPreferencesRequest updateMemberProfileAndPreferencesRequest = new();
 
         updateMemberProfileAndPreferencesRequest.UpdateMemberProfileRequest.MemberProfiles = command.AreasOfInterest.Select(x => new UpdateProfileModel()
         {
@@ -64,7 +58,7 @@ public class EditAreaOfInterestController : Controller
 
     public async Task<EditAreaOfInterestViewModel> GetAreaOfInterests(CancellationToken cancellationToken)
     {
-        EditAreaOfInterestViewModel editAreaOfInterestViewModel = new EditAreaOfInterestViewModel();
+        EditAreaOfInterestViewModel editAreaOfInterestViewModel = new();
         var memberProfiles = await _outerApiClient.GetMemberProfile(_sessionService.GetMemberId(), _sessionService.GetMemberId(), false, cancellationToken);
         var profilesResult = await _outerApiClient.GetProfilesByUserType(MemberUserType.Apprentice.ToString(), cancellationToken);
 
@@ -80,13 +74,16 @@ public class EditAreaOfInterestController : Controller
 
     public static List<SelectProfileViewModel> SelectProfileViewModelMapping(IEnumerable<Profile> profiles, IEnumerable<MemberProfile> memberProfiles)
     {
-        return profiles.Select(profile => new SelectProfileViewModel()
-        {
-            Id = profile.Id,
-            Description = profile.Description,
-            Category = profile.Category,
-            Ordering = profile.Ordering,
-            IsSelected = (MapProfilesAndPreferencesService.GetProfileValue(profile.Id, memberProfiles) == true.ToString())
-        }).OrderBy(x => x.Ordering).ToList();
+        return
+        [
+            .. profiles.Select(profile => new SelectProfileViewModel()
+            {
+                Id = profile.Id,
+                Description = profile.Description,
+                Category = profile.Category,
+                Ordering = profile.Ordering,
+                IsSelected = (MapProfilesAndPreferencesService.GetProfileValue(profile.Id, memberProfiles) == true.ToString())
+            }).OrderBy(x => x.Ordering),
+        ];
     }
 }

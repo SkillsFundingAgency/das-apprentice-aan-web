@@ -16,8 +16,7 @@ public class OnboardingSessionModelTests
         sut.IsValid.Should().BeFalse();
     }
 
-    [Test]
-    [AutoData]
+    [Test, AutoData]
     public void IsValid_HasNotAcceptedTerms_ReturnsFalse(List<ProfileModel> profileData)
     {
         OnboardingSessionModel sut = new() { HasAcceptedTerms = false, ProfileData = profileData };
@@ -34,8 +33,7 @@ public class OnboardingSessionModelTests
         sut.GetProfileValue(profileModel.Id).Should().Be(profileModel.Value);
     }
 
-    [Test]
-    [AutoData]
+    [Test, AutoData]
     public void GetProfilelValue_FoundProfileIdWithNoValue_ReturnsNull(OnboardingSessionModel sut, ProfileModel profileModel)
     {
         profileModel.Value = null;
@@ -44,8 +42,7 @@ public class OnboardingSessionModelTests
         sut.GetProfileValue(profileModel.Id).Should().BeNull();
     }
 
-    [Test]
-    [AutoData]
+    [Test, AutoData]
     public void GetProfilelValue_ProfileNotFound_ThrowsInvalidOperationException(OnboardingSessionModel sut, ProfileModel profileModel)
     {
         profileModel.Value = null;
@@ -55,8 +52,7 @@ public class OnboardingSessionModelTests
         action.Should().Throw<InvalidOperationException>();
     }
 
-    [Test]
-    [AutoData]
+    [Test, AutoData]
     public void SetProfileValue_ProfileFound_UpdatesValue(OnboardingSessionModel sut, string value)
     {
         var profileModel = sut.ProfileData[0];

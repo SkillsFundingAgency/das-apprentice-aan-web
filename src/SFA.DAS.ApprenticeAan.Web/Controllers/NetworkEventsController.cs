@@ -16,16 +16,10 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
 [Route("network-events")]
-public class NetworkEventsController : Controller
+public class NetworkEventsController(IOuterApiClient outerApiClient, ISessionService sessionService) : Controller
 {
-    private readonly IOuterApiClient _outerApiClient;
-    private readonly ISessionService _sessionService;
-
-    public NetworkEventsController(IOuterApiClient outerApiClient, ISessionService sessionService)
-    {
-        _outerApiClient = outerApiClient;
-        _sessionService = sessionService;
-    }
+    private readonly IOuterApiClient _outerApiClient = outerApiClient;
+    private readonly ISessionService _sessionService = sessionService;
 
     [HttpGet]
     [Route("", Name = SharedRouteNames.NetworkEvents)]
@@ -35,7 +29,7 @@ public class NetworkEventsController : Controller
         var calendarTask = _outerApiClient.GetCalendars();
         var regionTask = _outerApiClient.GetRegions();
 
-        List<Task> tasks = new() { calendarEventsTask, calendarTask, regionTask };
+        List<Task> tasks = [calendarEventsTask, calendarTask, regionTask];
 
         await Task.WhenAll(tasks);
 
@@ -77,7 +71,7 @@ public class NetworkEventsController : Controller
 
     }
     private static EventFilterChoices PopulateFilterChoices(GetNetworkEventsRequest request, List<Calendar> calendars, List<Region> regions)
-        => new EventFilterChoices
+        => new()
         {
             Keyword = request.Keyword?.Trim(),
             FromDate = request.FromDate,

@@ -15,19 +15,13 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 [Authorize]
 [Route("onboarding/previous-engagement", Name = RouteNames.Onboarding.PreviousEngagement)]
 [HideNavigationBar(true, true)]
-public class PreviousEngagementController : Controller
+public class PreviousEngagementController(
+    ISessionService sessionService,
+    IValidator<PreviousEngagementSubmitModel> validator) : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/PreviousEngagement.cshtml";
-    private readonly ISessionService _sessionService;
-    private readonly IValidator<PreviousEngagementSubmitModel> _validator;
-
-    public PreviousEngagementController(
-        ISessionService sessionService,
-        IValidator<PreviousEngagementSubmitModel> validator)
-    {
-        _validator = validator;
-        _sessionService = sessionService;
-    }
+    private readonly ISessionService _sessionService = sessionService;
+    private readonly IValidator<PreviousEngagementSubmitModel> _validator = validator;
 
     [HttpGet]
     public IActionResult Get()

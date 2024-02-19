@@ -12,18 +12,12 @@ using static SFA.DAS.ApprenticeAan.Web.Constants;
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
-public class LeaveTheNetworkController : Controller
+public class LeaveTheNetworkController(IOuterApiClient apiClient, ISessionService sessionService) : Controller
 {
-    private readonly IOuterApiClient _apiClient;
-    private readonly ISessionService _sessionService;
+    private readonly IOuterApiClient _apiClient = apiClient;
+    private readonly ISessionService _sessionService = sessionService;
 
     public const string LeaveTheNetworkAreYouSureViewPath = "~/Views/LeaveTheNetwork/LeaveTheNetworkAreYouSure.cshtml";
-
-    public LeaveTheNetworkController(IOuterApiClient apiClient, ISessionService sessionService)
-    {
-        _apiClient = apiClient;
-        _sessionService = sessionService;
-    }
 
     [HttpGet]
     [Route("leave-the-network", Name = SharedRouteNames.LeaveTheNetwork)]
@@ -36,9 +30,9 @@ public class LeaveTheNetworkController : Controller
             LeavingReasonsTitle = leavingReasons.First(x => x.Category.Contains("reasons")).Category,
             LeavingExperienceTitle = leavingReasons.First(x => x.Category.Contains("experience")).Category,
             LeavingBenefitsTitle = leavingReasons.First(x => x.Category.Contains("benefit")).Category,
-            LeavingReasons = leavingReasons.First(x => x.Category.Contains("reasons")).LeavingReasons.OrderBy(x => x.Ordering).ToList(),
-            LeavingExperience = leavingReasons.First(x => x.Category.Contains("experience")).LeavingReasons.OrderBy(x => x.Ordering).ToList(),
-            LeavingBenefits = leavingReasons.First(x => x.Category.Contains("benefit")).LeavingReasons.OrderBy(x => x.Ordering).ToList(),
+            LeavingReasons = [.. leavingReasons.First(x => x.Category.Contains("reasons")).LeavingReasons.OrderBy(x => x.Ordering)],
+            LeavingExperience = [.. leavingReasons.First(x => x.Category.Contains("experience")).LeavingReasons.OrderBy(x => x.Ordering)],
+            LeavingBenefits = [.. leavingReasons.First(x => x.Category.Contains("benefit")).LeavingReasons.OrderBy(x => x.Ordering)],
             ProfileSettingsLink = Url.RouteUrl(SharedRouteNames.ProfileSettings)!
         };
 

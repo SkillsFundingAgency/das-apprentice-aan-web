@@ -17,7 +17,9 @@ var rootConfiguration = builder.Configuration.LoadConfiguration(builder.Services
 
 var environmentName = rootConfiguration["EnvironmentName"];
 var applicationConfiguration = rootConfiguration.Get<ApplicationConfiguration>();
-builder.Services.AddSingleton(applicationConfiguration);
+IEnumerable<string> tag = new[] { "ready" };
+
+builder.Services.AddSingleton(applicationConfiguration!);
 
 builder.Services
     .AddOptions()
@@ -27,7 +29,7 @@ builder.Services
     .AddHttpContextAccessor()
     .AddValidatorsFromAssembly(typeof(RegionsSubmitModelValidator).Assembly)
     .AddValidatorsFromAssembly(typeof(ConnectWithMemberSubmitModelValidator).Assembly)
-    .AddSession(environmentName, applicationConfiguration.ConnectionStrings)
+    .AddSession(environmentName!, applicationConfiguration!.ConnectionStrings)
     .AddDataProtection(applicationConfiguration.ConnectionStrings, builder.Environment)
     .AddAuthentication(applicationConfiguration.Authentication, builder.Environment)
     .AddServiceRegistrations(applicationConfiguration.ApprenticeAanOuterApi);
@@ -35,7 +37,7 @@ builder.Services
 builder.Services.AddHealthChecks()
     .AddCheck<ApprenticeAanOuterApiHealthCheck>(ApprenticeAanOuterApiHealthCheck.HealthCheckResultDescription,
     failureStatus: HealthStatus.Unhealthy,
-    tags: new[] { "ready" });
+    tags: tag);
 
 builder.Services.AddSharedUi(applicationConfiguration, options =>
 {

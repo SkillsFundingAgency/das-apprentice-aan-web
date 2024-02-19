@@ -15,14 +15,9 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
 [Route("network-directory", Name = SharedRouteNames.NetworkDirectory)]
-public class NetworkDirectoryController : Controller
+public class NetworkDirectoryController(IOuterApiClient outerApiClient) : Controller
 {
-    private readonly IOuterApiClient _outerApiClient;
-
-    public NetworkDirectoryController(IOuterApiClient outerApiClient)
-    {
-        _outerApiClient = outerApiClient;
-    }
+    private readonly IOuterApiClient _outerApiClient = outerApiClient;
 
     [HttpGet]
     public async Task<IActionResult> Index(NetworkDirectoryRequestModel request, CancellationToken cancellationToken)
@@ -30,7 +25,7 @@ public class NetworkDirectoryController : Controller
         var networkDirectoryTask = _outerApiClient.GetMembers(request.ToQueryStringParameters(), cancellationToken);
         var regionTask = _outerApiClient.GetRegions();
 
-        List<Task> tasks = new() { networkDirectoryTask, regionTask };
+        List<Task> tasks = [networkDirectoryTask, regionTask];
 
         await Task.WhenAll(tasks);
         var regions = regionTask.Result.Regions;
@@ -72,7 +67,7 @@ public class NetworkDirectoryController : Controller
     }
 
     private static DirectoryFilterChoices PopulateFilterChoices(NetworkDirectoryRequestModel request, List<Region> regions)
-        => new DirectoryFilterChoices
+        => new()
         {
             Keyword = request.Keyword?.Trim(),
             RoleChecklistDetails = new ChecklistDetails

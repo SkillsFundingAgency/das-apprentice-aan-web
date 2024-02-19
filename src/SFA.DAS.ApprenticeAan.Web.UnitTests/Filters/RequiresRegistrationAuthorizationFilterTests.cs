@@ -16,8 +16,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Filters;
 
 public class RequiresRegistrationAuthorizationFilterTests
 {
-    [Test]
-    [AutoData]
+    [Test, AutoData]
     public void OnAuthorization_UserHasAccount_DoesNotChangeContextResult(ApplicationConfiguration config)
     {
         AuthenticatedUser user = new(GetClaimsPrinciple(true));
@@ -29,8 +28,7 @@ public class RequiresRegistrationAuthorizationFilterTests
         context.Result.As<OkResult>().Should().NotBeNull();
     }
 
-    [Test]
-    [AutoData]
+    [Test, AutoData]
     public void OnAuthorization_UserDoesNotHaveAccount_RedirectToApprenticeAccounts(ApplicationConfiguration config)
     {
         AuthenticatedUser user = new(GetClaimsPrinciple(false));

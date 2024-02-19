@@ -58,7 +58,7 @@ public class SessionServiceExtensionsTests
     [TestCase(true, "Deleted", MemberStatus.Deleted)]
     [TestCase(true, "Withdrawn", MemberStatus.Withdrawn)]
     [TestCase(true, "other", null)]
-    public void CheckMemberStatus(bool memberExists, string memberStatusSet, MemberStatus? expectedMemberStatus)
+    public void CheckMemberStatus(bool memberExists, string? memberStatusSet, MemberStatus? expectedMemberStatus)
     {
         var memberId = Guid.NewGuid();
 
@@ -67,7 +67,7 @@ public class SessionServiceExtensionsTests
         if (memberExists)
         {
             sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.Member.MemberId)).Returns(memberId.ToString);
-            sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.Member.Status)).Returns(memberStatusSet.ToString);
+            sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.Member.Status)).Returns(memberStatusSet!.ToString);
         }
 
         var actualStatus = sessionServiceMock.Object.GetMemberStatus();

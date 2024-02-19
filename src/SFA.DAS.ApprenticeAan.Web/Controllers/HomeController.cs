@@ -11,14 +11,9 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 [Authorize]
 [Route("", Name = SharedRouteNames.Home)]
 [Route("[controller]")]
-public class HomeController : Controller
+public class HomeController(ISessionService sessionService) : Controller
 {
-    private readonly ISessionService _sessionService;
-
-    public HomeController(ISessionService sessionService)
-    {
-        _sessionService = sessionService;
-    }
+    private readonly ISessionService _sessionService = sessionService;
 
     public IActionResult Index()
     {

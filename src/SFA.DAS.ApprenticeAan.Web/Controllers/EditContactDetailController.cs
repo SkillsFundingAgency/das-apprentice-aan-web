@@ -17,19 +17,12 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
 [Route("edit-contact-detail", Name = SharedRouteNames.EditContactDetail)]
-public class EditContactDetailController : Controller
+public class EditContactDetailController(IOuterApiClient apiClient, IValidator<SubmitContactDetailModel> validator, ISessionService sessionService) : Controller
 {
-    private readonly IOuterApiClient _apiClient;
-    private readonly ISessionService _sessionService;
-    private readonly IValidator<SubmitContactDetailModel> _validator;
+    private readonly IOuterApiClient _apiClient = apiClient;
+    private readonly ISessionService _sessionService = sessionService;
+    private readonly IValidator<SubmitContactDetailModel> _validator = validator;
     public const string ChangeContactDetailViewPath = "~/Views/EditContactDetail/EditContactDetail.cshtml";
-
-    public EditContactDetailController(IOuterApiClient apiClient, IValidator<SubmitContactDetailModel> validator, ISessionService sessionService)
-    {
-        _apiClient = apiClient;
-        _validator = validator;
-        _sessionService = sessionService;
-    }
 
     [HttpGet]
     public IActionResult Index(CancellationToken cancellationToken)
@@ -48,15 +41,19 @@ public class EditContactDetailController : Controller
             return View(ChangeContactDetailViewPath, GetContactDetailViewModel(cancellationToken).Result);
         }
 
-        UpdateMemberProfileAndPreferencesRequest updateMemberProfileAndPreferencesRequest = new UpdateMemberProfileAndPreferencesRequest();
+        UpdateMemberProfileAndPreferencesRequest updateMemberProfileAndPreferencesRequest = new();
 
-        List<UpdatePreferenceModel> updatePreferenceModels = new List<UpdatePreferenceModel>();
-        updatePreferenceModels.Add(new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.LinkedIn, Value = submitContactDetailModel.ShowLinkedinUrl });
+        List<UpdatePreferenceModel> updatePreferenceModels =
+        [
+            new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.LinkedIn, Value = submitContactDetailModel.ShowLinkedinUrl },
+        ];
 
         updateMemberProfileAndPreferencesRequest.UpdateMemberProfileRequest.MemberPreferences = updatePreferenceModels;
 
-        List<UpdateProfileModel> updateProfileModels = new List<UpdateProfileModel>();
-        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.LinkedIn, Value = submitContactDetailModel.LinkedinUrl?.Trim() });
+        List<UpdateProfileModel> updateProfileModels =
+        [
+            new() { MemberProfileId = ProfileIds.LinkedIn, Value = submitContactDetailModel.LinkedinUrl?.Trim() },
+        ];
 
         updateMemberProfileAndPreferencesRequest.UpdateMemberProfileRequest.MemberProfiles = updateProfileModels;
 
@@ -70,11 +67,13 @@ public class EditContactDetailController : Controller
     {
         var memberProfile = await _apiClient.GetMemberProfile(_sessionService.GetMemberId(), _sessionService.GetMemberId(), false, cancellationToken);
 
-        EditContactDetailViewModel editContactDetailViewModel = new EditContactDetailViewModel();
-        editContactDetailViewModel.Email = memberProfile.Email;
-        editContactDetailViewModel.LinkedinUrl = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.LinkedIn, memberProfile.Profiles);
-        editContactDetailViewModel.ShowLinkedinUrl = MapProfilesAndPreferencesService.GetPreferenceValue(PreferenceIds.LinkedIn, memberProfile.Preferences);
-        editContactDetailViewModel.YourAmbassadorProfileUrl = Url.RouteUrl(SharedRouteNames.YourAmbassadorProfile)!;
+        EditContactDetailViewModel editContactDetailViewModel = new()
+        {
+            Email = memberProfile.Email,
+            LinkedinUrl = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.LinkedIn, memberProfile.Profiles),
+            ShowLinkedinUrl = MapProfilesAndPreferencesService.GetPreferenceValue(PreferenceIds.LinkedIn, memberProfile.Preferences),
+            YourAmbassadorProfileUrl = Url.RouteUrl(SharedRouteNames.YourAmbassadorProfile)!
+        };
         return editContactDetailViewModel;
     }
 }

@@ -1,11 +1,7 @@
 ﻿namespace SFA.DAS.Aan.SharedUi.Models;
 
-public class NotificationSentConfirmationViewModel : INetworkHubLink
+public class NotificationSentConfirmationViewModel(string networkDirectoryUrl) : INetworkHubLink
 {
-    public NotificationSentConfirmationViewModel(string networkDirectoryUrl)
-    {
-        NetworkDirectoryUrl = networkDirectoryUrl;
-    }
-    public string NetworkDirectoryUrl { get; set; }
+    public string NetworkDirectoryUrl { get; set; } = networkDirectoryUrl;
     public string? NetworkHubLink { get; set; }
 };

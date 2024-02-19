@@ -22,18 +22,18 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
 public class EditAreaOfInterestControllerGetTests
 {
     static readonly string YourAmbassadorProfileUrl = Guid.NewGuid().ToString();
-    private static Guid memberId = Guid.NewGuid();
+    private readonly static Guid memberId = Guid.NewGuid();
     private EditAreaOfInterestController sut = null!;
     private Mock<IOuterApiClient> _outerApiMock = null!;
     private Mock<IValidator<SubmitAreaOfInterestModel>> _validatorMock = null!;
     private GetMemberProfileResponse memberProfileResponse = null!;
-    private readonly List<Profile> profiles = new()
-    {
+    private readonly List<Profile> profiles =
+    [
         new Profile { Id = 1, Description = "Networking at events in person", Category = AreaOfInterestTitleConstant.FirstSectionTitleForApprentice, Ordering = 1 },
         new Profile { Id = 2, Description = "Presenting at events in person", Category = AreaOfInterestTitleConstant.FirstSectionTitleForApprentice, Ordering = 2 },
         new Profile { Id = 10, Description = "Carrying out and writing up case studies", Category = AreaOfInterestTitleConstant.SecondSectionTitleForApprentice, Ordering = 1 },
         new Profile { Id = 11, Description = "Designing and creating marketing materials to champion the network", Category = AreaOfInterestTitleConstant.SecondSectionTitleForApprentice, Ordering = 2 }
-    };
+    ];
 
     [Test]
     public void Get_ReturnsEditAreaOfInterestViewModel()
@@ -95,13 +95,13 @@ public class EditAreaOfInterestControllerGetTests
     public void SelectProfileViewModelMapping_ReturnsSelectProfileViewModelList(bool profileValue, IEnumerable<MemberProfile> memberProfiles)
     {
         //Arrange
-        EditPersonalInformationViewModel editPersonalInformationViewModel = new EditPersonalInformationViewModel();
-        List<SelectProfileViewModel> selectProfileViewModels = new List<SelectProfileViewModel>();
+        EditPersonalInformationViewModel editPersonalInformationViewModel = new();
+        List<SelectProfileViewModel> selectProfileViewModels = [];
         memberProfiles.FirstOrDefault()!.Value = profileValue.ToString();
-        List<Profile> profiles = new List<Profile>()
-        {
-            new Profile{ Id=memberProfiles.FirstOrDefault()!.ProfileId}
-        };
+        List<Profile> profiles =
+        [
+            new Profile { Id = memberProfiles.FirstOrDefault()!.ProfileId }
+        ];
 
         //Act
         var sut = EditAreaOfInterestController.SelectProfileViewModelMapping(profiles, memberProfiles);
@@ -177,7 +177,7 @@ public class EditAreaOfInterestControllerGetTests
     [TearDown]
     public void TearDown()
     {
-        if (sut != null) sut.Dispose();
+        sut?.Dispose();
     }
 
     private void SetUpControllerWithContext()

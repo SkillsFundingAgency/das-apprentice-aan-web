@@ -12,7 +12,7 @@ public abstract class CheckYourAnswersControllerTestsBase
     internal static List<ProfileModel> GetProfileData()
     {
         var fixture = new Fixture();
-        int[] profileIds = new[] { ProfileConstants.ProfileIds.JobTitle, ProfileConstants.ProfileIds.EmployerName, ProfileConstants.ProfileIds.ReasonToJoinAmbassadorNetwork };
+        int[] profileIds = [ProfileConstants.ProfileIds.JobTitle, ProfileConstants.ProfileIds.EmployerName, ProfileConstants.ProfileIds.ReasonToJoinAmbassadorNetwork];
         var profileData = fixture.Build<ProfileModel>().WithValues(p => p.Id, profileIds).CreateMany(profileIds.Length).ToList();
 
         profileData.AddRange(fixture.Build<ProfileModel>().WithValues(p => p.Id, AddressIds.ToArray()).CreateMany(AddressIds.Count()));
@@ -23,7 +23,7 @@ public abstract class CheckYourAnswersControllerTestsBase
             .With(p => p.Value, "true")
             .Create());
 
-        string[] areasOfInterestCategories = new[] { Category.Promotions, Category.Events };
+        string[] areasOfInterestCategories = [Category.Promotions, Category.Events];
         profileData.AddRange(fixture.Build<ProfileModel>().WithValues(p => p.Id, 1, 2).WithValues(p => p.Category, areasOfInterestCategories).CreateMany(areasOfInterestCategories.Length));
         // Add null values for the same categories for exclusion
         profileData.AddRange(fixture.Build<ProfileModel>().WithValues(p => p.Id, 3, 4).WithValues(p => p.Category, areasOfInterestCategories).Without(p => p.Value).CreateMany(areasOfInterestCategories.Length));

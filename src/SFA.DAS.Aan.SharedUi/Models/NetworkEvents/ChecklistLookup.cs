@@ -1,14 +1,7 @@
 ﻿namespace SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
-public class ChecklistLookup
+public class ChecklistLookup(string name, string value, bool isChecked = false)
 {
-    public string Name { get; }
-    public string Value { get; }
-    public string Checked { get; set; } = string.Empty;
-
-    public ChecklistLookup(string name, string value, bool isChecked = false)
-    {
-        Name = name;
-        Value = value;
-        Checked = isChecked ? "checked" : string.Empty;
-    }
+    public string Name { get; } = name;
+    public string Value { get; } = value;
+    public string Checked { get; set; } = isChecked ? "checked" : string.Empty;
 }

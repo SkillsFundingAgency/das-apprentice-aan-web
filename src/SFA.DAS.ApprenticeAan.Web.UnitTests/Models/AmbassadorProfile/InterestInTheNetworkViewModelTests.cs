@@ -12,7 +12,7 @@ public class InterestInTheNetworkViewModelTests
     private InterestInTheNetworkViewModel sut;
     private List<Profile> profiles;
     private IEnumerable<MemberProfile> memberProfiles;
-    private string areaOfInterestChangeUrl = Guid.NewGuid().ToString();
+    private readonly string areaOfInterestChangeUrl = Guid.NewGuid().ToString();
 
     [SetUp]
     public void Setup()
@@ -27,13 +27,13 @@ public class InterestInTheNetworkViewModelTests
         memberProfiles.ToArray()[2].Value = "true";
         memberProfiles.ToArray()[3].ProfileId = 11;
         memberProfiles.ToArray()[3].Value = "true";
-        profiles = new List<Profile>()
-        {
+        profiles =
+        [
             new Profile { Id = 1, Description = "Networking at events in person", Category = "Events", Ordering = 1 },
             new Profile { Id = 2, Description = "Presenting at events in person", Category = "Events", Ordering = 2 },
             new Profile { Id = 10, Description = "Carrying out and writing up case studies", Category = "Promotions", Ordering = 1 },
             new Profile { Id = 11, Description = "Designing and creating marketing materials to champion the network", Category = "Promotions", Ordering = 2 }
-        };
+        ];
         sut = new InterestInTheNetworkViewModel(memberProfiles, profiles, areaOfInterestChangeUrl);
     }
 

@@ -15,20 +15,14 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
 [Route("member-profile")]
-public class MemberProfileController : Controller
+public class MemberProfileController(IOuterApiClient outerApiClient, IValidator<ConnectWithMemberSubmitModel> validator, ISessionService sessionService) : Controller
 {
     public const string MemberProfileViewPath = "~/Views/MemberProfile/PublicProfile.cshtml";
     public const string NotificationSentConfirmationViewPath = "~/Views/MemberProfile/NotificationSentConfirmation.cshtml";
 
-    private readonly IOuterApiClient _outerApiClient;
-    private readonly ISessionService _sessionService;
-    private readonly IValidator<ConnectWithMemberSubmitModel> _validator;
-    public MemberProfileController(IOuterApiClient outerApiClient, IValidator<ConnectWithMemberSubmitModel> validator, ISessionService sessionService)
-    {
-        _outerApiClient = outerApiClient;
-        _validator = validator;
-        _sessionService = sessionService;
-    }
+    private readonly IOuterApiClient _outerApiClient = outerApiClient;
+    private readonly ISessionService _sessionService = sessionService;
+    private readonly IValidator<ConnectWithMemberSubmitModel> _validator = validator;
 
     [HttpGet]
     [Route("{id}", Name = SharedRouteNames.MemberProfile)]
@@ -51,7 +45,7 @@ public class MemberProfileController : Controller
             var model = await GetViewModel(id, cancellationToken);
             return View(MemberProfileViewPath, model);
         }
-        CreateNotificationRequest createNotificationRequest = new CreateNotificationRequest(id, command.ReasonToGetInTouch);
+        CreateNotificationRequest createNotificationRequest = new(id, command.ReasonToGetInTouch);
         await _outerApiClient.PostNotification(_sessionService.GetMemberId(), createNotificationRequest, cancellationToken);
 
         return RedirectToRoute(SharedRouteNames.NotificationSentConfirmation);
@@ -71,10 +65,12 @@ public class MemberProfileController : Controller
         var profilesResult = await _outerApiClient.GetProfilesByUserType(memberProfiles.UserType.ToString(), cancellationToken);
         var userId = _sessionService.GetMemberId();
 
-        MemberProfileViewModel memberProfileViewModel = new();
-        memberProfileViewModel.MemberId = id;
-        memberProfileViewModel.IsLoggedInUserMemberProfile = id == userId;
-        memberProfileViewModel.IsConnectWithMemberVisible = true;
+        MemberProfileViewModel memberProfileViewModel = new()
+        {
+            MemberId = id,
+            IsLoggedInUserMemberProfile = id == userId,
+            IsConnectWithMemberVisible = true
+        };
 
         memberProfileViewModel.ConnectViaLinkedIn.LinkedInUrl = MemberProfileHelper.GetLinkedInUrl(profilesResult.Profiles, memberProfiles.Profiles);
         memberProfileViewModel.FirstName = memberProfileViewModel.ConnectViaLinkedIn.FirstName = memberProfiles.FirstName;

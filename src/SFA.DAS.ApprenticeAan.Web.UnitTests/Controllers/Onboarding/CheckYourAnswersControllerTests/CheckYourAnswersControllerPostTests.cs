@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
 using SFA.DAS.Aan.SharedUi.Constants;
-using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;

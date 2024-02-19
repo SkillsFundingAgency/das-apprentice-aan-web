@@ -7,6 +7,7 @@ public class ReasonToJoinSubmitModelValidator : AbstractValidator<ReasonToJoinSu
 {
     public const string ReasonForJoiningTheNetworkEmptyMessage = "Enter why you want to join the network";
     public const string ReasonForJoiningTheNetworkMaxWordsMessage = "Your answer must be 250 words or less";
+    private readonly static char[] splitCharacters = [' ', '\r', '\n'];
 
     public ReasonToJoinSubmitModelValidator()
     {
@@ -14,7 +15,7 @@ public class ReasonToJoinSubmitModelValidator : AbstractValidator<ReasonToJoinSu
         RuleFor(m => m.ReasonForJoiningTheNetwork)
             .NotEmpty()
             .WithMessage(ReasonForJoiningTheNetworkEmptyMessage)
-            .Must((m, x) => m.ReasonForJoiningTheNetwork!.Trim().Split(new[] { ' ', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length <= m.maxWordCount)
+            .Must((m, x) => m.ReasonForJoiningTheNetwork!.Trim().Split(splitCharacters, StringSplitOptions.RemoveEmptyEntries).Length <= m.MaxWordCount)
             .WithMessage(ReasonForJoiningTheNetworkMaxWordsMessage);
     }
 }

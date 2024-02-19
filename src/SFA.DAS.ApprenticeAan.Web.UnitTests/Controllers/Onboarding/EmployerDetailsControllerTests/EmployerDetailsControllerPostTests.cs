@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using RestEase;
 using SFA.DAS.Aan.SharedUi.Constants;
-using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
@@ -69,7 +68,7 @@ public class EmployerDetailsControllerPostTests
     [Test]
     public async Task Post_ModelStateIsInvalid_ReloadsViewWithValidationErrors()
     {
-        validationResult = new(new List<ValidationFailure>() { new ValidationFailure("key", "message") });
+        validationResult = new(new List<ValidationFailure>() { new("key", "message") });
         validatorMock.Setup(v => v.Validate(submitModel.Object)).Returns(validationResult);
 
         sut = new(sessionServiceMock.Object, validatorMock.Object, outerApiClient.Object);

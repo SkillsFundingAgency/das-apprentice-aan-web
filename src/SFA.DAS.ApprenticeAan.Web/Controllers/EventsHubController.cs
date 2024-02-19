@@ -11,22 +11,16 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
 [Route("events-hub", Name = SharedRouteNames.EventsHub)]
-public class EventsHubController : Controller
+public class EventsHubController(IOuterApiClient apiClient, ISessionService sessionService) : Controller
 {
-    private readonly IOuterApiClient _apiClient;
-    private readonly ISessionService _sessionService;
-
-    public EventsHubController(IOuterApiClient apiClient, ISessionService sessionService)
-    {
-        _apiClient = apiClient;
-        _sessionService = sessionService;
-    }
+    private readonly IOuterApiClient _apiClient = apiClient;
+    private readonly ISessionService _sessionService = sessionService;
 
     [HttpGet]
     public async Task<IActionResult> Index([FromQuery] int? month, [FromQuery] int? year, CancellationToken cancellationToken)
     {
-        month = month ?? DateTime.Today.Month;
-        year = year ?? DateTime.Today.Year;
+        month ??= DateTime.Today.Month;
+        year ??= DateTime.Today.Year;
 
         // throws ArgumentOutOfRangeException if the month is invalid, which will navigate user to an error page
         var firstDayOfTheMonth = new DateOnly(year.GetValueOrDefault(), month.GetValueOrDefault(), 1);
@@ -40,7 +34,7 @@ public class EventsHubController : Controller
 
     private List<Appointment> GetAppointments(List<Attendance> attendances)
     {
-        List<Appointment> appointments = new();
+        List<Appointment> appointments = [];
         foreach (Attendance attendance in attendances)
         {
             appointments.Add(attendance.ToAppointment(Url));

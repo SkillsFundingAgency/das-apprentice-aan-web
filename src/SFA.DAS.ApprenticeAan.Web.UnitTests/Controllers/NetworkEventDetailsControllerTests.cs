@@ -129,8 +129,10 @@ public class NetworkEventDetailsControllerTests
     {
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
 
-        var sut = new NetworkEventDetailsController(outerApiMock.Object, validator.Object, Mock.Of<ISessionService>());
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        var sut = new NetworkEventDetailsController(outerApiMock.Object, validator.Object, Mock.Of<ISessionService>())
+        {
+            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } }
+        };
 
         var command = new SubmitAttendanceCommand
         {
@@ -161,8 +163,10 @@ public class NetworkEventDetailsControllerTests
             .ReturnsAsync(response);
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
 
-        var sut = new NetworkEventDetailsController(outerApiMock.Object, validator.Object, Mock.Of<ISessionService>());
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        var sut = new NetworkEventDetailsController(outerApiMock.Object, validator.Object, Mock.Of<ISessionService>())
+        {
+            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } }
+        };
 
         sut.ModelState.AddModelError("key", "message");
 

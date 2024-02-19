@@ -8,7 +8,7 @@ public class OnboardingSessionModel
     public bool HasSeenPreview { get; set; }
     public ApprenticeDetailsModel ApprenticeDetails { get; set; } = new();
     public bool HasAcceptedTerms { get; set; } = false;
-    public List<ProfileModel> ProfileData { get; set; } = new List<ProfileModel>();
+    public List<ProfileModel> ProfileData { get; set; } = [];
     public int? RegionId { get; set; }
     public string? RegionName { get; set; }
     public bool IsValid => HasAcceptedTerms && ProfileData.Count > 0;

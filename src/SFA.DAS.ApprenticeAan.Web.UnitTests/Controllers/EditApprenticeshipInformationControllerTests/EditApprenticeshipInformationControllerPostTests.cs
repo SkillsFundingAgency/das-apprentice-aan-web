@@ -106,7 +106,7 @@ public class EditApprenticeshipInformationControllerPostTests
         SetUpModelValidateTrue();
 
         // Act
-        var response = await sut.Post(submitApprenticeshipInformationModel, cancellationToken);
+        await sut.Post(submitApprenticeshipInformationModel, cancellationToken);
 
         // Assert
         Assert.That(sut.TempData.ContainsKey(TempDataKeys.YourAmbassadorProfileSuccessMessage), Is.EqualTo(true));
@@ -256,14 +256,16 @@ public class EditApprenticeshipInformationControllerPostTests
     [TearDown]
     public void TearDown()
     {
-        if (sut != null) sut.Dispose();
+        sut?.Dispose();
     }
 
     private void SetUpControllerWithContext()
     {
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        sut = new EditApprenticeshipInformationController(outerApiMock.Object, validatorMock.Object, Mock.Of<ISessionService>());
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut = new EditApprenticeshipInformationController(outerApiMock.Object, validatorMock.Object, Mock.Of<ISessionService>())
+        {
+            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } }
+        };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, Guid.NewGuid().ToString());
         sut.AddUrlHelperMock()
             .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
@@ -284,7 +286,7 @@ public class EditApprenticeshipInformationControllerPostTests
             EmployerPostcode = "EmployerPostcode"
         };
 
-        Mock<ITempDataDictionary> tempDataMock = new Mock<ITempDataDictionary>();
+        Mock<ITempDataDictionary> tempDataMock = new();
         tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.YourAmbassadorProfileSuccessMessage)).Returns(true);
         sut.TempData = tempDataMock.Object;
         validatorMock.Setup(v => v.ValidateAsync(It.IsAny<SubmitApprenticeshipInformationModel>(), It.IsAny<CancellationToken>())).ReturnsAsync(new ValidationResult());
@@ -306,12 +308,12 @@ public class EditApprenticeshipInformationControllerPostTests
             EmployerPostcode = string.Empty
         };
 
-        Mock<ITempDataDictionary> tempDataMock = new Mock<ITempDataDictionary>();
+        Mock<ITempDataDictionary> tempDataMock = new();
         tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.YourAmbassadorProfileSuccessMessage)).Returns(true);
         sut.TempData = tempDataMock.Object;
         validatorMock.Setup(v => v.ValidateAsync(It.IsAny<SubmitApprenticeshipInformationModel>(), It.IsAny<CancellationToken>())).ReturnsAsync(new ValidationResult(new List<ValidationFailure>()
             {
-                new ValidationFailure("TestField","Test Message"){ErrorCode = "1001"}
+                new("TestField","Test Message"){ErrorCode = "1001"}
             }));
 
         getMemberProfileResponse = new()

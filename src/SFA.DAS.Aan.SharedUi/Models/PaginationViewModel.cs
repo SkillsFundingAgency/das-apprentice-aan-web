@@ -58,15 +58,10 @@ public class PaginationViewModel
     }
 
 
-    public class LinkItem
+    public class LinkItem(string? url, string text)
     {
-        public string? Url { get; set; }
-        public string Text { get; set; }
+        public string? Url { get; set; } = url;
+        public string Text { get; set; } = text;
         public bool HasLink => !string.IsNullOrEmpty(Url);
-        public LinkItem(string? url, string text)
-        {
-            Url = url;
-            Text = text;
-        }
     }
 }

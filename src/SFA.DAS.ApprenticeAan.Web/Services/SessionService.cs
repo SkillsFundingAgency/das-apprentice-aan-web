@@ -5,11 +5,9 @@ using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 namespace SFA.DAS.ApprenticeAan.Web.Services;
 
 [ExcludeFromCodeCoverage]
-public class SessionService : ISessionService
+public class SessionService(IHttpContextAccessor httpContextAccessor) : ISessionService
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public SessionService(IHttpContextAccessor httpContextAccessor) => _httpContextAccessor = httpContextAccessor;
+    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
     public void Set<T>(T model) => Set(typeof(T).Name, JsonSerializer.Serialize(model));
     public void Set(string key, string value) => _httpContextAccessor.HttpContext?.Session.SetString(key, value);
