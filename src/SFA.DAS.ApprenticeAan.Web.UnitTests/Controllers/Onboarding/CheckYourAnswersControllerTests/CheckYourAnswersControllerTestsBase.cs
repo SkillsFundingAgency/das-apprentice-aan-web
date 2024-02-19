@@ -12,7 +12,7 @@ public abstract class CheckYourAnswersControllerTestsBase
     internal static List<ProfileModel> GetProfileData()
     {
         var fixture = new Fixture();
-        int[] profileIds = new[] { 20, 30 };
+        int[] profileIds = new[] { ProfileConstants.ProfileIds.JobTitle, ProfileConstants.ProfileIds.EmployerName, ProfileConstants.ProfileIds.ReasonToJoinAmbassadorNetwork };
         var profileData = fixture.Build<ProfileModel>().WithValues(p => p.Id, profileIds).CreateMany(profileIds.Length).ToList();
 
         profileData.AddRange(fixture.Build<ProfileModel>().WithValues(p => p.Id, AddressIds.ToArray()).CreateMany(AddressIds.Count()));

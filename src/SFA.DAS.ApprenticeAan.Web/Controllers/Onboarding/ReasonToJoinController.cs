@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
@@ -47,8 +48,8 @@ public class ReasonToJoinController : Controller
             result.AddToModelState(ModelState);
             return View(ViewPath, GetViewModel(sessionModel));
         }
+        sessionModel.SetProfileValue(ProfileConstants.ProfileIds.ReasonToJoinAmbassadorNetwork, submitModel.ReasonForJoiningTheNetwork!.Trim());
 
-        sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork = submitModel.ReasonForJoiningTheNetwork!.Trim();
         _sessionService.Set(sessionModel);
 
         return RedirectToRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.AreasOfInterest);
@@ -58,7 +59,7 @@ public class ReasonToJoinController : Controller
     {
         var model = new ReasonToJoinViewModel()
         {
-            ReasonForJoiningTheNetwork = sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork,
+            ReasonForJoiningTheNetwork = sessionModel.GetProfileValue(ProfileConstants.ProfileIds.ReasonToJoinAmbassadorNetwork),
             BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(RouteNames.Onboarding.Regions)!
         };
         return model;

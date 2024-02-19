@@ -95,7 +95,7 @@ public class AndSessionModelIsPopulated : CheckYourAnswersControllerTestsBase
     [Test]
     public void ThenSetsReasonToJoinTheNetworkInViewModel()
     {
-        _actualViewModel.ReasonForJoiningTheNetwork.Should().Be(_sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork);
+        _actualViewModel.ReasonForJoiningTheNetwork.Should().Be(_sessionModel.GetProfileValue(ProfileConstants.ProfileIds.ReasonToJoinAmbassadorNetwork));
         _actualViewModel.ReasonForJoiningTheNetworkChangeLink.Should().Be(ReasonForJoiningTheNetworkUrl);
     }
 

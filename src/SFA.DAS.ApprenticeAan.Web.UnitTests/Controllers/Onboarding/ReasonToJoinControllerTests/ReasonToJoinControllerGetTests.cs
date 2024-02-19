@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
@@ -16,9 +17,15 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.ReasonToJoi
 public class ReasonToJoinControllerGetTests
 {
     [MoqAutoData]
-    public void Get_ViewResult_HasCorrectViewPath([Greedy] ReasonToJoinController sut)
+    public void Get_ViewResult_HasCorrectViewPath(
+        [Frozen] Mock<ISessionService> sessionServiceMock,
+        [Greedy] ReasonToJoinController sut,
+        OnboardingSessionModel sessionModel,
+        string reasonForJoining)
     {
         sut.AddUrlHelperMock();
+        sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.ReasonToJoinAmbassadorNetwork, Value = reasonForJoining });
         var result = sut.Get();
 
         result.As<ViewResult>().ViewName.Should().Be(ReasonToJoinController.ViewPath);
@@ -28,14 +35,16 @@ public class ReasonToJoinControllerGetTests
     public void Get_ViewModelHasEmployersApproval_RestoreFromSession(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         OnboardingSessionModel sessionModel,
-        [Greedy] ReasonToJoinController sut)
+        [Greedy] ReasonToJoinController sut,
+        string reasonForJoining)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle);
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.ReasonToJoinAmbassadorNetwork, Value = reasonForJoining });
 
         var result = sut.Get();
 
-        result.As<ViewResult>().Model.As<ReasonToJoinViewModel>().ReasonForJoiningTheNetwork.Should().Be(sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork);
+        result.As<ViewResult>().Model.As<ReasonToJoinViewModel>().ReasonForJoiningTheNetwork.Should().Be(reasonForJoining);
     }
 
     [MoqAutoData]
@@ -43,8 +52,10 @@ public class ReasonToJoinControllerGetTests
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] ReasonToJoinController sut,
         OnboardingSessionModel sessionModel,
-        string checkYourAnswersUrl)
+        string checkYourAnswersUrl,
+        string reasonForJoining)
     {
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.ReasonToJoinAmbassadorNetwork, Value = reasonForJoining });
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers, checkYourAnswersUrl);
         sessionModel.HasSeenPreview = true;
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
@@ -59,8 +70,10 @@ public class ReasonToJoinControllerGetTests
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] ReasonToJoinController sut,
         OnboardingSessionModel sessionModel,
-        string regionsUrl)
+        string regionsUrl,
+        string reasonForJoining)
     {
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.ReasonToJoinAmbassadorNetwork, Value = reasonForJoining });
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.Regions, regionsUrl);
         sessionModel.HasSeenPreview = false;
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);

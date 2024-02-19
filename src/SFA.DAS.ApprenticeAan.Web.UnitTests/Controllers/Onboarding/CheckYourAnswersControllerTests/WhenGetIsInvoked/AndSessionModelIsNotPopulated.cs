@@ -40,7 +40,7 @@ public class AndSessionModelIsNotPopulated
 
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.JobTitle, Value = null });
         sessionModel.RegionName = null;
-        sessionModel.ApprenticeDetails.ReasonForJoiningTheNetwork = null;
+        sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.ReasonToJoinAmbassadorNetwork, Value = null });
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.EngagedWithAPreviousAmbassadorInTheNetworkApprentice, Value = null });
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerName, Value = null });
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerAddress1, Value = null });
