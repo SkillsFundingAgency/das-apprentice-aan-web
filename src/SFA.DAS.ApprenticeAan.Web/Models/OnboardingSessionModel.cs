@@ -23,5 +23,4 @@ public class ApprenticeDetailsModel
     public Guid ApprenticeId { get; set; }
     public string Email { get; set; } = null!;
     public string Name { get; set; } = null!;
-    public string? ReasonForJoiningTheNetwork { get; set; }  //maps to information field in apprentice table
 }
