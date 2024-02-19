@@ -12,7 +12,7 @@
 This web solution is part of Apprentice Ambassador Network (AAN) project. Here the apprentice users can onboard to become ambassadors, find and sign-up for network events, find and collaborate with other ambassadors.
 
 ## How It Works
-Users are expected to register themselves in the Apprentice portal. Once registered they will have access to on-boarding journey for AAN. Users who are already apprentices will also have access to on-board. Currently the Apprentice portal is using [das-apprentice-login-service](https://github.com/SkillsFundingAgency/das-apprentice-login-service) for authentication. The user registration happens in the [das-apprentice-accounts-web](https://github.com/SkillsFundingAgency/das-apprentice-accounts-web). When running this locally, with stub sign-in enabled, the launch url should be `https://localhost:7053`.
+Users are expected to register themselves in the Apprentice portal. Once registered they will have access to on-boarding journey for AAN. Users who are already apprentices will also have access to on-board. Currently the Apprentice portal is using [das-apprentice-login-service](https://github.com/SkillsFundingAgency/das-apprentice-login-service) for authentication. The user registration happens in the [das-apprentice-accounts-web](https://github.com/SkillsFundingAgency/das-apprentice-accounts-web). When running this locally, the launch url should be `https://localhost:7053`.
 
 ## 🚀 Installation
 
