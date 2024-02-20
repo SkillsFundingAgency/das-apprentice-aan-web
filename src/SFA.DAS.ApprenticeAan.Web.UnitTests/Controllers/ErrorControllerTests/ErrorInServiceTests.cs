@@ -118,6 +118,7 @@ public class ErrorInServiceTests
 
             void IDisposable.Dispose()
             {
+                GC.SuppressFinalize(this);
             }
         }
     }
