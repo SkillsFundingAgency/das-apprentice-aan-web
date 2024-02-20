@@ -69,11 +69,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    app.UseExceptionHandler("/error");
 }
 else
 {
     app.UseHealthChecks("/ping");
+    app.UseExceptionHandler("/error");
     app.UseHsts();
 }
 
