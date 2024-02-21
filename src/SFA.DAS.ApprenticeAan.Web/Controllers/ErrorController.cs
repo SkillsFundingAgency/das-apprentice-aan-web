@@ -30,8 +30,7 @@ public class ErrorController : Controller
             default:
                 ErrorViewModel errorViewModel = new()
                 {
-                    HomePageUrl = Url.RouteUrl(RouteNames.NetworkHub)!,
-                    HomePageUrlText = "apprentice ambassador network home"
+                    HomePageUrl = Url.RouteUrl(RouteNames.NetworkHub)!
                 };
                 return View("ErrorInService", errorViewModel);
         }
@@ -44,8 +43,7 @@ public class ErrorController : Controller
         var feature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
         ErrorViewModel errorViewModel = new()
         {
-            HomePageUrl = Url.RouteUrl(RouteNames.NetworkHub)!,
-            HomePageUrlText = "apprentice ambassador network home"
+            HomePageUrl = Url.RouteUrl(RouteNames.NetworkHub)!
         };
 
         if (User.Identity!.IsAuthenticated)

@@ -58,7 +58,6 @@ public class ErrorControllerTests
         Assert.Multiple(() =>
         {
             Assert.That(viewModel!.HomePageUrl, Is.EqualTo(NetworkHubUrl));
-            Assert.That(viewModel!.HomePageUrlText, Is.EqualTo("apprentice ambassador network home"));
         });
     }
 }
