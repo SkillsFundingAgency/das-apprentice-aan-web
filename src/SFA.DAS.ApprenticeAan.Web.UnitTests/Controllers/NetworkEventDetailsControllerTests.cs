@@ -130,12 +130,11 @@ public class NetworkEventDetailsControllerTests
 
         var command = new SubmitAttendanceCommand
         {
-            CalendarEventId = calendarEventId,
             NewStatus = newStatus,
             StartDateTime = DateTime.Now.AddDays(1)
         };
 
-        await sut.Post(command, new CancellationToken());
+        await sut.Post(calendarEventId, command, new CancellationToken());
 
         outerApiMock.Verify(o => o.PutAttendance(calendarEventId,
                                                  It.IsAny<Guid>(),
@@ -166,7 +165,7 @@ public class NetworkEventDetailsControllerTests
 
         var command = new SubmitAttendanceCommand();
 
-        var result = await sut.Post(command, new CancellationToken()) as ViewResult;
+        var result = await sut.Post(calendarEventId, command, new CancellationToken()) as ViewResult;
 
         sut.ModelState.IsValid.Should().BeFalse();
         result!.ViewName.Should().Be(NetworkEventDetailsController.DetailsViewPath);
@@ -182,11 +181,10 @@ public class NetworkEventDetailsControllerTests
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
         var command = new SubmitAttendanceCommand
         {
-            CalendarEventId = calendarEventId,
             NewStatus = true,
             StartDateTime = DateTime.Now.AddDays(1)
         };
-        var result = await sut.Post(command, new CancellationToken());
+        var result = await sut.Post(calendarEventId, command, new CancellationToken());
 
         Assert.That(result.As<RedirectToActionResult>().ActionName, Is.EqualTo("SignUpConfirmation"));
     }
@@ -201,11 +199,10 @@ public class NetworkEventDetailsControllerTests
         sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
         var command = new SubmitAttendanceCommand
         {
-            CalendarEventId = calendarEventId,
             NewStatus = false,
             StartDateTime = DateTime.Now.AddDays(1)
         };
-        var result = await sut.Post(command, new CancellationToken());
+        var result = await sut.Post(calendarEventId, command, new CancellationToken());
 
         Assert.That(result.As<RedirectToActionResult>().ActionName, Is.EqualTo("CancellationConfirmation"));
     }
