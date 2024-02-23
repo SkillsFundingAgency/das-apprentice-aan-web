@@ -49,22 +49,25 @@ public class EditApprenticeshipInformationController : Controller
             return View(ChangeApprenticeshipInformationViewPath, editApprenticeshipInformationViewModel);
         }
 
-        UpdateMemberProfileAndPreferencesRequest updateMemberProfileAndPreferencesRequest = new UpdateMemberProfileAndPreferencesRequest();
+        UpdateMemberProfileAndPreferencesRequest updateMemberProfileAndPreferencesRequest = new();
 
         updateMemberProfileAndPreferencesRequest.PatchMemberRequest.OrganisationName = submitApprenticeshipInformationModel.EmployerName?.Trim();
 
-        List<UpdatePreferenceModel> updatePreferenceModels = new List<UpdatePreferenceModel>();
-
-        updatePreferenceModels.Add(new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.Apprenticeship, Value = submitApprenticeshipInformationModel.ShowApprenticeshipInformation });
+        List<UpdatePreferenceModel> updatePreferenceModels =
+        [
+            new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.Apprenticeship, Value = submitApprenticeshipInformationModel.ShowApprenticeshipInformation },
+        ];
         updateMemberProfileAndPreferencesRequest.UpdateMemberProfileRequest.MemberPreferences = updatePreferenceModels;
 
-        List<UpdateProfileModel> updateProfileModels = new List<UpdateProfileModel>();
-        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.EmployerName, Value = submitApprenticeshipInformationModel.EmployerName?.Trim() });
-        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.EmployerAddress1, Value = submitApprenticeshipInformationModel.EmployerAddress1?.Trim() });
-        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.EmployerAddress2, Value = submitApprenticeshipInformationModel.EmployerAddress2?.Trim() });
-        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.EmployerCounty, Value = submitApprenticeshipInformationModel.EmployerCounty?.Trim() });
-        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.EmployerTownOrCity, Value = submitApprenticeshipInformationModel.EmployerTownOrCity?.Trim() });
-        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.EmployerPostcode, Value = submitApprenticeshipInformationModel.EmployerPostcode?.Trim() });
+        List<UpdateProfileModel> updateProfileModels =
+        [
+            new UpdateProfileModel() { MemberProfileId = ProfileIds.EmployerName, Value = submitApprenticeshipInformationModel.EmployerName?.Trim() },
+            new UpdateProfileModel() { MemberProfileId = ProfileIds.EmployerAddress1, Value = submitApprenticeshipInformationModel.EmployerAddress1?.Trim() },
+            new UpdateProfileModel() { MemberProfileId = ProfileIds.EmployerAddress2, Value = submitApprenticeshipInformationModel.EmployerAddress2?.Trim() },
+            new UpdateProfileModel() { MemberProfileId = ProfileIds.EmployerCounty, Value = submitApprenticeshipInformationModel.EmployerCounty?.Trim() },
+            new UpdateProfileModel() { MemberProfileId = ProfileIds.EmployerTownOrCity, Value = submitApprenticeshipInformationModel.EmployerTownOrCity?.Trim() },
+            new UpdateProfileModel() { MemberProfileId = ProfileIds.EmployerPostcode, Value = submitApprenticeshipInformationModel.EmployerPostcode?.Trim() },
+        ];
         updateMemberProfileAndPreferencesRequest.UpdateMemberProfileRequest.MemberProfiles = updateProfileModels;
 
         await _apiClient.UpdateMemberProfileAndPreferences(_sessionService.GetMemberId(), updateMemberProfileAndPreferencesRequest, cancellationToken);
@@ -76,16 +79,17 @@ public class EditApprenticeshipInformationController : Controller
     public async Task<EditApprenticeshipInformationViewModel> GetEditApprenticeshipInformationViewModel(CancellationToken cancellationToken)
     {
         var memberProfiles = await _apiClient.GetMemberProfile(_sessionService.GetMemberId(), _sessionService.GetMemberId(), false, cancellationToken);
-        EditApprenticeshipInformationViewModel editApprenticeshipInformationViewModel = new EditApprenticeshipInformationViewModel();
+        EditApprenticeshipInformationViewModel editApprenticeshipInformationViewModel = new()
+        {
+            EmployerName = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.EmployerName, memberProfiles.Profiles),
+            EmployerAddress1 = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.EmployerAddress1, memberProfiles.Profiles),
+            EmployerAddress2 = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.EmployerAddress2, memberProfiles.Profiles),
+            EmployerTownOrCity = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.EmployerTownOrCity, memberProfiles.Profiles),
+            EmployerCounty = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.EmployerCounty, memberProfiles.Profiles),
+            EmployerPostcode = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.EmployerPostcode, memberProfiles.Profiles),
 
-        editApprenticeshipInformationViewModel.EmployerName = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.EmployerName, memberProfiles.Profiles);
-        editApprenticeshipInformationViewModel.EmployerAddress1 = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.EmployerAddress1, memberProfiles.Profiles);
-        editApprenticeshipInformationViewModel.EmployerAddress2 = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.EmployerAddress2, memberProfiles.Profiles);
-        editApprenticeshipInformationViewModel.EmployerTownOrCity = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.EmployerTownOrCity, memberProfiles.Profiles);
-        editApprenticeshipInformationViewModel.EmployerCounty = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.EmployerCounty, memberProfiles.Profiles);
-        editApprenticeshipInformationViewModel.EmployerPostcode = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.EmployerPostcode, memberProfiles.Profiles);
-
-        editApprenticeshipInformationViewModel.ShowApprenticeshipInformation = MapProfilesAndPreferencesService.GetPreferenceValue(PreferenceIds.Apprenticeship, memberProfiles.Preferences);
+            ShowApprenticeshipInformation = MapProfilesAndPreferencesService.GetPreferenceValue(PreferenceIds.Apprenticeship, memberProfiles.Preferences)
+        };
 
         if (memberProfiles.Apprenticeship != null)
         {

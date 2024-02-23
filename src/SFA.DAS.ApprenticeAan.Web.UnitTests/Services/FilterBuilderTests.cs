@@ -22,7 +22,6 @@ public class FilterBuilderTests
             ToDate = null
         };
 
-
         var actual = FilterBuilder.Build(request, () => { return LocationUrl; }, new List<ChecklistLookup>(), new List<ChecklistLookup>(), new List<ChecklistLookup>());
         actual.Count.Should().Be(0);
     }
@@ -147,12 +146,12 @@ public class FilterBuilderTests
     [TestCase(null, EventFormat.Online, null, "Event format", 1, "Online")]
     [TestCase(null, null, EventFormat.Hybrid, "Event format", 1, "Hybrid")]
     public void BuildEventSearchFiltersForEventFormatsSingleChoice(EventFormat? inPerson, EventFormat? online, EventFormat? hybrid,
-         string fieldName,
-        int expectedNumberOfFilters, string firstValue)
+         string? fieldName,
+        int expectedNumberOfFilters, string? firstValue)
     {
         var request = new GetNetworkEventsRequest
         {
-            EventFormat = new List<EventFormat>(),
+            EventFormat = [],
         };
 
         if (inPerson != null)
@@ -161,7 +160,6 @@ public class FilterBuilderTests
             request.EventFormat.Add(online.Value);
         if (hybrid != null)
             request.EventFormat.Add(hybrid.Value);
-
 
         var actual = FilterBuilder.Build(request, () => { return LocationUrl; }, ChecklistLookupEventFormats(), new List<ChecklistLookup>(), new List<ChecklistLookup>());
 
@@ -187,17 +185,16 @@ public class FilterBuilderTests
     [TestCase(EventFormat.InPerson, EventFormat.Online, "?eventFormat=Online", "?eventFormat=InPerson", "In person", "Online")]
     [TestCase(EventFormat.InPerson, EventFormat.Hybrid, "?eventFormat=Hybrid", "?eventFormat=InPerson", "In person", "Hybrid")]
     [TestCase(EventFormat.Online, EventFormat.Hybrid, "?eventFormat=Hybrid", "?eventFormat=Online", "Online", "Hybrid")]
-    public void BuildEventSearchFiltersForTwoEventFormats(EventFormat eventFormat1, EventFormat eventFormat2,
-        string expectedFirst, string expectedSecond,
-         string firstValue, string secondValue)
+    public void BuildEventSearchFiltersForTwoEventFormats(EventFormat eventFormat1, EventFormat eventFormat2, string expectedFirst, string expectedSecond,
+      string firstValue, string secondValue)
     {
         var request = new GetNetworkEventsRequest
         {
-            EventFormat = new List<EventFormat>
-            {
+            EventFormat =
+            [
                 eventFormat1,
                 eventFormat2
-            }
+            ]
         };
 
         var actual = FilterBuilder.Build(request, () => { return LocationUrl; }, ChecklistLookupEventFormats(), new List<ChecklistLookup>(), new List<ChecklistLookup>());
@@ -212,7 +209,6 @@ public class FilterBuilderTests
         filter.Order.Should().Be(1);
         filter.Value.Should().Be(firstValue);
 
-
         var filterSecond = firstItem.Filters.Skip(1).First();
         filterSecond.ClearFilterLink.Should().Be(LocationUrl + expectedSecond);
         filterSecond.Order.Should().Be(2);
@@ -224,12 +220,12 @@ public class FilterBuilderTests
     {
         var request = new GetNetworkEventsRequest
         {
-            EventFormat = new List<EventFormat>
-            {
+            EventFormat =
+            [
                 EventFormat.InPerson,
                 EventFormat.Online,
                 EventFormat.Hybrid
-            }
+            ]
         };
 
         var actual = FilterBuilder.Build(request, () => { return LocationUrl; }, ChecklistLookupEventFormats(), new List<ChecklistLookup>(), new List<ChecklistLookup>());
@@ -262,12 +258,12 @@ public class FilterBuilderTests
     public void BuildEventSearchFiltersForEventTypes(int? calendarId, string fieldName, int expectedNumberOfFilters)
     {
         var parameterName = "calendarId";
-        var request = new GetNetworkEventsRequest { CalendarId = new List<int>() };
+        var request = new GetNetworkEventsRequest { CalendarId = [] };
         var eventTypesLookup = new List<ChecklistLookup>();
 
         var eventFilters = new GetNetworkEventsRequest
         {
-            CalendarId = new List<int>()
+            CalendarId = []
         };
 
         if (calendarId != null)
@@ -296,8 +292,6 @@ public class FilterBuilderTests
         filter.Value.Should().Be(parameterName);
     }
 
-
-
     [TestCase(1, 2, "?calendarId=2", "?calendarId=1")]
     [TestCase(1, 3, "?calendarId=3", "?calendarId=1")]
     [TestCase(2, 3, "?calendarId=3", "?calendarId=2")]
@@ -305,12 +299,12 @@ public class FilterBuilderTests
       string expectedFirst, string expectedSecond)
     {
         var parameterName = "calendarId";
-        var request = new GetNetworkEventsRequest { CalendarId = new List<int>() };
+        var request = new GetNetworkEventsRequest { CalendarId = [] };
         var eventTypesLookup = new List<ChecklistLookup>();
 
         var eventFilters = new GetNetworkEventsRequest
         {
-            CalendarId = new List<int>()
+            CalendarId = []
         };
 
         eventTypesLookup.Add(new ChecklistLookup(parameterName, calendarId1.ToString()));
@@ -333,7 +327,6 @@ public class FilterBuilderTests
         filter.Order.Should().Be(1);
         filter.Value.Should().Be(parameterName);
 
-
         var filterSecond = firstItem.Filters.Skip(1).First();
         filterSecond.ClearFilterLink.Should().Be(LocationUrl + expectedSecond);
         filterSecond.Order.Should().Be(2);
@@ -344,12 +337,12 @@ public class FilterBuilderTests
     public void BuildEventSearchFiltersForThreeEventTypes(int calendarId1, int calendarId2, int calendarId3, string expectedFirst, string expectedSecond, string expectedThird)
     {
         var parameterName = "calendarId";
-        var request = new GetNetworkEventsRequest { CalendarId = new List<int>() };
+        var request = new GetNetworkEventsRequest { CalendarId = [] };
         var eventTypesLookup = new List<ChecklistLookup>();
 
         var eventFilters = new GetNetworkEventsRequest
         {
-            CalendarId = new List<int>()
+            CalendarId = []
         };
 
         eventTypesLookup.Add(new ChecklistLookup(parameterName, calendarId1.ToString()));
@@ -394,12 +387,12 @@ public class FilterBuilderTests
     public void BuildEventSearchFiltersForSingleRegions(int? regionId1, string fieldName, int expectedNumberOfFilters)
     {
         var parameterName = "regionId";
-        var request = new GetNetworkEventsRequest { RegionId = new List<int>() };
+        var request = new GetNetworkEventsRequest { RegionId = [] };
         var regionLookups = new List<ChecklistLookup>();
 
         var eventFilters = new GetNetworkEventsRequest
         {
-            RegionId = new List<int>()
+            RegionId = []
         };
 
         if (regionId1 != null)
@@ -439,12 +432,12 @@ public class FilterBuilderTests
     {
         var parameterName = "regionId";
         var request
-            = new GetNetworkEventsRequest { RegionId = new List<int>() };
+            = new GetNetworkEventsRequest { RegionId = [] };
         var regionLookups = new List<ChecklistLookup>();
 
         var eventFilters = new GetNetworkEventsRequest
         {
-            RegionId = new List<int>()
+            RegionId = []
         };
 
         var lookup = new ChecklistLookup(parameterName, regionId1.ToString())
@@ -485,12 +478,12 @@ public class FilterBuilderTests
        string expectedFirst, string expectedSecond, string expectedThird, int expectedNumberOfFilters, string regionId1Checked)
     {
         var parameterName = "regionId";
-        var request = new GetNetworkEventsRequest { RegionId = new List<int>() };
+        var request = new GetNetworkEventsRequest { RegionId = [] };
         var regionLookups = new List<ChecklistLookup>();
 
         var eventFilters = new GetNetworkEventsRequest
         {
-            RegionId = new List<int>()
+            RegionId = []
         };
 
 
@@ -670,11 +663,11 @@ public class FilterBuilderTests
     {
         var request = new NetworkDirectoryRequestModel
         {
-            UserRole = new List<Role>
-            {
+            UserRole =
+            [
                 role1,
                 role2
-            }
+            ]
         };
 
         var sut = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), new List<ChecklistLookup>());
@@ -694,11 +687,11 @@ public class FilterBuilderTests
     {
         var request = new NetworkDirectoryRequestModel
         {
-            UserRole = new List<Role>
-            {
+            UserRole =
+            [
                 role1,
                 role2
-            }
+            ]
         };
 
         var sut = FilterBuilder.Build(request, () => { return NetworkDirectoryLocationUrl; }, new List<ChecklistLookup>(), new List<ChecklistLookup>());
@@ -719,12 +712,12 @@ public class FilterBuilderTests
     public void Build_SearchForRegions_FieldAndFilterOrderAreEqual(int? regionId1, int? regionId2)
     {
         var parameterName = "regionId";
-        var request = new NetworkDirectoryRequestModel { RegionId = new List<int>() };
+        var request = new NetworkDirectoryRequestModel { RegionId = [] };
         var regionLookups = new List<ChecklistLookup>();
 
         var eventFilters = new NetworkDirectoryRequestModel
         {
-            RegionId = new List<int>()
+            RegionId = []
         };
 
         if (regionId1 != null)
@@ -763,12 +756,12 @@ public class FilterBuilderTests
     public void Build_SearchForRegions_FieldNameAndClearFilterLinkAreEqual(int? regionId1, string queryString1, int? regionId2, string queryString2)
     {
         var parameterName = "regionId";
-        var request = new NetworkDirectoryRequestModel { RegionId = new List<int>() };
+        var request = new NetworkDirectoryRequestModel { RegionId = [] };
         var regionLookups = new List<ChecklistLookup>();
 
         var eventFilters = new NetworkDirectoryRequestModel
         {
-            RegionId = new List<int>()
+            RegionId = []
         };
 
         if (regionId1 != null)
@@ -807,12 +800,12 @@ public class FilterBuilderTests
     public void Build_SearchForRegions_ValueAndFilterCountAreEqual(int? regionId1, int? regionId2)
     {
         var parameterName = "regionId";
-        var request = new NetworkDirectoryRequestModel { RegionId = new List<int>() };
+        var request = new NetworkDirectoryRequestModel { RegionId = [] };
         var regionLookups = new List<ChecklistLookup>();
 
         var eventFilters = new NetworkDirectoryRequestModel
         {
-            RegionId = new List<int>()
+            RegionId = []
         };
 
         if (regionId1 != null)
@@ -852,12 +845,12 @@ public class FilterBuilderTests
     public void Build_SearchForRegions_FilterValueAreEqual(int expectedNumberOfFilters, string regionId1Checked)
     {
         var parameterName = "regionId";
-        var request = new NetworkDirectoryRequestModel { RegionId = new List<int>() };
+        var request = new NetworkDirectoryRequestModel { RegionId = [] };
         var regionLookups = new List<ChecklistLookup>();
 
         var eventFilters = new NetworkDirectoryRequestModel
         {
-            RegionId = new List<int>()
+            RegionId = []
         };
 
 
@@ -901,13 +894,13 @@ public class FilterBuilderTests
         }
     }
 
-    [TestCase(null, null, null, null, NetworkDirectoryLocationUrl)]
-    [TestCase(Role.Employer, null, null, null, NetworkDirectoryLocationUrl + "?userRole=Employer")]
-    [TestCase(Role.RegionalChair, Role.Apprentice, null, null, NetworkDirectoryLocationUrl + "?userRole=RegionalChair&userRole=Apprentice")]
-    [TestCase(null, null, 1, null, NetworkDirectoryLocationUrl + "?regionId=1")]
-    [TestCase(null, null, 1, 2, NetworkDirectoryLocationUrl + "?regionId=1&regionId=2")]
-    [TestCase(Role.Employer, Role.RegionalChair, 3, 4, NetworkDirectoryLocationUrl + "?userRole=Employer&userRole=RegionalChair&regionId=3&regionId=4")]
-    public void Build_SearchFiltersWithAllInput_QueryStringAndExpectedUrlIsEqual(Role? role, Role? role2, int? regionId, int? regionId2, string expectedUrl)
+    [TestCase(null, null, null, null, NetworkDirectoryLocationUrl, null)]
+    [TestCase(Role.Employer, null, null, null, NetworkDirectoryLocationUrl + "?userRole=Employer", null)]
+    [TestCase(Role.RegionalChair, Role.Apprentice, null, null, NetworkDirectoryLocationUrl + "?userRole=RegionalChair&userRole=Apprentice", null)]
+    [TestCase(null, null, 1, null, NetworkDirectoryLocationUrl + "?regionId=1", null)]
+    [TestCase(null, null, 1, 2, NetworkDirectoryLocationUrl + "?regionId=1&regionId=2&status=New", MemberMaturityStatus.New)]
+    [TestCase(Role.Employer, Role.RegionalChair, 3, 4, NetworkDirectoryLocationUrl + "?userRole=Employer&userRole=RegionalChair&regionId=3&regionId=4&status=Active", MemberMaturityStatus.Active)]
+    public void Build_SearchFiltersWithAllInput_QueryStringAndExpectedUrlIsEqual(Role? role, Role? role2, int? regionId, int? regionId2, string expectedUrl, MemberMaturityStatus? memberMaturityStatus)
     {
         var request = new NetworkDirectoryRequestModel
         {
@@ -924,6 +917,11 @@ public class FilterBuilderTests
             var regionIds = new List<int> { regionId.Value };
             if (regionId2 != null) regionIds.Add(regionId2.Value);
             request.RegionId = regionIds;
+        }
+
+        if (memberMaturityStatus != null)
+        {
+            request.Status = [memberMaturityStatus.Value];
         }
 
         var sut = FilterBuilder.BuildFullQueryString(request, () => { return NetworkDirectoryLocationUrl; });

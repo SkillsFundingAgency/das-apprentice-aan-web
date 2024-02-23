@@ -28,10 +28,10 @@ public class RegionsControllerPostTests
     {
         sut.AddUrlHelperMock();
 
-        List<Region> regionList = new()
-        {
+        List<Region> regionList =
+        [
             new Region() { Area = "London", Id = (int)submitmodel.SelectedRegionId!, Ordering = 1 }
-        };
+        ];
 
         regionsService.Setup(x => x.GetRegions()).Returns(Task.FromResult(regionList));
 
@@ -73,10 +73,10 @@ public class RegionsControllerPostTests
 
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle);
 
-        List<Region> regionList = new()
-        {
+        List<Region> regionList =
+        [
             new Region() { Area = "London", Id = (int)submitmodel.SelectedRegionId!, Ordering = 1 }
-        };
+        ];
 
         regionsService.Setup(x => x.GetRegions()).Returns(Task.FromResult(regionList));
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
@@ -104,10 +104,10 @@ public class RegionsControllerPostTests
 
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle);
 
-        List<Region> regionList = new()
-        {
+        List<Region> regionList =
+        [
             new Region() { Area = "London", Id = (int)submitmodel.SelectedRegionId!, Ordering = 1 }
-        };
+        ];
 
         regionsService.Setup(x => x.GetRegions()).Returns(Task.FromResult(regionList));
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);

@@ -117,13 +117,13 @@ public class LeavingTheNetworkTests
         return new LeavingCategory
         {
             Category = "What was your experience of the AAN portal in enhancing your role as an ambassador",
-            LeavingReasons = new List<LeavingReasonModel>
-            {
+            LeavingReasons =
+            [
                 new() { Id = 100, Description = "reason 100", Ordering = 1 },
                 new() { Id = 200, Description = "reason 200", Ordering = 2 },
                 new() { Id = 300, Description = "reason 300", Ordering = 3 },
-                new() { Id = ExperienceReason400Selected, Description = "reason 400", Ordering = 4}
-            }
+                new() { Id = ExperienceReason400Selected, Description = "reason 400", Ordering = 4 }
+            ]
         };
     }
 
@@ -132,11 +132,11 @@ public class LeavingTheNetworkTests
         return new LeavingCategory
         {
             Category = "Which of the following did you benefit from while you were a member",
-            LeavingReasons = new List<LeavingReasonModel>
-            {
+            LeavingReasons =
+            [
                 new() { Id = 10, Description = "reason 10", Ordering = 1 },
-                new() { Id = Reason20Selected, Description = "reason 20", Ordering = 2, IsSelected = true},
-            }
+                new() { Id = Reason20Selected, Description = "reason 20", Ordering = 2, IsSelected = true },
+            ]
         };
     }
 
@@ -145,12 +145,12 @@ public class LeavingTheNetworkTests
         return new LeavingCategory
         {
             Category = "What are your reasons for leaving the network",
-            LeavingReasons = new List<LeavingReasonModel>
-            {
+            LeavingReasons =
+            [
                 new() { Id = 1, Description = "reason 1", Ordering = 1 },
                 new() { Id = 2, Description = "reason 2", Ordering = 2 },
                 new() { Id = 3, Description = "reason 3", Ordering = 2 }
-            }
+            ]
         };
     }
 }

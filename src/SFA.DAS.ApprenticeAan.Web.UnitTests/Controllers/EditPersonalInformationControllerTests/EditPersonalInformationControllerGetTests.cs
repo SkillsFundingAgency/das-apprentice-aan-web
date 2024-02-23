@@ -125,17 +125,17 @@ public class EditPersonalInformationControllerGetTests
     public void EditPersonalInformationViewModelMapping_ReturnsEditPersonalInformationViewModel(string? organisationName, bool showJobTitle, bool showBiography, int regionId, MemberUserType userType)
     {
         //Arrange
-        EditPersonalInformationViewModel editPersonalInformationViewModel = new EditPersonalInformationViewModel();
-        List<MemberProfile> memberProfiles = new List<MemberProfile>()
-        {
-            new MemberProfile(){ProfileId=ProfileConstants.ProfileIds.JobTitle,PreferenceId=PreferenceConstants.PreferenceIds.JobTitle},
-            new MemberProfile(){ProfileId=ProfileConstants.ProfileIds.Biography,PreferenceId=PreferenceConstants.PreferenceIds.Biography}
-        };
-        List<MemberPreference> memberPreferences = new List<MemberPreference>()
-        {
-            new MemberPreference(){PreferenceId=PreferenceConstants.PreferenceIds.JobTitle,Value=showJobTitle},
-            new MemberPreference(){PreferenceId=PreferenceConstants.PreferenceIds.Biography,Value=showBiography}
-        };
+        EditPersonalInformationViewModel editPersonalInformationViewModel = new();
+        List<MemberProfile> memberProfiles =
+        [
+            new MemberProfile() { ProfileId = ProfileConstants.ProfileIds.JobTitle, PreferenceId = PreferenceConstants.PreferenceIds.JobTitle },
+            new MemberProfile() { ProfileId = ProfileConstants.ProfileIds.Biography, PreferenceId = PreferenceConstants.PreferenceIds.Biography }
+        ];
+        List<MemberPreference> memberPreferences =
+        [
+            new MemberPreference() { PreferenceId = PreferenceConstants.PreferenceIds.JobTitle, Value = showJobTitle },
+            new MemberPreference() { PreferenceId = PreferenceConstants.PreferenceIds.Biography, Value = showBiography }
+        ];
 
         //Act
         var sut = EditPersonalInformationController.EditPersonalInformationViewModelMapping(regionId, memberProfiles, memberPreferences, userType, organisationName);

@@ -30,7 +30,7 @@ public class NotificationsController : Controller
 
         var notification = response.GetContent()!;
 
-        (string RouteName, object? RouteValues) route = notification.TemplateName switch
+        (string routeName, object? routeValues) = notification.TemplateName switch
         {
             NotificationTemplateNames.AANApprenticeOnboarding
                 => (RouteNames.NetworkHub, null),
@@ -52,6 +52,6 @@ public class NotificationsController : Controller
             _ => (SharedRouteNames.Home, null)
         };
 
-        return RedirectToRoute(route.RouteName, route.RouteValues);
+        return RedirectToRoute(routeName, routeValues);
     }
 }

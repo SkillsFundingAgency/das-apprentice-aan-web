@@ -1,14 +1,13 @@
-﻿using SFA.DAS.Aan.SharedUi.Models;
+﻿using AutoFixture.NUnit3;
+using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.ApprenticeAan.Web.Models;
-using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Models;
 
 [TestFixture]
 public class ProfileModelTests
 {
-    [Test]
-    [MoqAutoData]
+    [Test, AutoData]
     public void Apprentice_ProfileModelFromProfile(Profile profiles)
     {
         var profileData = (ProfileModel)profiles;

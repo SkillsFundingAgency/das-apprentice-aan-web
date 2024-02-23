@@ -17,10 +17,10 @@ public class MapProfilesAndPreferencesServiceTests
         //Arrange
         profiles = new List<Profile>()
         {
-            new Profile(){ Id=1,Description="Profile 1",Category="Events",Ordering=1},
-            new Profile(){ Id=2,Description="Profile 2",Category="Events",Ordering=2},
-            new Profile(){ Id=3,Description="Profile 3",Category="Promotion",Ordering=3},
-            new Profile(){ Id=4,Description="Profile 4",Category="Promotion",Ordering=4}
+            new(){ Id=1,Description="Profile 1",Category="Events",Ordering=1},
+            new(){ Id=2,Description="Profile 2",Category="Events",Ordering=2},
+            new(){ Id=3,Description="Profile 3",Category="Promotion",Ordering=3},
+            new(){ Id=4,Description="Profile 4",Category="Promotion",Ordering=4}
         };
     }
 
@@ -55,15 +55,15 @@ public class MapProfilesAndPreferencesServiceTests
         var profileId = memberProfiles.First().ProfileId;
         memberProfiles.First().PreferenceId = memberPreferences.First().PreferenceId;
 
-        var result = MapProfilesAndPreferencesService.GetProfileValueWithPreference(profileId, memberProfiles, memberPreferences);
+        var (profileValue, isDisplayed) = MapProfilesAndPreferencesService.GetProfileValueWithPreference(profileId, memberProfiles, memberPreferences);
 
         using (new AssertionScope())
         {
-            result.profileValue.Should().NotBeNull();
-            result.profileValue!.GetType().Should().Be<string>();
-            result.profileValue!.Should().Be(memberProfiles.First().Value);
-            result.isDisplayed.GetType().Should().Be<bool>();
-            result.isDisplayed.Should().Be(memberPreferences.First().Value);
+            profileValue.Should().NotBeNull();
+            profileValue!.GetType().Should().Be<string>();
+            profileValue!.Should().Be(memberProfiles.First().Value);
+            isDisplayed.GetType().Should().Be<bool>();
+            isDisplayed.Should().Be(memberPreferences.First().Value);
         }
     }
 
@@ -73,13 +73,13 @@ public class MapProfilesAndPreferencesServiceTests
         var profileId = 102030405;
         memberProfiles.First().PreferenceId = 12345;
 
-        var result = MapProfilesAndPreferencesService.GetProfileValueWithPreference(profileId, memberProfiles, memberPreferences);
+        var (profileValue, isDisplayed) = MapProfilesAndPreferencesService.GetProfileValueWithPreference(profileId, memberProfiles, memberPreferences);
 
         using (new AssertionScope())
         {
-            result.profileValue.Should().BeNull();
-            result.isDisplayed.GetType().Should().Be<bool>();
-            result.isDisplayed.Should().BeFalse();
+            profileValue.Should().BeNull();
+            isDisplayed.GetType().Should().Be<bool>();
+            isDisplayed.Should().BeFalse();
         }
     }
 
@@ -121,7 +121,7 @@ public class MapProfilesAndPreferencesServiceTests
     public void WhenGettingProfileDescription_AndProfileIdValid_ReturnsExpectedValue(string memberProfileValue)
     {
         //Arrange
-        MemberProfile memberProfile = new MemberProfile()
+        MemberProfile memberProfile = new()
         {
             ProfileId = 1,
             PreferenceId = 2,
@@ -134,7 +134,7 @@ public class MapProfilesAndPreferencesServiceTests
         //Assert
         using (new AssertionScope())
         {
-            if (memberProfileValue.ToLower() == "true")
+            if (memberProfileValue.Equals("true", StringComparison.CurrentCultureIgnoreCase))
             {
                 sut.Should().NotBeNull();
                 sut!.GetType().Should().Be<string>();
@@ -151,7 +151,7 @@ public class MapProfilesAndPreferencesServiceTests
     public static void WhenGettingProfileDescription_AndProfileIdIsInValid_ReturnsNull()
     {
         //Arrange
-        MemberProfile memberProfile = new MemberProfile()
+        MemberProfile memberProfile = new()
         {
             ProfileId = 145452154,
             PreferenceId = 2,

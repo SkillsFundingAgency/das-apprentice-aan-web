@@ -25,8 +25,8 @@ public class EventsHubController : Controller
     [HttpGet]
     public async Task<IActionResult> Index([FromQuery] int? month, [FromQuery] int? year, CancellationToken cancellationToken)
     {
-        month = month ?? DateTime.Today.Month;
-        year = year ?? DateTime.Today.Year;
+        month ??= DateTime.Today.Month;
+        year ??= DateTime.Today.Year;
 
         // throws ArgumentOutOfRangeException if the month is invalid, which will navigate user to an error page
         var firstDayOfTheMonth = new DateOnly(year.GetValueOrDefault(), month.GetValueOrDefault(), 1);
@@ -40,7 +40,7 @@ public class EventsHubController : Controller
 
     private List<Appointment> GetAppointments(List<Attendance> attendances)
     {
-        List<Appointment> appointments = new();
+        List<Appointment> appointments = [];
         foreach (Attendance attendance in attendances)
         {
             appointments.Add(attendance.ToAppointment(Url));

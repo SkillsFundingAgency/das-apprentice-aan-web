@@ -22,13 +22,13 @@ public class NetworkEventsControllerTests
 
     [Test, MoqAutoData]
     public void GetCalendarEvents_ReturnsApiResponse(
-    [Frozen] Mock<IOuterApiClient> outerApiMock,
-    [Greedy] NetworkEventsController sut,
-    GetCalendarEventsQueryResult expectedResult,
-    string keyword,
-    DateTime? fromDate,
-    DateTime? toDate,
-    Guid apprenticeId)
+        [Frozen] Mock<IOuterApiClient> outerApiMock,
+        [Greedy] NetworkEventsController sut,
+        GetCalendarEventsQueryResult expectedResult,
+        string keyword,
+        DateTime? fromDate,
+        DateTime? toDate,
+        Guid apprenticeId)
     {
         var eventFormats = new List<EventFormat>
         {
@@ -88,10 +88,10 @@ public class NetworkEventsControllerTests
 
     [Test, MoqAutoData]
     public void GetCalendarEventsNoFilters_ReturnsApiResponse(
-   [Frozen] Mock<IOuterApiClient> outerApiMock,
-   [Greedy] NetworkEventsController sut,
-           GetCalendarEventsQueryResult expectedResult,
-           Guid apprenticeId)
+       [Frozen] Mock<IOuterApiClient> outerApiMock,
+       [Greedy] NetworkEventsController sut,
+       GetCalendarEventsQueryResult expectedResult,
+       Guid apprenticeId)
     {
         var request = new GetNetworkEventsRequest();
 
@@ -126,11 +126,11 @@ public class NetworkEventsControllerTests
 
     [Test, MoqAutoData]
     public void GetCalendarEvents_RegionLookup_NationalAddedWithIdZero(
-   [Frozen] Mock<IOuterApiClient> outerApiMock,
-   [Greedy] NetworkEventsController sut,
-           GetCalendarEventsQueryResult expectedResult,
-           GetRegionsResult regionsResult,
-           Guid apprenticeId)
+       [Frozen] Mock<IOuterApiClient> outerApiMock,
+       [Greedy] NetworkEventsController sut,
+       GetCalendarEventsQueryResult expectedResult,
+       GetRegionsResult regionsResult,
+       Guid apprenticeId)
     {
         var request = new GetNetworkEventsRequest();
 

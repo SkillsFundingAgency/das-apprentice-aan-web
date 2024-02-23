@@ -20,7 +20,6 @@ public class EmployerSearchController : Controller
     private readonly ISessionService _sessionService;
     private readonly IValidator<EmployerSearchSubmitModel> _validator;
 
-
     public EmployerSearchController(ISessionService sessionService, IValidator<EmployerSearchSubmitModel> validator)
     {
         _sessionService = sessionService;

@@ -16,10 +16,10 @@ public class AmbassadorProfileViewModelTests
     private string fullName;
     private string regionName;
     private string email;
-    private string memberProfileUrl = Guid.NewGuid().ToString();
-    private string personalDetailsChangeUrl = Guid.NewGuid().ToString();
-    private string areaOfInterestChangeUrl = Guid.NewGuid().ToString();
-    private string contactDetailChangeUrl = Guid.NewGuid().ToString();
+    private readonly string memberProfileUrl = Guid.NewGuid().ToString();
+    private readonly string personalDetailsChangeUrl = Guid.NewGuid().ToString();
+    private readonly string areaOfInterestChangeUrl = Guid.NewGuid().ToString();
+    private readonly string contactDetailChangeUrl = Guid.NewGuid().ToString();
     private IEnumerable<MemberProfile> memberProfiles;
     private IEnumerable<MemberPreference> memberPreferences;
     private ApprenticeshipDetailsModel? apprenticeshipDetails;
@@ -44,13 +44,13 @@ public class AmbassadorProfileViewModelTests
         memberPreferences = fixture.CreateMany<MemberPreference>();
         apprenticeshipDetails = fixture.Create<ApprenticeshipDetailsModel>();
         userType = MemberUserType.Apprentice;
-        profiles = new List<Profile>()
-        {
+        profiles =
+        [
             new Profile { Id = 1, Description = "Networking at events in person", Category = "Events", Ordering = 1 },
             new Profile { Id = 2, Description = "Presenting at events in person", Category = "Events", Ordering = 2 },
             new Profile { Id = 10, Description = "Carrying out and writing up case studies", Category = "Promotions", Ordering = 1 },
             new Profile { Id = 11, Description = "Designing and creating marketing materials to champion the network", Category = "Promotions", Ordering = 2 }
-        };
+        ];
         var personalDetails = new PersonalDetailsModel(fullName, regionName, userType, personalDetailsChangeUrl, areaOfInterestChangeUrl, contactDetailChangeUrl, memberProfileUrl);
         sut = new AmbassadorProfileViewModel(personalDetails, email, memberProfiles, memberPreferences, apprenticeshipDetails, profiles, Mock.Of<IUrlHelper>());
     }

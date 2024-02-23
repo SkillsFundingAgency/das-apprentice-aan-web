@@ -3,7 +3,6 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.Aan.SharedUi.Constants;
-using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
@@ -83,7 +82,7 @@ public class PreviousEngagementControllerGetTests
         [Greedy] PreviousEngagementController sut)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest);
-        OnboardingSessionModel sessionModel = new OnboardingSessionModel();
+        OnboardingSessionModel sessionModel = new();
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.EngagedWithAPreviousAmbassadorInTheNetworkApprentice, Value = "True" });
 
@@ -98,7 +97,7 @@ public class PreviousEngagementControllerGetTests
         [Greedy] PreviousEngagementController sut)
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest);
-        OnboardingSessionModel sessionModel = new OnboardingSessionModel();
+        OnboardingSessionModel sessionModel = new();
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.EngagedWithAPreviousAmbassadorInTheNetworkApprentice, Value = "False" });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
@@ -115,7 +114,7 @@ public class PreviousEngagementControllerGetTests
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers, checkYourAnswersUrl);
 
-        OnboardingSessionModel sessionModel = new OnboardingSessionModel();
+        OnboardingSessionModel sessionModel = new();
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.EngagedWithAPreviousAmbassadorInTheNetworkApprentice, Value = "False" });
         sessionModel.HasSeenPreview = true;
 
@@ -134,7 +133,7 @@ public class PreviousEngagementControllerGetTests
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest, areasOFInterestUrl);
 
-        OnboardingSessionModel sessionModel = new OnboardingSessionModel();
+        OnboardingSessionModel sessionModel = new();
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.EngagedWithAPreviousAmbassadorInTheNetworkApprentice, Value = "False" });
         sessionModel.HasSeenPreview = false;
 

@@ -49,7 +49,7 @@ public class EditAreaOfInterestController : Controller
             return View(ChangeAreaOfInterestViewPath, GetAreaOfInterests(cancellationToken).Result);
         }
 
-        UpdateMemberProfileAndPreferencesRequest updateMemberProfileAndPreferencesRequest = new UpdateMemberProfileAndPreferencesRequest();
+        UpdateMemberProfileAndPreferencesRequest updateMemberProfileAndPreferencesRequest = new();
 
         updateMemberProfileAndPreferencesRequest.UpdateMemberProfileRequest.MemberProfiles = command.AreasOfInterest.Select(x => new UpdateProfileModel()
         {
@@ -64,7 +64,7 @@ public class EditAreaOfInterestController : Controller
 
     public async Task<EditAreaOfInterestViewModel> GetAreaOfInterests(CancellationToken cancellationToken)
     {
-        EditAreaOfInterestViewModel editAreaOfInterestViewModel = new EditAreaOfInterestViewModel();
+        EditAreaOfInterestViewModel editAreaOfInterestViewModel = new();
         var memberProfiles = await _outerApiClient.GetMemberProfile(_sessionService.GetMemberId(), _sessionService.GetMemberId(), false, cancellationToken);
         var profilesResult = await _outerApiClient.GetProfilesByUserType(MemberUserType.Apprentice.ToString(), cancellationToken);
 

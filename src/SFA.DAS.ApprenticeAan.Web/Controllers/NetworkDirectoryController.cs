@@ -30,7 +30,7 @@ public class NetworkDirectoryController : Controller
         var networkDirectoryTask = _outerApiClient.GetMembers(request.ToQueryStringParameters(), cancellationToken);
         var regionTask = _outerApiClient.GetRegions();
 
-        List<Task> tasks = new() { networkDirectoryTask, regionTask };
+        List<Task> tasks = [networkDirectoryTask, regionTask];
 
         await Task.WhenAll(tasks);
         var regions = regionTask.Result.Regions;
@@ -72,7 +72,7 @@ public class NetworkDirectoryController : Controller
     }
 
     private static DirectoryFilterChoices PopulateFilterChoices(NetworkDirectoryRequestModel request, List<Region> regions)
-        => new DirectoryFilterChoices
+        => new()
         {
             Keyword = request.Keyword?.Trim(),
             RoleChecklistDetails = new ChecklistDetails

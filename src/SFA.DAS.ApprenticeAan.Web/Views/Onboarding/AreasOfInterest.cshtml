@@ -33,7 +33,7 @@
                                 {
                                     <div class="govuk-checkboxes__item">
                                         <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.Events[i].IsSelected>
-                                        <label class="govuk-label govuk-checkboxes__label" for="Events[@i].IsSelected"  >
+                                        <label class="govuk-label govuk-checkboxes__label" asp-for="@Model.Events[i].IsSelected">
                                             @Model.Events[i].Description
                                         </label>
                                         <input type="hidden" asp-for="@Model.Events[i].Id" />
@@ -52,7 +52,7 @@
                                 {
                                     <div class="govuk-checkboxes__item">
                                         <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.Promotions[i].IsSelected>
-                                        <label class="govuk-label govuk-checkboxes__label" for="Promotions[@i].IsSelected">
+                                        <label class="govuk-label govuk-checkboxes__label" asp-for="@Model.Promotions[i].IsSelected">
                                             @Model.Promotions[i].Description
                                         </label>
                                         <input type="hidden" asp-for="@Model.Promotions[i].Id" />

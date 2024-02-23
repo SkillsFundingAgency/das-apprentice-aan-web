@@ -2,5 +2,5 @@
 
 public class ReasonsForLeavingSessionModel
 {
-    public List<int> ReasonsForLeaving { get; set; } = new List<int>();
+    public List<int> ReasonsForLeaving { get; set; } = [];
 }

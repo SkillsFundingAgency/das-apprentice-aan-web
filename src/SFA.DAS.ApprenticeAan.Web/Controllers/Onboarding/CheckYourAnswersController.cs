@@ -60,8 +60,8 @@ public class CheckYourAnswersController : Controller
         };
         request.ProfileValues.AddRange(source.ProfileData.Where(p => !string.IsNullOrWhiteSpace(p.Value)).Select(p => new ProfileValue(p.Id, p.Value!)));
         request.Email = source.ApprenticeDetails.Email;
-        request.FirstName = User.FindFirstValue(IdentityClaims.GivenName);
-        request.LastName = User.FindFirstValue(IdentityClaims.FamilyName);
+        request.FirstName = User.FindFirstValue(IdentityClaims.GivenName)!;
+        request.LastName = User.FindFirstValue(IdentityClaims.FamilyName)!;
         return request;
     }
 }
