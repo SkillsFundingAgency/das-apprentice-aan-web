@@ -16,10 +16,16 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
 [Route("network-events")]
-public class NetworkEventsController(IOuterApiClient outerApiClient, ISessionService sessionService) : Controller
+public class NetworkEventsController : Controller
 {
-    private readonly IOuterApiClient _outerApiClient = outerApiClient;
-    private readonly ISessionService _sessionService = sessionService;
+    private readonly IOuterApiClient _outerApiClient;
+    private readonly ISessionService _sessionService;
+
+    public NetworkEventsController(IOuterApiClient outerApiClient, ISessionService sessionService)
+    {
+        _outerApiClient = outerApiClient;
+        _sessionService = sessionService;
+    }
 
     [HttpGet]
     [Route("", Name = SharedRouteNames.NetworkEvents)]

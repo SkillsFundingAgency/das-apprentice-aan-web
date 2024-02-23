@@ -11,10 +11,16 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
 [Route("events-hub", Name = SharedRouteNames.EventsHub)]
-public class EventsHubController(IOuterApiClient apiClient, ISessionService sessionService) : Controller
+public class EventsHubController : Controller
 {
-    private readonly IOuterApiClient _apiClient = apiClient;
-    private readonly ISessionService _sessionService = sessionService;
+    private readonly IOuterApiClient _apiClient;
+    private readonly ISessionService _sessionService;
+
+    public EventsHubController(IOuterApiClient apiClient, ISessionService sessionService)
+    {
+        _apiClient = apiClient;
+        _sessionService = sessionService;
+    }
 
     [HttpGet]
     public async Task<IActionResult> Index([FromQuery] int? month, [FromQuery] int? year, CancellationToken cancellationToken)

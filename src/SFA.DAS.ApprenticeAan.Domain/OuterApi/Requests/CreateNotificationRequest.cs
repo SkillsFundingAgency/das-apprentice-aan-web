@@ -1,7 +1,13 @@
 ﻿namespace SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 
-public class CreateNotificationRequest(Guid memberId, int notificationTemplateId)
+public class CreateNotificationRequest
 {
-    public Guid MemberId { get; set; } = memberId;
-    public int NotificationTemplateId { get; set; } = notificationTemplateId;
+    public Guid MemberId { get; set; }
+    public int NotificationTemplateId { get; set; }
+
+    public CreateNotificationRequest(Guid memberId, int notificationTemplateId)
+    {
+        MemberId = memberId;
+        NotificationTemplateId = notificationTemplateId;
+    }
 }

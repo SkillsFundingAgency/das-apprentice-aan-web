@@ -11,7 +11,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Authentication;
 [ExcludeFromCodeCoverage]
 public class AuthenticationEventsLocal : OpenIdConnectEvents
 {
-    private readonly IApprenticeAccountService _apprenticeAccountService = null!;
+    private readonly IApprenticeAccountService _apprenticeAccountService;
 
     public AuthenticationEventsLocal(IApprenticeAccountService apprenticeAccountService)
     {

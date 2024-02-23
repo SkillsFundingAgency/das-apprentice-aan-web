@@ -17,12 +17,19 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
 [Route("edit-apprenticeship-information", Name = SharedRouteNames.EditApprenticeshipInformation)]
-public class EditApprenticeshipInformationController(IOuterApiClient apiClient, IValidator<SubmitApprenticeshipInformationModel> validator, ISessionService sessionService) : Controller
+public class EditApprenticeshipInformationController : Controller
 {
-    private readonly IOuterApiClient _apiClient = apiClient;
-    private readonly ISessionService _sessionService = sessionService;
-    private readonly IValidator<SubmitApprenticeshipInformationModel> _validator = validator;
+    private readonly IOuterApiClient _apiClient;
+    private readonly ISessionService _sessionService;
+    private readonly IValidator<SubmitApprenticeshipInformationModel> _validator;
     public const string ChangeApprenticeshipInformationViewPath = "~/Views/EditApprenticeshipInformation/EditApprenticeshipInformation.cshtml";
+
+    public EditApprenticeshipInformationController(IOuterApiClient apiClient, IValidator<SubmitApprenticeshipInformationModel> validator, ISessionService sessionService)
+    {
+        _apiClient = apiClient;
+        _validator = validator;
+        _sessionService = sessionService;
+    }
 
     [HttpGet]
     public IActionResult Index(CancellationToken cancellationToken)

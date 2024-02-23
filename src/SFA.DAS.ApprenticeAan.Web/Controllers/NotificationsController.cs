@@ -10,10 +10,16 @@ using static SFA.DAS.ApprenticeAan.Application.Constants;
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
-public class NotificationsController(IOuterApiClient outerApiClient, ISessionService sessionService) : Controller
+public class NotificationsController : Controller
 {
-    private readonly IOuterApiClient _outerApiClient = outerApiClient;
-    private readonly ISessionService _sessionService = sessionService;
+    private readonly IOuterApiClient _outerApiClient;
+    private readonly ISessionService _sessionService;
+
+    public NotificationsController(IOuterApiClient outerApiClient, ISessionService sessionService)
+    {
+        _outerApiClient = outerApiClient;
+        _sessionService = sessionService;
+    }
 
     [Route("links/{id}")]
     public async Task<IActionResult> Index(Guid id, CancellationToken cancellationToken)

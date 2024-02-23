@@ -18,13 +18,19 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
 [Route("edit-area-of-interest", Name = SharedRouteNames.EditAreaOfInterest)]
-public class EditAreaOfInterestController(IValidator<SubmitAreaOfInterestModel> validator, IOuterApiClient outerApiClient, ISessionService sessionService) : Controller
+public class EditAreaOfInterestController : Controller
 {
     public const string ChangeAreaOfInterestViewPath = "~/Views/EditAreaOfInterest/EditAreaOfInterest.cshtml";
 
-    private readonly IValidator<SubmitAreaOfInterestModel> _validator = validator;
-    private readonly ISessionService _sessionService = sessionService;
-    private readonly IOuterApiClient _outerApiClient = outerApiClient;
+    private readonly IValidator<SubmitAreaOfInterestModel> _validator;
+    private readonly ISessionService _sessionService;
+    private readonly IOuterApiClient _outerApiClient;
+    public EditAreaOfInterestController(IValidator<SubmitAreaOfInterestModel> validator, IOuterApiClient outerApiClient, ISessionService sessionService)
+    {
+        _validator = validator;
+        _outerApiClient = outerApiClient;
+        _sessionService = sessionService;
+    }
 
     [HttpGet]
     public IActionResult Get(CancellationToken cancellationToken)

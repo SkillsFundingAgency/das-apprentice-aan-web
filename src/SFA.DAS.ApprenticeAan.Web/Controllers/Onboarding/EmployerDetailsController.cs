@@ -14,16 +14,23 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 [Authorize]
 [Route("onboarding/employer-details", Name = RouteNames.Onboarding.EmployerDetails)]
 [HideNavigationBar(true, true)]
-public class EmployerDetailsController(
-    ISessionService sessionService,
-    IValidator<EmployerDetailsSubmitModel> validator,
-    IOuterApiClient outerApiClient) : Controller
+public class EmployerDetailsController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/EmployerDetails.cshtml";
 
-    private readonly ISessionService _sessionService = sessionService;
-    private readonly IValidator<EmployerDetailsSubmitModel> _validator = validator;
-    private readonly IOuterApiClient _outerApiClient = outerApiClient;
+    private readonly ISessionService _sessionService;
+    private readonly IValidator<EmployerDetailsSubmitModel> _validator;
+    private readonly IOuterApiClient _outerApiClient;
+
+    public EmployerDetailsController(
+        ISessionService sessionService,
+        IValidator<EmployerDetailsSubmitModel> validator,
+        IOuterApiClient outerApiClient)
+    {
+        _validator = validator;
+        _sessionService = sessionService;
+        _outerApiClient = outerApiClient;
+    }
 
     [HttpGet]
     public IActionResult GetEmployerDetails()

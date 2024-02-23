@@ -12,12 +12,18 @@ using static SFA.DAS.ApprenticeAan.Web.Constants;
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
-public class LeaveTheNetworkController(IOuterApiClient apiClient, ISessionService sessionService) : Controller
+public class LeaveTheNetworkController : Controller
 {
-    private readonly IOuterApiClient _apiClient = apiClient;
-    private readonly ISessionService _sessionService = sessionService;
+    private readonly IOuterApiClient _apiClient;
+    private readonly ISessionService _sessionService;
 
     public const string LeaveTheNetworkAreYouSureViewPath = "~/Views/LeaveTheNetwork/LeaveTheNetworkAreYouSure.cshtml";
+
+    public LeaveTheNetworkController(IOuterApiClient apiClient, ISessionService sessionService)
+    {
+        _apiClient = apiClient;
+        _sessionService = sessionService;
+    }
 
     [HttpGet]
     [Route("leave-the-network", Name = SharedRouteNames.LeaveTheNetwork)]

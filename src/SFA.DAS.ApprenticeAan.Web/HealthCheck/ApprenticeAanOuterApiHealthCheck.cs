@@ -3,12 +3,18 @@ using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 
 namespace SFA.DAS.ApprenticeAan.Web.HealthCheck;
 
-public class ApprenticeAanOuterApiHealthCheck(ILogger<ApprenticeAanOuterApiHealthCheck> logger, IOuterApiClient outerApiClient) : IHealthCheck
+public class ApprenticeAanOuterApiHealthCheck : IHealthCheck
 {
     public const string HealthCheckResultDescription = "Apprentice Aan Outer API Health Check";
 
-    private readonly IOuterApiClient _outerApiClient = outerApiClient;
-    private readonly ILogger<ApprenticeAanOuterApiHealthCheck> _logger = logger;
+    private readonly IOuterApiClient _outerApiClient;
+    private readonly ILogger<ApprenticeAanOuterApiHealthCheck> _logger;
+
+    public ApprenticeAanOuterApiHealthCheck(ILogger<ApprenticeAanOuterApiHealthCheck> logger, IOuterApiClient outerApiClient)
+    {
+        _logger = logger;
+        _outerApiClient = outerApiClient;
+    }
 
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = new CancellationToken())
     {
