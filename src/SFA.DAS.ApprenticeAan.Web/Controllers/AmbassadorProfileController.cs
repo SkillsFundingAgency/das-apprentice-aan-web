@@ -12,16 +12,10 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
 [Route("your-ambassador-profile", Name = SharedRouteNames.YourAmbassadorProfile)]
-public class AmbassadorProfileController : Controller
+public class AmbassadorProfileController(IOuterApiClient apiClient, ISessionService sessionService) : Controller
 {
-    private readonly IOuterApiClient _apiClient;
-    private readonly ISessionService _sessionService;
-
-    public AmbassadorProfileController(IOuterApiClient apiClient, ISessionService sessionService)
-    {
-        _apiClient = apiClient;
-        _sessionService = sessionService;
-    }
+    private readonly IOuterApiClient _apiClient = apiClient;
+    private readonly ISessionService _sessionService = sessionService;
 
     [HttpGet]
     public async Task<IActionResult> Index(CancellationToken cancellationToken)

@@ -17,8 +17,8 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 public class EmployerSearchController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/EmployerSearch.cshtml";
-    private readonly ISessionService _sessionService;
-    private readonly IValidator<EmployerSearchSubmitModel> _validator;
+    private readonly ISessionService _sessionService = null!;
+    private readonly IValidator<EmployerSearchSubmitModel> _validator = null!;
 
     public EmployerSearchController(ISessionService sessionService, IValidator<EmployerSearchSubmitModel> validator)
     {

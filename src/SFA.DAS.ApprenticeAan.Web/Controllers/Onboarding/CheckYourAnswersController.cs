@@ -16,18 +16,12 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 [Authorize]
 [Route("onboarding/check-your-answers", Name = RouteNames.Onboarding.CheckYourAnswers)]
 [HideNavigationBar(true, true)]
-public class CheckYourAnswersController : Controller
+public class CheckYourAnswersController(ISessionService sessionService, IOuterApiClient outerApiClient) : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/CheckYourAnswers.cshtml";
     public const string ApplicationSubmittedViewPath = "~/Views/Onboarding/ApplicationSubmitted.cshtml";
-    private readonly ISessionService _sessionService;
-    private readonly IOuterApiClient _outerApiClient;
-
-    public CheckYourAnswersController(ISessionService sessionService, IOuterApiClient outerApiClient)
-    {
-        _sessionService = sessionService;
-        _outerApiClient = outerApiClient;
-    }
+    private readonly ISessionService _sessionService = sessionService;
+    private readonly IOuterApiClient _outerApiClient = outerApiClient;
 
     [HttpGet]
     public IActionResult Get()

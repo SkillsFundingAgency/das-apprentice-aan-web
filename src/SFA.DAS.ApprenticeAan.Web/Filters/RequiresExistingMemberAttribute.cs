@@ -9,16 +9,10 @@ using SFA.DAS.ApprenticeAan.Web.Extensions;
 namespace SFA.DAS.ApprenticeAan.Web.Filters;
 
 [ExcludeFromCodeCoverage]
-public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
+public class RequiresExistingMemberAttribute(ISessionService sessionService, IOuterApiClient outerApiClient) : ApplicationFilterAttribute
 {
-    private readonly ISessionService _sessionService;
-    private readonly IOuterApiClient _outerApiClient;
-
-    public RequiresExistingMemberAttribute(ISessionService sessionService, IOuterApiClient outerApiClient)
-    {
-        _sessionService = sessionService;
-        _outerApiClient = outerApiClient;
-    }
+    private readonly ISessionService _sessionService = sessionService;
+    private readonly IOuterApiClient _outerApiClient = outerApiClient;
 
     public override void OnActionExecuting(ActionExecutingContext context)
 

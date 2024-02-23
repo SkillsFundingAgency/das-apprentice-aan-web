@@ -17,19 +17,12 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
 [Route("edit-contact-detail", Name = SharedRouteNames.EditContactDetail)]
-public class EditContactDetailController : Controller
+public class EditContactDetailController(IOuterApiClient apiClient, IValidator<SubmitContactDetailModel> validator, ISessionService sessionService) : Controller
 {
-    private readonly IOuterApiClient _apiClient;
-    private readonly ISessionService _sessionService;
-    private readonly IValidator<SubmitContactDetailModel> _validator;
+    private readonly IOuterApiClient _apiClient = apiClient;
+    private readonly ISessionService _sessionService = sessionService;
+    private readonly IValidator<SubmitContactDetailModel> _validator = validator;
     public const string ChangeContactDetailViewPath = "~/Views/EditContactDetail/EditContactDetail.cshtml";
-
-    public EditContactDetailController(IOuterApiClient apiClient, IValidator<SubmitContactDetailModel> validator, ISessionService sessionService)
-    {
-        _apiClient = apiClient;
-        _validator = validator;
-        _sessionService = sessionService;
-    }
 
     [HttpGet]
     public IActionResult Index(CancellationToken cancellationToken)

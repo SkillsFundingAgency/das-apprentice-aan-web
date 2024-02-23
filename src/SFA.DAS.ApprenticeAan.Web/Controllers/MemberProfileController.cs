@@ -15,20 +15,14 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
 [Route("member-profile")]
-public class MemberProfileController : Controller
+public class MemberProfileController(IOuterApiClient outerApiClient, IValidator<ConnectWithMemberSubmitModel> validator, ISessionService sessionService) : Controller
 {
     public const string MemberProfileViewPath = "~/Views/MemberProfile/PublicProfile.cshtml";
     public const string NotificationSentConfirmationViewPath = "~/Views/MemberProfile/NotificationSentConfirmation.cshtml";
 
-    private readonly IOuterApiClient _outerApiClient;
-    private readonly ISessionService _sessionService;
-    private readonly IValidator<ConnectWithMemberSubmitModel> _validator;
-    public MemberProfileController(IOuterApiClient outerApiClient, IValidator<ConnectWithMemberSubmitModel> validator, ISessionService sessionService)
-    {
-        _outerApiClient = outerApiClient;
-        _validator = validator;
-        _sessionService = sessionService;
-    }
+    private readonly IOuterApiClient _outerApiClient = outerApiClient;
+    private readonly ISessionService _sessionService = sessionService;
+    private readonly IValidator<ConnectWithMemberSubmitModel> _validator = validator;
 
     [HttpGet]
     [Route("{id}", Name = SharedRouteNames.MemberProfile)]

@@ -15,18 +15,12 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 [Authorize]
 [Route("onboarding/reason-to-join", Name = RouteNames.Onboarding.ReasonToJoin)]
 [HideNavigationBar(true, true)]
-public class ReasonToJoinController : Controller
+public class ReasonToJoinController(ISessionService sessionService,
+    IValidator<ReasonToJoinSubmitModel> validator) : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/ReasonToJoin.cshtml";
-    private readonly ISessionService _sessionService;
-    private readonly IValidator<ReasonToJoinSubmitModel> _validator;
-
-    public ReasonToJoinController(ISessionService sessionService,
-        IValidator<ReasonToJoinSubmitModel> validator)
-    {
-        _validator = validator;
-        _sessionService = sessionService;
-    }
+    private readonly ISessionService _sessionService = sessionService;
+    private readonly IValidator<ReasonToJoinSubmitModel> _validator = validator;
 
     [HttpGet]
     public IActionResult Get()

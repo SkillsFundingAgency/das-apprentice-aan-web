@@ -7,16 +7,10 @@ using SFA.DAS.ApprenticeAan.Web.Extensions;
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
 [Authorize]
-public class RejoinTheNetworkController : Controller
+public class RejoinTheNetworkController(IOuterApiClient apiClient, ISessionService sessionService) : Controller
 {
-    private readonly IOuterApiClient _apiClient;
-    private readonly ISessionService _sessionService;
-
-    public RejoinTheNetworkController(IOuterApiClient apiClient, ISessionService sessionService)
-    {
-        _apiClient = apiClient;
-        _sessionService = sessionService;
-    }
+    private readonly IOuterApiClient _apiClient = apiClient;
+    private readonly ISessionService _sessionService = sessionService;
 
     [HttpGet]
     [Route("rejoin-the-network", Name = SharedRouteNames.RejoinTheNetwork)]

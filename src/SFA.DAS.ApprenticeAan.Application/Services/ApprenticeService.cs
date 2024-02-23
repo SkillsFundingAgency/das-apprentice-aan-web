@@ -4,14 +4,9 @@ using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 
 namespace SFA.DAS.ApprenticeAan.Application.Services;
 
-public class ApprenticeService : IApprenticeService
+public class ApprenticeService(IOuterApiClient client) : IApprenticeService
 {
-    private readonly IOuterApiClient _client;
-
-    public ApprenticeService(IOuterApiClient client)
-    {
-        _client = client;
-    }
+    private readonly IOuterApiClient _client = client;
 
     public async Task<Apprentice?> GetApprentice(Guid apprenticeId)
     {

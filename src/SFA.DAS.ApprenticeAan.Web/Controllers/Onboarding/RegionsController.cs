@@ -14,19 +14,12 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 [Authorize]
 [Route("onboarding/regions", Name = RouteNames.Onboarding.Regions)]
 [HideNavigationBar(true, true)]
-public class RegionsController : Controller
+public class RegionsController(ISessionService sessionService, IRegionService regionService, IValidator<RegionsSubmitModel> validator) : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/Regions.cshtml";
-    private readonly IRegionService _regionService;
-    private readonly ISessionService _sessionService;
-    private readonly IValidator<RegionsSubmitModel> _validator;
-
-    public RegionsController(ISessionService sessionService, IRegionService regionService, IValidator<RegionsSubmitModel> validator)
-    {
-        _sessionService = sessionService;
-        _regionService = regionService;
-        _validator = validator;
-    }
+    private readonly IRegionService _regionService = regionService;
+    private readonly ISessionService _sessionService = sessionService;
+    private readonly IValidator<RegionsSubmitModel> _validator = validator;
 
     [HttpGet]
     public async Task<IActionResult> Get()
