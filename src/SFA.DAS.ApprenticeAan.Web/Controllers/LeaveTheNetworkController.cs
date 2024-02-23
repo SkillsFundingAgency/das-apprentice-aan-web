@@ -36,9 +36,9 @@ public class LeaveTheNetworkController : Controller
             LeavingReasonsTitle = leavingReasons.First(x => x.Category.Contains("reasons")).Category,
             LeavingExperienceTitle = leavingReasons.First(x => x.Category.Contains("experience")).Category,
             LeavingBenefitsTitle = leavingReasons.First(x => x.Category.Contains("benefit")).Category,
-            LeavingReasons = [.. leavingReasons.First(x => x.Category.Contains("reasons")).LeavingReasons.OrderBy(x => x.Ordering)],
-            LeavingExperience = [.. leavingReasons.First(x => x.Category.Contains("experience")).LeavingReasons.OrderBy(x => x.Ordering)],
-            LeavingBenefits = [.. leavingReasons.First(x => x.Category.Contains("benefit")).LeavingReasons.OrderBy(x => x.Ordering)],
+            LeavingReasons = leavingReasons.First(x => x.Category.Contains("reasons")).LeavingReasons.OrderBy(x => x.Ordering).ToList(),
+            LeavingExperience = leavingReasons.First(x => x.Category.Contains("experience")).LeavingReasons.OrderBy(x => x.Ordering).ToList(),
+            LeavingBenefits = leavingReasons.First(x => x.Category.Contains("benefit")).LeavingReasons.OrderBy(x => x.Ordering).ToList(),
             ProfileSettingsLink = Url.RouteUrl(SharedRouteNames.ProfileSettings)!
         };
 

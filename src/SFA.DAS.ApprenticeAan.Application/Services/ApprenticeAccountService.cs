@@ -4,7 +4,6 @@ using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 
 namespace SFA.DAS.ApprenticeAan.Application.Services;
 
-
 public class ApprenticeAccountService : IApprenticeAccountService
 {
     private readonly IOuterApiClient _client;

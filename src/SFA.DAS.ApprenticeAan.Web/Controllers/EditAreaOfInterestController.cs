@@ -80,16 +80,13 @@ public class EditAreaOfInterestController : Controller
 
     public static List<SelectProfileViewModel> SelectProfileViewModelMapping(IEnumerable<Profile> profiles, IEnumerable<MemberProfile> memberProfiles)
     {
-        return
-        [
-            .. profiles.Select(profile => new SelectProfileViewModel()
-            {
-                Id = profile.Id,
-                Description = profile.Description,
-                Category = profile.Category,
-                Ordering = profile.Ordering,
-                IsSelected = (MapProfilesAndPreferencesService.GetProfileValue(profile.Id, memberProfiles) == true.ToString())
-            }).OrderBy(x => x.Ordering),
-        ];
+        return profiles.Select(profile => new SelectProfileViewModel()
+        {
+            Id = profile.Id,
+            Description = profile.Description,
+            Category = profile.Category,
+            Ordering = profile.Ordering,
+            IsSelected = (MapProfilesAndPreferencesService.GetProfileValue(profile.Id, memberProfiles) == true.ToString())
+        }).OrderBy(x => x.Ordering).ToList();
     }
 }

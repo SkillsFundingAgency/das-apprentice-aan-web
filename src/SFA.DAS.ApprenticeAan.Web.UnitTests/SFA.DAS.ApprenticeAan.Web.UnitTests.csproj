@@ -32,7 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Security.Cryptography.Xml" Version="8.0.0" />
     <ProjectReference Include="..\SFA.DAS.Aan.SharedTestHelpers\SFA.DAS.Aan.UnitTests.Shared.csproj" />
     <ProjectReference Include="..\SFA.DAS.Aan.SharedUi.UnitTests\SFA.DAS.Aan.SharedUi.UnitTests.csproj" />
     <ProjectReference Include="..\SFA.DAS.ApprenticeAan.Web\SFA.DAS.ApprenticeAan.Web.csproj" />
