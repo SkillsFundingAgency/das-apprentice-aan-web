@@ -37,7 +37,7 @@
                                     {
                                         <div class="govuk-checkboxes__item">
                                             <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.FirstSectionInterests[i].IsSelected>
-                                            <label class="govuk-label govuk-checkboxes__label" for="FirstSectionInterests[@i].IsSelected">
+                                            <label class="govuk-label govuk-checkboxes__label" asp-for="@Model.FirstSectionInterests[@i].IsSelected">
                                                 @Model.FirstSectionInterests[i].Description
                                             </label>
                                             <input type="hidden" asp-for="@Model.FirstSectionInterests[i].Id" />
@@ -56,7 +56,7 @@
                                     {
                                         <div class="govuk-checkboxes__item">
                                             <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.SecondSectionInterests[i].IsSelected>
-                                            <label class="govuk-label govuk-checkboxes__label" for="SecondSectionInterests[@i].IsSelected">
+                                            <label class="govuk-label govuk-checkboxes__label" asp-for="@Model.SecondSectionInterests[i].IsSelected">
                                                 @Model.SecondSectionInterests[i].Description
                                             </label>
                                             <input type="hidden" asp-for="@Model.SecondSectionInterests[i].Id" />

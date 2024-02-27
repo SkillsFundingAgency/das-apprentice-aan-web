@@ -93,16 +93,16 @@ public class EditApprenticeshipInformationControllerGetTests
         SetUpOuterApiMock();
         getMemberProfileResponse.Profiles = new List<MemberProfile>()
             {
-                new MemberProfile(){ProfileId=ProfileIds.EmployerName,Value=employerName},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerAddress1,Value=employerAddress1},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerAddress2,Value=employerAddress2},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerTownOrCity,Value=employerTownOrCity},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerCounty,Value=employerCounty},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerPostcode,Value=employerPostcode}
+                new(){ProfileId=ProfileIds.EmployerName,Value=employerName},
+                new(){ProfileId=ProfileIds.EmployerAddress1,Value=employerAddress1},
+                new(){ProfileId=ProfileIds.EmployerAddress2,Value=employerAddress2},
+                new(){ProfileId=ProfileIds.EmployerTownOrCity,Value=employerTownOrCity},
+                new(){ProfileId=ProfileIds.EmployerCounty,Value=employerCounty},
+                new(){ProfileId=ProfileIds.EmployerPostcode,Value=employerPostcode}
             };
         getMemberProfileResponse.Preferences = new List<MemberPreference>()
             {
-                new MemberPreference(){PreferenceId=PreferenceIds.Apprenticeship,Value=showApprenticeshipInformation}
+                new(){PreferenceId=PreferenceIds.Apprenticeship,Value=showApprenticeshipInformation}
             };
         outerApiMock.Setup(a => a.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(getMemberProfileResponse));
 
@@ -142,16 +142,16 @@ public class EditApprenticeshipInformationControllerGetTests
         SetUpOuterApiMock();
         getMemberProfileResponse.Profiles = new List<MemberProfile>()
             {
-                new MemberProfile(){ProfileId=ProfileIds.EmployerName,Value=employerName},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerAddress1,Value=employerAddress1},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerAddress2,Value=employerAddress2},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerTownOrCity,Value=employerTownOrCity},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerCounty,Value=employerCounty},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerPostcode,Value=employerPostcode}
+                new(){ProfileId=ProfileIds.EmployerName,Value=employerName},
+                new(){ProfileId=ProfileIds.EmployerAddress1,Value=employerAddress1},
+                new(){ProfileId=ProfileIds.EmployerAddress2,Value=employerAddress2},
+                new(){ProfileId=ProfileIds.EmployerTownOrCity,Value=employerTownOrCity},
+                new(){ProfileId=ProfileIds.EmployerCounty,Value=employerCounty},
+                new(){ProfileId=ProfileIds.EmployerPostcode,Value=employerPostcode}
             };
         getMemberProfileResponse.Preferences = new List<MemberPreference>()
             {
-                new MemberPreference(){PreferenceId=PreferenceIds.Apprenticeship,Value=showApprenticeshipInformation}
+                new(){PreferenceId=PreferenceIds.Apprenticeship,Value=showApprenticeshipInformation}
             };
         getMemberProfileResponse.Apprenticeship = null;
         outerApiMock.Setup(a => a.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(getMemberProfileResponse));
@@ -260,22 +260,24 @@ public class EditApprenticeshipInformationControllerGetTests
         SetUpOuterApiMock();
         getMemberProfileResponse.Profiles = new List<MemberProfile>()
             {
-                new MemberProfile(){ProfileId=ProfileIds.EmployerName,Value=employerName},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerAddress1,Value=employerAddress1},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerAddress2,Value=employerAddress2},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerTownOrCity,Value=employerTownOrCity},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerCounty,Value=employerCounty},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerPostcode,Value=employerPostcode}
+                new(){ProfileId=ProfileIds.EmployerName,Value=employerName},
+                new(){ProfileId=ProfileIds.EmployerAddress1,Value=employerAddress1},
+                new(){ProfileId=ProfileIds.EmployerAddress2,Value=employerAddress2},
+                new(){ProfileId=ProfileIds.EmployerTownOrCity,Value=employerTownOrCity},
+                new(){ProfileId=ProfileIds.EmployerCounty,Value=employerCounty},
+                new(){ProfileId=ProfileIds.EmployerPostcode,Value=employerPostcode}
             };
         getMemberProfileResponse.Preferences = new List<MemberPreference>()
             {
-                new MemberPreference(){PreferenceId=PreferenceIds.Apprenticeship,Value=showApprenticeshipInformation}
+                new(){PreferenceId=PreferenceIds.Apprenticeship,Value=showApprenticeshipInformation}
             };
 
-        getMemberProfileResponse.Apprenticeship = new();
-        getMemberProfileResponse.Apprenticeship.Sector = "Sector";
-        getMemberProfileResponse.Apprenticeship.Programme = "Programme";
-        getMemberProfileResponse.Apprenticeship.Level = "Level";
+        getMemberProfileResponse.Apprenticeship = new()
+        {
+            Sector = "Sector",
+            Programme = "Programme",
+            Level = "Level"
+        };
 
         outerApiMock.Setup(a => a.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(getMemberProfileResponse));
 
@@ -313,16 +315,16 @@ public class EditApprenticeshipInformationControllerGetTests
         SetUpOuterApiMock();
         getMemberProfileResponse.Profiles = new List<MemberProfile>()
             {
-                new MemberProfile(){ProfileId=ProfileIds.EmployerName,Value=employerName},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerAddress1,Value=employerAddress1},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerAddress2,Value=employerAddress2},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerTownOrCity,Value=employerTownOrCity},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerCounty,Value=employerCounty},
-                new MemberProfile(){ProfileId=ProfileIds.EmployerPostcode,Value=employerPostcode}
+                new(){ProfileId=ProfileIds.EmployerName,Value=employerName},
+                new(){ProfileId=ProfileIds.EmployerAddress1,Value=employerAddress1},
+                new(){ProfileId=ProfileIds.EmployerAddress2,Value=employerAddress2},
+                new(){ProfileId=ProfileIds.EmployerTownOrCity,Value=employerTownOrCity},
+                new(){ProfileId=ProfileIds.EmployerCounty,Value=employerCounty},
+                new(){ProfileId=ProfileIds.EmployerPostcode,Value=employerPostcode}
             };
         getMemberProfileResponse.Preferences = new List<MemberPreference>()
             {
-                new MemberPreference(){PreferenceId=PreferenceIds.Apprenticeship,Value=showApprenticeshipInformation}
+                new(){PreferenceId=PreferenceIds.Apprenticeship,Value=showApprenticeshipInformation}
             };
         getMemberProfileResponse.Apprenticeship = null;
         outerApiMock.Setup(a => a.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(getMemberProfileResponse));
@@ -405,14 +407,16 @@ public class EditApprenticeshipInformationControllerGetTests
     [TearDown]
     public void TearDown()
     {
-        if (sut != null) sut.Dispose();
+        sut?.Dispose();
     }
 
     private void SetUpControllerWithContext()
     {
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        sut = new EditApprenticeshipInformationController(outerApiMock.Object, validatorMock.Object, Mock.Of<ISessionService>());
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut = new EditApprenticeshipInformationController(outerApiMock.Object, validatorMock.Object, Mock.Of<ISessionService>())
+        {
+            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } }
+        };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, Guid.NewGuid().ToString());
         sut.AddUrlHelperMock()
             .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);

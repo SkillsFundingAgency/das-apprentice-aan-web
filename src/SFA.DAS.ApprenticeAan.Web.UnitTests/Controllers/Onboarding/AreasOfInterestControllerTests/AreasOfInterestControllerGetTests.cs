@@ -41,7 +41,7 @@ public class AreasOfInterestControllerGetTests
     {
         sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.ReasonToJoin);
 
-        OnboardingSessionModel sessionModel = new OnboardingSessionModel();
+        OnboardingSessionModel sessionModel = new();
         sessionModel.ProfileData.Add(new ProfileModel { Id = 101, Category = Category.Events, Value = true.ToString() });
         sessionModel.ProfileData.Add(new ProfileModel { Id = 202, Category = Category.Promotions, Value = false.ToString() });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);

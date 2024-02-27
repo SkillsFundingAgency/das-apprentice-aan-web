@@ -5,7 +5,6 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.Aan.SharedUi.Constants;
-using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
@@ -75,8 +74,8 @@ public class EmployerSearchControllerPostTests
     private static OnboardingSessionModel GetSessionModelWithProfile() =>
         new()
         {
-            ProfileData = new()
-            {
+            ProfileData =
+            [
                 new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerName },
                 new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerAddress1 },
                 new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerAddress2 },
@@ -85,6 +84,6 @@ public class EmployerSearchControllerPostTests
                 new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerPostcode },
                 new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerAddressLongitude },
                 new ProfileModel { Id = ProfileConstants.ProfileIds.EmployerAddressLatitude }
-            }
+            ]
         };
 }

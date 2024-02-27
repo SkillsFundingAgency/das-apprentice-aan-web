@@ -34,12 +34,12 @@ public static class MemberProfileHelper
 
     public static AreasOfInterestSectionViewModel CreateAreasOfInterestViewModel(MemberUserType memberUserType, List<Profile> profiles, IEnumerable<MemberProfile> memberProfiles, string firstName)
     {
-        Func<string, IEnumerable<string>> getSelectedInterests =
-            category => from profile in profiles
-                        join memberProfile in memberProfiles on profile.Id equals memberProfile.ProfileId
-                        where profile.Category == category
-                        orderby profile.Ordering
-                        select profile.Description;
+        IEnumerable<string> getSelectedInterests(string category) =>
+            from profile in profiles
+            join memberProfile in memberProfiles on profile.Id equals memberProfile.ProfileId
+            where profile.Category == category
+            orderby profile.Ordering
+            select profile.Description;
 
         if (memberUserType == MemberUserType.Apprentice)
         {
@@ -47,11 +47,11 @@ public static class MemberProfileHelper
             {
                 FirstName = firstName,
                 SubText = ApprenticeMemberAreasOfInterestTitle,
-                Sections = new()
-                {
+                Sections =
+                [
                     new AreasOfInterestSection(MemberProfileConstants.AreasOfInterest.ApprenticeAreasOfInterestFirstSection.Title, getSelectedInterests(MemberProfileConstants.AreasOfInterest.ApprenticeAreasOfInterestFirstSection.Category)),
                     new AreasOfInterestSection(MemberProfileConstants.AreasOfInterest.ApprenticeAreasOfInterestSecondSection.Title, getSelectedInterests(MemberProfileConstants.AreasOfInterest.ApprenticeAreasOfInterestSecondSection.Category)),
-                }
+                ]
             };
         }
         else
@@ -60,11 +60,11 @@ public static class MemberProfileHelper
             {
                 FirstName = firstName,
                 SubText = EmployerMemberAreasOfInterestTitle,
-                Sections = new()
-                {
+                Sections =
+                [
                     new AreasOfInterestSection(MemberProfileConstants.AreasOfInterest.EmployerAreasOfInterestFirstSection.Title, getSelectedInterests(MemberProfileConstants.AreasOfInterest.EmployerAreasOfInterestFirstSection.Category)),
                     new AreasOfInterestSection(MemberProfileConstants.AreasOfInterest.EmployerAreasOfInterestSecondSection.Title, getSelectedInterests(MemberProfileConstants.AreasOfInterest.EmployerAreasOfInterestSecondSection.Category)),
-                }
+                ]
             };
         }
     }

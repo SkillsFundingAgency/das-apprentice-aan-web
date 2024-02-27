@@ -17,7 +17,6 @@ public class EnumExtensionsTests
     }
 }
 
-
 public enum TestEnum
 {
     [Description("Item 1")]

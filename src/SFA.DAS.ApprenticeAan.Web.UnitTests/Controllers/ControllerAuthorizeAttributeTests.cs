@@ -7,10 +7,10 @@ using SFA.DAS.ApprenticeAan.Web.Controllers;
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
 public class ControllerAuthorizeAttributeTests
 {
-    private readonly List<string> _controllersThatDoNotRequireAuthorize = new()
-    {
+    private readonly List<string> _controllersThatDoNotRequireAuthorize =
+    [
         "AccessDeniedController"
-    };
+    ];
 
     [Test]
     public void ControllersShouldHaveAuthorizeAttribute()

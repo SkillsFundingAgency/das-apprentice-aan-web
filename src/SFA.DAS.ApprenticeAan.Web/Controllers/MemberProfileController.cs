@@ -51,7 +51,7 @@ public class MemberProfileController : Controller
             var model = await GetViewModel(id, cancellationToken);
             return View(MemberProfileViewPath, model);
         }
-        CreateNotificationRequest createNotificationRequest = new CreateNotificationRequest(id, command.ReasonToGetInTouch);
+        CreateNotificationRequest createNotificationRequest = new(id, command.ReasonToGetInTouch);
         await _outerApiClient.PostNotification(_sessionService.GetMemberId(), createNotificationRequest, cancellationToken);
 
         return RedirectToRoute(SharedRouteNames.NotificationSentConfirmation);
@@ -71,10 +71,12 @@ public class MemberProfileController : Controller
         var profilesResult = await _outerApiClient.GetProfilesByUserType(memberProfiles.UserType.ToString(), cancellationToken);
         var userId = _sessionService.GetMemberId();
 
-        MemberProfileViewModel memberProfileViewModel = new();
-        memberProfileViewModel.MemberId = id;
-        memberProfileViewModel.IsLoggedInUserMemberProfile = id == userId;
-        memberProfileViewModel.IsConnectWithMemberVisible = true;
+        MemberProfileViewModel memberProfileViewModel = new()
+        {
+            MemberId = id,
+            IsLoggedInUserMemberProfile = id == userId,
+            IsConnectWithMemberVisible = true
+        };
 
         memberProfileViewModel.ConnectViaLinkedIn.LinkedInUrl = MemberProfileHelper.GetLinkedInUrl(profilesResult.Profiles, memberProfiles.Profiles);
         memberProfileViewModel.FirstName = memberProfileViewModel.ConnectViaLinkedIn.FirstName = memberProfiles.FirstName;

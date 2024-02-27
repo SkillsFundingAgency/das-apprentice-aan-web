@@ -42,8 +42,10 @@ public class NetworkDirectoryControllerTests
 
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
 
-        _sut = new(_outerApiClientMock.Object);
-        _sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        _sut = new(_outerApiClientMock.Object)
+        {
+            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } }
+        };
         _sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkDirectory, AllNetworksUrl).AddUrlForRoute(SharedRouteNames.MemberProfile, MemberProfileUrl);
         _result = await _sut.Index(request, _cancellationToken);
     }
@@ -104,8 +106,10 @@ public class NetworkDirectoryControllerTests
     [TestCase(3, "3 results")]
     public void NetworkDirectoryViewModel_SetTotalCountValue_TotalCountDescriptionIsEqualToexpectedString(int totalCount, string expectedString)
     {
-        var sut = new NetworkDirectoryViewModel();
-        sut.TotalCount = totalCount;
+        var sut = new NetworkDirectoryViewModel
+        {
+            TotalCount = totalCount
+        };
         sut.TotalCountDescription.Should().Be(expectedString);
     }
 
@@ -158,15 +162,15 @@ public class NetworkDirectoryControllerTests
 
     private static ChecklistLookup[] GetUserRoleCheckListLookup(NetworkDirectoryRequestModel networkDirectoryRequestModel)
     {
-        return new ChecklistLookup[]
-        {
+        return
+        [
             new(Role.Apprentice.GetDescription(), Role.Apprentice.ToString(),
                 networkDirectoryRequestModel.UserRole.Exists(x => x == Role.Apprentice)),
             new(Role.Employer.GetDescription(), Role.Employer.ToString(),
                 networkDirectoryRequestModel.UserRole.Exists(x => x == Role.Employer)),
             new(Role.RegionalChair.GetDescription(), Role.RegionalChair.ToString(),
                 networkDirectoryRequestModel.UserRole.Exists(x => x == Role.RegionalChair))
-        };
+        ];
     }
 
 }

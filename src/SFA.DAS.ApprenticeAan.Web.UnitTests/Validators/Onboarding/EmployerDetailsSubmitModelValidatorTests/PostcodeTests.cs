@@ -17,7 +17,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Validators.Onboarding.EmployerDeta
         [TestCase("W1P 1HQ", null, true)]
         [TestCase("EC1A 1BB", null, true)]
         [TestCase("eC1A1bB", null, true)]
-        public void Validate_Postcode_Input(string postcode, string? errorMessage, bool isValid)
+        public void Validate_Postcode_Input(string? postcode, string? errorMessage, bool isValid)
         {
             var sut = new EmployerDetailsSubmitModelValidator();
 

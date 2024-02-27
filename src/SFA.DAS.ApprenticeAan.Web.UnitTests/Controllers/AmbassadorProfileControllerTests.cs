@@ -24,13 +24,13 @@ public class AmbassadorProfileControllerTests
     private AmbassadorProfileController _sut = null!;
     private GetMemberProfileResponse memberProfile = null!;
     private CancellationToken _cancellationToken;
-    private readonly List<Profile> profiles = new()
-    {
+    private readonly List<Profile> profiles =
+    [
         new Profile { Id = 1, Description = "Networking at events in person", Category = "Events", Ordering = 1 },
         new Profile { Id = 2, Description = "Presenting at events in person", Category = "Events", Ordering = 2 },
         new Profile { Id = 10, Description = "Carrying out and writing up case studies", Category = "Promotions", Ordering = 1 },
         new Profile { Id = 11, Description = "Designing and creating marketing materials to champion the network", Category = "Promotions", Ordering = 2 }
-    };
+    ];
 
     [SetUp]
     public async Task Setup()
@@ -51,7 +51,7 @@ public class AmbassadorProfileControllerTests
 
         var viewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary());
         _sut.ViewData = viewData;
-        Mock<ITempDataDictionary> tempDataMock = new Mock<ITempDataDictionary>();
+        Mock<ITempDataDictionary> tempDataMock = new();
         tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.YourAmbassadorProfileSuccessMessage)).Returns(true);
         _sut.TempData = tempDataMock.Object;
 
@@ -119,7 +119,7 @@ public class AmbassadorProfileControllerTests
         sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
         var viewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary());
         sut.ViewData = viewData;
-        Mock<ITempDataDictionary> tempDataMock = new Mock<ITempDataDictionary>();
+        Mock<ITempDataDictionary> tempDataMock = new();
         tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.YourAmbassadorProfileSuccessMessage)).Returns(true);
         sut.TempData = tempDataMock.Object;
 

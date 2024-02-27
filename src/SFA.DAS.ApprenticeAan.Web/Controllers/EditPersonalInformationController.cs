@@ -24,6 +24,7 @@ public class EditPersonalInformationController : Controller
     private readonly ISessionService _sessionService;
     private readonly IValidator<SubmitPersonalDetailModel> _validator;
     public const string ChangePersonalDetailViewPath = "~/Views/EditPersonalInformation/EditPersonalInformation.cshtml";
+
     public EditPersonalInformationController(IOuterApiClient apiClient, IValidator<SubmitPersonalDetailModel> validator, ISessionService sessionService)
     {
         _apiClient = apiClient;
@@ -57,18 +58,22 @@ public class EditPersonalInformationController : Controller
             result.AddToModelState(ModelState);
             return View(ChangePersonalDetailViewPath, await BuildMemberProfileModel(cancellationToken));
         }
-        UpdateMemberProfileAndPreferencesRequest updateMemberProfileAndPreferencesRequest = new UpdateMemberProfileAndPreferencesRequest();
+        UpdateMemberProfileAndPreferencesRequest updateMemberProfileAndPreferencesRequest = new();
         updateMemberProfileAndPreferencesRequest.PatchMemberRequest.RegionId = submitPersonalDetailModel.RegionId;
         updateMemberProfileAndPreferencesRequest.PatchMemberRequest.OrganisationName = submitPersonalDetailModel.OrganisationName;
-        List<UpdatePreferenceModel> updatePreferenceModels = new List<UpdatePreferenceModel>();
-        updatePreferenceModels.Add(new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.Biography, Value = submitPersonalDetailModel.ShowBiography && !string.IsNullOrEmpty(submitPersonalDetailModel.Biography) });
-        updatePreferenceModels.Add(new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.JobTitle, Value = submitPersonalDetailModel.ShowJobTitle });
+        List<UpdatePreferenceModel> updatePreferenceModels =
+        [
+            new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.Biography, Value = submitPersonalDetailModel.ShowBiography && !string.IsNullOrEmpty(submitPersonalDetailModel.Biography) },
+            new UpdatePreferenceModel() { PreferenceId = PreferenceConstants.PreferenceIds.JobTitle, Value = submitPersonalDetailModel.ShowJobTitle },
+        ];
 
         updateMemberProfileAndPreferencesRequest.UpdateMemberProfileRequest.MemberPreferences = updatePreferenceModels;
 
-        List<UpdateProfileModel> updateProfileModels = new List<UpdateProfileModel>();
-        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.Biography, Value = submitPersonalDetailModel.Biography?.Trim() });
-        updateProfileModels.Add(new UpdateProfileModel() { MemberProfileId = ProfileIds.JobTitle, Value = submitPersonalDetailModel.JobTitle?.Trim() });
+        List<UpdateProfileModel> updateProfileModels =
+        [
+            new UpdateProfileModel() { MemberProfileId = ProfileIds.Biography, Value = submitPersonalDetailModel.Biography?.Trim() },
+            new UpdateProfileModel() { MemberProfileId = ProfileIds.JobTitle, Value = submitPersonalDetailModel.JobTitle?.Trim() },
+        ];
 
         updateMemberProfileAndPreferencesRequest.UpdateMemberProfileRequest.MemberProfiles = updateProfileModels;
 
@@ -79,14 +84,16 @@ public class EditPersonalInformationController : Controller
 
     public static EditPersonalInformationViewModel EditPersonalInformationViewModelMapping(int regionId, IEnumerable<MemberProfile> memberProfiles, IEnumerable<MemberPreference> memberPreferences, MemberUserType userType, string? organisationName)
     {
-        EditPersonalInformationViewModel memberProfile = new EditPersonalInformationViewModel();
-        memberProfile.RegionId = regionId;
-        memberProfile.ShowBiography = MapProfilesAndPreferencesService.GetPreferenceValue(PreferenceConstants.PreferenceIds.Biography, memberPreferences);
-        memberProfile.ShowJobTitle = MapProfilesAndPreferencesService.GetPreferenceValue(PreferenceConstants.PreferenceIds.JobTitle, memberPreferences);
-        memberProfile.Biography = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.Biography, memberProfiles);
-        memberProfile.JobTitle = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.JobTitle, memberProfiles);
-        memberProfile.UserType = userType;
-        memberProfile.OrganisationName = organisationName ?? string.Empty;
+        EditPersonalInformationViewModel memberProfile = new()
+        {
+            RegionId = regionId,
+            ShowBiography = MapProfilesAndPreferencesService.GetPreferenceValue(PreferenceConstants.PreferenceIds.Biography, memberPreferences),
+            ShowJobTitle = MapProfilesAndPreferencesService.GetPreferenceValue(PreferenceConstants.PreferenceIds.JobTitle, memberPreferences),
+            Biography = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.Biography, memberProfiles),
+            JobTitle = MapProfilesAndPreferencesService.GetProfileValue(ProfileIds.JobTitle, memberProfiles),
+            UserType = userType,
+            OrganisationName = organisationName ?? string.Empty
+        };
 
         return memberProfile;
     }

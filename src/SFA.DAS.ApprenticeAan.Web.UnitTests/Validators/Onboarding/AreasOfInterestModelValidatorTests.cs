@@ -13,8 +13,8 @@ public class AreasOfInterestModelValidatorTests
     {
         var model = new AreasOfInterestSubmitModel
         {
-            Events = new List<SelectProfileModel> { new SelectProfileModel { Id = 1, IsSelected = false } },
-            Promotions = new List<SelectProfileModel> { new SelectProfileModel { Id = 2, IsSelected = false } }
+            Events = [new SelectProfileModel { Id = 1, IsSelected = false }],
+            Promotions = [new SelectProfileModel { Id = 2, IsSelected = false }]
         };
 
         var sut = new AreasOfInterestSubmitModelValidator();
@@ -28,8 +28,8 @@ public class AreasOfInterestModelValidatorTests
     {
         var model = new AreasOfInterestSubmitModel
         {
-            Events = new List<SelectProfileModel> { new SelectProfileModel { Id = 1, IsSelected = true } },
-            Promotions = new List<SelectProfileModel> { new SelectProfileModel { Id = 2, IsSelected = false } }
+            Events = [new SelectProfileModel { Id = 1, IsSelected = true }],
+            Promotions = [new SelectProfileModel { Id = 2, IsSelected = false }]
         };
 
         var sut = new AreasOfInterestSubmitModelValidator();
@@ -43,8 +43,8 @@ public class AreasOfInterestModelValidatorTests
     {
         var model = new AreasOfInterestSubmitModel
         {
-            Events = new List<SelectProfileModel> { new SelectProfileModel { Id = 1, IsSelected = false } },
-            Promotions = new List<SelectProfileModel> { new SelectProfileModel { Id = 2, IsSelected = true } }
+            Events = [new SelectProfileModel { Id = 1, IsSelected = false }],
+            Promotions = [new SelectProfileModel { Id = 2, IsSelected = true }]
         };
 
         var sut = new AreasOfInterestSubmitModelValidator();
@@ -58,8 +58,8 @@ public class AreasOfInterestModelValidatorTests
     {
         var model = new AreasOfInterestSubmitModel
         {
-            Events = new List<SelectProfileModel> { new SelectProfileModel { Id = 1, IsSelected = true } },
-            Promotions = new List<SelectProfileModel> { new SelectProfileModel { Id = 2, IsSelected = true } }
+            Events = [new SelectProfileModel { Id = 1, IsSelected = true }],
+            Promotions = [new SelectProfileModel { Id = 2, IsSelected = true }]
         };
 
         var sut = new AreasOfInterestSubmitModelValidator();

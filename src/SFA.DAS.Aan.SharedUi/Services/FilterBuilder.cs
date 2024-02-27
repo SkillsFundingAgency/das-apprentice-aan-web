@@ -121,17 +121,17 @@ public static class FilterBuilder
             queryParameters.Add(BuildQueryParameter("keyword", request.Keyword));
         }
 
-        if (request.UserRole != null && request.UserRole.Any())
+        if (request.UserRole != null && request.UserRole.Count != 0)
         {
             queryParameters.AddRange(request.UserRole.Select(userRole => "userRole=" + userRole));
         }
 
-        if (request.RegionId != null && request.RegionId.Any())
+        if (request.RegionId != null && request.RegionId.Count != 0)
         {
             queryParameters.AddRange(request.RegionId.Select(region => "regionId=" + region));
         }
 
-        if (request.Status != null && request.Status.Any())
+        if (request.Status != null && request.Status.Count != 0)
         {
             queryParameters.AddRange(request.Status.Select(s => "status=" + s));
         }

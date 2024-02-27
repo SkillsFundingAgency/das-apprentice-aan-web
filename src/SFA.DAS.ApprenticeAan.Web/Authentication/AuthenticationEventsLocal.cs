@@ -13,7 +13,6 @@ public class AuthenticationEventsLocal : OpenIdConnectEvents
 {
     private readonly IApprenticeAccountService _apprenticeAccountService;
 
-
     public AuthenticationEventsLocal(IApprenticeAccountService apprenticeAccountService)
     {
         _apprenticeAccountService = apprenticeAccountService;

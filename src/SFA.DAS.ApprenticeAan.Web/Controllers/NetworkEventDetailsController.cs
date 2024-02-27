@@ -52,7 +52,7 @@ public class NetworkEventDetailsController : Controller
 
     private CalendarEvent InitialiseViewModel(CalendarEvent result)
     {
-        List<Attendee> attendees = new List<Attendee>();
+        List<Attendee> attendees = [];
         foreach (var attendee in result.Attendees)
         {
             Attendee attendeeObject = attendee;

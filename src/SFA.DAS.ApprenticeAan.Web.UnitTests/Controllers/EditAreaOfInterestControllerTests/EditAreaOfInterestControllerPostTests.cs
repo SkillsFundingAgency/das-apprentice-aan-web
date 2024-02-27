@@ -21,7 +21,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
 public class EditAreaOfInterestControllerPostTests
 {
     static readonly string YourAmbassadorProfileUrl = Guid.NewGuid().ToString();
-    private Guid memberId = Guid.NewGuid();
+    private readonly Guid memberId = Guid.NewGuid();
 
     [Test, MoqAutoData]
     public async Task Post_InvalidCommand_ReturnsEditAreaOfInterestView(
@@ -32,13 +32,15 @@ public class EditAreaOfInterestControllerPostTests
         CancellationToken cancellationToken)
     {
         //Arrange
-        command.FirstSectionInterests = new List<SelectProfileViewModel>();
-        command.SecondSectionInterests = new List<SelectProfileViewModel>();
+        command.FirstSectionInterests = [];
+        command.SecondSectionInterests = [];
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
         outerApiMock.Setup(o => o.GetMemberProfile(memberId, memberId, It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(getMemberProfileResponse));
-        EditAreaOfInterestController sut = new EditAreaOfInterestController(validatorMock.Object, outerApiMock.Object, Mock.Of<ISessionService>());
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        EditAreaOfInterestController sut = new(validatorMock.Object, outerApiMock.Object, Mock.Of<ISessionService>())
+        {
+            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } }
+        };
         sut.AddUrlHelperMock()
     .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
@@ -69,9 +71,10 @@ public class EditAreaOfInterestControllerPostTests
         var successfulValidationResult = new ValidationResult();
         validatorMock.Setup(v => v.ValidateAsync(It.IsAny<SubmitAreaOfInterestModel>(), It.IsAny<CancellationToken>())).ReturnsAsync(successfulValidationResult);
 
-        EditAreaOfInterestController sut = new EditAreaOfInterestController(validatorMock.Object, outerApiMock.Object, Mock.Of<ISessionService>());
-
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        EditAreaOfInterestController sut = new(validatorMock.Object, outerApiMock.Object, Mock.Of<ISessionService>())
+        {
+            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } }
+        };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
         sut.AddUrlHelperMock()
 .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);

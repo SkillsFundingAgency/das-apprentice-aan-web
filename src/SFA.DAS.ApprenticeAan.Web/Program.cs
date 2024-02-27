@@ -17,7 +17,9 @@ var rootConfiguration = builder.Configuration.LoadConfiguration(builder.Services
 
 var environmentName = rootConfiguration["EnvironmentName"];
 var applicationConfiguration = rootConfiguration.Get<ApplicationConfiguration>();
-builder.Services.AddSingleton(applicationConfiguration);
+IEnumerable<string> tag = new[] { "ready" };
+
+builder.Services.AddSingleton(applicationConfiguration!);
 
 builder.Services
     .AddOptions()
@@ -27,7 +29,7 @@ builder.Services
     .AddHttpContextAccessor()
     .AddValidatorsFromAssembly(typeof(RegionsSubmitModelValidator).Assembly)
     .AddValidatorsFromAssembly(typeof(ConnectWithMemberSubmitModelValidator).Assembly)
-    .AddSession(environmentName, applicationConfiguration.ConnectionStrings)
+    .AddSession(environmentName!, applicationConfiguration!.ConnectionStrings)
     .AddDataProtection(applicationConfiguration.ConnectionStrings, builder.Environment)
     .AddAuthentication(applicationConfiguration.Authentication, builder.Environment)
     .AddServiceRegistrations(applicationConfiguration.ApprenticeAanOuterApi);
@@ -35,7 +37,7 @@ builder.Services
 builder.Services.AddHealthChecks()
     .AddCheck<ApprenticeAanOuterApiHealthCheck>(ApprenticeAanOuterApiHealthCheck.HealthCheckResultDescription,
     failureStatus: HealthStatus.Unhealthy,
-    tags: new[] { "ready" });
+    tags: tag);
 
 builder.Services.AddSharedUi(applicationConfiguration, options =>
 {
@@ -71,10 +73,30 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseHealthChecks("/ping");
-    /// app.UseStatusCodePagesWithReExecute("/error/{0}"); 
-    /// app.UseExceptionHandler("/error");
+    app.UseExceptionHandler("/error");
     app.UseHsts();
 }
+
+app.Use(async (context, next) =>
+{
+    if (context.Response.Headers.ContainsKey("X-Frame-Options"))
+    {
+        context.Response.Headers.Remove("X-Frame-Options");
+    }
+
+    context.Response.Headers!.Append("X-Frame-Options", "SAMEORIGIN");
+
+    await next();
+
+    if (context.Response.StatusCode == 404 && !context.Response.HasStarted)
+    {
+        //Re-execute the request so the user gets the error page
+        var originalPath = context.Request.Path.Value;
+        context.Items["originalPath"] = originalPath;
+        context.Request.Path = "/error/404";
+        await next();
+    }
+});
 
 app
     .UseHttpsRedirection()

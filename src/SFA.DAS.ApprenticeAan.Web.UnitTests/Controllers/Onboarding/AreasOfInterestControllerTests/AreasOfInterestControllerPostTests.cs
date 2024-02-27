@@ -33,8 +33,8 @@ public class AreasOfInterestControllerPostTests
 
         AreasOfInterestSubmitModel submitmodel = new()
         {
-            Events = new List<SelectProfileModel> { new SelectProfileModel { Id = 1, IsSelected = false } },
-            Promotions = new List<SelectProfileModel> { new SelectProfileModel { Id = 2, IsSelected = true } }
+            Events = [new SelectProfileModel { Id = 1, IsSelected = false }],
+            Promotions = [new SelectProfileModel { Id = 2, IsSelected = true }]
         };
 
         ValidationResult validationResult = new();
@@ -64,7 +64,7 @@ public class AreasOfInterestControllerPostTests
 
         AreasOfInterestSubmitModel submitmodel = new()
         {
-            Events = new List<SelectProfileModel> { new SelectProfileModel { Id = 1, IsSelected = false } }
+            Events = [new SelectProfileModel { Id = 1, IsSelected = false }]
         };
 
         sut.Post(submitmodel);
@@ -86,7 +86,7 @@ public class AreasOfInterestControllerPostTests
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
-        AreasOfInterestSubmitModel submitmodel = new AreasOfInterestSubmitModel();
+        AreasOfInterestSubmitModel submitmodel = new();
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
 
         submitmodel.Events = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == Category.Events).Select(x => (SelectProfileModel)x));
@@ -114,7 +114,7 @@ public class AreasOfInterestControllerPostTests
 
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
-        AreasOfInterestSubmitModel submitmodel = new AreasOfInterestSubmitModel();
+        AreasOfInterestSubmitModel submitmodel = new();
         validatorMock.Setup(v => v.Validate(submitmodel)).Returns(validationResult);
 
         submitmodel.Events = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == Category.Events).Select(x => (SelectProfileModel)x));

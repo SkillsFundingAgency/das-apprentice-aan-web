@@ -33,7 +33,7 @@ public class CurrentJobTitleSubmitModelValidatorTests
     [TestCase(null, false)]
     public void EnteredJobTitle_EmptyTextValidation_ErrorNoError(string? jobTitle, bool isValid)
     {
-        CurrentJobTitleSubmitModel model = new CurrentJobTitleSubmitModel { JobTitle = jobTitle };
+        CurrentJobTitleSubmitModel model = new() { JobTitle = jobTitle };
 
         var sut = new CurrentJobTitleSubmitModelValidator();
 

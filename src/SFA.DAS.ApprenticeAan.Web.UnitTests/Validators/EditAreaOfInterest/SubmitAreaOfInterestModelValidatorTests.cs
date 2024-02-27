@@ -14,8 +14,8 @@ public class SubmitAreaOfInterestModelValidatorTests
         // Arrange
         var model = new SubmitAreaOfInterestModel
         {
-            FirstSectionInterests = new List<SelectProfileViewModel>(),
-            SecondSectionInterests = new List<SelectProfileViewModel>()
+            FirstSectionInterests = [],
+            SecondSectionInterests = []
         };
         var sut = new SubmitAreaOfInterestModelValidator();
 
@@ -34,7 +34,7 @@ public class SubmitAreaOfInterestModelValidatorTests
         var model = new SubmitAreaOfInterestModel
         {
             FirstSectionInterests = selectProfileViewModels,
-            SecondSectionInterests = new List<SelectProfileViewModel>()
+            SecondSectionInterests = []
         };
         var sut = new SubmitAreaOfInterestModelValidator();
 
@@ -51,7 +51,7 @@ public class SubmitAreaOfInterestModelValidatorTests
         // Arrange
         var model = new SubmitAreaOfInterestModel
         {
-            FirstSectionInterests = new List<SelectProfileViewModel>(),
+            FirstSectionInterests = [],
             SecondSectionInterests = selectProfileViewModels
         };
         var sut = new SubmitAreaOfInterestModelValidator();

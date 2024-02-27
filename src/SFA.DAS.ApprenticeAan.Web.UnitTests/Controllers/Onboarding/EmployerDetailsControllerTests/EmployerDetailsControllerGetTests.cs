@@ -3,7 +3,6 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.Aan.SharedUi.Constants;
-using SFA.DAS.ApprenticeAan.Domain.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
@@ -25,17 +24,17 @@ public class EmployerDetailsControllerGetTests
     private const double Longitude = double.MinValue;
     private const double Latitude = double.MinValue;
 
-    private readonly List<ProfileModel> profileData = new()
-    {
-        new() { Id = ProfileConstants.ProfileIds.EmployerName, Category = Category, Value = EmployerName},
-        new() { Id = ProfileConstants.ProfileIds.EmployerAddress1, Category = Category, Value = AddressLine1},
-        new() { Id = ProfileConstants.ProfileIds.EmployerAddress2, Category = Category},
-        new() { Id = ProfileConstants.ProfileIds.EmployerTownOrCity, Category = Category, Value = Town},
+    private readonly List<ProfileModel> profileData =
+    [
+        new() { Id = ProfileConstants.ProfileIds.EmployerName, Category = Category, Value = EmployerName },
+        new() { Id = ProfileConstants.ProfileIds.EmployerAddress1, Category = Category, Value = AddressLine1 },
+        new() { Id = ProfileConstants.ProfileIds.EmployerAddress2, Category = Category },
+        new() { Id = ProfileConstants.ProfileIds.EmployerTownOrCity, Category = Category, Value = Town },
         new() { Id = ProfileConstants.ProfileIds.EmployerCounty, Category = Category, },
-        new() { Id = ProfileConstants.ProfileIds.EmployerPostcode, Category = Category, Value = Postcode},
-        new() { Id = ProfileConstants.ProfileIds.EmployerAddressLongitude, Category = Category, Value = Longitude.ToString()},
-        new() { Id = ProfileConstants.ProfileIds.EmployerAddressLatitude, Category = Category, Value = Latitude.ToString()}
-    };
+        new() { Id = ProfileConstants.ProfileIds.EmployerPostcode, Category = Category, Value = Postcode },
+        new() { Id = ProfileConstants.ProfileIds.EmployerAddressLongitude, Category = Category, Value = Longitude.ToString() },
+        new() { Id = ProfileConstants.ProfileIds.EmployerAddressLatitude, Category = Category, Value = Latitude.ToString() }
+    ];
 
     [MoqAutoData]
     public void Get_ReturnsViewResult(
