@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
+using SFA.DAS.ApprenticeAan.Web.Infrastructure;
+using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.ErrorControllerTests;
 [TestFixture]
@@ -17,6 +19,7 @@ public class ErrorInServiceTests
     private readonly InMemoryFakeLogger<ErrorController> loggerFake = new();
     private readonly Exception exception = new("Something went wrong");
     private const string path = "/providers/10012002";
+    private static string NetworkHubUrl = Guid.NewGuid().ToString();
     private ErrorController sut;
 
     [SetUp]
@@ -39,6 +42,7 @@ public class ErrorInServiceTests
                 HttpContext = httpContextMock.Object,
             }
         };
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.NetworkHub, NetworkHubUrl);
     }
 
     [Test]
@@ -71,6 +75,7 @@ public class ErrorInServiceTests
                 HttpContext = httpContextMock.Object,
             }
         };
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.NetworkHub, NetworkHubUrl);
 
         var result = (ViewResult)sut.ErrorInService();
 

@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.Aan.SharedUi.Models;
+using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticePortal.Authentication;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
@@ -26,7 +28,11 @@ public class ErrorController : Controller
             case 404:
                 return View("PageNotFound");
             default:
-                return View("ErrorInService");
+                ErrorViewModel errorViewModel = new()
+                {
+                    HomePageUrl = Url.RouteUrl(RouteNames.NetworkHub)!
+                };
+                return View("ErrorInService", errorViewModel);
         }
     }
 
@@ -35,6 +41,10 @@ public class ErrorController : Controller
     public IActionResult ErrorInService()
     {
         var feature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+        ErrorViewModel errorViewModel = new()
+        {
+            HomePageUrl = Url.RouteUrl(RouteNames.NetworkHub)!
+        };
 
         if (User.Identity!.IsAuthenticated)
         {
@@ -44,6 +54,6 @@ public class ErrorController : Controller
         {
             _logger.LogError(feature!.Error, "Unexpected error occured during request to {path}", feature.Path);
         }
-        return View();
+        return View(errorViewModel);
     }
 }
