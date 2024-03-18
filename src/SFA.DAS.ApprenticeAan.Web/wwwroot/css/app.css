@@ -524,3 +524,7 @@ a.das-show-hide__button[aria-expanded="false"]:after {
   background: #000;
   color: #fff;
 }
+
+.member-role-tag {
+    text-transform: uppercase;
+}

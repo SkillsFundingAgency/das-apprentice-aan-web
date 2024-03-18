@@ -3,10 +3,10 @@
 
 @model MemberInformationSectionViewModel
 
-<strong class="govuk-tag app-tag app-tag--@Model.UserRole.ToString()">@Model.UserRole.GetDescription()</strong> 
+<strong class="govuk-tag app-tag app-tag--@Model.UserRole.ToString() member-role-tag">@Model.UserRole.GetDescription()</strong>
 @if (Model.ShowMaturityTag)
 {
-    <strong class="govuk-tag @Model.MaturityTagStyle">@Model.MaturityStatus</strong>
+    <strong class="govuk-tag @Model.MaturityTagStyle member-role-tag">@Model.MaturityStatus</strong>
 }
 <h1 class="govuk-heading-xl govuk-!-margin-top-4 govuk-!-margin-bottom-0">@Model.FullName</h1>
 <p class="profile-job-title govuk-!-margin-bottom-0">@Model.JobTitle</p>
