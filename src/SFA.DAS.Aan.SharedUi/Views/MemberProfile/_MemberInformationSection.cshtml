@@ -6,6 +6,7 @@
 <strong class="govuk-tag app-tag app-tag--@Model.UserRole.ToString()">@Model.UserRole.GetDescription().ToUpper()</strong> 
 @if (Model.ShowMaturityTag)
 {
+
     <strong class="govuk-tag @Model.MaturityTagStyle">@Model.MaturityStatus.ToString().ToUpper()</strong>
 }
 <h1 class="govuk-heading-xl govuk-!-margin-top-4 govuk-!-margin-bottom-0">@Model.FullName</h1>
