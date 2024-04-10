@@ -1,7 +1,10 @@
-﻿using RestEase;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using RestEase;
 using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.Models.LeaveTheNetwork;
 using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Entities;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 
@@ -72,12 +75,14 @@ public interface IOuterApiClient
     [Get("/members/{memberId}/profile")]
     Task<GetMemberProfileResponse> GetMemberProfile([Path] Guid memberId, [Header(RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId, [Query] bool @public, CancellationToken cancellationToken);
 
+    [Patch("members/{memberId}")]
+    Task<IActionResult> PatchMember([Path] Guid memberId, JsonPatchDocument<Member> request, CancellationToken cancellationToken);
+
     [Post("/notifications")]
     Task<CreateNotificationResponse> PostNotification([Header(RequestHeaders.RequestedByMemberIdHeader)] Guid requestedByMemberId, [Body] CreateNotificationRequest request, CancellationToken cancellationToken);
 
     [Put("/members/{memberId}")]
     Task UpdateMemberProfileAndPreferences([Path] Guid memberId, [Body] UpdateMemberProfileAndPreferencesRequest request, CancellationToken cancellationToken);
-
 
     [Get("/LeavingReasons")]
     Task<List<LeavingCategory>> GetLeavingReasons();

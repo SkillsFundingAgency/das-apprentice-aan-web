@@ -20,6 +20,7 @@ public static class ServiceRegistrationsStartup
         services.AddTransient<IRegionService, RegionService>();
         services.AddTransient<IApprenticeAccountService, ApprenticeAccountService>();
         services.AddTransient<IApprenticeService, ApprenticeService>();
+        services.AddTransient<IMemberService, MemberService>();
         return services;
     }
 
