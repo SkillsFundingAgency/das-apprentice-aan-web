@@ -1,10 +1,12 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.AspNetCore.Mvc.Controllers;
+﻿using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Controllers;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
+using SFA.DAS.ApprenticeAan.Web.Helpers;
+using SFA.DAS.ApprenticePortal.Authentication;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SFA.DAS.ApprenticeAan.Web.Filters;
 
@@ -13,21 +15,23 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
 {
     private readonly ISessionService _sessionService;
     private readonly IOuterApiClient _outerApiClient;
-
-    public RequiresExistingMemberAttribute(ISessionService sessionService, IOuterApiClient outerApiClient)
+    private readonly IMemberService _memberService;
+    public RequiresExistingMemberAttribute(ISessionService sessionService, IOuterApiClient outerApiClient, IMemberService memberService)
     {
         _sessionService = sessionService;
         _outerApiClient = outerApiClient;
+        _memberService = memberService;
     }
 
     public override void OnActionExecuting(ActionExecutingContext context)
-
     {
         if (context.ActionDescriptor is not ControllerActionDescriptor controllerActionDescriptor) return;
 
         if (BypassCheck(controllerActionDescriptor)) return;
 
-        if (!IsValidRequest(context, controllerActionDescriptor))
+        var isValidRequest = IsValidRequest(context, controllerActionDescriptor).Result;
+
+        if (!isValidRequest)
         {
             context.Result = RedirectToHome;
         }
@@ -44,7 +48,7 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
         return controllersToByPass.Contains(controllerActionDescriptor.ControllerTypeInfo.Name);
     }
 
-    private bool IsValidRequest(ActionExecutingContext context, ControllerActionDescriptor controllerActionDescriptor)
+    private async Task<bool> IsValidRequest(ActionExecutingContext context, ControllerActionDescriptor controllerActionDescriptor)
     {
         var memberId = _sessionService.Get(Constants.SessionKeys.Member.MemberId);
         var isLive = _sessionService.GetMemberStatus() == MemberStatus.Live;
@@ -60,6 +64,19 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
                 _sessionService.Set(Constants.SessionKeys.Member.MemberId, memberId);
                 var memberStatus = apprentice.Status;
                 _sessionService.Set(Constants.SessionKeys.Member.Status, memberStatus);
+
+                bool isClaimsMismatch = ClaimsHelper.IsClaimsMismatch(apprentice, context.HttpContext.User);
+
+                if(isClaimsMismatch)
+                {
+                    await _memberService.UpdateMemberDetails(
+                        apprentice.MemberId,
+                        ClaimsHelper.GetMismatchValue(apprentice.FirstName, context.HttpContext.User, IdentityClaims.GivenName) ?? apprentice.FirstName,
+                        ClaimsHelper.GetMismatchValue(apprentice.LastName, context.HttpContext.User, IdentityClaims.FamilyName) ?? apprentice.LastName,
+                        context.HttpContext.RequestAborted
+                    );
+                }
+
                 isLive = memberStatus == MemberStatus.Live.ToString();
             }
         }
