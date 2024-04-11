@@ -145,4 +145,42 @@ public class SubmitPersonalDetailModelValidatorTests
             result.ShouldNotHaveAnyValidationErrors();
         }
     }
+
+    [TestCase("", false)]
+    [TestCase("@", true)]
+    [TestCase("#", true)]
+    [TestCase("$", true)]
+    [TestCase("^", true)]
+    [TestCase("=", true)]
+    [TestCase("+", true)]
+    [TestCase("\\", true)]
+    [TestCase("/", true)]
+    [TestCase("<", true)]
+    [TestCase(">", true)]
+    [TestCase("%", true)]
+    public void Validate_BiographyHasInvalidCharacters_Invalid(string characterToCheck, bool validationErrorExpected)
+    {
+        // Arrange
+        var model = new SubmitPersonalDetailModel
+        {
+            JobTitle = "test",
+            Biography = $"test{characterToCheck}test"
+        };
+
+        var sut = new SubmitPersonalDetailModelValidator();
+
+        // Act
+        var result = sut.TestValidate(model);
+
+        // Assert
+        if (validationErrorExpected)
+        {
+            result.ShouldHaveValidationErrorFor(c => c.Biography)
+                .WithErrorMessage(SubmitPersonalDetailModelValidator.BiographyHasExcludedCharacter);
+        }
+        else
+        {
+            result.ShouldNotHaveAnyValidationErrors();
+        }
+    }
 }
