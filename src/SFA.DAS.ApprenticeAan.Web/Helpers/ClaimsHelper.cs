@@ -25,7 +25,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Helpers
 
         public static string? GetMismatchValue(string apprenticeValue, ClaimsPrincipal claimPrincipal, string claimType)
         {
-            return QueryClaimsByType(claimType, claimPrincipal.Claims).FirstOrDefault(a => !string.Equals(a, apprenticeValue, StringComparison.Ordinal));
+            return QueryClaimsByType(claimType, claimPrincipal.Claims).LastOrDefault(a => !string.Equals(a, apprenticeValue, StringComparison.Ordinal));
         }
     }
 }
