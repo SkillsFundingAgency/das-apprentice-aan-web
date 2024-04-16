@@ -1,9 +1,11 @@
-﻿namespace SFA.DAS.ApprenticeAan.Domain.OuterApi.Entities
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace SFA.DAS.ApprenticeAan.Domain.OuterApi.Entities
 {
+    [ExcludeFromCodeCoverage]
     public class Member
     {
         public Guid Id { get; set; }
-        //public UserType UserType { get; set; }
         public string Email { get; set; } = null!;
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
