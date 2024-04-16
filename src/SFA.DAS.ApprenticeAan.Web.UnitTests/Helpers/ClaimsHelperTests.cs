@@ -18,7 +18,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Helpers
 
             var isClaimsMismatch = ClaimsHelper.IsClaimsMismatch(apprentice, claimsPrincipal);
 
-            Assert.True(isClaimsMismatch);
+            Assert.That(isClaimsMismatch, Is.True);
         }
 
         [Test]
@@ -31,7 +31,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Helpers
 
             var isClaimsMismatch = ClaimsHelper.IsClaimsMismatch(apprentice, claimsPrincipal);
 
-            Assert.True(isClaimsMismatch);
+            Assert.That(isClaimsMismatch, Is.True);
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Helpers
 
             var claimValues = ClaimsHelper.QueryClaimsByType(IdentityClaims.GivenName, claimsPrincipal.Claims);
 
-            Assert.Contains(nameof(IdentityClaims.GivenName), claimValues);
+            Assert.That(claimValues, Does.Contain(nameof(IdentityClaims.GivenName)));
         }
 
         [Test]
