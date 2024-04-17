@@ -20,7 +20,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Helpers
 
         private static bool CheckValueMismatch(string apprenticeValue, string[] identityValues)
         {
-            return identityValues.Any(a => !string.Equals(a, apprenticeValue, StringComparison.Ordinal));
+            return Array.Exists(identityValues, a => !string.Equals(a, apprenticeValue, StringComparison.Ordinal));
         }
 
         public static string? GetMismatchValue(string apprenticeValue, ClaimsPrincipal claimPrincipal, string claimType)
