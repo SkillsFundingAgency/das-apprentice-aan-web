@@ -45,6 +45,7 @@ builder.Services.AddSharedUi(applicationConfiguration, options =>
     /// options.SetCurrentNavigationSection(NavigationSection.ApprenticeFeedback);
     options.EnableZendesk();
     options.EnableGoogleAnalytics();
+    options.SetUseGovSignIn(applicationConfiguration.UseGovSignIn);
 });
 
 builder.Services
