@@ -8,7 +8,9 @@ using SFA.DAS.ApprenticeAan.Web.Filters;
 using SFA.DAS.ApprenticeAan.Web.HealthCheck;
 using SFA.DAS.ApprenticeAan.Web.Validators.MemberProfile;
 using SFA.DAS.ApprenticeAan.Web.Validators.Onboarding;
+using SFA.DAS.ApprenticePortal.Authentication;
 using SFA.DAS.ApprenticePortal.SharedUi.Startup;
+using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.Telemetry.Startup;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,8 +33,18 @@ builder.Services
     .AddValidatorsFromAssembly(typeof(ConnectWithMemberSubmitModelValidator).Assembly)
     .AddSession(environmentName!, applicationConfiguration!.ConnectionStrings)
     .AddDataProtection(applicationConfiguration.ConnectionStrings, builder.Environment)
-    .AddAuthentication(applicationConfiguration.Authentication, builder.Environment)
     .AddServiceRegistrations(applicationConfiguration.ApprenticeAanOuterApi);
+
+
+builder.Services.AddTransient<ICustomClaims, ApprenticeAccountPostAuthenticationClaimsHandler>();
+if (applicationConfiguration.UseGovSignIn)
+{
+    builder.Services.AddGovLoginAuthentication(applicationConfiguration.ApplicationUrls, rootConfiguration);
+}
+else
+{
+    builder.Services.AddAuthentication(applicationConfiguration!.Authentication, builder.Environment);    
+}
 
 builder.Services.AddHealthChecks()
     .AddCheck<ApprenticeAanOuterApiHealthCheck>(ApprenticeAanOuterApiHealthCheck.HealthCheckResultDescription,

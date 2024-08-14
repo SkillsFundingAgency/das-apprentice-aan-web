@@ -7,6 +7,7 @@ using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Entities;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+using SFA.DAS.ApprenticePortal.Authentication;
 
 namespace SFA.DAS.ApprenticeAan.Domain.Interfaces;
 
@@ -95,4 +96,8 @@ public interface IOuterApiClient
     [AllowAnyStatusCode]
     Task PostMemberReinstate([Path] Guid memberId, CancellationToken cancellationToken);
 
+    [Put("/apprentices")]
+    Task<Apprentice?> PutApprentice([Body] PutApprenticeRequest request);
 }
+
+
