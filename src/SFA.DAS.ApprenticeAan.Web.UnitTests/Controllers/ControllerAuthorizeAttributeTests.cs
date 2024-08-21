@@ -9,7 +9,8 @@ public class ControllerAuthorizeAttributeTests
 {
     private readonly List<string> _controllersThatDoNotRequireAuthorize =
     [
-        "AccessDeniedController"
+        "AccessDeniedController",
+        "ServicesController"
     ];
 
     [Test]
