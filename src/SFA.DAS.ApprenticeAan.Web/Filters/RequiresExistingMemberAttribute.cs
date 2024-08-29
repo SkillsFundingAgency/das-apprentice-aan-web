@@ -43,7 +43,9 @@ public class RequiresExistingMemberAttribute : ApplicationFilterAttribute
             nameof(LocationsController),
             nameof(AccessDeniedController),
             nameof(LeavingTheNetworkConfirmationController),
-            nameof(RejoinTheNetworkController) };
+            nameof(RejoinTheNetworkController), 
+            nameof(ServicesController) 
+        };
 
         return controllersToByPass.Contains(controllerActionDescriptor.ControllerTypeInfo.Name);
     }

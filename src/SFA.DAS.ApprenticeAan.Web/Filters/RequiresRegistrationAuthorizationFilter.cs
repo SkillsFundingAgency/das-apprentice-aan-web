@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticePortal.Authentication;
@@ -19,6 +20,9 @@ public class RequiresRegistrationAuthorizationFilter : IAuthorizationFilter
 
     public void OnAuthorization(AuthorizationFilterContext context)
     {
+        if (context.ActionDescriptor is ControllerActionDescriptor controller &&
+            controller.ControllerName.Equals("Services", StringComparison.CurrentCultureIgnoreCase)) return;
+        
         if (_user.HasCreatedAccount) return;
 
         var returnUrl = WebUtility.UrlEncode(context.HttpContext.Request.GetUri().ToString());
