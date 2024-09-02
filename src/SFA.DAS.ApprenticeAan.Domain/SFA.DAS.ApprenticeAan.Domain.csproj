@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.3" />
-    <PackageReference Include="SFA.DAS.ApprenticePortal.SharedUi" Version="1.1.80-prerelease-16" />
+    <PackageReference Include="SFA.DAS.ApprenticePortal.SharedUi" Version="1.1.80-prerelease-18" />
     <PackageReference Include="RestEase" Version="1.6.4" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.3.1" />
   </ItemGroup>
