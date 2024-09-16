@@ -45,6 +45,7 @@ if (applicationConfiguration.UseGovSignIn)
 }
 else
 {
+    builder.Services.AddTransient<IOidcService, StubOidcService>();
     builder.Services.AddAuthentication(applicationConfiguration!.Authentication, builder.Environment);    
 }
 
