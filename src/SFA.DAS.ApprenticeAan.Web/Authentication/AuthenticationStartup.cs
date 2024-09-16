@@ -30,7 +30,6 @@ public static class AuthenticationStartup
     {
         services.AddGovLoginAuthentication(configuration);
         services.AddApplicationAuthorisation();
-        services.AddTransient<IApprenticeAccountProvider, ApprenticeAccountProvider>();
         services.AddTransient((_) => config);
     }
 

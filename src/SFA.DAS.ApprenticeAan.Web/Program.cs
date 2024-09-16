@@ -6,6 +6,7 @@ using SFA.DAS.ApprenticeAan.Web.Authentication;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Filters;
 using SFA.DAS.ApprenticeAan.Web.HealthCheck;
+using SFA.DAS.ApprenticeAan.Web.Services;
 using SFA.DAS.ApprenticeAan.Web.Validators.MemberProfile;
 using SFA.DAS.ApprenticeAan.Web.Validators.Onboarding;
 using SFA.DAS.ApprenticePortal.Authentication;
@@ -37,6 +38,7 @@ builder.Services
 
 
 builder.Services.AddTransient<ICustomClaims, ApprenticeAccountPostAuthenticationClaimsHandler>();
+builder.Services.AddTransient<IApprenticeAccountProvider, ApprenticeAccountProvider>();
 if (applicationConfiguration.UseGovSignIn)
 {
     builder.Services.AddGovLoginAuthentication(applicationConfiguration.ApplicationUrls, rootConfiguration);
