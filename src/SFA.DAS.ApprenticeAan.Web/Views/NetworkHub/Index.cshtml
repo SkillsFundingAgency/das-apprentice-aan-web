@@ -1,6 +1,24 @@
-﻿@model NetworkHubViewModel
+﻿@using SFA.DAS.ApprenticePortal.SharedUi.Menu
+@model NetworkHubViewModel
 @{
     ViewData["Title"] = "Your network hub";
+}
+
+
+@if(!ViewData.UseGovSignIn())
+{
+    <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+        <div class="govuk-notification-banner__header">
+            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                How you sign in is changing
+            </h2>
+        </div>
+        <div class="govuk-notification-banner__content">
+            <p class="govuk-body">From 1st October, you’ll sign in to My apprenticeship using GOV.UK One Login.</p>
+            <p class="govuk-body">You’ll need to create a GOV.UK One Login with the same email address that you use for My apprenticeship.</p>
+            <p class="govuk-body">All your account information will automatically be transferred to your GOV.UK One Login.</p>
+        </div>
+    </div>
 }
 
 <div class="govuk-grid-row">
