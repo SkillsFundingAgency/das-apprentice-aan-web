@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using SFA.DAS.ApprenticeAan.Web.Authentication;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
+using SFA.DAS.ApprenticeAan.Web.Services;
 using SFA.DAS.ApprenticePortal.Authentication;
+using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 
 namespace SFA.DAS.ApprenticeAan.Web.Authentication;
 
@@ -19,6 +21,16 @@ public static class AuthenticationStartup
         AddApplicationAuthentication(services, config, environment);
         services.AddApplicationAuthorisation();
         return services;
+    }
+    
+    public static void AddGovLoginAuthentication(
+        this IServiceCollection services,
+        NavigationSectionUrls config,
+        IConfiguration configuration)
+    {
+        services.AddGovLoginAuthentication(configuration);
+        services.AddApplicationAuthorisation();
+        services.AddTransient((_) => config);
     }
 
     private static void AddApplicationAuthentication(IServiceCollection services, AuthenticationConfiguration config, IWebHostEnvironment environment)

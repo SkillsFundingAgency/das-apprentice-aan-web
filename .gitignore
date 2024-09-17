@@ -351,3 +351,5 @@ MigrationBackup/
 /src/.sonarlint
 /src/SFA.DAS.ApprenticeAan.Web/appsettings.json
 /src/SFA.DAS.ApprenticeAan.Web/appsettings.Development.json
+
+src/.idea/.idea.SFA.DAS.ApprenticeAan.Web/.idea/

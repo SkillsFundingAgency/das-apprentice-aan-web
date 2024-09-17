@@ -22,6 +22,8 @@ public class ApplicationConfiguration : ISharedUiConfiguration
     public AuthenticationConfiguration Authentication { get; set; } = new();
 
     public OuterApiConfiguration ApprenticeAanOuterApi { get; set; } = new();
+    public bool UseGovSignIn { get; set; }
+    public bool UseStubAuth { get; set; }
 }
 
 public class ContactUsEmails

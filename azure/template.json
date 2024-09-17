@@ -76,7 +76,7 @@
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
         "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
-        "configNames": "SFA.DAS.ApprenticeAan.Web"
+        "configNames": "SFA.DAS.ApprenticeAan.Web,SFA.DAS.Apprentice.GovSignIn"
     },
     "resources": [
         {
@@ -192,6 +192,10 @@
                             {
                               "name": "EnvironmentName",
                               "value": "[parameters('environmentName')]"
+                            },
+                            {
+                              "name": "ResourceEnvironmentName",
+                              "value": "[parameters('resourceEnvironmentName')]"
                             },
                             {
                               "name": "ConfigurationStorageConnectionString",
