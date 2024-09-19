@@ -33,7 +33,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        if (_configuration is { UseGovSignIn: true, UseStubAuth: false })
+        if (_configuration is { UseGovSignIn: true, StubAuth: false })
         {
             var token = await HttpContext.GetTokenAsync("access_token");
             var govUkUser = await _oidcService.GetAccountDetails(token);

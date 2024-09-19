@@ -23,7 +23,7 @@ public class ApplicationConfiguration : ISharedUiConfiguration
 
     public OuterApiConfiguration ApprenticeAanOuterApi { get; set; } = new();
     public bool UseGovSignIn { get; set; }
-    public bool UseStubAuth { get; set; }
+    public bool StubAuth { get; set; }
 }
 
 public class ContactUsEmails
