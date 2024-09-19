@@ -34,7 +34,7 @@ public class AndSessionModelIsNotPopulated
 
         CheckYourAnswersController sut = new(sessionServiceMock.Object, outerApiClientMock.Object);
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
-        sut.ControllerContext = new() { HttpContext = new DefaultHttpContext() { User = user } };
+        sut.ControllerContext = new() { HttpContext = new DefaultHttpContext() { User = user.HttpContext!.User } };
 
         sut.AddUrlHelperMock();
 

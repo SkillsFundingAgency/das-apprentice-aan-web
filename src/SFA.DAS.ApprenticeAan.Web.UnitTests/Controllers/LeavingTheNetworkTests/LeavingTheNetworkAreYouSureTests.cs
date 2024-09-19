@@ -30,7 +30,7 @@ public class LeavingTheNetworkAreYouSureTests
 
         var memberId = Guid.NewGuid();
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, Guid.NewGuid().ToString());
         sut.AddUrlHelperMock()
             .AddUrlForRoute(SharedRouteNames.ProfileSettings, ProfileSettingsUrl);
@@ -80,7 +80,7 @@ public class LeavingTheNetworkAreYouSureTests
         sut.AddUrlHelperMock()
             .AddUrlForRoute(SharedRouteNames.LeaveTheNetworkComplete, LeaveTheNetworkCompleteUrl);
 
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user, RequestServices = serviceProviderMock.Object } };
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User, RequestServices = serviceProviderMock.Object } };
 
         var result = await sut.AreYouSurePost(cancellationToken);
 

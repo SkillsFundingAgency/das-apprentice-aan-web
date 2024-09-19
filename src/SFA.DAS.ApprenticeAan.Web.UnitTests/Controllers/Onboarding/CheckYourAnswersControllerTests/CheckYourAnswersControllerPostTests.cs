@@ -45,7 +45,7 @@ public class CheckYourAnswersControllerPostTests : CheckYourAnswersControllerTes
             .Setup(_ => _.GetService(typeof(ITempDataDictionaryFactory)))
             .Returns(new Mock<ITempDataDictionaryFactory>().Object);
 
-        sut.ControllerContext = new() { HttpContext = new DefaultHttpContext() { User = user, RequestServices = serviceProviderMock.Object } };
+        sut.ControllerContext = new() { HttpContext = new DefaultHttpContext() { User = user.HttpContext!.User, RequestServices = serviceProviderMock.Object } };
 
         //Act
         var result = await sut.Post();
@@ -57,8 +57,8 @@ public class CheckYourAnswersControllerPostTests : CheckYourAnswersControllerTes
             && r.ApprenticeId == onboardingSessionModel.ApprenticeDetails.ApprenticeId
             && r.RegionId == onboardingSessionModel.RegionId
             && r.Email == onboardingSessionModel.ApprenticeDetails.Email
-            && r.FirstName == user.FindFirstValue(IdentityClaims.GivenName)
-            && r.LastName == user.FindFirstValue(IdentityClaims.FamilyName)
+            && r.FirstName == user.HttpContext!.User.FindFirstValue(IdentityClaims.GivenName)
+            && r.LastName == user.HttpContext!.User.FindFirstValue(IdentityClaims.FamilyName)
         )));
 
         result.As<ViewResult>().ViewName.Should().Be(CheckYourAnswersController.ApplicationSubmittedViewPath);

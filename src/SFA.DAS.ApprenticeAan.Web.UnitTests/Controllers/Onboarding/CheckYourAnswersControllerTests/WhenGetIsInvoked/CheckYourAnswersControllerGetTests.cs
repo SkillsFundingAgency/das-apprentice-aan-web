@@ -25,7 +25,7 @@ public class CheckYourAnswersControllerGetTests : CheckYourAnswersControllerTest
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(onboardingSessionModel);
 
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
-        sut.ControllerContext = new() { HttpContext = new DefaultHttpContext() { User = user } };
+        sut.ControllerContext = new() { HttpContext = new DefaultHttpContext() { User = user.HttpContext!.User } };
 
         sut.AddUrlHelperMock();
 

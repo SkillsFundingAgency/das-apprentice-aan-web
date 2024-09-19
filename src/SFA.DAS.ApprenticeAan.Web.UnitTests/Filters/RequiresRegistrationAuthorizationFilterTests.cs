@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
+using Moq;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
 using SFA.DAS.ApprenticeAan.Web.Filters;
 using SFA.DAS.ApprenticePortal.Authentication;
@@ -67,7 +68,7 @@ public class RequiresRegistrationAuthorizationFilterTests
         return context;
     }
 
-    private static ClaimsPrincipal GetClaimsPrinciple(bool hasCreatedAccount)
+    private static IHttpContextAccessor GetClaimsPrinciple(bool hasCreatedAccount)
     {
         ClaimsPrincipal claimsPrincipal = new();
         claimsPrincipal.AddIdentity(new ClaimsIdentity(new[]
@@ -76,6 +77,13 @@ public class RequiresRegistrationAuthorizationFilterTests
             new Claim("apprentice_id", Guid.NewGuid().ToString()),
             new Claim("name", "abc@gmail.com")
         }));
-        return claimsPrincipal;
+        var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+        var defaultContext = new DefaultHttpContext
+        {
+            User = claimsPrincipal
+        };
+        mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(defaultContext);
+        
+        return mockHttpContextAccessor.Object;
     }
 }

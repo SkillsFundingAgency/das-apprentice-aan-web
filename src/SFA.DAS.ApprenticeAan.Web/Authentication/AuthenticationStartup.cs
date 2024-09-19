@@ -29,7 +29,15 @@ public static class AuthenticationStartup
         IConfiguration configuration)
     {
         services.AddGovLoginAuthentication(configuration);
-        services.AddApplicationAuthorisation();
+        services.AddAuthorization(options =>
+        {
+            var builder = new AuthorizationPolicyBuilder();
+            builder.RequireAuthenticatedUser();
+            options.DefaultPolicy = builder.Build();
+        });
+
+        services.AddScoped<AuthenticatedUser>();
+        services.AddHttpContextAccessor();
         services.AddTransient((_) => config);
     }
 
