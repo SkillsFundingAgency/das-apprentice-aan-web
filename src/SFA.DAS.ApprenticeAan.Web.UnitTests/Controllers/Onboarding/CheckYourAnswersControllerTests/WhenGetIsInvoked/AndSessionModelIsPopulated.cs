@@ -54,7 +54,7 @@ public class AndSessionModelIsPopulated : CheckYourAnswersControllerTestsBase
 
         _sut = new(sessionServiceMock.Object, outerApiClientMock.Object);
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
-        _sut.ControllerContext = new() { HttpContext = new DefaultHttpContext() { User = user } };
+        _sut.ControllerContext = new() { HttpContext = new DefaultHttpContext() { User = user.HttpContext!.User } };
 
         _sut.AddUrlHelperMock()
             .AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle, JobTitleUrl)

@@ -415,7 +415,7 @@ public class EditApprenticeshipInformationControllerGetTests
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
         sut = new EditApprenticeshipInformationController(outerApiMock.Object, validatorMock.Object, Mock.Of<ISessionService>())
         {
-            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } }
+            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } }
         };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, Guid.NewGuid().ToString());
         sut.AddUrlHelperMock()

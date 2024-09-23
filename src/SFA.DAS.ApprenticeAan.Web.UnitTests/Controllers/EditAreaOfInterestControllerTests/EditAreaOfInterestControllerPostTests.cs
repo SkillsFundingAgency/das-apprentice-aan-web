@@ -39,7 +39,7 @@ public class EditAreaOfInterestControllerPostTests
                     .Returns(Task.FromResult(getMemberProfileResponse));
         EditAreaOfInterestController sut = new(validatorMock.Object, outerApiMock.Object, Mock.Of<ISessionService>())
         {
-            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } }
+            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } }
         };
         sut.AddUrlHelperMock()
     .AddUrlForRoute(SharedRouteNames.YourAmbassadorProfile, YourAmbassadorProfileUrl);
@@ -73,7 +73,7 @@ public class EditAreaOfInterestControllerPostTests
 
         EditAreaOfInterestController sut = new(validatorMock.Object, outerApiMock.Object, Mock.Of<ISessionService>())
         {
-            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } }
+            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } }
         };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
         sut.AddUrlHelperMock()

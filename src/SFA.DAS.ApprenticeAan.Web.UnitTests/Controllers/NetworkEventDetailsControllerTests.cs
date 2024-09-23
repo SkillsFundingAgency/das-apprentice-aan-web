@@ -32,7 +32,7 @@ public class NetworkEventDetailsControllerTests
     {
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
 
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } };
         sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkDirectory, AllNetworksUrl).AddUrlForRoute(SharedRouteNames.MemberProfile, MemberProfileUrl);
 
         var response = new Response<CalendarEvent>(string.Empty, new(HttpStatusCode.OK), () => calendarEvent);
@@ -53,7 +53,7 @@ public class NetworkEventDetailsControllerTests
     {
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
 
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } };
         var result = sut.Get(apprenticeId, cancellationToken);
 
         outerApiMock.Verify(o => o.GetCalendarEventDetails(apprenticeId, It.IsAny<Guid>(), cancellationToken), Times.Once());
@@ -72,7 +72,7 @@ public class NetworkEventDetailsControllerTests
         outerApiMock.Setup(o => o.GetCalendarEventDetails(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(response);
 
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } };
 
         Assert.That(() => sut.Get(apprenticeId, cancellationToken), Throws.InvalidOperationException);
     }
@@ -83,7 +83,7 @@ public class NetworkEventDetailsControllerTests
         Guid apprenticeId)
     {
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } };
         sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkEvents, AllNetworksUrl);
         var result = sut.SignUpConfirmation();
 
@@ -101,7 +101,7 @@ public class NetworkEventDetailsControllerTests
         Guid apprenticeId)
     {
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } };
         sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkEvents, AllNetworksUrl);
         var result = sut.CancellationConfirmation();
 
@@ -125,7 +125,7 @@ public class NetworkEventDetailsControllerTests
 
         var sut = new NetworkEventDetailsController(outerApiMock.Object, validator.Object, Mock.Of<ISessionService>())
         {
-            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } }
+            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } }
         };
 
         var command = new SubmitAttendanceCommand
@@ -159,7 +159,7 @@ public class NetworkEventDetailsControllerTests
 
         var sut = new NetworkEventDetailsController(outerApiMock.Object, validator.Object, Mock.Of<ISessionService>())
         {
-            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } }
+            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } }
         };
 
         sut.ModelState.AddModelError("key", "message");
@@ -179,7 +179,7 @@ public class NetworkEventDetailsControllerTests
         Guid calendarEventId)
     {
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } };
         var command = new SubmitAttendanceCommand
         {
             CalendarEventId = calendarEventId,
@@ -198,7 +198,7 @@ public class NetworkEventDetailsControllerTests
         Guid calendarEventId)
     {
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(apprenticeId);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } };
         var command = new SubmitAttendanceCommand
         {
             CalendarEventId = calendarEventId,

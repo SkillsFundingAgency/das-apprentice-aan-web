@@ -37,7 +37,7 @@ public class MemberProfileControllerTests
         memberProfile.Preferences = Enumerable.Range(1, 4).Select(id => new MemberPreference { PreferenceId = id, Value = true });
         var memberId = Guid.NewGuid();
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } };
 
         memberProfile.UserType = memberUserType;
         outerApiMock.Setup(o => o.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).ReturnsAsync(memberProfile);
@@ -62,7 +62,7 @@ public class MemberProfileControllerTests
         outerApiMock.Setup(o => o.GetMemberProfile(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).ReturnsAsync(getMemberProfileResponse);
         var memberId = Guid.NewGuid();
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(memberId);
-        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
 
         //Act
@@ -94,7 +94,7 @@ public class MemberProfileControllerTests
         sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.Member.MemberId)).Returns(memberId.ToString());
         MemberProfileController sut = new(outerApiMock.Object, validatorMock.Object, sessionServiceMock.Object)
         {
-            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } }
+            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } }
         };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
 
@@ -132,7 +132,7 @@ public class MemberProfileControllerTests
         sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.Member.MemberId)).Returns(memberId.ToString());
         MemberProfileController sut = new(outerApiMock.Object, validatorMock.Object, sessionServiceMock.Object)
         {
-            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } }
+            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } }
         };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
 
@@ -172,7 +172,7 @@ public class MemberProfileControllerTests
 
         MemberProfileController sut = new(outerApiMock.Object, validatorMock.Object, Mock.Of<ISessionService>())
         {
-            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } }
+            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } }
         };
         sut.AddContextWithClaim(ClaimsPrincipalExtensions.ClaimTypes.AanMemberId, memberId.ToString());
         outerApiMock.Setup(c => c.PostNotification(It.IsAny<Guid>(), It.IsAny<CreateNotificationRequest>(), It.IsAny<CancellationToken>())).ReturnsAsync(createNotificationResponse);

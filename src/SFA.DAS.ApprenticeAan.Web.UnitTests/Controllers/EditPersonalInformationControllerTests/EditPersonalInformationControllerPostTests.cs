@@ -93,7 +93,7 @@ public class EditPersonalInformationControllerPostTests
         _sessionServiceMock.Setup(x => x.Get(Constants.SessionKeys.Member.MemberId)).Returns(_memberId.ToString());
         _sut = new(_outerApiMock.Object, _validatorMock.Object, _sessionServiceMock.Object);
         var user = AuthenticatedUsersForTesting.FakeLocalUserFullyVerifiedClaim(_memberId);
-        _sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } };
+        _sut.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } };
 
         _sut.TempData = Mock.Of<ITempDataDictionary>();
     }

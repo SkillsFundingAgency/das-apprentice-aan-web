@@ -44,7 +44,7 @@ public class NetworkDirectoryControllerTests
 
         _sut = new(_outerApiClientMock.Object)
         {
-            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user } }
+            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = user.HttpContext!.User } }
         };
         _sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkDirectory, AllNetworksUrl).AddUrlForRoute(SharedRouteNames.MemberProfile, MemberProfileUrl);
         _result = await _sut.Index(request, _cancellationToken);

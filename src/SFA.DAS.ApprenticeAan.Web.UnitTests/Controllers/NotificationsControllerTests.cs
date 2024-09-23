@@ -64,7 +64,7 @@ public class NotificationsControllerTests
 
         var sut = new NotificationsController(outerApiClientMock.Object, Mock.Of<ISessionService>())
         {
-            ControllerContext = new() { HttpContext = new DefaultHttpContext() { User = user } }
+            ControllerContext = new() { HttpContext = new DefaultHttpContext() { User = user.HttpContext!.User } }
         };
         return sut;
     }

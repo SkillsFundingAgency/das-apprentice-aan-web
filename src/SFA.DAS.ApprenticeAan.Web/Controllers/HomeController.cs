@@ -33,14 +33,20 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        if (_configuration is { UseGovSignIn: true, UseStubAuth: false })
+        if (_configuration is { UseGovSignIn: true, StubAuth: false })
         {
-            var token = await HttpContext.GetTokenAsync("access_token");
-            var govUkUser = await _oidcService.GetAccountDetails(token);
-            var loggedInUserEmail = User.EmailAddressClaim()!.Value;
-            if (!govUkUser.Email.Equals(loggedInUserEmail, StringComparison.CurrentCultureIgnoreCase))
+            try
             {
-                await _apprenticeAccountProvider.PutApprenticeAccount(govUkUser.Email, govUkUser.Sub);
+                var token = await HttpContext.GetTokenAsync("access_token");
+                var govUkUser = await _oidcService.GetAccountDetails(token);
+                var loggedInUserEmail = User.EmailAddressClaim()!.Value;
+                if (!govUkUser.Email.Equals(loggedInUserEmail, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    await _apprenticeAccountProvider.PutApprenticeAccount(govUkUser.Email, govUkUser.Sub);
+                }
+            }
+            catch (Exception)
+            {
             }
         }
         
