@@ -1,0 +1,21 @@
+﻿@model SFA.DAS.Aan.SharedUi.Models.NetworkEvents.EventFilterChoices
+
+<div class="govuk-form-group">
+    <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+            Location
+        </legend>
+        <div class="govuk-form-group">
+            <label class="govuk-hint" for="location">
+                Enter a city, town or postcode
+            </label>
+            <input class="govuk-input location-search-autocomplete" id="location" name="location" type="text" value="@Model.Location">
+        </div>
+        <div class="govuk-form-group">
+            <label class="govuk-hint" for="radius">
+                Within
+            </label>
+            <select class="govuk-select" asp-for="Radius" asp-items="@Model.RadiusOptions"></select>
+        </div>
+    </fieldset>
+</div>

@@ -1,6 +1,6 @@
-﻿using SFA.DAS.Aan.SharedUi.Constants;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
-using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 
 namespace SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
 
@@ -16,6 +16,17 @@ public class NetworkEventsViewModel : INetworkHubLink
 
     public SelectedFiltersModel SelectedFiltersModel { get; set; } = new SelectedFiltersModel();
     public string? NetworkHubLink { get; set; }
+
+    public string OrderBy { get; set; }
+
+    public List<SelectListItem> OrderByOptions => new List<SelectListItem>
+        { new("Soonest", "soonest"), new("Closest", "closest") };
+
+    public bool ShowSortOptions => !string.IsNullOrWhiteSpace(FilterChoices.Location) && CalendarEvents.Any();
+
+    public bool IsInvalidLocation { get; set; }
+
+    public string SearchedLocation { get; set; } = string.Empty;
 }
 
 public class CalendarEventViewModel

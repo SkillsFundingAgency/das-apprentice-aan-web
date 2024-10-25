@@ -29,6 +29,9 @@ public interface IOuterApiClient
     [Get("/locations")]
     Task<GetAddressesResult> GetAddresses([Query] string query);
 
+    [Get("/locations/search")]
+    Task<GetLocationsBySearchApiResponse> GetLocationsBySearch([Query] string query, CancellationToken cancellationToken);
+
     [Get("/locations/{postcode}")]
     [AllowAnyStatusCode]
     Task<Response<GetCoordinatesResult>> GetCoordinates([Path] string postcode);

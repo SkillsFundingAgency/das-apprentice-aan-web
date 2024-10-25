@@ -5,12 +5,12 @@ using SFA.DAS.Aan.SharedUi.Extensions;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
-using SFA.DAS.Aan.SharedUi.Services;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
 using SFA.DAS.ApprenticeAan.Web.Services;
+using FilterBuilder = SFA.DAS.ApprenticeAan.Web.Services.FilterBuilder;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
@@ -31,24 +31,22 @@ public class NetworkEventsController : Controller
     [Route("", Name = SharedRouteNames.NetworkEvents)]
     public async Task<IActionResult> Index(GetNetworkEventsRequest request, CancellationToken cancellationToken)
     {
-        var calendarEventsTask = _outerApiClient.GetCalendarEvents(_sessionService.GetMemberId(), QueryStringParameterBuilder.BuildQueryStringParameters(request), cancellationToken);
-        var calendarTask = _outerApiClient.GetCalendars();
-        var regionTask = _outerApiClient.GetRegions();
+        var calendarEvents = await _outerApiClient.GetCalendarEvents(_sessionService.GetMemberId(), QueryStringParameterBuilder.BuildQueryStringParameters(request), cancellationToken);
 
-        List<Task> tasks = [calendarEventsTask, calendarTask, regionTask];
+        var calendars = calendarEvents.Calendars;
+        var regions = calendarEvents.Regions;
 
-        await Task.WhenAll(tasks);
-
-        var calendars = calendarTask.Result;
-        var regions = regionTask.Result.Regions;
         regions.Add(new Region { Area = "National", Id = 0, Ordering = regions.Select(region => region.Ordering).Max() + 1 });
 
-        var model = InitialiseViewModel(calendarEventsTask.Result);
-        var filterUrl = FilterBuilder.BuildFullQueryString(request, () => Url.RouteUrl(SharedRouteNames.NetworkEvents)!);
-        model.PaginationViewModel = SetupPagination(calendarEventsTask.Result, filterUrl);
+        var model = InitialiseViewModel(calendarEvents);
+        var filterUrl = FilterBuilder.BuildFullQueryString(request, Url!);
+        model.PaginationViewModel = SetupPagination(calendarEvents, filterUrl);
         var filterChoices = PopulateFilterChoices(request, calendars, regions);
         model.FilterChoices = filterChoices;
-        model.SelectedFiltersModel.SelectedFilters = FilterBuilder.Build(request, () => Url.RouteUrl(SharedRouteNames.NetworkEvents)!, filterChoices.EventFormatChecklistDetails.Lookups, filterChoices.EventTypeChecklistDetails.Lookups, filterChoices.RegionChecklistDetails.Lookups);
+        model.OrderBy = request.OrderBy;
+        model.IsInvalidLocation = calendarEvents.IsInvalidLocation;
+        model.SearchedLocation = (request.Location != null) ? request.Location : string.Empty;
+        model.SelectedFiltersModel.SelectedFilters = FilterBuilder.Build(request, Url!, filterChoices.EventFormatChecklistDetails.Lookups, filterChoices.EventTypeChecklistDetails.Lookups, filterChoices.RegionChecklistDetails.Lookups);
         model.SelectedFiltersModel.ClearSelectedFiltersLink = Url.RouteUrl(SharedRouteNames.NetworkEvents)!;
         return View(model);
     }
@@ -80,6 +78,8 @@ public class NetworkEventsController : Controller
         => new()
         {
             Keyword = request.Keyword?.Trim(),
+            Location = request.Location ?? "",
+            Radius = request.Radius ?? 5,
             FromDate = request.FromDate,
             ToDate = request.ToDate,
             EventFormatChecklistDetails = new ChecklistDetails
