@@ -27,6 +27,8 @@ public class NetworkEventsViewModel : INetworkHubLink
     public bool IsInvalidLocation { get; set; }
 
     public string SearchedLocation { get; set; } = string.Empty;
+
+    public bool ShowCalendarEvents => CalendarEvents.Any();
 }
 
 public class CalendarEventViewModel

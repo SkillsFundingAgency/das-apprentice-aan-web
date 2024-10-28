@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.Aan.SharedUi", "SFA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.Aan.SharedUi.UnitTests", "SFA.DAS.Aan.SharedUi.UnitTests\SFA.DAS.Aan.SharedUi.UnitTests.csproj", "{E021C0CB-9E7A-4059-9134-98A507F16CC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.Aan.UnitTests.Shared", "SFA.DAS.Aan.SharedTestHelpers\SFA.DAS.Aan.UnitTests.Shared.csproj", "{4C2BB4E5-048E-4977-96B6-399F1C554130}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.Aan.UnitTests.Shared", "SFA.DAS.Aan.SharedTestHelpers\SFA.DAS.Aan.UnitTests.Shared.csproj", "{4C2BB4E5-048E-4977-96B6-399F1C554130}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -64,12 +64,14 @@
             </div>
 
             <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 ">
-@*             @if (Model.IsInvalidLocation)
+            @if (Model.IsInvalidLocation)
             {
                 <div class="das-search-results">
-                    <partial name="_InvalidSearch" />
+                    @{
+                        await Html.RenderPartialAsync("_InvalidSearch");
+                    }
                 </div>
-            } *@
+            }
             else
             {
                 <div class="das-search-results">
@@ -77,7 +79,8 @@
                         await Html.RenderPartialAsync("_CalendarEvents");
                     }
                 </div>
-                <partial name="_Pagination" Model="@Model.PaginationViewModel" />
+
+                await Html.RenderPartialAsync("_Pagination", Model.PaginationViewModel);
             }
 
         </div>
