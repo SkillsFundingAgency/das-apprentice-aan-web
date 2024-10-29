@@ -78,3 +78,24 @@ let autoCompletes = document.querySelectorAll('[data-module="autoComplete"]')
 nodeListForEach(autoCompletes, function (autoComplete) {
   new AutoComplete(autoComplete).init()
 })
+
+// Select Submit
+function SelectSubmit(selectField) {
+    this.selectField = selectField;
+    this.form = selectField.closest("form");
+}
+
+SelectSubmit.prototype.init = function () {
+    if (!this.selectField) {
+        return;
+    }
+    this.selectField.addEventListener("change", () => {
+        this.form.submit();
+    });
+};
+
+const selectSubmits = document.querySelectorAll('[data-module="selectSubmit"]');
+nodeListForEach(selectSubmits, function (selectSubmit) {
+    console.log(selectSubmit);
+    new SelectSubmit(selectSubmit).init();
+});
