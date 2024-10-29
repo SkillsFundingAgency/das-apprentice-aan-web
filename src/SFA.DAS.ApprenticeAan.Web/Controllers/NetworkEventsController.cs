@@ -36,7 +36,9 @@ public class NetworkEventsController : Controller
         var calendars = calendarEvents.Calendars;
         var regions = calendarEvents.Regions;
 
-        regions.Add(new Region { Area = "National", Id = 0, Ordering = regions.Select(region => region.Ordering).Max() + 1 });
+        var regionOrdering = (regions.Any()) ? regions.Select(region => region.Ordering).Max() + 1 : 1;
+
+        regions.Add(new Region { Area = "National", Id = 0, Ordering = regionOrdering });
 
         var model = InitialiseViewModel(calendarEvents);
         var filterUrl = FilterBuilder.BuildFullQueryString(request, Url!);
