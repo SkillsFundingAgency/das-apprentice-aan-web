@@ -12,7 +12,7 @@
     <Company>ESFA</Company>
     <License>https://github.com/SkillsFundingAgency/das-shared-packages/blob/master/LICENSE</License>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>3.0.9-prerelease-local</Version>
+    <Version>3.0.10-prerelease</Version>
   </PropertyGroup>
 
   <ItemGroup>
