@@ -39,7 +39,6 @@
                             await Html.RenderPartialAsync("_FilterEventDates", Model.FilterChoices);
                             await Html.RenderPartialAsync("~/Views/Shared/_FilterDetails.cshtml", Model.FilterChoices.EventFormatChecklistDetails);
                             await Html.RenderPartialAsync("~/Views/Shared/_FilterDetails.cshtml", Model.FilterChoices.EventTypeChecklistDetails);
-                            await Html.RenderPartialAsync("~/Views/Shared/_FilterDetails.cshtml", Model.FilterChoices.RegionChecklistDetails);
                         }
                         <button type="submit" class="govuk-button" id="filters-submit-second">Apply filters</button>
                     </form>
