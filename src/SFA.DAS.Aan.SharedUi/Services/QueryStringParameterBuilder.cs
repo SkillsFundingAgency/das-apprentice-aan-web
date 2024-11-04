@@ -1,7 +1,7 @@
 ﻿using SFA.DAS.Aan.SharedUi.Extensions;
 using SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
 
-namespace SFA.DAS.ApprenticeAan.Web.Services;
+namespace SFA.DAS.Aan.SharedUi.Services;
 
 public static class QueryStringParameterBuilder
 {
