@@ -5,12 +5,10 @@ using SFA.DAS.Aan.SharedUi.Extensions;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
+using SFA.DAS.Aan.SharedUi.Services;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
-using SFA.DAS.ApprenticeAan.Web.Models.NetworkEvents;
-using SFA.DAS.ApprenticeAan.Web.Services;
-using FilterBuilder = SFA.DAS.ApprenticeAan.Web.Services.FilterBuilder;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
@@ -41,14 +39,14 @@ public class NetworkEventsController : Controller
         regions.Add(new Region { Area = "National", Id = 0, Ordering = regionOrdering });
 
         var model = InitialiseViewModel(calendarEvents);
-        var filterUrl = FilterBuilder.BuildFullQueryString(request, Url!);
+        var filterUrl = FilterBuilder.BuildFullQueryString(request, () => Url.RouteUrl(SharedRouteNames.NetworkEvents)!);
         model.PaginationViewModel = SetupPagination(calendarEvents, filterUrl);
         var filterChoices = PopulateFilterChoices(request, calendars, regions);
         model.FilterChoices = filterChoices;
         model.OrderBy = request.OrderBy;
         model.IsInvalidLocation = calendarEvents.IsInvalidLocation;
         model.SearchedLocation = (request.Location != null) ? request.Location : string.Empty;
-        model.SelectedFiltersModel.SelectedFilters = FilterBuilder.Build(request, Url!, filterChoices.EventFormatChecklistDetails.Lookups, filterChoices.EventTypeChecklistDetails.Lookups, filterChoices.RegionChecklistDetails.Lookups);
+        model.SelectedFiltersModel.SelectedFilters = FilterBuilder.Build(request, () => Url.RouteUrl(SharedRouteNames.NetworkEvents)!, filterChoices.EventFormatChecklistDetails.Lookups, filterChoices.EventTypeChecklistDetails.Lookups, filterChoices.RegionChecklistDetails.Lookups);
         model.SelectedFiltersModel.ClearSelectedFiltersLink = Url.RouteUrl(SharedRouteNames.NetworkEvents)!;
         return View(model);
     }
