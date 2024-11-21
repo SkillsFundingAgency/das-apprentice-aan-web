@@ -18,7 +18,6 @@ public static class ApplicationBuilderExtensions
                 $"connect-src 'self' *.google-analytics.com https://*.rcrsv.io https://static.zdassets.com https://ekr.zdassets.com https://*.zendesk.com;; " +
                 $"frame-src *.googletagmanager.com https://*.rcrsv.io https://static.zdassets.com https://ekr.zdassets.com;";
 
-
             await next();
         });
 

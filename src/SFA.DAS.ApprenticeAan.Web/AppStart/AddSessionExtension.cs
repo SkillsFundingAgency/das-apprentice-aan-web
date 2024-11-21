@@ -12,6 +12,7 @@ public static class AddSessionExtension
             options.Cookie.HttpOnly = true;
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             options.Cookie.IsEssential = true;
+            options.Cookie.SameSite = SameSiteMode.Strict;
         });
 
         if (environmentName.Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase))
