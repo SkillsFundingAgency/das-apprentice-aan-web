@@ -11,12 +11,13 @@ public static class ApplicationBuilderExtensions
         app.Use(async (context, next) =>
         {
             context.Response.Headers["Content-Security-Policy"] =
-                $"script-src 'self' 'unsafe-inline' {dasCdn} *.tagmanager.google.com https://ssl.google-analytics.com *.googletagmanager.com *.google-analytics.com *.googleapis.com https://*.services.visualstudio.com https://*.rcrsv.io; " +
-                $"style-src 'self' 'unsafe-inline' {dasCdn} *.tagmanager.google.com https://fonts.googleapis.com https://*.rcrsv.io; " +
-                $"img-src {dasCdn} *.googletagmanager.com https://ssl.gstatic.com https://www.gstatic.com *.google-analytics.com https://*.rcrsv.io; " +
-                $"font-src {dasCdn} https://fonts.gstatic.com https://*.rcrsv.io; " +
-                "connect-src 'self' *.google-analytics.com https://*.rcrsv.io; " +
-                "frame-src *.googletagmanager.com https://*.rcrsv.io";
+                $"script-src 'self' 'unsafe-inline' {dasCdn} *.tagmanager.google.com https://ssl.google-analytics.com *.googletagmanager.com *.google-analytics.com *.googleapis.com https://*.services.visualstudio.com https://*.rcrsv.io https://static.zdassets.com https://ekr.zdassets.com; " +
+                $"style-src 'self' 'unsafe-inline' {dasCdn} *.tagmanager.google.com https://fonts.googleapis.com https://*.rcrsv.io https://static.zdassets.com; " +
+                $"img-src {dasCdn} *.googletagmanager.com https://ssl.gstatic.com https://www.gstatic.com *.google-analytics.com https://*.rcrsv.io https://static.zdassets.com https://ekr.zdassets.com; " +
+                $"font-src {dasCdn} https://fonts.gstatic.com https://*.rcrsv.io https://static.zdassets.com https://ekr.zdassets.com; " +
+                $"connect-src 'self' *.google-analytics.com https://*.rcrsv.io https://static.zdassets.com https://ekr.zdassets.com https://*.zendesk.com;; " +
+                $"frame-src *.googletagmanager.com https://*.rcrsv.io https://static.zdassets.com https://ekr.zdassets.com;";
+
 
             await next();
         });
