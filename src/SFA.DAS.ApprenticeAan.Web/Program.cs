@@ -46,7 +46,7 @@ if (applicationConfiguration.UseGovSignIn)
 else
 {
     builder.Services.AddTransient<IOidcService, StubOidcService>();
-    builder.Services.AddAuthentication(applicationConfiguration!.Authentication, builder.Environment);    
+    builder.Services.AddAuthentication(applicationConfiguration!.Authentication, builder.Environment);
 }
 
 builder.Services.AddHealthChecks()
@@ -92,6 +92,8 @@ else
     app.UseExceptionHandler("/error");
     app.UseHsts();
 }
+
+app.UseContentSecurityPolicy();
 
 app.Use(async (context, next) =>
 {
