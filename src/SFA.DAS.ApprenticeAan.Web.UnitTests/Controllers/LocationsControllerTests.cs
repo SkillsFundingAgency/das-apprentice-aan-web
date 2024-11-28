@@ -25,4 +25,16 @@ public class LocationsControllerTests
 
         actualResult.Result.As<OkObjectResult>().Value.Should().BeEquivalentTo(expectedResult.Addresses);
     }
+
+    [Test, MoqAutoData]
+    public void GetLocationsBySearch_ReturnsApiResponse(
+       [Frozen] Mock<IOuterApiClient> outerAPiMock,
+       [Greedy] LocationsController sut,
+       GetLocationsBySearchApiResponse expectedResult,
+       string query)
+    {
+        outerAPiMock.Setup(o => o.GetLocationsBySearch(query, It.IsAny<CancellationToken>())).ReturnsAsync(expectedResult);
+        var actualResult = sut.GetLocationsBySearch(query, new CancellationToken());
+        actualResult.Result.As<OkObjectResult>().Value.Should().BeEquivalentTo(expectedResult.Locations);
+    }
 }

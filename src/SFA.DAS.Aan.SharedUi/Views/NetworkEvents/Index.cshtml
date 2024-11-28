@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using SFA.DAS.Aan.SharedUi.Infrastructure;
 @using SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @model NetworkEventsViewModel
 @{
@@ -34,10 +35,10 @@
                       <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
                         @{
                             await Html.RenderPartialAsync("_FilterEventKeyword", Model.FilterChoices);
+                            await Html.RenderPartialAsync("_FilterLocation", Model.FilterChoices);
                             await Html.RenderPartialAsync("_FilterEventDates", Model.FilterChoices);
                             await Html.RenderPartialAsync("~/Views/Shared/_FilterDetails.cshtml", Model.FilterChoices.EventFormatChecklistDetails);
                             await Html.RenderPartialAsync("~/Views/Shared/_FilterDetails.cshtml", Model.FilterChoices.EventTypeChecklistDetails);
-                            await Html.RenderPartialAsync("~/Views/Shared/_FilterDetails.cshtml", Model.FilterChoices.RegionChecklistDetails);
                         }
                         <button type="submit" class="govuk-button" id="filters-submit-second">Apply filters</button>
                     </form>
@@ -46,18 +47,42 @@
             <button class="govuk-button das-filter__toggle das-show-hide__button govuk-visually-hidden" data-button-string="filter " data-aria-controls="events-filter" aria-expanded="true">Show filter </button>
         </div>
     </div>
+
     <div class="govuk-grid-column-two-thirds">
-        <h2 class="govuk-heading-m">@totalCountDescription</h2>
-        <p class="govuk-body govuk-!-margin-bottom-6  govuk-visually-hidden">
-            Sorted by:
-            <span class="govuk-!-font-weight-bold">Name</span>
-        </p>
-        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 ">
-        <div class="das-search-results">
-            @{
-                await Html.RenderPartialAsync("_CalendarEvents");
+        <div class="govuk-grid-row">
+            <div class="app-search-results-header">
+                <h2 class="govuk-heading-m">@totalCountDescription <span class="govuk-visually-hidden">sorted by name</span></h2>
+                @if (Model.ShowSortOptions)
+                {
+                    <form method="get" class="app-search-results-sort">
+                        <label class="govuk-label" asp-for="OrderBy">Sort by</label>
+                        <select class="govuk-select" asp-for="OrderBy" data-module="selectSubmit" asp-items="Model.OrderByOptions"></select>
+                        <button id="SortButton" class="govuk-button govuk-button--secondary das-js-hide nonjs-sort-button" type="submit">Sort</button>
+                        <partial name="_HiddenFilters" for="@Model" />
+                    </form>
+                }
+            </div>
+
+            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 ">
+            @if (Model.IsInvalidLocation)
+            {
+                <div class="das-search-results">
+                    @{
+                        await Html.RenderPartialAsync("_InvalidSearch");
+                    }
+                </div>
             }
+            else
+            {
+                <div class="das-search-results">
+                    @{
+                        await Html.RenderPartialAsync("_CalendarEvents");
+                    }
+                </div>
+
+                await Html.RenderPartialAsync("_Pagination", Model.PaginationViewModel);
+            }
+
         </div>
-        @{ await Html.RenderPartialAsync("_Pagination", Model.PaginationViewModel); }
     </div>
 </div>

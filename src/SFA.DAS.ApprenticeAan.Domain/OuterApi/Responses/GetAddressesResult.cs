@@ -16,4 +16,6 @@ public class AddressItem
     public string? AddressLine2 { get; set; }
     public double? Longitude { get; set; }
     public double? Latitude { get; set; }
+    public string Name => string.Join(", ", new[] { OrganisationName, AddressLine1, AddressLine2, Postcode }
+        .Where(value => !string.IsNullOrWhiteSpace(value)));
 }

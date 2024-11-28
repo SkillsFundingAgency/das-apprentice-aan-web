@@ -524,3 +524,31 @@ a.das-show-hide__button[aria-expanded="false"]:after {
   background: #000;
   color: #fff;
 }
+
+.app-search-results-header {
+    margin-bottom: 15px;
+}
+
+@media (min-width: 40.0625em) {
+    .app-search-results-header {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .app-search-results-header h2 {
+        margin-bottom: 0;
+    }
+
+    .app-search-results-sort {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .nonjs-sort-button {
+        margin-bottom: 5px;
+    }
+}

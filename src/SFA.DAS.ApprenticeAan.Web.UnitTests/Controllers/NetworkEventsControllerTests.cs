@@ -151,4 +151,40 @@ public class NetworkEventsControllerTests
         regionLookup!.Count().Should().Be(regionCountFromApi + 1);
         regionLookup!.First(x => x.Value == "0").Name.Should().Be("National");
     }
+
+    [Test, MoqAutoData]
+    public void GetCalendarEventsWithInvalidLocation_ReturnsViewModelWithInvalidLocation([Frozen] Mock<IOuterApiClient> outerApiMock,
+       [Frozen] Mock<ISessionService> sessionServiceMock,
+       GetCalendarEventsQueryResult expectedResult,
+       List<int> calendarId)
+    {
+        var request = new GetNetworkEventsRequest
+        {
+            CalendarId = calendarId
+        };
+
+        var apiResult = new GetCalendarEventsQueryResult
+        {
+            TotalCount = 0,
+            IsInvalidLocation = true
+        };
+
+        outerApiMock
+            .Setup(o => o.GetCalendarEvents(It.IsAny<Guid>(), It.IsAny<Dictionary<string, string[]>>(),
+                It.IsAny<CancellationToken>())).ReturnsAsync(apiResult);
+
+        var sut = new NetworkEventsController(outerApiMock.Object, sessionServiceMock.Object);
+        sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkEvents, AllNetworksUrl);
+
+        var actualResult = sut.Index(request, new CancellationToken());
+
+        var viewResult = actualResult.Result.As<ViewResult>();
+        var model = viewResult.Model as NetworkEventsViewModel;
+        model!.IsInvalidLocation.Should().BeTrue();
+        model!.TotalCount.Should().Be(0);
+
+        outerApiMock.Verify(
+            o => o.GetCalendarEvents(It.IsAny<Guid>(), It.IsAny<Dictionary<string, string[]>>(),
+                It.IsAny<CancellationToken>()), Times.Once);
+    }
 }

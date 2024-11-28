@@ -2,7 +2,7 @@
 using FluentAssertions;
 using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
-using SFA.DAS.ApprenticeAan.Web.Services;
+using SFA.DAS.Aan.SharedUi.Services;
 
 namespace SFA.DAS.Aan.SharedUi.UnitTests.Services;
 
