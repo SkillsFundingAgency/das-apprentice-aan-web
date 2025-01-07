@@ -69,6 +69,7 @@ public class LineManagerControllerPostTests
     {
         tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.HasSeenTermsAndConditions)).Returns(true);
         sut.TempData = tempDataMock.Object;
+        sut.AddUrlHelperMock();
         LineManagerSubmitModel submitModel = new() { HasEmployersApproval = false };
         validatorMock.Setup(v => v.Validate(submitModel)).Returns(new ValidationResult());
 
@@ -189,11 +190,12 @@ public class LineManagerControllerPostTests
         sut.AddContextWithClaim(ClaimTypes.ApprenticeId, Guid.NewGuid().ToString());
         tempDataMock.Setup(t => t.ContainsKey(TempDataKeys.HasSeenTermsAndConditions)).Returns(true);
         sut.TempData = tempDataMock.Object;
+        sut.AddUrlHelperMock();
         LineManagerSubmitModel submitModel = new() { HasEmployersApproval = true };
         validatorMock.Setup(v => v.Validate(submitModel)).Returns(new ValidationResult());
 
         var result = await sut.Post(submitModel, cancellationToken);
 
-        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.EmployerSearch);
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.Regions);
     }
 }

@@ -66,7 +66,7 @@ public class LineManagerController : Controller
 
         if (!submitModel.HasEmployersApproval.GetValueOrDefault())
         {
-            ShutterPageViewModel shutterPageViewModel = new() { ApprenticeHomeUrl = _applicationConfiguration.ApplicationUrls.ApprenticeHomeUrl.ToString() };
+            ShutterPageViewModel shutterPageViewModel = new() { ApprenticeHomeUrl = _applicationConfiguration.ApplicationUrls.ApprenticeHomeUrl.ToString(), BeforeYouStartPageLink = Url.RouteUrl(@RouteNames.Onboarding.BeforeYouStart)! };
             _sessionService.Delete<OnboardingSessionModel>();
             TempData.Remove(TempDataKeys.HasSeenTermsAndConditions);
             return View(ShutterPageViewPath, shutterPageViewModel);
@@ -99,7 +99,7 @@ public class LineManagerController : Controller
             _sessionService.Set(sessionModel);
         }
 
-        return RedirectToRoute(RouteNames.Onboarding.EmployerSearch);
+        return RedirectToRoute(RouteNames.Onboarding.Regions);
     }
 
     private LineManagerViewModel GetViewModel()
