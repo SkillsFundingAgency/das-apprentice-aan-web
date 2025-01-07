@@ -66,7 +66,7 @@ public class LineManagerController : Controller
 
         if (!submitModel.HasEmployersApproval.GetValueOrDefault())
         {
-            ShutterPageViewModel shutterPageViewModel = new() { ApprenticeHomeUrl = _applicationConfiguration.ApplicationUrls.ApprenticeHomeUrl.ToString(), BeforeYouStartPageLink = Url.RouteUrl(@RouteNames.Onboarding.BeforeYouStart)! };
+            ShutterPageViewModel shutterPageViewModel = new() { ApprenticeHomeUrl = _applicationConfiguration.ApplicationUrls.ApprenticeHomeUrl.ToString() };
             _sessionService.Delete<OnboardingSessionModel>();
             TempData.Remove(TempDataKeys.HasSeenTermsAndConditions);
             return View(ShutterPageViewPath, shutterPageViewModel);
