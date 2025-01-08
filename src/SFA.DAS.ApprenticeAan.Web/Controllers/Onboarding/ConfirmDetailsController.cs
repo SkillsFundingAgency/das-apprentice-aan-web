@@ -7,21 +7,23 @@ using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
 
 [Authorize]
-[Route("onboarding/regionalNetwork", Name = RouteNames.Onboarding.RegionalNetwork)]
+[Route("onboarding/confirmDetails", Name = RouteNames.Onboarding.ConfirmDetails)]
 [HideNavigationBar(true, true)]
-public class RegionalNetworkController : Controller
+public class ConfirmDetailsController : Controller
 {
-    public const string ViewPath = "~/Views/Onboarding/RegionalNetwork.cshtml";
+    public const string ViewPath = "~/Views/Onboarding/ConfirmDetails.cshtml";
+
     private readonly ISessionService _sessionService;
 
-    public RegionalNetworkController(ISessionService sessionService)
+    public ConfirmDetailsController(ISessionService sessionService)
     {
         _sessionService = sessionService;
     }
 
     [HttpGet]
-    public IActionResult Get()
+    public async Task<IActionResult> Index()
     {
         return View(ViewPath);
     }
 }
+

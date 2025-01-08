@@ -1,1 +1,40 @@
-﻿<!-- TODO: Regional Network -->
+﻿@model RegionalNetworkViewModel
+@{
+    ViewData["Title"] = "Your regional network";
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form method="post">
+            <fieldset class="govuk-fieldset">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                    <span class="govuk-caption-l govuk-!-margin-bottom-0">Find your regional network</span>
+                    <h1 class="govuk-fieldset__heading">
+                        Your regional network
+                    </h1>
+                </legend>
+                <p />
+                <div class="govuk-body">
+                    When you finish your registration, we’ll add you to the <strong>@Model.SelectedRegion Apprenticeship Ambassador Network</strong>.
+                </div>
+
+                <!-- TODO: Update the href once the link is ready -->
+
+                <div class="govuk-body">
+                    They’ll be your main contact and help you get involved. Learn more about them on the
+                    <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="">regional networks page (opens in new tab)</a>.
+                </div>
+                <h2 class="govuk-heading-m">
+                    What to do next
+                </h2>
+                <div class="govuk-body">
+                    Continue your registration and tell us more about yourself.
+                </div>
+            </fieldset>
+            <div class="govuk-button-group">
+                <button id="continue" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
