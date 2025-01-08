@@ -71,17 +71,17 @@ public class EmployerSearchControllerGetTests
         [Greedy] EmployerSearchController sut)
     {
         const string CheckYourAnswersUrl = "checkanswers.url";
-        const string LineManagerUrl = "linemanager.url";
+        const string ConfirmDetailsUrl = "confirmDetails.url";
         sut
             .AddUrlHelperMock()
             .AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers, CheckYourAnswersUrl)
-            .AddUrlForRoute(RouteNames.Onboarding.LineManager, LineManagerUrl);
+            .AddUrlForRoute(RouteNames.Onboarding.ConfirmDetails, ConfirmDetailsUrl);
         sessionServiceMock
             .Setup(s => s.Get<OnboardingSessionModel>())
             .Returns(new OnboardingSessionModel() { HasSeenPreview = false });
 
         var result = sut.Get();
 
-        result.As<ViewResult>().Model.As<EmployerSearchViewModel>().BackLink.Should().Be(LineManagerUrl);
+        result.As<ViewResult>().Model.As<EmployerSearchViewModel>().BackLink.Should().Be(ConfirmDetailsUrl);
     }
 }
