@@ -23,7 +23,7 @@ public class ConfirmDetailsController : Controller
     }
 
     [HttpGet]
-    public IActionResult Index([FromRoute] string employerAccountId)
+    public IActionResult Index()
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
         var viewModel = GetViewModel(sessionModel);
@@ -31,7 +31,7 @@ public class ConfirmDetailsController : Controller
     }
 
     [HttpPost]
-    public IActionResult Index()
+    public IActionResult IndexPost()
     {
         return RedirectToRoute(RouteNames.Onboarding.EmployerSearch);
     }
