@@ -70,16 +70,16 @@ public class ReasonToJoinControllerGetTests
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] ReasonToJoinController sut,
         OnboardingSessionModel sessionModel,
-        string regionsUrl,
+        string areasOfInterestUrl,
         string reasonForJoining)
     {
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.ReasonToJoinAmbassadorNetwork, Value = reasonForJoining });
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.Regions, regionsUrl);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest, areasOfInterestUrl);
         sessionModel.HasSeenPreview = false;
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         var result = sut.Get();
 
-        result.As<ViewResult>().Model.As<ReasonToJoinViewModel>().BackLink.Should().Be(regionsUrl);
+        result.As<ViewResult>().Model.As<ReasonToJoinViewModel>().BackLink.Should().Be(areasOfInterestUrl);
     }
 }

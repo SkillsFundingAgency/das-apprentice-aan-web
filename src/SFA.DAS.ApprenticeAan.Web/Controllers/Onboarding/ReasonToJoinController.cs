@@ -60,7 +60,7 @@ public class ReasonToJoinController : Controller
         var model = new ReasonToJoinViewModel()
         {
             ReasonForJoiningTheNetwork = sessionModel.GetProfileValue(ProfileConstants.ProfileIds.ReasonToJoinAmbassadorNetwork),
-            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(RouteNames.Onboarding.Regions)!
+            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(RouteNames.Onboarding.AreasOfInterest)!
         };
         return model;
     }
