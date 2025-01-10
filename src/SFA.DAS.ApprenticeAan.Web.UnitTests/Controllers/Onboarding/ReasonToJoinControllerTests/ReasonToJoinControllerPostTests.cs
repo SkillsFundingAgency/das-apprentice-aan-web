@@ -94,7 +94,7 @@ public class ReasonToJoinControllerPostTests
 
         sut.ModelState.IsValid.Should().BeTrue();
 
-        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.AreasOfInterest);
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.ReceiveNotifications);
     }
 
     [MoqAutoData]
