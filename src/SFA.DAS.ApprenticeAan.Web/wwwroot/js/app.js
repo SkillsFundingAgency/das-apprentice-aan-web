@@ -2,29 +2,29 @@ function AutoComplete(selectField) {
     this.selectElement = selectField
 }
 
-AutoComplete.prototype.init = function() {
+AutoComplete.prototype.init = function () {
     this.autoComplete()
 }
 
-AutoComplete.prototype.getSuggestions = function(query, updateResults) {
+AutoComplete.prototype.getSuggestions = function (query, updateResults) {
     let results = [];
     let apiUrl = "/locations?query=" + query
     let xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4) {
-        let jsonResponse = JSON.parse(xhr.responseText);
-        results = jsonResponse.map(function (result) {
-          return result
-        });
-        updateResults(results);
-      }
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            let jsonResponse = JSON.parse(xhr.responseText);
+            results = jsonResponse.map(function (result) {
+                return result
+            });
+            updateResults(results);
+        }
     }
     xhr.open("GET", apiUrl, true);
     xhr.send();
 }
 
-AutoComplete.prototype.onConfirm = function(option) {
-  // Populate form fields with selected option
+AutoComplete.prototype.onConfirm = function (option) {
+    // Populate form fields with selected option
     document.getElementById("OrganisationName").value = option.organisationName
     document.getElementById("AddressLine1").value = option.addressLine1
     document.getElementById("AddressLine2").value = option.addressLine2
@@ -37,14 +37,14 @@ AutoComplete.prototype.onConfirm = function(option) {
 }
 
 function inputValueTemplate(result) {
-  return result && [result.organisationName, result.addressLine1, result.town, result.postcode].filter(element => element).join(', ')
+    return result && [result.organisationName, result.addressLine1, result.town, result.postcode].filter(element => element).join(', ')
 }
 
-function suggestionTemplate (result) {
-  return result && [result.organisationName, result.addressLine1, result.town, result.postcode].filter(element => element).join(', ')
+function suggestionTemplate(result) {
+    return result && [result.organisationName, result.addressLine1, result.town, result.postcode].filter(element => element).join(', ')
 }
 
-AutoComplete.prototype.autoComplete = function() {
+AutoComplete.prototype.autoComplete = function () {
     let that = this
     accessibleAutocomplete.enhanceSelectElement({
         selectElement: that.selectElement,
@@ -58,25 +58,25 @@ AutoComplete.prototype.autoComplete = function() {
         confirmOnBlur: false,
         onConfirm: that.onConfirm,
         templates: {
-          inputValue: inputValueTemplate,
-          suggestion: suggestionTemplate
+            inputValue: inputValueTemplate,
+            suggestion: suggestionTemplate
         }
     });
 }
 
 function nodeListForEach(nodes, callback) {
     if (window.NodeList.prototype.forEach) {
-      return nodes.forEach(callback)
+        return nodes.forEach(callback)
     }
     for (let i = 0; i < nodes.length; i++) {
-      callback.call(window, nodes[i], i, nodes);
+        callback.call(window, nodes[i], i, nodes);
     }
-  }
+}
 
 let autoCompletes = document.querySelectorAll('[data-module="autoComplete"]')
 
 nodeListForEach(autoCompletes, function (autoComplete) {
-  new AutoComplete(autoComplete).init()
+    new AutoComplete(autoComplete).init()
 })
 
 // Select Submit
@@ -167,3 +167,27 @@ if (locationInputs.length > 0) {
         }
     }
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const pageIdentifier = document.getElementById('event-types-container');
+    if (!pageIdentifier) return;
+
+    const allCheckbox = document.getElementById("all-checkbox");
+    const otherCheckboxes = document.querySelectorAll(".other-checkbox");
+
+    allCheckbox.addEventListener("change", function () {
+        if (allCheckbox.checked) {
+            otherCheckboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        }
+    });
+
+    otherCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", function () {
+            if (checkbox.checked) {
+                allCheckbox.checked = false;
+            }
+        });
+    });
+});

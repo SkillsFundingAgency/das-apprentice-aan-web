@@ -23,6 +23,7 @@ public static class RouteNames
         public const string AreasOfInterest = nameof(AreasOfInterest);
         public const string CheckYourAnswers = nameof(CheckYourAnswers);
         public const string PreviousEngagement = nameof(PreviousEngagement);
+        public const string NotificationsLocations = nameof(NotificationsLocations);
         public const string SelectNotificationEvents = nameof(SelectNotificationEvents);
     }
 
