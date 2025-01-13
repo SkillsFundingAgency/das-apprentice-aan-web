@@ -13,7 +13,7 @@ public class ReceiveNotificationsController : Controller
     public const string ViewPath = "~/Views/Onboarding/ReceiveNotifications.cshtml";
 
     [HttpGet]
-    public IActionResult Get([FromRoute] string employerAccountId)
+    public IActionResult Get()
     {
         return View(ViewPath);
     }
