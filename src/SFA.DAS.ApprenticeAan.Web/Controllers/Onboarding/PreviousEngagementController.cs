@@ -67,7 +67,7 @@ public class PreviousEngagementController : Controller
         return new PreviousEngagementViewModel()
         {
             HasPreviousEngagement = bool.TryParse(previousEngagement, out var result) ? result : null,
-            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(@RouteNames.Onboarding.AreasOfInterest)!
+            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(@RouteNames.Onboarding.ReceiveNotifications)!
         };
     }
 }
