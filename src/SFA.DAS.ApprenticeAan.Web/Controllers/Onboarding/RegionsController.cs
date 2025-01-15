@@ -64,7 +64,7 @@ public class RegionsController : Controller
     {
         return new RegionsViewModel
         {
-            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(RouteNames.Onboarding.CurrentJobTitle)!,
+            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(RouteNames.Onboarding.LineManager)!,
             Regions = await _regionService.GetRegions()
         };
     }
