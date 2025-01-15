@@ -1,8 +1,9 @@
 ﻿using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+using SFA.DAS.ApprenticeAan.Web.Models.Shared;
 
 namespace SFA.DAS.ApprenticeAan.Web.Models;
 
-public class OnboardingSessionModel
+public class OnboardingSessionModel : INotificationLocationsSessionModel
 {
     public MyApprenticeship MyApprenticeship { get; set; } = null!;
     public bool HasSeenPreview { get; set; }

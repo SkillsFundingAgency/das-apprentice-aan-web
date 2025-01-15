@@ -64,10 +64,17 @@ public class PreviousEngagementController : Controller
     private PreviousEngagementViewModel GetViewModel(OnboardingSessionModel sessionModel)
     {
         var previousEngagement = sessionModel.GetProfileValue(ProfileConstants.ProfileIds.EngagedWithAPreviousAmbassadorInTheNetworkApprentice);
+        string backLink = sessionModel switch
+        {
+            { HasSeenPreview: true } => RouteNames.Onboarding.CheckYourAnswers,
+            { NotificationLocations: { Count: > 0 } } => RouteNames.Onboarding.NotificationsLocations,
+            { EventTypes: { Count: > 0 } } => RouteNames.Onboarding.SelectNotificationEvents,
+            _ => RouteNames.Onboarding.ReceiveNotifications
+        };
         return new PreviousEngagementViewModel()
         {
             HasPreviousEngagement = bool.TryParse(previousEngagement, out var result) ? result : null,
-            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(@RouteNames.Onboarding.ReceiveNotifications)!
+            BackLink = Url.RouteUrl(backLink)!
         };
     }
 }

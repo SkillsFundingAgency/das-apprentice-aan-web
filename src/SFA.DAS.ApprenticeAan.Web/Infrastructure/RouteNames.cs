@@ -24,6 +24,7 @@ public static class RouteNames
         public const string CheckYourAnswers = nameof(CheckYourAnswers);
         public const string PreviousEngagement = nameof(PreviousEngagement);
         public const string NotificationsLocations = nameof(NotificationsLocations);
+        public const string NotificationLocationDisambiguation = nameof(NotificationLocationDisambiguation);
         public const string SelectNotificationEvents = nameof(SelectNotificationEvents);
     }
 
