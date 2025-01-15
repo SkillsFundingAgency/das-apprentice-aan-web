@@ -57,7 +57,7 @@ public class RegionsController : Controller
         sessionModel.RegionName = model.Regions.First(x => x.Id == sessionModel.RegionId).Area;
         _sessionService.Set(sessionModel);
 
-        return RedirectToRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.ReasonToJoin);
+        return RedirectToRoute(RouteNames.Onboarding.RegionalNetwork);
     }
 
     private async Task<RegionsViewModel> GetViewModel(OnboardingSessionModel sessionModel)

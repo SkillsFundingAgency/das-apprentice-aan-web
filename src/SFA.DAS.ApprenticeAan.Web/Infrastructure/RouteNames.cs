@@ -17,6 +17,8 @@ public static class RouteNames
         public const string EmployerSearch = nameof(EmployerSearch);
         public const string EmployerDetails = nameof(EmployerDetails);
         public const string ReasonToJoin = nameof(ReasonToJoin);
+        public const string RegionalNetwork = nameof(RegionalNetwork);
+        public const string ConfirmDetails = nameof(ConfirmDetails);
         public const string AreasOfInterest = nameof(AreasOfInterest);
         public const string CheckYourAnswers = nameof(CheckYourAnswers);
         public const string PreviousEngagement = nameof(PreviousEngagement);
