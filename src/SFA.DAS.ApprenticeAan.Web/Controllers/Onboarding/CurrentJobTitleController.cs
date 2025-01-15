@@ -56,7 +56,7 @@ public class CurrentJobTitleController : Controller
         sessionModel.SetProfileValue(ProfileConstants.ProfileIds.JobTitle, submitModel.JobTitle!.Trim());
         _sessionService.Set(sessionModel);
 
-        return RedirectToRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.Regions);
+        return RedirectToRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.AreasOfInterest);
     }
 
     private CurrentJobTitleViewModel GetViewModel(OnboardingSessionModel sessionModel)
