@@ -9,6 +9,7 @@ using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using SFA.DAS.Validation.Mvc.Filters;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
+
 [Authorize]
 [Route("onboarding/notifications-locations", Name = RouteNames.Onboarding.NotificationsLocations)]
 [HideNavigationBar(true, true)]
