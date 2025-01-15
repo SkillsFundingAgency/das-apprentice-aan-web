@@ -5,7 +5,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Validators.Onboarding;
 
 public class EmployerSearchSubmitModelValidator : AbstractValidator<EmployerSearchSubmitModel>
 {
-    private const string MissingAddressErrorMessage = "Enter an employer name or postcode";
+    private const string MissingAddressErrorMessage = "Enter your employer's name or address";
 
     public EmployerSearchSubmitModelValidator()
     {
