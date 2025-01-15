@@ -1,1 +1,75 @@
-﻿<!-- TODO: Confirmation Details -->
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ConfirmDetailsViewModel
+
+@{
+    ViewData["Title"] = "Create your ambassador profile";
+}
+
+<div class="govuk-grid-row">
+    <form method="post" asp-route="@RouteNames.Onboarding.ConfirmDetails" novalidate>
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">Create your ambassador profile</h1>
+
+            <p class="govuk-body">
+                Your profile will be shown on the AAN online portal.
+            </p>
+
+            <h2 class="govuk-heading-m">Confirm your details</h2>
+
+            <p class="govuk-body">
+                Your details can be seen by other ambassadors, except your email address. We’ll only share your email address with AAN event organisers when you sign up to attend an event.
+            </p>
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Full name
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.FullName
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Email address
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.Email
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Apprenticeship sectors
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.ApprenticeshipSector
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Apprenticeship programme
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.ApprenticeshipProgram
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Apprenticeship level
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.ApprenticeshipLevel
+                    </dd>
+                </div>
+            </dl>
+
+            <div class="govuk-body">
+                You can change these details in your My apprenticeship account settings.
+            </div>
+            <div class="govuk-button-group">
+                <button id="continue-button" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true" asp-page-handler="Submit">
+                    Confirm and continue
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

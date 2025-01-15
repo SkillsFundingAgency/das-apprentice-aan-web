@@ -63,7 +63,7 @@ public class EmployerSearchController : Controller
         var onboardingSessionModel = _sessionService.Get<OnboardingSessionModel>();
         return new()
         {
-            BackLink = onboardingSessionModel.HasSeenPreview ? Url.RouteUrl(RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(RouteNames.Onboarding.LineManager)!,
+            BackLink = onboardingSessionModel.HasSeenPreview ? Url.RouteUrl(RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(RouteNames.Onboarding.ConfirmDetails)!,
             ManualEntryLink = Url.RouteUrl(RouteNames.Onboarding.EmployerDetails)!
         };
     }

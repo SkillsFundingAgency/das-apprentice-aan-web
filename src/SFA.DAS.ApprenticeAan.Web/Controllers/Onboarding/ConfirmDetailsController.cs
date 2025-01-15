@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
+using SFA.DAS.ApprenticeAan.Web.Models;
+using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
@@ -21,9 +23,30 @@ public class ConfirmDetailsController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-        return View(ViewPath);
+        var sessionModel = _sessionService.Get<OnboardingSessionModel>();
+        var viewModel = GetViewModel(sessionModel);
+        return View(ViewPath, viewModel);
+    }
+
+    [HttpPost]
+    public IActionResult IndexPost()
+    {
+        return RedirectToRoute(RouteNames.Onboarding.EmployerSearch);
+    }
+
+    private ConfirmDetailsViewModel GetViewModel(OnboardingSessionModel sessionModel)
+    {
+        return new ConfirmDetailsViewModel
+        {
+            BackLink = Url.RouteUrl(RouteNames.Onboarding.RegionalNetwork)!,
+            FullName = sessionModel.ApprenticeDetails.Name,
+            Email = sessionModel.ApprenticeDetails.Email,
+            ApprenticeshipSector = sessionModel.MyApprenticeship.TrainingCourse?.Sector,
+            ApprenticeshipProgram = sessionModel.MyApprenticeship.TrainingCourse?.Name,
+            ApprenticeshipLevel = sessionModel.MyApprenticeship.TrainingCourse?.Level,
+        };
     }
 }
 
