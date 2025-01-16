@@ -53,7 +53,7 @@ public class AreasOfInterestController : Controller
         });
         _sessionService.Set(sessionModel);
 
-        return RedirectToRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.PreviousEngagement);
+        return RedirectToRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.ReasonToJoin);
     }
 
     private AreasOfInterestViewModel GetViewModel()
