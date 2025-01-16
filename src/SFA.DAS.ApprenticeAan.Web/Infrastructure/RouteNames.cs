@@ -14,6 +14,7 @@ public static class RouteNames
         public const string LineManager = nameof(LineManager);
         public const string Regions = nameof(Regions);
         public const string CurrentJobTitle = nameof(CurrentJobTitle);
+        public const string ReceiveNotifications = nameof(ReceiveNotifications);
         public const string EmployerSearch = nameof(EmployerSearch);
         public const string EmployerDetails = nameof(EmployerDetails);
         public const string ReasonToJoin = nameof(ReasonToJoin);

@@ -52,7 +52,7 @@ public class ReasonToJoinController : Controller
 
         _sessionService.Set(sessionModel);
 
-        return RedirectToRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.AreasOfInterest);
+        return RedirectToRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.ReceiveNotifications);
     }
 
     private ReasonToJoinViewModel GetViewModel(OnboardingSessionModel sessionModel)
