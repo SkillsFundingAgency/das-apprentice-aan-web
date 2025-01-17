@@ -61,10 +61,8 @@ public class ReceiveNotificationsController : Controller
         var originalValue = sessionModel.ReceiveNotifications;
         var newValue = submitModel.ReceiveNotifications!.Value;
 
-        // TODO: Clear sessionModel.EventTypes and sessionModel.NotificationLocations
-
-        //if (!newValue) sessionModel.EventTypes = new List<EventTypeModel>();
-        //if (!newValue) sessionModel.NotificationLocations = new List<NotificationLocation>();
+        if (!newValue) sessionModel.EventTypes = new List<EventTypeModel>();
+        if (!newValue) sessionModel.NotificationLocations = new List<NotificationLocation>();
 
         sessionModel.ReceiveNotifications = newValue;
         _sessionService.Set(sessionModel);
