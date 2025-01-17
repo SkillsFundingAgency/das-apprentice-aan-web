@@ -22,6 +22,11 @@ public static class RouteNames
         public const string PreviousEngagement = nameof(PreviousEngagement);
     }
 
+    public static class EventNotificationSettings
+    {
+        public const string UpcomingEventsNotifications = nameof(UpcomingEventsNotifications);
+    }
+
     public static class AttendanceConfirmations
     {
         public const string SignUpConfirmation = nameof(SignUpConfirmation);
