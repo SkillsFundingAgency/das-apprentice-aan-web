@@ -59,6 +59,16 @@ public class CheckYourAnswersControllerPostTests : CheckYourAnswersControllerTes
             && r.Email == onboardingSessionModel.ApprenticeDetails.Email
             && r.FirstName == user.HttpContext!.User.FindFirstValue(IdentityClaims.GivenName)
             && r.LastName == user.HttpContext!.User.FindFirstValue(IdentityClaims.FamilyName)
+            && r.ReceiveNotifications == onboardingSessionModel.ReceiveNotifications
+            && r.MemberNotificationEventFormatValues.Count == onboardingSessionModel.EventTypes.Count
+            && r.MemberNotificationEventFormatValues.First().EventFormat == onboardingSessionModel.EventTypes.First().EventType
+            && r.MemberNotificationEventFormatValues.First().Ordering == onboardingSessionModel.EventTypes.First().Ordering
+            && r.MemberNotificationEventFormatValues.First().ReceiveNotifications == onboardingSessionModel.EventTypes.First().IsSelected
+            && r.MemberNotificationLocationValues.Count == onboardingSessionModel.NotificationLocations.Count
+            && r.MemberNotificationLocationValues.First().Name == onboardingSessionModel.NotificationLocations.First().LocationName
+            && r.MemberNotificationLocationValues.First().Radius == onboardingSessionModel.NotificationLocations.First().Radius
+            && r.MemberNotificationLocationValues.First().Latitude == onboardingSessionModel.NotificationLocations.First().GeoPoint[0]
+            && r.MemberNotificationLocationValues.First().Longitude == onboardingSessionModel.NotificationLocations.First().GeoPoint[1]
         )));
 
         result.As<ViewResult>().ViewName.Should().Be(CheckYourAnswersController.ApplicationSubmittedViewPath);

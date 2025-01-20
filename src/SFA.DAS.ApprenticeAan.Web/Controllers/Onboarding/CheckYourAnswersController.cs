@@ -62,6 +62,14 @@ public class CheckYourAnswersController : Controller
         request.Email = source.ApprenticeDetails.Email;
         request.FirstName = User.FindFirstValue(IdentityClaims.GivenName)!;
         request.LastName = User.FindFirstValue(IdentityClaims.FamilyName)!;
+        request.ReceiveNotifications = source.ReceiveNotifications!.Value;
+        request.MemberNotificationEventFormatValues.AddRange(
+            source.EventTypes?.Select(p => new MemberNotificationEventFormatValues(p.EventType, p.Ordering, p.IsSelected)) ?? Enumerable.Empty<MemberNotificationEventFormatValues>()
+        );
+        request.MemberNotificationLocationValues.AddRange(
+            source.NotificationLocations?.Select(p => new MemberNotificationLocationValues(p.LocationName, p.Radius, p.GeoPoint[0], p.GeoPoint[1]))
+            ?? Enumerable.Empty<MemberNotificationLocationValues>()
+        );
         return request;
     }
 }

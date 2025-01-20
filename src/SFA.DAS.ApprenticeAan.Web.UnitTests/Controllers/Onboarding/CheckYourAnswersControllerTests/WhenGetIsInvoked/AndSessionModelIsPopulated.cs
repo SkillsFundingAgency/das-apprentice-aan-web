@@ -100,12 +100,18 @@ public class AndSessionModelIsPopulated : CheckYourAnswersControllerTestsBase
     }
 
     [Test]
-    public void ThenSetsAreaOfInterestsInViewModel()
+    public void ThenSetsEventsInViewModel()
     {
-        _actualViewModel.AreasOfInterest.Should().Equal(_sessionModel.ProfileData.Where(x => (x.Category == Category.Events || x.Category == Category.Promotions) && x.Value != null).Select(x => x.Description).ToList());
+        _actualViewModel.Events.Should().Equal(_sessionModel.ProfileData.Where(x => x.Category == Category.Events && x.Value != null).Select(x => x.Description).ToList());
         _actualViewModel.AreasOfInterestChangeLink.Should().Be(AreasOfInterestUrl);
     }
 
+    [Test]
+    public void ThenSetsPromotionsInViewModel()
+    {
+        _actualViewModel.Promotions.Should().Equal(_sessionModel.ProfileData.Where(x => x.Category == Category.Promotions && x.Value != null).Select(x => x.Description).ToList());
+        _actualViewModel.AreasOfInterestChangeLink.Should().Be(AreasOfInterestUrl);
+    }
     [TestCase("true", "Yes")]
     [TestCase("false", "No")]
     [TestCase(null, null)]
