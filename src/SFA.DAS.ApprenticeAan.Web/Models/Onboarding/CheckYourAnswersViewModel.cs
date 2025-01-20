@@ -109,7 +109,9 @@ public class CheckYourAnswersViewModel
     private static List<string> GetNotificationLocations(OnboardingSessionModel sessionModel)
     {
         return sessionModel.NotificationLocations?
-            .Select(x => $"{x.LocationName}, within {x.Radius} miles")
+            .Select(x => x.Radius == 0
+                ? $"{x.LocationName}, Across England"
+                : $"{x.LocationName}, within {x.Radius} miles")
             .ToList() ?? new List<string>();
     }
 
