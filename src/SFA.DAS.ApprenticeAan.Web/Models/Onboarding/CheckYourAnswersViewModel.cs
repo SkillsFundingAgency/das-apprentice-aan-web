@@ -68,7 +68,7 @@ public class CheckYourAnswersViewModel
         ApprenticeshipDuration = $"From {myApprenticeship.StartDate.GetValueOrDefault().Date:dd-MM-yyyy} to {myApprenticeship.EndDate.GetValueOrDefault().Date:dd-MM-yyyy}";
         ApprenticeshipSector = myApprenticeship.TrainingCourse?.Sector;
         ApprenticeshipProgram = myApprenticeship.TrainingCourse?.Name;
-        ApprenticeshipLevel = $"Level {myApprenticeship.TrainingCourse?.Level}";
+        ApprenticeshipLevel = myApprenticeship.TrainingCourse?.Level.ToString();
 
         ReceiveNotificationsChangeLink = url.RouteUrl(@RouteNames.Onboarding.ReceiveNotifications)!;
         ReceiveNotifications = sessionModel.ReceiveNotifications ?? false;

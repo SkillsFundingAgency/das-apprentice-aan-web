@@ -174,7 +174,7 @@ public class AndSessionModelIsPopulated : CheckYourAnswersControllerTestsBase
     [Test]
     public void ThenSetsApprenticeshipLevel()
     {
-        _actualViewModel.ApprenticeshipLevel.Should().Be($"Level {_sessionModel.MyApprenticeship.TrainingCourse!.Level}");
+        _actualViewModel.ApprenticeshipLevel.Should().Be(_sessionModel.MyApprenticeship.TrainingCourse!.Level.ToString());
     }
 
 
