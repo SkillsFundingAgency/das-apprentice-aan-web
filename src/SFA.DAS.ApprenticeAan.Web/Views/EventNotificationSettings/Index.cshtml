@@ -8,6 +8,66 @@
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-xl">Emails about upcoming events</h1>
 
+        <table class="govuk-table">
+            <caption class="govuk-visually-hidden">List of my accounts</caption>
+            <thead class="govuk-table__head govuk-visually-hidden">
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header">Settings</th>
+                    <th scope="col" class="govuk-table__header">Choices</th>
+                    <th scope="col" class="govuk-table__header">Change</th>
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+
+                <!-- Monthly Email Setting -->
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell" style="width: 40%;"><strong>Do you want to get a monthly email about upcoming events?</strong></td>
+                    <td class="govuk-table__cell" style="width: 50%;">
+                        @Model.ReceiveMonthlyNotificationsText
+                    </td>
+                    <td class="govuk-table__cell"><a class="govuk-link govuk-link--no-visited-state" href=@Model.ChangeMonthlyEmailUrl>Change</a></td>
+                </tr>
+
+                @if (Model.UserNewToNotifications || (Model.ReceiveMonthlyNotifications.Equals(true)))
+                {
+                    <!-- Event Types -->
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__cell"><strong>Which types of events do you want to be emailed about?</strong></td>
+                        <td class="govuk-table__cell">
+                            <ul id="EventFormatSettings" class="govuk-list govuk-list--bullet">
+                                @{
+                                    foreach (var eventFormat in Model.EventFormats!)
+                                    {
+                                        <li>@eventFormat.DisplayName</li>
+                                    }
+                                }
+                            </ul>
+                        </td>
+                        <td class="govuk-table__cell"><a class="govuk-link" href=@Model.ChangeEventTypeUrl>Change</a></td>
+                    </tr>
+
+                    @if (Model.ShowLocationsSection)
+                    {
+                        <!-- Locations -->
+                        <tr class="govuk-table__row">
+                            <td class="govuk-table__cell"><strong>Locations</strong></td>
+                            <td class="govuk-table__cell">
+                                <ul id="LocationSettings" class="govuk-list govuk-list--bullet">
+                                    @{
+                                        foreach (var location in Model.EventNotificationLocations!)
+                                        {
+                                            <li>@location.LocationDisplayName</li>
+                                        }
+                                    }
+                                </ul>
+                            </td>
+                            <td class="govuk-table__cell"><a class="govuk-link govuk-link--no-visited-state" href=@Model.ChangeLocationsUrl>Change</a></td>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
 
     </div>
 </div>

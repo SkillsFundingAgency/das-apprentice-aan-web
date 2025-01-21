@@ -3,6 +3,7 @@ using RestEase.HttpClientFactory;
 using SFA.DAS.ApprenticeAan.Application.Services;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Configuration;
+using SFA.DAS.ApprenticeAan.Web.Orchestrators;
 using SFA.DAS.ApprenticeAan.Web.Services;
 using SFA.DAS.ApprenticePortal.SharedUi.Services;
 using SFA.DAS.Http.Configuration;
@@ -21,6 +22,8 @@ public static class ServiceRegistrationsStartup
         services.AddTransient<IApprenticeAccountService, ApprenticeAccountService>();
         services.AddTransient<IApprenticeService, ApprenticeService>();
         services.AddTransient<IMemberService, MemberService>();
+        services.AddTransient<IEventNotificationSettingsOrchestrator, EventNotificationSettingsOrchestrator>();
+
         return services;
     }
 

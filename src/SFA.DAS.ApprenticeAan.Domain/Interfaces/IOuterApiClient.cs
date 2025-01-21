@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RestEase;
 using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.Models.LeaveTheNetwork;
+using SFA.DAS.Aan.SharedUi.OuterApi.Requests;
 using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Entities;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
@@ -101,6 +102,13 @@ public interface IOuterApiClient
 
     [Put("/apprentices")]
     Task<Apprentice?> PutApprentice([Body] PutApprenticeRequest request);
+
+    [Get("MemberNotificationSettings/{memberId}")]
+    Task<GetMemberNotificationSettingsResponse> GetMemberNotificationSettings([Path] Guid memberId, CancellationToken cancellationToken);
+
+    [Post("MemberNotificationSettings/{memberId}")]
+    Task<NotificationsSettingsApiRequest> PostMemberNotificationSettings([Path] Guid memberId, [Body] NotificationsSettingsApiRequest request);
+
 }
 
 
