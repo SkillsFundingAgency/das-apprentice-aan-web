@@ -18,6 +18,7 @@
     <PackageReference Include="RestEase" Version="1.6.4" />
     <PackageReference Include="RestEase.HttpClientFactory" Version="1.6.4" />
     <PackageReference Include="SFA.DAS.Http" Version="3.2.69" />
+    <PackageReference Include="SFA.DAS.Validation.Mvc" Version="6.0.30" />
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="3.0.84" />
     <PackageReference Include="SFA.DAS.Telemetry" Version="17.1.70" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.2" />
