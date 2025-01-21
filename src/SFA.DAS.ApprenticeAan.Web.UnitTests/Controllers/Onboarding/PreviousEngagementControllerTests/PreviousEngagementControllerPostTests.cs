@@ -26,7 +26,7 @@ public class PreviousEngagementControllerPostTests
         //Arrange
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(GetSessionModel(false));
 
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.ReceiveNotifications);
 
         sut.ModelState.AddModelError("key", "message");
 
