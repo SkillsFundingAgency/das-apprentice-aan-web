@@ -19,9 +19,20 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.EventNotificationSettings
         [HttpGet]
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            var sessionModel = sessionService.Get<NotificationSettingsSessionModel>();
+            var sessionModel = sessionService.Get<NotificationSettingsSessionModel?>();
 
-            return View(ViewPath);
+            if (sessionModel == null)
+            {
+                return RedirectToRoute(RouteNames.EventNotificationSettings.Settings);
+            }
+
+            //todo:
+            var viewModel = new NotificationsLocationsViewModel
+            {
+
+            };
+
+            return View(ViewPath, viewModel);
         }
     }
 }
