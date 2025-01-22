@@ -20,7 +20,7 @@ public class ReceiveNotificationsController(
     public const string ViewPath = "~/Views/EventNotificationSettings/ReceiveNotifications.cshtml";
 
     [HttpGet]
-    public async Task<IActionResult> Get(CancellationToken cancellationToken)
+    public IActionResult Get(CancellationToken cancellationToken)
     {
         var sessionModel = sessionService.Get<NotificationSettingsSessionModel?>();
 
