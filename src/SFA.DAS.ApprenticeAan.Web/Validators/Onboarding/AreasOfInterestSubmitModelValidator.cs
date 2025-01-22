@@ -5,7 +5,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Validators.Onboarding;
 
 public class AreasOfInterestSubmitModelValidator : AbstractValidator<AreasOfInterestSubmitModel>
 {
-    public const string NoSelectionErrorMessage = "Select an area of interest";
+    public const string NoSelectionErrorMessage = "Select at least one way to be involved";
 
     public AreasOfInterestSubmitModelValidator()
     {

@@ -53,7 +53,7 @@ public class AreasOfInterestController : Controller
         });
         _sessionService.Set(sessionModel);
 
-        return RedirectToRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.PreviousEngagement);
+        return RedirectToRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.ReasonToJoin);
     }
 
     private AreasOfInterestViewModel GetViewModel()
@@ -62,7 +62,7 @@ public class AreasOfInterestController : Controller
 
         return new AreasOfInterestViewModel
         {
-            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(RouteNames.Onboarding.ReasonToJoin)!,
+            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(RouteNames.Onboarding.CurrentJobTitle)!,
             Events = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == Category.Events).OrderBy(x => x.Ordering).Select(x => (SelectProfileModel)x)),
             Promotions = new List<SelectProfileModel>(sessionModel.ProfileData.Where(x => x.Category == Category.Promotions).OrderBy(x => x.Ordering).Select(x => (SelectProfileModel)x))
         };

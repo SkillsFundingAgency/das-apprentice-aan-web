@@ -99,7 +99,7 @@ public class LineManagerController : Controller
             _sessionService.Set(sessionModel);
         }
 
-        return RedirectToRoute(RouteNames.Onboarding.EmployerSearch);
+        return RedirectToRoute(RouteNames.Onboarding.Regions);
     }
 
     private LineManagerViewModel GetViewModel()

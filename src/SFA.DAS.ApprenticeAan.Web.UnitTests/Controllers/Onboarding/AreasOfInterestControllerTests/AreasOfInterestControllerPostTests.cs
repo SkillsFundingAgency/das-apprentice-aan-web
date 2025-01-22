@@ -46,7 +46,7 @@ public class AreasOfInterestControllerPostTests
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.GetProfileValue(2) == true.ToString())));
 
         result.As<RedirectToRouteResult>().Should().NotBeNull();
-        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.PreviousEngagement);
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.ReasonToJoin);
     }
 
     [MoqAutoData]
@@ -97,7 +97,7 @@ public class AreasOfInterestControllerPostTests
         sut.ModelState.IsValid.Should().BeTrue();
 
         result.As<RedirectToRouteResult>().Should().NotBeNull();
-        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.PreviousEngagement);
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.ReasonToJoin);
     }
 
     [MoqAutoData]

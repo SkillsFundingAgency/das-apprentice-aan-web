@@ -8,6 +8,7 @@ using SFA.DAS.Aan.SharedUi.OuterApi.Responses;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Entities;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Requests;
 using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses;
+using SFA.DAS.ApprenticeAan.Domain.OuterApi.Responses.Shared;
 using SFA.DAS.ApprenticePortal.Authentication;
 
 namespace SFA.DAS.ApprenticeAan.Domain.Interfaces;
@@ -55,6 +56,9 @@ public interface IOuterApiClient
     [Post("myapprenticeship")]
     [AllowAnyStatusCode]
     Task<Response<MyApprenticeship?>> TryCreateMyApprenticeship([Body] TryCreateMyApprenticeshipRequest request, CancellationToken cancellationToken);
+
+    [Get("/notificationslocations")]
+    Task<GetNotificationsLocationSearchApiResponse> GetOnboardingNotificationsLocations([Query] string searchTerm);
 
     [Post("/apprentices")]
     Task<CreateApprenticeMemberResponse> PostApprenticeMember([Body] CreateApprenticeMemberRequest request);

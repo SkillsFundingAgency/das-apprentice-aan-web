@@ -1,23 +1,25 @@
-﻿@using SFA.DAS.ApprenticeAan.Web.Infrastructure
-@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
-@model CurrentJobTitleViewModel
+﻿@model CurrentJobTitleViewModel
 @{
-    ViewData["Title"] = "Current Job Title";
+    ViewData["Title"] = "What is your job title?";
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_validationSummary" />
         <form method="post" asp-route="@RouteNames.Onboarding.CurrentJobTitle" enctype="multipart/form-data" novalidate>
             <div esfa-validation-marker-for="JobTitle" class="govuk-form-group">
+                <span class="govuk-caption-l govuk-!-margin-bottom-0">Create your ambassador profile</span>
                 <h1 class="govuk-heading-l">
-                    What is your current job title?
+                    What is your job title?
                 </h1>
+                <p class="govuk-body">
+                    This will be shown on your profile.
+                </p>
                 <span asp-validation-for="JobTitle" class="govuk-error-message"></span>
                 <label class="govuk-visually-hidden" asp-for="JobTitle">
                     Job Title
                 </label>
                 <div id="EnteredJobTitle" data-module="govuk-input">
-                    <input type="text" asp-for="JobTitle"  class="govuk-input" sfa-validationerror-class="form-control-error" maxlength="200" />
+                    <input type="text" asp-for="JobTitle" class="govuk-input" sfa-validationerror-class="form-control-error" maxlength="200" />
                 </div>
             </div>
             <div class="govuk-button-group">

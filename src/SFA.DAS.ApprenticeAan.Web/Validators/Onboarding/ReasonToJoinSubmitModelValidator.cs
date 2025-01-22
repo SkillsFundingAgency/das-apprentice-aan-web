@@ -6,7 +6,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Validators.Onboarding;
 public class ReasonToJoinSubmitModelValidator : AbstractValidator<ReasonToJoinSubmitModel>
 {
     public const string ReasonForJoiningTheNetworkEmptyMessage = "Enter why you want to join the network";
-    public const string ReasonForJoiningTheNetworkMaxWordsMessage = "Your answer must be 250 words or less";
+    public const string ReasonForJoiningTheNetworkMaxWordsMessage = "Why you want to join the network must be 250 words or less";
     private readonly static char[] splitCharacters = [' ', '\r', '\n'];
 
     public ReasonToJoinSubmitModelValidator()

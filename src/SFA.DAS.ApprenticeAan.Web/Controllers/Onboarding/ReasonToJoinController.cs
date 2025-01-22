@@ -52,7 +52,7 @@ public class ReasonToJoinController : Controller
 
         _sessionService.Set(sessionModel);
 
-        return RedirectToRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.AreasOfInterest);
+        return RedirectToRoute(sessionModel.HasSeenPreview ? RouteNames.Onboarding.CheckYourAnswers : RouteNames.Onboarding.ReceiveNotifications);
     }
 
     private ReasonToJoinViewModel GetViewModel(OnboardingSessionModel sessionModel)
@@ -60,7 +60,7 @@ public class ReasonToJoinController : Controller
         var model = new ReasonToJoinViewModel()
         {
             ReasonForJoiningTheNetwork = sessionModel.GetProfileValue(ProfileConstants.ProfileIds.ReasonToJoinAmbassadorNetwork),
-            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(RouteNames.Onboarding.Regions)!
+            BackLink = sessionModel.HasSeenPreview ? Url.RouteUrl(@RouteNames.Onboarding.CheckYourAnswers)! : Url.RouteUrl(RouteNames.Onboarding.AreasOfInterest)!
         };
         return model;
     }

@@ -1,32 +1,43 @@
-﻿@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
-@{
-    ViewData["Title"] = "Before you start";
+﻿@{
+    ViewData["Title"] = "Join the Apprenticeship Ambassador Network as an apprentice";
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">Become an Apprentice Ambassador</h1>
-
+        <h1 class="govuk-heading-l">Join the Apprenticeship Ambassador Network as an apprentice</h1>
+        <h2 class="govuk-heading-m">Why become an ambassador</h2>
+        <h3 class="govuk-heading-s">Help us inspire the next generation of apprentices</h3>
         <p>
-            Before you start your registration you will need:
+            Share your own experience of doing an apprenticeship at our events. You’ll help people who are taking the next step in their careers.
         </p>
-
-        <ul class="govuk-body-m medium-margin-bottom indent">
-            <li>approval from your line manager due to time commitments outside of work hours</li>
-            <li>name of your employer</li>
-            <li>postcode of your employer</li>
-            <li>where you live and work</li>
-            <li>your reasons for wanting to join the network</li>
+        <h3 class="govuk-heading-s">Network with other apprentice ambassadors</h3>
+        <p>
+            Get support from your local network of ambassadors.
+        </p>
+        <p>
+            <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="https://www.apprenticeships.gov.uk/influencers/what-is-the-aan">Learn more about being an apprentice ambassador (opens in new tab)</a>
+        </p>
+        <h2 class="govuk-heading-m">How to join</h2>
+        <p>
+            Use this service to register with your local regional network.
+        </p>
+        <p>
+            You’ll also get access to our online portal. Use the portal to:
+        </p>
+        <ul class="govuk-list govuk-list--bullet govuk-!-margin-left-3">
+            <li>sign up to attend events</li>
+            <li>network with other ambassadors</li>
         </ul>
-
-        <p>
-            You cannot save your answers during the registration process and each page will time out after 30 minutes of inactivity.
-        </p>
-
+        <div class="govuk-inset-text">
+            Joining the Apprenticeship Ambassador Network involves a time commitment. You’ll need your line manager’s approval to join the network.
+        </div>
         <div class="govuk-button-group">
             <form asp-action="post">
-                <button id="start-now" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true">
-                    Start now
+                <button id="start-now" class="govuk-button govuk-button--start" data-module="govuk-button" data-disable-on-submit="true">
+                    Join Now
+                    <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false">
+                        <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
+                    </svg>
                 </button>
             </form>
         </div>

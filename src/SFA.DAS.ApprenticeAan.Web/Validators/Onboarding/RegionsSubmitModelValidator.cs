@@ -5,7 +5,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Validators.Onboarding;
 
 public class RegionsSubmitModelValidator : AbstractValidator<RegionsSubmitModel>
 {
-    public const string NoSelectionErrorMessage = "Select a region where you work as an apprentice.";
+    public const string NoSelectionErrorMessage = "Select where you work";
 
     public RegionsSubmitModelValidator()
     {

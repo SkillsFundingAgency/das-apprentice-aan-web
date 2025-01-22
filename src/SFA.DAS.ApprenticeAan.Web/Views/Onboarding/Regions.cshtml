@@ -1,49 +1,48 @@
-﻿@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
-@using SFA.DAS.ApprenticeAan.Web.Infrastructure;
-@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
 @model RegionsViewModel
-   
+
 @{
-    ViewData["Title"] = "Apprenticeship region";
+    ViewData["Title"] = "Find your regional network";
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_validationSummary" />
-        <form method="post"  >
+        <form method="post">
             <div class="govuk-form-group">
                 <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                            Find your regional network
+                        </h1>
+                    </legend>
+                    <p class="govuk-body">
+                        We’ll add you to the right Apprenticeship Ambassador Network.
+                    </p>
                     <div esfa-validation-marker-for="SelectedRegionId" class="govuk-form-group">
-                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                            <h1 class="govuk-fieldset__heading">
-                                Tell us what area of the country you work in as an apprentice
-                            </h1>
-                        </legend>
-                        <div id="regions-hint" class="govuk-hint">
-                            This should be the location of your employer rather than the area you live in.
-                            Further information on each region and its network chair can be found on the <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="https://www.apprenticeships.gov.uk/influencers/yaan-regional-networks#">regional network page</a>.
-                        </div>
+                        <h2 class="govuk-heading-m">
+                            Where do you work?
+                        </h2>
                         <span asp-validation-for="SelectedRegionId" class="govuk-error-message"></span>
-                     </div>
-                     
-                    <div id="regions-option" class="govuk-radios" data-module="govuk-radios">
-                        <label class="govuk-visually-hidden" asp-for="SelectedRegionId">
-                            Regions
-                        </label>
-                        @{
-                            foreach (var region in Model.Regions)
-                            {
-                                var regionIdentifier = region.Area.Trim().Replace(' ', '-');
-                                var buttonIdentifier = $"region-{regionIdentifier}";
+                        <div id="SelectedRegionId" class="govuk-radios" data-module="govuk-radios">
+                            <label class="govuk-visually-hidden" asp-for="SelectedRegionId">
+                                Regions
+                            </label>
+                            @{
+                                foreach (var region in Model.Regions)
+                                {
+                                    var regionIdentifier = region.Area.Trim().Replace(' ', '-');
+                                    var buttonIdentifier = $"region-{regionIdentifier}";
 
-                                <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" asp-for=@Model.SelectedRegionId type="radio" value=@region.Id id="@buttonIdentifier">
-                                    <label class="govuk-label govuk-radios__label" for=@buttonIdentifier>
-                                        @region.Area
-                                    </label>
-                                </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" asp-for=@Model.SelectedRegionId type="radio" value=@region.Id id="@buttonIdentifier">
+                                        <label class="govuk-label govuk-radios__label" for=@buttonIdentifier>
+                                            @region.Area
+                                        </label>
+                                    </div>
+                                }
                             }
-                        }
+                        </div>
                     </div>
                 </fieldset>
             </div>
