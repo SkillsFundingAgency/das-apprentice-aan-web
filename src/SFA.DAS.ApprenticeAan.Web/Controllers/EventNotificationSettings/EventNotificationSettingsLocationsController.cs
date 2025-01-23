@@ -6,6 +6,7 @@ using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models.EventNotificationSettings;
 using SFA.DAS.ApprenticeAan.Web.Orchestrators;
 using SFA.DAS.ApprenticeAan.Web.Orchestrators.Shared;
+using SFA.DAS.Validation.Mvc.Filters;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.EventNotificationSettings
 {
@@ -21,6 +22,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.EventNotificationSettings
         public const string ViewPath = "~/Views/EventNotificationSettings/Locations.cshtml";
 
         [HttpGet]
+        [ValidateModelStateFilter]
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             var sessionModel = sessionService.Get<NotificationSettingsSessionModel?>();
@@ -36,6 +38,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.EventNotificationSettings
         }
 
         [HttpPost]
+        [ValidateModelStateFilter]
         public async Task<IActionResult> Index(NotificationsLocationsSubmitModel submitModel)
         {
             var result = await orchestrator.ApplySubmitModel<NotificationSettingsSessionModel>(
