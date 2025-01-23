@@ -43,7 +43,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.EventNotificationSetti
             controller.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.SelectNotificationEvents, "");
 
             var sessionModel = CreateSessionModel(inPerson, hybrid, online, all);
-            mockSessionService.Setup(x => x.Get<OnboardingSessionModel>()).Returns(sessionModel);
+            mockSessionService.Setup(x => x.Get<NotificationSettingsSessionModel>()).Returns(sessionModel);
 
             var result = controller.Index(CancellationToken.None).Result as ViewResult;
 
@@ -77,7 +77,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.EventNotificationSetti
 
             var sessionModel = CreateSessionModel(inPerson, hybrid, online, all);
             sessionModel.NotificationLocations.Add(new NotificationLocation { LocationName = "Test", Radius = 1 });
-            mockSessionService.Setup(x => x.Get<OnboardingSessionModel>()).Returns(sessionModel);
+            mockSessionService.Setup(x => x.Get<NotificationSettingsSessionModel>()).Returns(sessionModel);
 
             var result = controller.Index(CancellationToken.None).Result as ViewResult;
 
@@ -111,7 +111,7 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.EventNotificationSetti
             controller.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.SelectNotificationEvents, "");
 
             var sessionModel = CreateSessionModel(inPerson, hybrid, online, all);
-            mockSessionService.Setup(x => x.Get<OnboardingSessionModel>()).Returns(sessionModel);
+            mockSessionService.Setup(x => x.Get<NotificationSettingsSessionModel>()).Returns(sessionModel);
 
             var result = controller.Index(CancellationToken.None).Result as ViewResult;
 
@@ -121,9 +121,9 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.EventNotificationSetti
             viewModel.IntroText.Should().Be(expectedIntroText);
         }
 
-        private OnboardingSessionModel CreateSessionModel(bool inPerson, bool hybrid, bool online, bool all)
+        private NotificationSettingsSessionModel CreateSessionModel(bool inPerson, bool hybrid, bool online, bool all)
         {
-            var sessionModel = new OnboardingSessionModel
+            var sessionModel = new NotificationSettingsSessionModel
             {
                 EventTypes = new List<EventTypeModel>()
             };
