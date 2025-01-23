@@ -13,6 +13,7 @@ using FluentValidation;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using FluentValidation.Results;
 using SFA.DAS.ApprenticeAan.Web.Orchestrators;
+using SFA.DAS.ApprenticeAan.Web.Controllers.EventNotificationSettings;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.EventNotificationSettings;
 
