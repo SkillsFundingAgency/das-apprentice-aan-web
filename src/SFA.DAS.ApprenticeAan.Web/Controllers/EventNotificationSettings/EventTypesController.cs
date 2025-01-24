@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Constant;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
+using SFA.DAS.ApprenticeAan.Web.Models;
+using SFA.DAS.ApprenticeAan.Web.Models.EventNotificationSettings;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Orchestrators;
 
-namespace SFA.DAS.ApprenticeAan.Web.Models.EventNotificationSettings;
+namespace SFA.DAS.ApprenticeAan.Web.Controllers.EventNotificationSettings;
 
 [Authorize]
 [Route("event-notification-settings/event-formats", Name = RouteNames.EventNotificationSettings.EventTypes)]

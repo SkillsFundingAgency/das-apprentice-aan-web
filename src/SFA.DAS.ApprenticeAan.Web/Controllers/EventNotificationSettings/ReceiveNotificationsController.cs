@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
+using SFA.DAS.ApprenticeAan.Web.Models;
+using SFA.DAS.ApprenticeAan.Web.Models.EventNotificationSettings;
 using SFA.DAS.ApprenticeAan.Web.Models.Shared;
 using SFA.DAS.ApprenticeAan.Web.Orchestrators;
 
-namespace SFA.DAS.ApprenticeAan.Web.Models.EventNotificationSettings;
+namespace SFA.DAS.ApprenticeAan.Web.Controllers.EventNotificationSettings;
 
 [Authorize]
 [Route("event-notification-settings/monthly-notifications", Name = RouteNames.EventNotificationSettings.MonthlyNotifications)]
@@ -73,7 +75,7 @@ public class ReceiveNotificationsController(
             await settingsOrchestrator.SaveSettings(memberId, sessionModel);
         }
 
-        var route = (newValue != originalValue) && newValue
+        var route = newValue != originalValue && newValue
             ? RouteNames.EventNotificationSettings.EventTypes
                     : RouteNames.EventNotificationSettings.Settings;
 
