@@ -11,7 +11,7 @@ using SFA.DAS.Validation.Mvc.Filters;
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.EventNotificationSettings
 {
     [Authorize]
-    [Route("event-notification-settings/locations", Name = RouteNames.EventNotificationSettings.SettingsLocations)]
+    [Route("event-notification-settings/locations", Name = RouteNames.EventNotificationSettings.NotificationLocations)]
     public class EventNotificationSettingsLocationsController(
         INotificationsLocationsOrchestrator orchestrator,
         ISessionService sessionService,
