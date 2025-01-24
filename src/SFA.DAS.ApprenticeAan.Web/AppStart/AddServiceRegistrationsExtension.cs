@@ -21,6 +21,7 @@ public static class ServiceRegistrationsStartup
         services.AddTransient<ISessionService, SessionService>();
         services.AddTransient<IRegionService, RegionService>();
         services.AddTransient<INotificationsLocationsOrchestrator, NotificationsLocationsOrchestrator>();
+        services.AddTransient<INotificationLocationDisambiguationOrchestrator, NotificationLocationDisambiguationOrchestrator>();
         services.AddTransient<IApprenticeAccountService, ApprenticeAccountService>();
         services.AddTransient<IApprenticeService, ApprenticeService>();
         services.AddTransient<IMemberService, MemberService>();
