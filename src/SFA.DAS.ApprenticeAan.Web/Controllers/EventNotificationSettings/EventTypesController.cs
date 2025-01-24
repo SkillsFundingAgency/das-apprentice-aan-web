@@ -31,7 +31,7 @@ public class EventTypesController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get([FromRoute] string employerAccountId, CancellationToken cancellationToken)
+    public async Task<IActionResult> Get(CancellationToken cancellationToken)
     {
         var sessionModel = _sessionService.Get<NotificationSettingsSessionModel?>();
 
