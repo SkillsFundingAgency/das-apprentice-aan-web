@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SFA.DAS.ApprenticeAan.Web.Models.Shared.INotificationLocationDisambiguationPartialViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_validationSummary" />
+        <form method="post">
+            @Html.HiddenFor(m => m.Location)
+            @Html.HiddenFor(m => m.Radius)
+            <fieldset class="govuk-fieldset">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                    <h1 class="govuk-fieldset__heading">
+                        @Model.Title
+                    </h1>
+                </legend>
+                <div class="govuk-body">You can choose one of the matching locations, or <a class="govuk-link" href="@Model.BackLink">go back and enter a different location</a>.</div>
+                <div esfa-validation-marker-for="SelectedLocation" class="govuk-form-group">
+                    <h2 class="govuk-heading-m govuk-!-margin-top-4">
+                        Locations
+                    </h2>
+                    <div class="govuk-hint">
+                        Select one
+                    </div>
+                    <div class="govuk-radios govuk-!-margin-bottom-4" data-module="govuk-radios">
+                        <span asp-validation-for="@Model.SelectedLocation" class="govuk-error-message"></span>
+                        <div id="SelectedLocation">
+                            @foreach (var location in Model.Locations!)
+                            {
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" type="radio" id="@location.LocationId" value="@location.Name" asp-for="@Model.SelectedLocation">
+                                    <label class="govuk-label govuk-radios__label" for="@location.LocationId">
+                                        @location.Name
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="govuk-button-group">
+                <button id="continue" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

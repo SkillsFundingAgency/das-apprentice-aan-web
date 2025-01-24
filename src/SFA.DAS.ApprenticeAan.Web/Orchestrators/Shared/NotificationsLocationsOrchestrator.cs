@@ -35,7 +35,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Orchestrators.Shared
 
             result.SubmittedLocations = sessionModel.NotificationLocations
                 .Select(l => l.Radius == 0 ?
-                    $"{l.LocationName} - Across England"
+                    $"{l.LocationName}, Across England"
                     : $"{l.LocationName}, within {l.Radius} miles").ToList();
 
             result.HasSubmittedLocations = sessionModel.NotificationLocations.Any();
