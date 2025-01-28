@@ -31,6 +31,7 @@ public static class RouteNames
     public static class EventNotificationSettings
     {
         public const string Settings = nameof(Settings);
+        public const string SettingsLocations = nameof(SettingsLocations);
         public const string NotificationLocations = nameof(NotificationLocations);
         public const string SettingsNotificationLocationDisambiguation = nameof(SettingsNotificationLocationDisambiguation);
         public const string MonthlyNotifications = nameof(MonthlyNotifications);
