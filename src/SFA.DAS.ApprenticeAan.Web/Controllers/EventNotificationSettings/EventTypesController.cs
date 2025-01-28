@@ -1,8 +1,11 @@
-﻿using FluentValidation;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeAan.Domain.Interfaces;
 using SFA.DAS.ApprenticeAan.Web.Constant;
+using SFA.DAS.ApprenticeAan.Web.Extensions;
 using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.EventNotificationSettings;
@@ -28,7 +31,7 @@ public class EventTypesController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get([FromRoute] string employerAccountId, CancellationToken cancellationToken)
+    public async Task<IActionResult> Get(CancellationToken cancellationToken)
     {
         var sessionModel = _sessionService.Get<NotificationSettingsSessionModel?>();
 
@@ -41,6 +44,49 @@ public class EventTypesController : Controller
         return View(ViewPath, model);
     }
 
+    [HttpPost]
+    public async Task<IActionResult> Post(SelectNotificationsSubmitModel submitModel, CancellationToken cancellationToken)
+    {
+        ValidationResult result = _validator.Validate(submitModel);
+        var sessionModel = _sessionService.Get<NotificationSettingsSessionModel>();
+        var memberId = _sessionService.GetMemberId();
+
+        if (!result.IsValid)
+        {
+            var model = GetViewModel(sessionModel);
+            result.AddToModelState(ModelState);
+            return View(ViewPath, model);
+        }
+
+
+        var isEndOfJourney = false;
+
+        if (submitModel.EventTypes.Any(e => e.EventType == EventType.All && e.IsSelected))
+        {
+            submitModel.EventTypes.ForEach(e => e.IsSelected = true);
+        }
+
+        if (submitModel.EventTypes.Count(x => x.IsSelected) == 1 &&
+            submitModel.EventTypes.Any(x => x.IsSelected && x.EventType == EventType.Online))
+        {
+            sessionModel.NotificationLocations = [];
+            isEndOfJourney = true;
+        }
+
+        var selectedEventTypes = submitModel.EventTypes.Where(x => x.EventType != "All" && x.IsSelected);
+        sessionModel.EventTypes.Clear();
+        sessionModel.LastPageVisited = RouteNames.EventNotificationSettings.EventTypes;
+        sessionModel.EventTypes.AddRange(selectedEventTypes);
+
+        _sessionService.Set(sessionModel);
+
+        if (isEndOfJourney)
+        {
+            await _settingsOrchestrator.SaveSettings(memberId, sessionModel);
+        }
+
+        return RedirectAccordingly(sessionModel.EventTypes);
+    }
 
     private SelectNotificationsViewModel GetViewModel(NotificationSettingsSessionModel sessionModel)
     {
