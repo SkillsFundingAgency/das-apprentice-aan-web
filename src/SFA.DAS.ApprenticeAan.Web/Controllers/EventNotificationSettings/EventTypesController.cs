@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
@@ -43,7 +43,6 @@ public class EventTypesController : Controller
         var model = GetViewModel(sessionModel);
         return View(ViewPath, model);
     }
-
 
     [HttpPost]
     public async Task<IActionResult> Post(SelectNotificationsSubmitModel submitModel, CancellationToken cancellationToken)
