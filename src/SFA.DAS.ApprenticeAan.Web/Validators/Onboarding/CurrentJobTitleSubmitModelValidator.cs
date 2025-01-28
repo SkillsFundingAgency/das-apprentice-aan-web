@@ -7,7 +7,7 @@ public class CurrentJobTitleSubmitModelValidator : AbstractValidator<CurrentJobT
 {
     public const string JobTitleLengthInvalidErrorMessage = "Your current job title must be 200 character or less";
     public const string NotValidJobTitleErrorMessage = "Your job title must not include special characters: @, #, $, ^, =, +, \\, /, <, >,%";
-    public const string JobTitleEmpty = "Enter a job title";
+    public const string JobTitleEmpty = "Enter your job title";
 
     private const string regExAlphanumeric = "^[a-zA-Z0-9\\s.\\-\\(\\)]+$";
     public CurrentJobTitleSubmitModelValidator()

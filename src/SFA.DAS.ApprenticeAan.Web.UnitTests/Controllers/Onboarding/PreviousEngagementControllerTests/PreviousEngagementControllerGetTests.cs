@@ -53,7 +53,7 @@ public class PreviousEngagementControllerGetTests
     {
         OnboardingSessionModel sessionModel = new();
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.EngagedWithAPreviousAmbassadorInTheNetworkApprentice, Value = "True" });
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.ReceiveNotifications);
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         var result = sut.Get();
@@ -129,9 +129,9 @@ public class PreviousEngagementControllerGetTests
     public void Get_ViewModelHasSeenPreviewIsFalse_BackLinkSetsToAreasOfInterest(
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] PreviousEngagementController sut,
-        string areasOFInterestUrl)
+        string receiveNotificationsUrl)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest, areasOFInterestUrl);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.ReceiveNotifications, receiveNotificationsUrl);
 
         OnboardingSessionModel sessionModel = new();
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.EngagedWithAPreviousAmbassadorInTheNetworkApprentice, Value = "False" });
@@ -141,6 +141,6 @@ public class PreviousEngagementControllerGetTests
 
         var result = sut.Get();
 
-        result.As<ViewResult>().Model.As<PreviousEngagementViewModel>().BackLink.Should().Be(areasOFInterestUrl);
+        result.As<ViewResult>().Model.As<PreviousEngagementViewModel>().BackLink.Should().Be(receiveNotificationsUrl);
     }
 }

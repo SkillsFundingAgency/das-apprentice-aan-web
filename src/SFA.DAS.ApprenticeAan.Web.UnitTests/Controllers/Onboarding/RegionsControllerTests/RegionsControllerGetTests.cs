@@ -56,7 +56,7 @@ public class RegionsControllerGetTests
         OnboardingSessionModel sessionModel,
         string currentJobTitleUrl)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle, currentJobTitleUrl);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.LineManager, currentJobTitleUrl);
         sessionModel.HasSeenPreview = false;
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 

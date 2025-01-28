@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.ApprenticeAan.Web.Models.Shared;
+namespace SFA.DAS.ApprenticeAan.Web.Models.Shared;
 
 public interface INotificationLocationsSessionModel
 {

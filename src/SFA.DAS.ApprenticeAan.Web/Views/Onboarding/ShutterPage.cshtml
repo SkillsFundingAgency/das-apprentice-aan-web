@@ -1,18 +1,22 @@
-﻿@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
-@model ShutterPageViewModel
+﻿@model ShutterPageViewModel
 @{
-    ViewData["Title"] = "Shutter Page";
+    ViewData["Title"] = "Talk to your line manager before continuing";
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">You do not meet the necessary criteria to join the network as an apprentice ambassador</h1>
-        <div id="backtohomepage-hint" class="govuk-hint">
-            You must have your line manager's approval before completing your application.
-        </div>
+        <h1 class="govuk-heading-l">Talk to your line manager before continuing</h1>
         <p class="govuk-body">
+            Being an ambassador involves a time commitment. Talk to your line manager about how you’ll manage being an ambassador.
+        </p>
+        <p class="govuk-body">
+            <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="https://www.apprenticeships.gov.uk/influencers/what-is-the-aan">Read more about the network (opens in new tab)</a>
+        </p>
+        <h2 class="govuk-heading-s">If you have your line manager’s approval</h2>
+        <p class="govuk-body">
+            You can
             <a href="@Model.ApprenticeHomeUrl" class="govuk-link govuk-link--no-visited-state">
-                Back to the apprenticeship portal
-            </a>
+                continue to join the Apprenticeship Ambassador Network
+            </a>.
         </p>
     </div>
 </div>

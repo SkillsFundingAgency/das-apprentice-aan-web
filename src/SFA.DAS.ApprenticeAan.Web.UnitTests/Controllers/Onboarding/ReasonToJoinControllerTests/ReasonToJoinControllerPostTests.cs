@@ -27,7 +27,7 @@ public class ReasonToJoinControllerPostTests
         string reasonForJoining)
     {
         OnboardingSessionModel sessionModel = new();
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.Regions);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.AreasOfInterest);
 
         sessionModel.ProfileData.Add(new ProfileModel { Id = ProfileConstants.ProfileIds.ReasonToJoinAmbassadorNetwork, Value = reasonForJoining });
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
@@ -94,7 +94,7 @@ public class ReasonToJoinControllerPostTests
 
         sut.ModelState.IsValid.Should().BeTrue();
 
-        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.AreasOfInterest);
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.ReceiveNotifications);
     }
 
     [MoqAutoData]
