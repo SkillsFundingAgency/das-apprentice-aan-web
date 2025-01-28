@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
+using SFA.DAS.ApprenticeAan.Web.Models.Shared;
 
 namespace SFA.DAS.ApprenticeAan.Web.Validators.Onboarding;
 
 public class ReceiveNotificationsSubmitModelValidator : AbstractValidator<ReceiveNotificationsSubmitModel>
 {
-    public const string NoSelectionErrorMessage = "Select if you want to get a monthly email about upcoming events";
+    public const string NoSelectionErrorMessage = "Select if you want to receive a monthly email about upcoming events";
 
     public ReceiveNotificationsSubmitModelValidator()
     {
