@@ -6,6 +6,7 @@ using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Orchestrators.Shared;
 using SFA.DAS.ApprenticePortal.SharedUi.Menu;
+using SFA.DAS.ApprenticeAan.Web.Constant;
 using SFA.DAS.Validation.Mvc.Filters;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers.Onboarding;
@@ -42,9 +43,17 @@ public class NotificationLocationDisambiguationController : Controller
     [ValidateModelStateFilter]
     public async Task<IActionResult> Post(NotificationLocationDisambiguationSubmitModel submitModel, CancellationToken cancellationToken)
     {
-        var result = await _orchestrator.ApplySubmitModel<OnboardingSessionModel>(submitModel, ModelState);
+        var sessionModel = _sessionService.Get<OnboardingSessionModel>();
 
         var routeValues = new { submitModel.Radius, submitModel.Location };
+
+        if ((submitModel.SelectedLocation != null) && sessionModel.NotificationLocations.Any(n => n.LocationName.Equals(submitModel.SelectedLocation, StringComparison.OrdinalIgnoreCase)))
+        {
+            TempData["SameLocationError"] = ErrorMessages.SameLocationErrorMessage;
+            return RedirectToRoute(RouteNames.Onboarding.NotificationsLocations);
+        }
+
+        var result = await _orchestrator.ApplySubmitModel<OnboardingSessionModel>(submitModel, ModelState);
 
         switch (result)
         {

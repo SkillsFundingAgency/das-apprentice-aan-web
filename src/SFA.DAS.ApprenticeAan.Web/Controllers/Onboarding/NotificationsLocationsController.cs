@@ -35,6 +35,15 @@ public class NotificationsLocationsController : Controller
     {
         var sessionModel = _sessionService.Get<OnboardingSessionModel>();
 
+        if (TempData.ContainsKey("SameLocationError"))
+        {
+            var errorMessage = TempData["SameLocationError"] as string;
+            if (!string.IsNullOrEmpty(errorMessage))
+            {
+                ModelState.AddModelError(nameof(NotificationsLocationsViewModel.Location), errorMessage);
+            }
+        }
+
         var viewModel = _orchestrator.GetViewModel<NotificationsLocationsViewModel>(sessionModel, ModelState);
 
         viewModel.BackLink = sessionModel.HasSeenPreview
