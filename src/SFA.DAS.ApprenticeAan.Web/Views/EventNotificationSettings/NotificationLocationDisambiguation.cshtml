@@ -1,4 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model SFA.DAS.ApprenticeAan.Web.Models.EventNotificationSettings.NotificationLocationDisambiguationViewModel
 
+@{
+    ViewData["Title"] = @Model.Title;
+}
+
 <partial name="_NotificationLocationDisambiguationPartial" for="@Model" />
