@@ -9,7 +9,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Models.EventNotificationSettings
         public string BackLink { get; set; } = null!;
         public string Title { get; set; } = "";
         public string IntroText { get; set; } = "";
-
+        public string DuplicateLocation { get; set; }
         public List<string> SubmittedLocations { get; set; } = [];
         public string UnrecognisedLocation { get; set; } = "";
         public int MaxLocations => 5;
