@@ -28,9 +28,9 @@ public class ApprenticeDetailsModel
     public string Email { get; set; } = null!;
     public string Name { get; set; } = null!;
 }
-public class NotificationLocation
-{
-    public string LocationName { get; set; }
-    public double[] GeoPoint { get; set; }
-    public int Radius { get; set; }
-}
+//public class NotificationLocation
+//{
+//    public string LocationName { get; set; }
+//    public double[] GeoPoint { get; set; }
+//    public int Radius { get; set; }
+//}

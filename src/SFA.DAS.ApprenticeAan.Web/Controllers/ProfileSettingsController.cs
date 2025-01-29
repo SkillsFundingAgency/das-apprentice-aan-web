@@ -16,7 +16,7 @@ public class ProfileSettingsController : Controller
         ProfileSettingsViewModel model = new()
         {
             YourAmbassadorProfileUrl = Url.RouteUrl(SharedRouteNames.YourAmbassadorProfile)!,
-            UpcomingEventsNotificationsUrl = Url.RouteUrl(RouteNames.EventNotificationSettings.UpcomingEventsNotifications)!,
+            UpcomingEventsNotificationsUrl = Url.RouteUrl(RouteNames.EventNotificationSettings.Settings)!,
             LeaveTheNetworkUrl = Url.RouteUrl(SharedRouteNames.LeaveTheNetwork)!
         };
 

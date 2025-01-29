@@ -1,4 +1,5 @@
 ﻿namespace SFA.DAS.ApprenticeAan.Web.Constant;
+
 public static class EventType
 {
     public const string InPerson = "InPerson";

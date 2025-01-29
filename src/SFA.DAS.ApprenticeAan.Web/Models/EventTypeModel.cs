@@ -6,6 +6,7 @@ public class EventTypeModel
     public bool IsSelected { get; set; }
     public int Ordering { get; set; }
 }
+
 public class EventTypeModelComparer : IEqualityComparer<EventTypeModel>
 {
     public bool Equals(EventTypeModel? x, EventTypeModel? y)
