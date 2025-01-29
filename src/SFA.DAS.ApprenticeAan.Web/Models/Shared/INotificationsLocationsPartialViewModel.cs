@@ -5,10 +5,11 @@ namespace SFA.DAS.ApprenticeAan.Web.Models.Shared
     public interface INotificationsLocationsPartialViewModel : INotificationsLocationsPartialSubmitModel, IBackLink
     {
         string Title { get; set; }
-        string IntroText { get;set; }
+        string IntroText { get; set; }
 
         List<string> SubmittedLocations { get; set; }
         string UnrecognisedLocation { get; set; }
+        string DuplicateLocation { get; set; }
         List<SelectListItem> RadiusOptions { get; }
         int MaxLocations { get; }
         string MaxLocationsString { get; }
