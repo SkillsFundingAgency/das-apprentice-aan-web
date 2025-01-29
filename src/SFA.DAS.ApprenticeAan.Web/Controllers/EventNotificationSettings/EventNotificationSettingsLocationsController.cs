@@ -33,6 +33,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.EventNotificationSettings
             }
 
             var viewModel = orchestrator.GetViewModel<NotificationsLocationsViewModel>(sessionModel, ModelState);
+            viewModel.BackLink = Url.RouteUrl(RouteNames.EventNotificationSettings.Settings);
 
             return View(ViewPath, viewModel);
         }
