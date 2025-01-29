@@ -12,6 +12,7 @@ using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Constant;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.NotificationsLocationsControllerTests
 {
@@ -33,9 +34,14 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.Notificatio
 
             var mockSessionService = new Mock<ISessionService>();
             var mockApiClient = new Mock<IOuterApiClient>();
+            var mockTempData = new Mock<ITempDataDictionary>();
+            mockTempData.Setup(tempData => tempData.ContainsKey("SameLocationError")).Returns(false);
             var mockValidator = new Mock<IValidator<INotificationsLocationsPartialSubmitModel>>();
             var orchestrator = new NotificationsLocationsOrchestrator(mockSessionService.Object, mockValidator.Object, mockApiClient.Object);
-            var controller = new NotificationsLocationsController(mockSessionService.Object, orchestrator, mockApiClient.Object);
+            var controller = new NotificationsLocationsController(mockSessionService.Object, orchestrator, mockApiClient.Object)
+            {
+                TempData = mockTempData.Object
+            };
 
             controller.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers, "");
             controller.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.SelectNotificationEvents, "");
@@ -66,9 +72,14 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.Notificatio
 
             var mockSessionService = new Mock<ISessionService>();
             var mockApiClient = new Mock<IOuterApiClient>();
+            var mockTempData = new Mock<ITempDataDictionary>();
+            mockTempData.Setup(tempData => tempData.ContainsKey("SameLocationError")).Returns(false);
             var mockValidator = new Mock<IValidator<INotificationsLocationsPartialSubmitModel>>();
             var orchestrator = new NotificationsLocationsOrchestrator(mockSessionService.Object, mockValidator.Object, mockApiClient.Object);
-            var controller = new NotificationsLocationsController(mockSessionService.Object, orchestrator, mockApiClient.Object);
+            var controller = new NotificationsLocationsController(mockSessionService.Object, orchestrator, mockApiClient.Object)
+            {
+                TempData = mockTempData.Object
+            };
             controller.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers, "");
             controller.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.SelectNotificationEvents, "");
 
@@ -100,9 +111,14 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.Onboarding.Notificatio
 
             var mockSessionService = new Mock<ISessionService>();
             var mockApiClient = new Mock<IOuterApiClient>();
+            var mockTempData = new Mock<ITempDataDictionary>();
+            mockTempData.Setup(tempData => tempData.ContainsKey("SameLocationError")).Returns(false);
             var mockValidator = new Mock<IValidator<INotificationsLocationsPartialSubmitModel>>();
             var orchestrator = new NotificationsLocationsOrchestrator(mockSessionService.Object, mockValidator.Object, mockApiClient.Object);
-            var controller = new NotificationsLocationsController(mockSessionService.Object, orchestrator, mockApiClient.Object);
+            var controller = new NotificationsLocationsController(mockSessionService.Object, orchestrator, mockApiClient.Object)
+            {
+                TempData = mockTempData.Object
+            };
             controller.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers, "");
             controller.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.SelectNotificationEvents, "");
 
