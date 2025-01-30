@@ -13,6 +13,7 @@ using SFA.DAS.ApprenticeAan.Web.Controllers.EventNotificationSettings;
 using SFA.DAS.ApprenticeAan.Web.Constant;
 using SFA.DAS.ApprenticeAan.Web.Models.EventNotificationSettings;
 using SFA.DAS.ApprenticeAan.Web.Orchestrators;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.EventNotificationSettings
 {
@@ -37,7 +38,14 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.EventNotificationSetti
             var mockValidator = new Mock<IValidator<INotificationsLocationsPartialSubmitModel>>();
             var orchestrator = new NotificationsLocationsOrchestrator(mockSessionService.Object, mockValidator.Object, mockApiClient.Object);
             var settingsOrchestrator = new EventNotificationSettingsOrchestrator(mockApiClient.Object);
-            var controller = new EventNotificationSettingsLocationsController(orchestrator, mockSessionService.Object, mockApiClient.Object, settingsOrchestrator);
+            var mockTempData = new Mock<ITempDataDictionary>();
+
+            mockTempData.Setup(tempData => tempData.ContainsKey("SameLocationError")).Returns(false);
+
+            var controller = new EventNotificationSettingsLocationsController(orchestrator, mockSessionService.Object, mockApiClient.Object, settingsOrchestrator)
+            {
+                TempData = mockTempData.Object
+            };
 
             controller.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers, "");
             controller.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.SelectNotificationEvents, "");
@@ -71,7 +79,15 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.EventNotificationSetti
             var mockValidator = new Mock<IValidator<INotificationsLocationsPartialSubmitModel>>();
             var orchestrator = new NotificationsLocationsOrchestrator(mockSessionService.Object, mockValidator.Object, mockApiClient.Object);
             var settingsOrchestrator = new EventNotificationSettingsOrchestrator(mockApiClient.Object);
-            var controller = new EventNotificationSettingsLocationsController(orchestrator, mockSessionService.Object, mockApiClient.Object, settingsOrchestrator);
+            var mockTempData = new Mock<ITempDataDictionary>();
+
+            mockTempData.Setup(tempData => tempData.ContainsKey("SameLocationError")).Returns(false);
+
+            var controller = new EventNotificationSettingsLocationsController(orchestrator, mockSessionService.Object, mockApiClient.Object, settingsOrchestrator)
+            {
+                TempData = mockTempData.Object
+            };
+
             controller.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers, "");
             controller.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.SelectNotificationEvents, "");
 
@@ -106,7 +122,15 @@ namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.EventNotificationSetti
             var mockValidator = new Mock<IValidator<INotificationsLocationsPartialSubmitModel>>();
             var orchestrator = new NotificationsLocationsOrchestrator(mockSessionService.Object, mockValidator.Object, mockApiClient.Object);
             var settingsOrchestrator = new EventNotificationSettingsOrchestrator(mockApiClient.Object);
-            var controller = new EventNotificationSettingsLocationsController(orchestrator, mockSessionService.Object, mockApiClient.Object, settingsOrchestrator);
+            var mockTempData = new Mock<ITempDataDictionary>();
+
+            mockTempData.Setup(tempData => tempData.ContainsKey("SameLocationError")).Returns(false);
+
+            var controller = new EventNotificationSettingsLocationsController(orchestrator, mockSessionService.Object, mockApiClient.Object, settingsOrchestrator)
+            {
+                TempData = mockTempData.Object
+            };
+
             controller.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CheckYourAnswers, "");
             controller.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.SelectNotificationEvents, "");
 
