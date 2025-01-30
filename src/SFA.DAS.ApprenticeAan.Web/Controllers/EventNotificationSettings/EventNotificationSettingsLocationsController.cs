@@ -32,6 +32,15 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.EventNotificationSettings
                 return RedirectToRoute(RouteNames.EventNotificationSettings.Settings);
             }
 
+            if (TempData.ContainsKey("SameLocationError"))
+            {
+                var errorMessage = TempData["SameLocationError"] as string;
+                if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    ModelState.AddModelError(nameof(NotificationsLocationsViewModel.Location), errorMessage);
+                }
+            }
+
             var viewModel = orchestrator.GetViewModel<NotificationsLocationsViewModel>(sessionModel, ModelState);
             viewModel.BackLink = Url.RouteUrl(RouteNames.EventNotificationSettings.Settings);
 
@@ -51,7 +60,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.EventNotificationSettings
             if (result == NotificationsLocationsOrchestrator.RedirectTarget.NextPage)
             {
                 await SaveSettings(submitModel);
-                return new RedirectToRouteResult(RouteNames.EventNotificationSettings.Settings, new{});
+                return new RedirectToRouteResult(RouteNames.EventNotificationSettings.Settings, new { });
             }
 
             return result switch
@@ -61,7 +70,7 @@ namespace SFA.DAS.ApprenticeAan.Web.Controllers.EventNotificationSettings
                         RouteNames.EventNotificationSettings.SettingsNotificationLocationDisambiguation,
                         new { submitModel.Radius, submitModel.Location }),
                 NotificationsLocationsOrchestrator.RedirectTarget.Self => new RedirectToRouteResult(RouteNames
-                    .EventNotificationSettings.NotificationLocations, new {}),
+                    .EventNotificationSettings.NotificationLocations, new { }),
                 _ => throw new InvalidOperationException("Unexpected redirect target from ApplySubmitModel"),
             };
         }
