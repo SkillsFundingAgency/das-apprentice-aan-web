@@ -17,8 +17,8 @@ public class ReceiveNotificationsController : Controller
 {
     public const string ViewPath = "~/Views/Onboarding/ReceiveNotifications.cshtml";
     private readonly ISessionService _sessionService;
-    private readonly IValidator<ReceiveNotificationsSubmitModel> _validator;
-    public ReceiveNotificationsController(ISessionService sessionService, IValidator<ReceiveNotificationsSubmitModel> validator)
+    private readonly IValidator<Models.Shared.ReceiveNotificationsSubmitModel> _validator;
+    public ReceiveNotificationsController(ISessionService sessionService, IValidator<Models.Shared.ReceiveNotificationsSubmitModel> validator)
     {
         _sessionService = sessionService;
         _validator = validator;
@@ -40,7 +40,7 @@ public class ReceiveNotificationsController : Controller
     }
 
     [HttpPost]
-    public IActionResult Post(ReceiveNotificationsSubmitModel submitModel, CancellationToken cancellationToken)
+    public IActionResult Post(Models.Shared.ReceiveNotificationsSubmitModel submitModel, CancellationToken cancellationToken)
     {
         var result = _validator.Validate(submitModel);
 

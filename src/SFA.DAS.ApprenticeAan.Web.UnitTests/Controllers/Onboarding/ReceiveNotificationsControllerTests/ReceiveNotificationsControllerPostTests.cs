@@ -18,9 +18,9 @@ public class ReceiveNotificationsControllerPostTests
 {
     [Test, MoqAutoData]
     public void Post_UpdatesSessionModel(
-        [Frozen] Mock<IValidator<ReceiveNotificationsSubmitModel>> mockValidator,
+        [Frozen] Mock<IValidator<Web.Models.Shared.ReceiveNotificationsSubmitModel>> mockValidator,
         [Frozen] Mock<ISessionService> mockSessionService,
-        ReceiveNotificationsSubmitModel submitModel,
+        Web.Models.Shared.ReceiveNotificationsSubmitModel submitModel,
         ValidationResult validationResult,
         OnboardingSessionModel sessionModel,
         [Greedy] ReceiveNotificationsController controller)
@@ -44,7 +44,7 @@ public class ReceiveNotificationsControllerPostTests
     [TestCase(true, true, RouteNames.Onboarding.CheckYourAnswers)]
     public void Post_RedirectsToCorrectRoute(bool newValue, bool? previousValue, string expectedRouteName)
     {
-        var validator = new Mock<IValidator<ReceiveNotificationsSubmitModel>>();
+        var validator = new Mock<IValidator<Web.Models.Shared.ReceiveNotificationsSubmitModel>>();
         var sessionService = new Mock<ISessionService>();
 
         var sessionModel = new OnboardingSessionModel
@@ -53,12 +53,12 @@ public class ReceiveNotificationsControllerPostTests
             HasSeenPreview = previousValue == true
         };
 
-        validator.Setup(v => v.Validate(It.IsAny<ReceiveNotificationsSubmitModel>())).Returns(new ValidationResult());
+        validator.Setup(v => v.Validate(It.IsAny<Web.Models.Shared.ReceiveNotificationsSubmitModel>())).Returns(new ValidationResult());
         sessionService.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         var controller = new ReceiveNotificationsController(sessionService.Object, validator.Object);
 
-        var submitModel = new ReceiveNotificationsSubmitModel
+        var submitModel = new Web.Models.Shared.ReceiveNotificationsSubmitModel
         {
             ReceiveNotifications = newValue
         };
