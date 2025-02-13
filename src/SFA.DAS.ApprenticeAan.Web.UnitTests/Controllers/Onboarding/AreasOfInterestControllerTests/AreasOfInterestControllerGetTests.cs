@@ -73,14 +73,14 @@ public class AreasOfInterestControllerGetTests
         [Frozen] Mock<ISessionService> sessionServiceMock,
         [Greedy] AreasOfInterestController sut,
         OnboardingSessionModel sessionModel,
-        string reasonToJoinUrl)
+        string currentJobTitle)
     {
-        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.ReasonToJoin, reasonToJoinUrl);
+        sut.AddUrlHelperMock().AddUrlForRoute(RouteNames.Onboarding.CurrentJobTitle, currentJobTitle);
         sessionModel.HasSeenPreview = false;
         sessionServiceMock.Setup(s => s.Get<OnboardingSessionModel>()).Returns(sessionModel);
 
         var result = sut.Get();
 
-        result.As<ViewResult>().Model.As<AreasOfInterestViewModel>().BackLink.Should().Be(reasonToJoinUrl);
+        result.As<ViewResult>().Model.As<AreasOfInterestViewModel>().BackLink.Should().Be(currentJobTitle);
     }
 }

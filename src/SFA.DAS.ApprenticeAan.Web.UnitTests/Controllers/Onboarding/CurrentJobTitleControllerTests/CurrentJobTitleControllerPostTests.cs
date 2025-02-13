@@ -60,7 +60,7 @@ public class CurrentJobTitleControllerPostTests
 
         sessionServiceMock.Verify(s => s.Set(It.Is<OnboardingSessionModel>(m => m.GetProfileValue(ProfileConstants.ProfileIds.JobTitle) == submitModel.JobTitle)));
 
-        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.Regions);
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.AreasOfInterest);
     }
 
     [MoqAutoData]

@@ -1,0 +1,47 @@
+﻿@model ReceiveNotificationsViewModel
+@{
+    ViewData["Title"] = "Do you want to get a monthly email about upcoming events?";
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_validationSummary" />
+        <form method="post">
+            <fieldset class="govuk-fieldset">
+                <div esfa-validation-marker-for="ReceiveNotifications" class="govuk-form-group">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-heading-l">
+                            Do you want to get a monthly email about upcoming events?
+                        </h1>
+                    </legend>
+
+                    <p class="govuk-hint">
+                        We’ll email you at the start of each month. You can choose which events we tell you about at the next step.
+                    </p>
+
+                    <span asp-validation-for="ReceiveNotifications" class="govuk-error-message"></span>
+                    <div id="ReceiveNotifications-options" class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input asp-for="ReceiveNotifications" class="govuk-radios__input" type="radio" value="true"
+                                   sfa-validationerror-class="form-control-error">
+                            <label class="govuk-label govuk-radios__label" for="ReceiveNotifications">
+                                Yes
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input asp-for="ReceiveNotifications" id="No" class="govuk-radios__input" type="radio" value="false"
+                                   sfa-validationerror-class="form-control-error">
+                            <label class="govuk-label govuk-radios__label" for="No">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="govuk-button-group">
+                <button id="continue" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

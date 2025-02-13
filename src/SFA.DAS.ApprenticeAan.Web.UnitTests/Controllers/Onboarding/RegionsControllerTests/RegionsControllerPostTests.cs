@@ -87,7 +87,7 @@ public class RegionsControllerPostTests
         sut.ModelState.IsValid.Should().BeTrue();
 
         result.As<RedirectToRouteResult>().Should().NotBeNull();
-        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.ReasonToJoin);
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.RegionalNetwork);
     }
 
     [MoqAutoData]
@@ -118,6 +118,6 @@ public class RegionsControllerPostTests
         sut.ModelState.IsValid.Should().BeTrue();
 
         result.As<RedirectToRouteResult>().Should().NotBeNull();
-        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.CheckYourAnswers);
+        result.As<RedirectToRouteResult>().RouteName.Should().Be(RouteNames.Onboarding.RegionalNetwork);
     }
 }

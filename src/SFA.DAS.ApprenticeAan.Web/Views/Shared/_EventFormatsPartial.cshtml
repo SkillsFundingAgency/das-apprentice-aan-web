@@ -1,0 +1,46 @@
+@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+@model SelectNotificationsViewModel
+@{
+    ViewData["Title"] = "Which types of events do you want to be emailed about?";
+}
+
+<div id="event-types-container" class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_validationSummary" />
+        <form method="post">
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <div esfa-validation-marker-for="@Model.EventTypes" class="govuk-form-group">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <span class="govuk-caption-l govuk-!-margin-bottom-0">Emails about upcoming events</span>
+                            <h1 class="govuk-fieldset__heading">
+                                Which types of events do you want to be emailed about?
+                            </h1>
+                        </legend>
+                        <p />
+                        <div id="eventTypes-hint" class="govuk-hint">
+                            Select all that apply
+                        </div>
+                        <span asp-validation-for="@Model.EventTypes" class="govuk-error-message"></span>
+
+                        @{
+                            var viewData = new ViewDataDictionary(ViewData)
+            {
+                TemplateInfo = { HtmlFieldPrefix = "EventTypes" }
+            };
+                        }
+                        <div id="EventTypes" class="govuk-checkboxes" data-module="govuk-checkboxes">
+                            @await Html.PartialAsync("_EventTypesCheckboxes", Model.EventTypes, viewData)
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="govuk-button-group">
+                <button id="continue-button" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true" asp-page-handler="Submit">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

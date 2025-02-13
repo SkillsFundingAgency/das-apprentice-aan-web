@@ -1,161 +1,269 @@
-﻿@using SFA.DAS.ApprenticeAan.Web.Infrastructure
-@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.ApprenticeAan.Web.Constant
 @model CheckYourAnswersViewModel
 @{
-    ViewData["Title"] = "Check your answers";
+    ViewData["Title"] = "Register with the Apprenticeship Ambassador Network";
 }
-
 <div class="govuk-grid-row">
-  <form method="post" asp-route="@RouteNames.Onboarding.CheckYourAnswers" enctype="multipart/form-data" novalidate>
-    <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">Check the information you have provided before completing your registration</h1>
-        <div>
-          <div class="govuk-hint">
-              Here are the details you have provided.
-          </div>
-          <dl class="govuk-summary-list">
-              <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">
-                      Current employer
-                  </dt>
-                  <dd class="govuk-summary-list__value">
-                      @Model.CurrentEmployerName
-                      <br />
-                      @Model.CurrentEmployerAddress
-                  </dd>
-                  <dd class="govuk-summary-list__actions">
-                      <a href=@Url.RouteUrl(RouteNames.Onboarding.EmployerSearch) class="govuk-link govuk-link--no-visited-state">Change</a>
-                  </dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">Current job title</dt>
-                  <dd class="govuk-summary-list__value">@Model.JobTitle</dd>
-                  <dd class="govuk-summary-list__actions">
-                      <a href=@Url.RouteUrl(RouteNames.Onboarding.CurrentJobTitle) class="govuk-link govuk-link--no-visited-state">Change</a>
-                  </dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">
-                      Region you are active in
-                  </dt>
-                  <dd class="govuk-summary-list__value">
-                      @Model.Region
-                  </dd>
-                  <dd class="govuk-summary-list__actions">
-                      <a href=@Url.RouteUrl(RouteNames.Onboarding.Regions) class="govuk-link govuk-link--no-visited-state">Change</a>
-                  </dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">
-                      Reasons for registering
-                  </dt>
-                  <dd class="govuk-summary-list__value">
-                      @Model.ReasonForJoiningTheNetwork
-                  </dd>
-                  <dd class="govuk-summary-list__actions">
-                      <a href=@Url.RouteUrl(RouteNames.Onboarding.ReasonToJoin) class="govuk-link govuk-link--no-visited-state">Change</a>
-                  </dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">Areas of interest in your role</dt>
-                  <dd class="govuk-summary-list__value">
-                      <ul class="govuk-list govuk-list--bullet">
-                          @{
-                              foreach (var aoi in Model.AreasOfInterest)
-                              {
-                                  <li>@aoi</li>
-                              }
-                          }
-                      </ul>
-                  </dd>
-                  <dd class="govuk-summary-list__actions">
-                      <a href=@Url.RouteUrl(RouteNames.Onboarding.AreasOfInterest) class="govuk-link govuk-link--no-visited-state">Change</a>
-                  </dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">
-                      Previous engagement with network ambassadors
-                  </dt>
-                  <dd class="govuk-summary-list__value">
-                      @Model.PreviousEngagement
-                  </dd>
-                  <dd class="govuk-summary-list__actions">
-                      <a href=@Url.RouteUrl(RouteNames.Onboarding.PreviousEngagement) class="govuk-link govuk-link--no-visited-state">Change</a>
-                  </dd>
-              </div>
-          </dl>
-        </div>
-        <div>
-            <h2 class="govuk-heading-m">
-                Here are your existing details from your Apprenticeship account.
-            </h2>
-            <div class="govuk-hint">
-                The information will be included in your registration and shared with your regional chair so they can welcome you into the network. If any of these details are incorrect, please log in to your account and update them.
-            </div>
+    <partial name="_validationSummary" />
+    <form method="post" asp-route="@RouteNames.Onboarding.CheckYourAnswers" enctype="multipart/form-data" novalidate>
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">Register with the Apprenticeship Ambassador Network</h1>
+            <h2 class="govuk-heading-l">Your regional network</h2>
             <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
-                        Full name
+                        Which region do you work in?
                     </dt>
                     <dd class="govuk-summary-list__value">
-                        @Model.FullName
+                        @Model.Region
                     </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Email
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        @Model.Email
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Start and end date of apprenticeship
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        @Model.ApprenticeshipDuration
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Apprenticeship sector
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        @Model.ApprenticeshipSector
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Apprenticeship programme
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        @Model.ApprenticeshipProgram
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Apprenticeship level
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        @Model.ApprenticeshipLevel
+                    <dd class="govuk-summary-list__actions">
+                        <a href=@Model.RegionChangeLink class="govuk-link govuk-link--no-visited-state">Change</a>
                     </dd>
                 </div>
             </dl>
-        </div>
-        <div>
-            <h2 class="govuk-heading-m">
-                Now submit your registration
-            </h2>
-            <div class="govuk-hint">
-                By submitting this registration you are confirming that all the details you are providing are correct.
+            <p class="govuk-body">Your network will be the <strong>@Model.Region Apprenticeship Ambassador Network</strong>.</p>
+            <div>
+                <h2 class="govuk-heading-l">
+                    Your ambassador profile
+                </h2>
+                <h3 class="govuk-heading-m">
+                    From your My apprenticeship account
+                </h3>
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Full name
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.FullName
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Email address
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.Email
+                            <div class="govuk-hint">
+                                From your GOV.UK One Login
+                            </div>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Apprenticeship Sectors
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.ApprenticeshipSector
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Apprenticeship Programme
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.ApprenticeshipProgram
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Apprenticeship Level
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.ApprenticeshipLevel
+                        </dd>
+                    </div>
+                </dl>
+                <h3 class="govuk-heading-m">
+                    Your apprenticeship
+                </h3>
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Employer
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.CurrentEmployerName
+                            <br />
+                            <br />
+                            @Model.CurrentEmployerAddress
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a href=@Url.RouteUrl(RouteNames.Onboarding.EmployerSearch) class="govuk-link govuk-link--no-visited-state">Change</a>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Job title</dt>
+                        <dd class="govuk-summary-list__value">@Model.JobTitle</dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a href=@Url.RouteUrl(RouteNames.Onboarding.CurrentJobTitle) class="govuk-link govuk-link--no-visited-state">Change</a>
+                        </dd>
+                    </div>
+                </dl>
+                <h3 class="govuk-heading-m">
+                    Share how you want to be involved
+                </h3>
+                <div class="govuk-summary-card">
+                    <div class="govuk-body govuk-summary-card__title-wrapper">
+                        <h4 class="govuk-summary-card__title">
+                            How you want to be involved
+                        </h4>
+                        <div class="govuk-body">
+                            <a href=@Model.AreasOfInterestChangeLink class="govuk-link govuk-link--no-visited-state">Change</a>
+                        </div>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">How do you want to be involved at network events?</dt>
+                                <dd class="govuk-summary-list__value">
+                                    @{
+                                        if (Model.Events!.Count == 1)
+                                        {
+                                            @Model.Events[0]
+                                        }
+                                        else
+                                        {
+                                            <ul class="govuk-list govuk-list--bullet">
+                                                @{
+                                                    foreach (var neededSupport in Model.Events!)
+                                                    {
+                                                        <li>@neededSupport</li>
+                                                    }
+                                                }
+                                            </ul>
+                                        }
+                                    }
+                                </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">How do you want to be involved with promoting the network</dt>
+                                <dd class="govuk-summary-list__value">
+                                    @{
+                                        if (Model.Promotions!.Count == 1)
+                                        {
+                                            @Model.Promotions[0]
+                                        }
+                                        else
+                                        {
+                                            <ul class="govuk-list govuk-list--bullet">
+                                                @{
+                                                    foreach (var neededSupport in Model.Promotions!)
+                                                    {
+                                                        <li>@neededSupport</li>
+                                                    }
+                                                }
+                                            </ul>
+                                        }
+                                    }
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Why do you want to join the network?</dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.ReasonForJoiningTheNetwork
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a href=@Model.ReasonForJoiningTheNetworkChangeLink class="govuk-link govuk-link--no-visited-state">Change</a>
+                        </dd>
+                    </div>
+                </dl>
+                <h2 class="govuk-heading-l">
+                    Emails about upcoming events
+                </h2>
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Do you want to get a monthly email about upcoming events?</dt>
+                        <dd class="govuk-summary-list__value">
+                            @(Model.ReceiveNotifications == true ? "Yes" : "No")
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a href=@Model.ReceiveNotificationsChangeLink class="govuk-link govuk-link--no-visited-state">Change</a>
+                        </dd>
+                    </div>
+                    @if (Model.ReceiveNotifications)
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Which types of events do you want to be emailed about?</dt>
+                            <dd class="govuk-summary-list__value">
+                                @{
+                                    if (Model.EventTypes!.Count == 1)
+                                    {
+                                        <span>@(Model.EventTypes[0] == EventType.InPerson ? "In-Person Events" : $"{Model.EventTypes[0]} events")</span>
+                                    }
+                                    else
+                                    {
+                                        <ul class="govuk-list govuk-list--bullet">
+                                            @{
+                                                foreach (var eventTypes in Model.EventTypes!)
+                                                {
+                                                    <li>@(eventTypes == EventType.InPerson ? "In-Person events" : $"{eventTypes} events")</li>
+                                                }
+                                            }
+                                        </ul>
+                                    }
+                                }
+                            </dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a href=@Model.SelectNotificationEventsChangeLink class="govuk-link govuk-link--no-visited-state">Change</a>
+                            </dd>
+                        </div>
+                        if (Model.ShowAllEventNotificationQuestions)
+                        {
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Locations for @Model.LocationLabel events</dt>
+                                <dd class="govuk-summary-list__value">
+                                    @{
+                                        if (Model.NotificationLocations!.Count == 1)
+                                        {
+                                            @Model.NotificationLocations[0]
+                                        }
+                                        else
+                                        {
+                                            <ul class="govuk-list govuk-list--bullet">
+                                                @{
+                                                    foreach (var notificationLocations in Model.NotificationLocations)
+                                                    {
+                                                        <li>@notificationLocations</li>
+                                                    }
+                                                }
+                                            </ul>
+                                        }
+                                    }
+                                </dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a href=@Model.NotificationsLocationsChangeLink class="govuk-link govuk-link--no-visited-state">Change</a>
+                                </dd>
+                            </div>
+                        }
+                    }
+                </dl>
+                <h2 class="govuk-heading-l">
+                    Engagement with apprenticeship ambassadors
+                </h2>
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Have you met another apprenticeship ambassador before?</dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.PreviousEngagement
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a href=@Model.PreviousEngagementChangeLink class="govuk-link govuk-link--no-visited-state">Change</a>
+                        </dd>
+                    </div>
+                </dl>
+                <div class="govuk-button-group">
+                    <button id="continue-button" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true" asp-page-handler="Submit">
+                        Submit
+                    </button>
+                </div>
             </div>
         </div>
-        <div class="govuk-button-group">
-            <button id="continue-button" type="submit" class="govuk-button" data-module="govuk-button" data-disable-on-submit="true" asp-page-handler="Submit">
-                Accept and submit
-            </button>
-        </div>
-    </div>
-  </form>
+    </form>
 </div>

@@ -1,9 +1,7 @@
-﻿@using SFA.DAS.ApprenticeAan.Web.Models.Onboarding
-@using SFA.DAS.ApprenticeAan.Web.Infrastructure;
-@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
 @model AreasOfInterestViewModel
 @{
-    ViewData["Title"] = "Apprenticeship region";
+    ViewData["Title"] = "How you want to be involved";
 }
 
 <div class="govuk-grid-row">
@@ -14,20 +12,22 @@
                 <fieldset class="govuk-fieldset">
                     <div esfa-validation-marker-for="@Model.AreasOfInterest" class="govuk-form-group">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <span class="govuk-caption-l govuk-!-margin-bottom-0">Create your ambassador profile</span>
                             <h1 class="govuk-fieldset__heading">
-                                Please tell us which areas interest you most in your role as an ambassador
+                                How you want to be involved
                             </h1>
                         </legend>
-                        <p />
-                        <div id="regions-hint" class="govuk-hint">
-                            Your areas of interest will help regional support teams find the most relevant opportunities available to you. Ambassadors are expected to participate in a minimum of six engagement activities/events across the year.
-                        </div>
                         <span asp-validation-for="@Model.AreasOfInterest" class="govuk-error-message"></span>
-
                         <div id="AreasOfInterest" class="govuk-checkboxes" data-module="govuk-checkboxes">
                             <h2 class="govuk-heading-m">
-                                Events
+                                How do you want to be involved at network events?
                             </h2>
+                            <p class="govuk-body">
+                                Ambassadors can join us at events that promote apprenticeships. Share your experience and help people taking the next step in their careers.
+                            </p>
+                            <div id="reasonsToJoin-hint" class="govuk-hint">
+                                Select all that apply
+                            </div>
                             @{
                                 for (int i = 0; i < Model.Events.Count; i++)
                                 {
@@ -35,6 +35,10 @@
                                         <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.Events[i].IsSelected>
                                         <label class="govuk-label govuk-checkboxes__label" asp-for="@Model.Events[i].IsSelected">
                                             @Model.Events[i].Description
+                                            @if (Model.Events[i].Description == "Organising events")
+                                            {
+                                                <span class="govuk-caption-m govuk-!-margin-top-0">Help to co-ordinate regional or national events</span>
+                                            }
                                         </label>
                                         <input type="hidden" asp-for="@Model.Events[i].Id" />
                                         <input type="hidden" asp-for="@Model.Events[i].Ordering" />
@@ -42,11 +46,16 @@
                                 }
                             }
                         </div>
-                        <p />
                         <div id="promotions-option" class="govuk-checkboxes" data-module="govuk-checkboxes">
                             <h2 class="govuk-heading-m">
-                                Promotions
+                                How do you want to be involved with promoting the network?
                             </h2>
+                            <p class="govuk-body">
+                                Ambassadors can help us promote the network. Get professional experience by promoting AAN and apprenticeships.
+                            </p>
+                            <div id="reasonsToJoin-hint" class="govuk-hint">
+                                Select all that apply
+                            </div>
                             @{
                                 for (int i = 0; i < Model.Promotions.Count; i++)
                                 {
@@ -54,6 +63,10 @@
                                         <input class="govuk-checkboxes__input" type="checkbox" asp-for=@Model.Promotions[i].IsSelected>
                                         <label class="govuk-label govuk-checkboxes__label" asp-for="@Model.Promotions[i].IsSelected">
                                             @Model.Promotions[i].Description
+                                            @if (Model.Promotions[i].Description == "Carrying out and writing up case studies")
+                                            {
+                                                <span class="govuk-caption-m govuk-!-margin-top-0">Write up people’s experiences of their apprenticeship</span>
+                                            }
                                         </label>
                                         <input type="hidden" asp-for="@Model.Promotions[i].Id" />
                                         <input type="hidden" asp-for="@Model.Promotions[i].Ordering" />
@@ -61,10 +74,6 @@
                                 }
                             }
                         </div>
-                    </div>
-                    <p />
-                    <div class="govuk-hint">
-                        You can change your preferences at any time in your network profile settings.
                     </div>
                 </fieldset>
             </div>

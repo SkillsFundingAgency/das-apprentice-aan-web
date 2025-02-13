@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
 using SFA.DAS.Aan.SharedUi.Models;
+using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 
 namespace SFA.DAS.ApprenticeAan.Web.Controllers;
 
@@ -15,6 +16,7 @@ public class ProfileSettingsController : Controller
         ProfileSettingsViewModel model = new()
         {
             YourAmbassadorProfileUrl = Url.RouteUrl(SharedRouteNames.YourAmbassadorProfile)!,
+            UpcomingEventsNotificationsUrl = Url.RouteUrl(RouteNames.EventNotificationSettings.Settings)!,
             LeaveTheNetworkUrl = Url.RouteUrl(SharedRouteNames.LeaveTheNetwork)!
         };
 

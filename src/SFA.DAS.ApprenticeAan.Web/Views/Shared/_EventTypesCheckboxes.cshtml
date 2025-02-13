@@ -1,0 +1,38 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SFA.DAS.ApprenticeAan.Web.Constant
+
+@model List<EventTypeModel>
+
+@for (int i = 0; i < Model.Count; i++)
+{
+    if (Model[i].EventType != "All")
+    {
+        <div class="govuk-checkboxes__item">
+            <input class="govuk-checkboxes__input other-checkbox" type="checkbox" asp-for="@Model[i].IsSelected" id="eventType-@i">
+            <label class="govuk-label govuk-checkboxes__label" for="EventType-@i">
+                @(Model[i].EventType == EventType.InPerson ? "In-person events" : $"{Model[i].EventType} events")
+            </label>
+            <input type="hidden" asp-for="@Model[i].EventType" />
+            <input type="hidden" asp-for="@Model[i].Ordering" />
+        </div>
+    }
+}
+<P class="govuk-body govuk-!-margin-left-3 govuk-!-margin-top-3">
+    or
+</P>
+@{
+    for (int i = 0; i < Model.Count; i++)
+    {
+        if (Model[i].EventType == "All")
+        {
+            <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input" type="checkbox" asp-for="@Model[i].IsSelected" id="all-checkbox">
+                <label class="govuk-label govuk-checkboxes__label" for="eventType-@i">
+                    @($"{Model[i].EventType} Events")
+                </label>
+                <input type="hidden" asp-for="@Model[i].EventType" />
+                <input type="hidden" asp-for="@Model[i].Ordering" />
+            </div>
+        }
+    }
+}

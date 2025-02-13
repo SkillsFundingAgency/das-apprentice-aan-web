@@ -2,8 +2,8 @@
 
 public class EmployerDetailsViewModel : EmployerDetailsSubmitModel, IBackLink
 {
-    public const string AddDetailsHeader = "Add your employer's name and address";
-    public const string CheckDetailsHeader = "Check your employer's name and address";
+    public const string AddDetailsHeader = "Add the details of your employer";
+    public const string CheckDetailsHeader = "Check the details of your employer";
     public string BackLink { get; set; } = null!;
     public string PageHeader => string.IsNullOrWhiteSpace(Postcode) ? AddDetailsHeader : CheckDetailsHeader;
 }

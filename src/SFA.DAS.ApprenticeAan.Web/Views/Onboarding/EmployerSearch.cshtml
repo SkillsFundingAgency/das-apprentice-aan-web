@@ -1,6 +1,6 @@
 ﻿@model EmployerSearchViewModel
 @{
-    ViewData["Title"] = "Before you start";
+    ViewData["Title"] = "Who do you work for?";
 }
 
 <div class="govuk-grid-row">
@@ -8,7 +8,7 @@
         <partial name="_validationSummary" />
         <form method="post" asp-route="@RouteNames.Onboarding.EmployerSearch" enctype="multipart/form-data" novalidate>
 
-            <input asp-for="OrganisationName" id="OrganisationName" type="hidden"/>
+            <input asp-for="OrganisationName" id="OrganisationName" type="hidden" />
             <input asp-for="AddressLine1" id="AddressLine1" type="hidden" />
             <input asp-for="AddressLine2" id="AddressLine2" type="hidden" />
             <input asp-for="Town" id="Town" type="hidden" />
@@ -18,10 +18,15 @@
             <input asp-for="Latitude" id="Latitude" type="hidden" />
 
             <div esfa-validation-marker-for="SearchTerm" class="govuk-form-group">
-                <h1 class="govuk-heading-l">Search for your employer's name or address</h1>
-                <div class="govuk-label">
-                    Start typing your employer name or postcode
+                <span class="govuk-caption-l govuk-!-margin-bottom-0">Create your ambassador profile</span>
+                <h1 class="govuk-heading-l">Who do you work for?</h1>
+                <p class="govuk-body">
+                    We’ll use your answer to show other ambassadors where you work.
+                </p>
+                <div class="govuk-label govuk-!-font-weight-bold govuk-!-margin-bottom-0">
+                    Employer name or address
                 </div>
+                <span class="govuk-caption-m govuk-!-margin-bottom-4">Enter the employer or their postcode</span>
                 <span asp-validation-for="SearchTerm" class="govuk-error-message"></span>
                 <label class="govuk-visually-hidden" asp-for="SearchTerm">
                     Search Term
