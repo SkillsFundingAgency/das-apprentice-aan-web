@@ -1,82 +1,86 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json",
     "contentVersion": "1.0.0.0",
-  "parameters": {
-    "resourceEnvironmentName": {
-      "type": "string"
+    "parameters": {
+        "resourceEnvironmentName": {
+            "type": "string"
+        },
+        "environmentName": {
+            "type": "string"
+        },
+        "serviceName": {
+            "type": "string"
+        },
+        "sharedEnvResourceGroup": {
+            "type": "string"
+        },
+        "configurationStorageConnectionString": {
+            "type": "securestring"
+        },
+        "loggingRedisConnectionString": {
+            "type": "securestring"
+        },
+        "loggingRedisKey": {
+            "type": "string"
+        },
+        "tags": {
+            "type": "object"
+        },
+        "resourceGroupLocation": {
+            "type": "string"
+        },
+        "sharedManagementResourceGroup": {
+            "type": "string"
+        },
+        "sharedKeyVaultName": {
+            "type": "string"
+        },
+        "customHostName": {
+            "type": "string"
+        },
+        "keyVaultCertificateName": {
+            "type": "string"
+        },
+        "sharedFrontEndAppServicePlanName": {
+            "type": "string"
+        },
+        "sharedFrontEndSubnetResourceId": {
+            "type": "string"
+        },
+        "frontEndAccessRestrictions": {
+            "type": "array"
+        },
+        "logAnalyticsSubscriptionId": {
+            "type": "string",
+            "defaultValue": "[subscription().subscriptionId]"
+        },
+        "logAnalyticsWorkspaceName": {
+            "type": "string"
+        },
+        "sharedApimResourceGroup": {
+            "type": "string"
+        },
+        "sharedApimName": {
+            "type": "string"
+        },
+        "utcValue": {
+            "type": "string",
+            "defaultValue": "[utcNow()]"
+        },
+        "cdnUrl": {
+            "type": "string"
+        },
+        "deployPrivateLinkedScopedResource": {
+            "type": "bool"
+        }
     },
-    "environmentName": {
-      "type": "string"
-    },
-    "serviceName": {
-      "type": "string"
-    },
-    "sharedEnvResourceGroup": {
-      "type": "string"
-    },
-    "configurationStorageConnectionString": {
-      "type": "securestring"
-    },
-    "loggingRedisConnectionString": {
-      "type": "securestring"
-    },
-    "loggingRedisKey": {
-      "type": "string"
-    },
-    "tags": {
-      "type": "object"
-    },
-    "resourceGroupLocation": {
-      "type": "string"
-    },
-    "sharedManagementResourceGroup": {
-      "type": "string"
-    },
-    "sharedKeyVaultName": {
-      "type": "string"
-    },
-    "customHostName": {
-      "type": "string"
-    },
-    "keyVaultCertificateName": {
-      "type": "string"
-    },
-    "sharedFrontEndAppServicePlanName": {
-      "type": "string"
-    },
-    "sharedFrontEndSubnetResourceId": {
-      "type": "string"
-    },
-    "frontEndAccessRestrictions": {
-      "type": "array"
-    },
-    "logAnalyticsSubscriptionId": {
-      "type": "string",
-      "defaultValue": "[subscription().subscriptionId]"
-    },
-    "logAnalyticsWorkspaceName": {
-      "type": "string"
-    },
-    "sharedApimResourceGroup": {
-      "type": "string"
-    },
-    "sharedApimName": {
-      "type": "string"
-    },
-    "utcValue": {
-      "type": "string",
-      "defaultValue": "[utcNow()]"
-    },
-    "cdnUrl": {
-      "type": "string"
-    }
-  },
     "variables": {
         "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/",
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
         "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
-        "configNames": "SFA.DAS.ApprenticeAan.Web,SFA.DAS.Apprentice.GovSignIn"
+        "configNames": "SFA.DAS.ApprenticeAan.Web,SFA.DAS.Apprentice.GovSignIn",
+        "privateLinkScopeName": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-shared-ampls'))]"
     },
     "resources": [
         {
@@ -188,44 +192,44 @@
                     },
                     "appServiceAppSettings": {
                         "value": {
-                          "array": [
-                            {
-                              "name": "EnvironmentName",
-                              "value": "[parameters('environmentName')]"
-                            },
-                            {
-                              "name": "ResourceEnvironmentName",
-                              "value": "[parameters('resourceEnvironmentName')]"
-                            },
-                            {
-                              "name": "ConfigurationStorageConnectionString",
-                              "value": "[parameters('configurationStorageConnectionString')]"
-                            },
-                            {
-                              "name": "ConfigNames",
-                              "value": "[variables('configNames')]"
-                            },
-                            {
-                              "name": "Version",
-                              "value": "1.0"
-                            },
-                            {
-                              "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
-                              "value": "[reference(concat(variables('appServiceName'), '-application-insights-', parameters('utcValue'))).outputs.ConnectionString.value]"
-                            },
-                            {
-                              "name": "LoggingRedisConnectionString",
-                              "value": "[parameters('loggingRedisConnectionString')]"
-                            },
-                            {
-                              "name": "LoggingRedisKey",
-                              "value": "[parameters('loggingRedisKey')]"
-                            },
-                            {
-                              "name": "Cdn:Url",
-                              "value": "[parameters('cdnUrl')]"
-                            }
-                          ]
+                            "array": [
+                                {
+                                    "name": "EnvironmentName",
+                                    "value": "[parameters('environmentName')]"
+                                },
+                                {
+                                    "name": "ResourceEnvironmentName",
+                                    "value": "[parameters('resourceEnvironmentName')]"
+                                },
+                                {
+                                    "name": "ConfigurationStorageConnectionString",
+                                    "value": "[parameters('configurationStorageConnectionString')]"
+                                },
+                                {
+                                    "name": "ConfigNames",
+                                    "value": "[variables('configNames')]"
+                                },
+                                {
+                                    "name": "Version",
+                                    "value": "1.0"
+                                },
+                                {
+                                    "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+                                    "value": "[reference(concat(variables('appServiceName'), '-application-insights-', parameters('utcValue'))).outputs.ConnectionString.value]"
+                                },
+                                {
+                                    "name": "LoggingRedisConnectionString",
+                                    "value": "[parameters('loggingRedisConnectionString')]"
+                                },
+                                {
+                                    "name": "LoggingRedisKey",
+                                    "value": "[parameters('loggingRedisKey')]"
+                                },
+                                {
+                                    "name": "Cdn:Url",
+                                    "value": "[parameters('cdnUrl')]"
+                                }
+                            ]
                         }
                     },
                     "customHostName": {
@@ -242,6 +246,31 @@
             "dependsOn": [
                 "[variables('resourceGroupName')]"
             ]
+        },
+        {
+            "condition": "[parameters('deployPrivateLinkedScopedResource')]",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(variables('appServiceName'), '-private-link-scoped-', parameters('utcValue'))]",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'private-linked-scoped-resource.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "privateLinkScopeName": {
+                        "value": "[variables('privateLinkScopeName')]"
+                    },
+                    "scopedResourceName": {
+                        "value": "[variables('appServiceName')]"
+                    },
+                    "scopedResourceId": {
+                        "value": "[reference(concat(variables('appServiceName'), '-application-insights-', parameters('utcValue'))).outputs.AppInsightsResourceId.value]"
+                    }
+                }
+            }
         }
     ],
     "outputs": {
