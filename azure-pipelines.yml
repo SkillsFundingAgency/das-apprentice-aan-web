@@ -95,6 +95,7 @@ stages:
   variables:
   - group: PreProd Management Resources
   - group: PreProd Shared Resources
+  - group: PREPROD das-apprentice-aan-web
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
