@@ -2,8 +2,8 @@
 using System.Security.Claims;
 using AutoFixture.NUnit3;
 using FluentAssertions;
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -51,7 +51,7 @@ public class RequiresRegistrationAuthorizationFilterTests
         RequiresRegistrationAuthorizationFilter sut = new(user, config);
 
         var context = GetAuthContext();
-        var returnUrl = WebUtility.UrlEncode(context.HttpContext.Request.GetUri().ToString());
+        var returnUrl = WebUtility.UrlEncode(context.HttpContext.Request.GetDisplayUrl());
         var expectedRedirectUrl = string.Concat(accountsUrl.TrimEnd('/'), "?returnUrl=", returnUrl);
 
         sut.OnAuthorization(context);
@@ -83,7 +83,7 @@ public class RequiresRegistrationAuthorizationFilterTests
             User = claimsPrincipal
         };
         mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(defaultContext);
-        
+
         return mockHttpContextAccessor.Object;
     }
 }
