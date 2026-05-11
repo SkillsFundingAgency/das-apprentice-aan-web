@@ -1,4 +1,4 @@
-﻿using AutoFixture.NUnit3;
+﻿using AutoFixture.NUnit4;
 using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.ApprenticeAan.Web.Models;
 

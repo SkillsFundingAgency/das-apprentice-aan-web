@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Security.Claims;
-using AutoFixture.NUnit3;
+using AutoFixture.NUnit4;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
