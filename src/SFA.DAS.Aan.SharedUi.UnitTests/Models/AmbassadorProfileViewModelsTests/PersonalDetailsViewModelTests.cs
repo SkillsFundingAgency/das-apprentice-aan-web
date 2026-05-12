@@ -5,6 +5,7 @@ using SFA.DAS.Aan.SharedUi.Constants;
 using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 
 namespace SFA.DAS.Aan.SharedUi.UnitTests.Models.AmbassadorProfileViewModelsTests;
+
 public class PersonalDetailsViewModelTests
 {
     private PersonalDetailsViewModel sut;
@@ -123,26 +124,23 @@ public class PersonalDetailsViewModelTests
         PersonalDetailsViewModel _sut = new PersonalDetailsViewModel();
 
         // Assert
-        using (new AssertionScope())
+        using (Assert.EnterMultipleScope())
         {
-            Assert.Multiple(() =>
-            {
-                Assert.That(_sut, Is.Not.Null);
-                Assert.That(_sut.FullName, Is.Null);
-                Assert.That(_sut.FullNameDisplayValue, Is.Null);
-                Assert.That(_sut.FullNameDisplayClass, Is.Null);
-                Assert.That(_sut.RegionName, Is.Null);
-                Assert.That(_sut.RegionNameDisplayValue, Is.Null);
-                Assert.That(_sut.RegionNameDisplayClass, Is.Null);
-                Assert.That(_sut.JobTitle, Is.Null);
-                Assert.That(_sut.JobTitleDisplayValue, Is.Null);
-                Assert.That(_sut.JobTitleDisplayClass, Is.Null);
-                Assert.That(_sut.Biography, Is.Null);
-                Assert.That(_sut.BiographyDisplayValue, Is.Null);
-                Assert.That(_sut.BiographyDisplayClass, Is.Null);
-                Assert.That(_sut.UserType, Is.EqualTo(MemberUserType.Apprentice));
-                Assert.That(_sut.PersonalDetailsChangeUrl, Is.Null);
-            });
+            Assert.That(_sut, Is.Not.Null);
+            Assert.That(_sut.FullName, Is.Null);
+            Assert.That(_sut.FullNameDisplayValue, Is.Null);
+            Assert.That(_sut.FullNameDisplayClass, Is.Null);
+            Assert.That(_sut.RegionName, Is.Null);
+            Assert.That(_sut.RegionNameDisplayValue, Is.Null);
+            Assert.That(_sut.RegionNameDisplayClass, Is.Null);
+            Assert.That(_sut.JobTitle, Is.Null);
+            Assert.That(_sut.JobTitleDisplayValue, Is.Null);
+            Assert.That(_sut.JobTitleDisplayClass, Is.Null);
+            Assert.That(_sut.Biography, Is.Null);
+            Assert.That(_sut.BiographyDisplayValue, Is.Null);
+            Assert.That(_sut.BiographyDisplayClass, Is.Null);
+            Assert.That(_sut.UserType, Is.EqualTo(MemberUserType.Apprentice));
+            Assert.That(_sut.PersonalDetailsChangeUrl, Is.Null);
         }
     }
 }

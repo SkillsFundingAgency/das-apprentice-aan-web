@@ -12,7 +12,7 @@ public class SelectProfileModelTests
     {
         var selectProfileData = (SelectProfileModel)profiles;
 
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(selectProfileData, Is.Not.Null);
 
@@ -20,6 +20,6 @@ public class SelectProfileModelTests
             Assert.That(profiles.Description, Is.EqualTo(selectProfileData.Description));
             Assert.That(profiles.Category, Is.EqualTo(selectProfileData.Category));
             Assert.That(profiles.Ordering, Is.EqualTo(selectProfileData.Ordering));
-        });
+        }
     }
 }

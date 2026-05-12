@@ -18,6 +18,7 @@ using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
+
 public class NetworkEventDetailsControllerTests
 {
     private static readonly string AllNetworksUrl = Guid.NewGuid().ToString();
@@ -87,12 +88,12 @@ public class NetworkEventDetailsControllerTests
         sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkEvents, AllNetworksUrl);
         var result = sut.SignUpConfirmation();
 
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(result, Is.TypeOf<ViewResult>());
             var viewResult = result as ViewResult;
             Assert.That(viewResult!.ViewName, Is.EqualTo(NetworkEventDetailsController.SignUpConfirmationViewPath));
-        });
+        }
     }
 
     [Test, MoqAutoData]
@@ -105,12 +106,12 @@ public class NetworkEventDetailsControllerTests
         sut.AddUrlHelperMock().AddUrlForRoute(SharedRouteNames.NetworkEvents, AllNetworksUrl);
         var result = sut.CancellationConfirmation();
 
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(result, Is.TypeOf<ViewResult>());
             var viewResult = result as ViewResult;
             Assert.That(viewResult!.ViewName, Is.EqualTo(NetworkEventDetailsController.CancellationConfirmationViewPath));
-        });
+        }
     }
 
     [Test, MoqAutoData]

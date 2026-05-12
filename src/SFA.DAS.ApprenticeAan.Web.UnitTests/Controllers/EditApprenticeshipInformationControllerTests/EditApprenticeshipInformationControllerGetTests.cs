@@ -16,6 +16,7 @@ using static SFA.DAS.Aan.SharedUi.Constants.PreferenceConstants;
 using static SFA.DAS.Aan.SharedUi.Constants.ProfileConstants;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.EditApprenticeshipInformationControllerTests;
+
 public class EditApprenticeshipInformationControllerGetTests
 {
     EditApprenticeshipInformationController sut = null!;
@@ -37,11 +38,11 @@ public class EditApprenticeshipInformationControllerGetTests
         var viewResult = result as ViewResult;
 
         // Assert
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(result, Is.InstanceOf<ViewResult>());
             Assert.That(viewResult!.ViewName, Does.Contain(SharedRouteNames.EditApprenticeshipInformation));
-        });
+        }
     }
 
     [Test, MoqAutoData]
@@ -71,10 +72,10 @@ public class EditApprenticeshipInformationControllerGetTests
         var viewModel = viewResult!.Model as EditApprenticeshipInformationViewModel;
 
         // Assert
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(viewModel, Is.InstanceOf<EditApprenticeshipInformationViewModel>());
-        });
+        }
     }
 
     [Test, RecursiveMoqAutoData]
@@ -112,7 +113,7 @@ public class EditApprenticeshipInformationControllerGetTests
         var viewModel = viewResult!.Model as EditApprenticeshipInformationViewModel;
 
         // Assert
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(viewModel!.EmployerName, Is.EqualTo(employerName));
             Assert.That(viewModel!.EmployerAddress1, Is.EqualTo(employerAddress1));
@@ -124,7 +125,7 @@ public class EditApprenticeshipInformationControllerGetTests
             Assert.That(viewModel!.Sector, Is.EqualTo(getMemberProfileResponse.Apprenticeship!.Sector));
             Assert.That(viewModel!.Programmes, Is.EqualTo(getMemberProfileResponse.Apprenticeship!.Programme));
             Assert.That(viewModel!.Level, Is.EqualTo(getMemberProfileResponse.Apprenticeship!.Level));
-        });
+        }
     }
 
     [Test, RecursiveMoqAutoData]
@@ -162,13 +163,13 @@ public class EditApprenticeshipInformationControllerGetTests
         var viewModel = viewResult!.Model as EditApprenticeshipInformationViewModel;
 
         // Assert
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(viewModel!.ShowApprenticeshipInformation, Is.EqualTo(showApprenticeshipInformation));
             Assert.That(viewModel!.Sector, Is.EqualTo(null));
             Assert.That(viewModel!.Programmes, Is.EqualTo(null));
             Assert.That(viewModel!.Level, Is.EqualTo(null));
-        });
+        }
     }
 
     [Test]
@@ -239,10 +240,10 @@ public class EditApprenticeshipInformationControllerGetTests
         var result = sut.GetEditApprenticeshipInformationViewModel(cancellationToken).Result;
 
         // Assert
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(result, Is.InstanceOf<EditApprenticeshipInformationViewModel>());
-        });
+        }
     }
 
     [Test, RecursiveMoqAutoData]
@@ -285,7 +286,7 @@ public class EditApprenticeshipInformationControllerGetTests
         var result = sut.GetEditApprenticeshipInformationViewModel(cancellationToken).Result;
 
         // Assert
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(result.EmployerName, Is.EqualTo(employerName));
             Assert.That(result.EmployerAddress1, Is.EqualTo(employerAddress1));
@@ -297,7 +298,7 @@ public class EditApprenticeshipInformationControllerGetTests
             Assert.That(result.Sector, Is.EqualTo(getMemberProfileResponse.Apprenticeship!.Sector));
             Assert.That(result.Programmes, Is.EqualTo(getMemberProfileResponse.Apprenticeship!.Programme));
             Assert.That(result.Level, Is.EqualTo(getMemberProfileResponse.Apprenticeship!.Level));
-        });
+        }
     }
 
     [Test, RecursiveMoqAutoData]
@@ -333,7 +334,7 @@ public class EditApprenticeshipInformationControllerGetTests
         var result = sut.GetEditApprenticeshipInformationViewModel(cancellationToken).Result;
 
         // Assert
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(result.EmployerName, Is.EqualTo(employerName));
             Assert.That(result.EmployerAddress1, Is.EqualTo(employerAddress1));
@@ -345,7 +346,7 @@ public class EditApprenticeshipInformationControllerGetTests
             Assert.That(result.Sector, Is.EqualTo(null));
             Assert.That(result.Programmes, Is.EqualTo(null));
             Assert.That(result.Level, Is.EqualTo(null));
-        });
+        }
     }
 
     [Test]

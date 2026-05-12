@@ -8,6 +8,7 @@ using SFA.DAS.ApprenticeAan.Web.Infrastructure;
 using SFA.DAS.ApprenticeAan.Web.UnitTests.TestHelpers;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.ErrorControllerTests;
+
 [TestFixture]
 public class ErrorControllerTests
 {
@@ -55,9 +56,9 @@ public class ErrorControllerTests
         var viewModel = result!.Model as ErrorViewModel;
 
         // Assert
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(viewModel!.HomePageUrl, Is.EqualTo(NetworkHubUrl));
-        });
+        }
     }
 }

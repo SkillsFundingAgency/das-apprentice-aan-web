@@ -122,12 +122,12 @@ public class EditPersonalInformationControllerPostTests
         var response = await _sut.Post(new(), CancellationToken.None);
 
         //Assert
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(response, Is.TypeOf<RedirectToRouteResult>());
             var redirectToAction = (RedirectToRouteResult)response;
             Assert.That(redirectToAction.RouteName, Does.Contain(SharedRouteNames.YourAmbassadorProfile));
-        });
+        }
     }
 
     [Test]

@@ -2,6 +2,7 @@
 using SFA.DAS.ApprenticeAan.Web.Controllers;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
+
 public class AccessDeniedControllerTests
 {
     [Test]
@@ -12,10 +13,10 @@ public class AccessDeniedControllerTests
         var result = sut.RemovedShutter();
         var viewResult = result as ViewResult;
 
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(result, Is.InstanceOf<ViewResult>());
             Assert.That(viewResult!.ViewName, Does.Contain(AccessDeniedController.RemovedShutterPath));
-        });
+        }
     }
 }

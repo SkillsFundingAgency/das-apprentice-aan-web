@@ -19,6 +19,7 @@ using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.EditContactDetailControllerTests;
+
 public class EditContactDetailControllerPostTests
 {
     private EditContactDetailController sut = null!;
@@ -103,12 +104,12 @@ public class EditContactDetailControllerPostTests
         var response = await sut.Post(submitContactDetailModel, cancellationToken);
 
         // Assert
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(response, Is.TypeOf<RedirectToRouteResult>());
             var redirectToAction = (RedirectToRouteResult)response;
             Assert.That(redirectToAction.RouteName, Does.Contain(SharedRouteNames.YourAmbassadorProfile));
-        });
+        }
     }
 
     [Test, RecursiveMoqAutoData]
@@ -123,7 +124,7 @@ public class EditContactDetailControllerPostTests
         await sut.Post(submitContactDetailModel, cancellationToken);
 
         // Assert
-        Assert.That(sut.TempData.ContainsKey(TempDataKeys.YourAmbassadorProfileSuccessMessage), Is.EqualTo(true));
+        Assert.That(sut.TempData.ContainsKey(TempDataKeys.YourAmbassadorProfileSuccessMessage), Is.True);
     }
 
     [Test, RecursiveMoqAutoData]
@@ -206,12 +207,12 @@ public class EditContactDetailControllerPostTests
         var result = await sut.Post(submitContactDetailModel, cancellationToken);
 
         // Assert
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(result, Is.InstanceOf<ViewResult>());
             var viewResult = result as ViewResult;
             Assert.That(viewResult!.ViewName, Does.Contain(SharedRouteNames.EditContactDetail));
-        });
+        }
     }
 
     [Test, RecursiveMoqAutoData]

@@ -87,10 +87,10 @@ public class EditAreaOfInterestControllerPostTests
         var redirectToAction = (RedirectToRouteResult)response;
 
         //Assert
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(response, Is.TypeOf<RedirectToRouteResult>());
             Assert.That(redirectToAction.RouteName, Does.Contain(SharedRouteNames.YourAmbassadorProfile));
-        });
+        }
     }
 }

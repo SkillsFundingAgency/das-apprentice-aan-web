@@ -18,6 +18,7 @@ using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.EditApprenticeshipInformationControllerTests;
+
 public class EditApprenticeshipInformationControllerPostTests
 {
     EditApprenticeshipInformationController sut = null!;
@@ -40,11 +41,11 @@ public class EditApprenticeshipInformationControllerPostTests
         var result = response as ViewResult;
 
         //Assert
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(response, Is.InstanceOf<ViewResult>());
             Assert.That(result!.ViewName, Does.Contain(SharedRouteNames.EditApprenticeshipInformation));
-        });
+        }
     }
 
     [Test, MoqInlineAutoData]
@@ -89,12 +90,12 @@ public class EditApprenticeshipInformationControllerPostTests
         var response = await sut.Post(submitApprenticeshipInformationModel, cancellationToken);
 
         // Assert
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(response, Is.TypeOf<RedirectToRouteResult>());
             var redirectToAction = (RedirectToRouteResult)response;
             Assert.That(redirectToAction.RouteName, Does.Contain(SharedRouteNames.YourAmbassadorProfile));
-        });
+        }
     }
 
     [Test, RecursiveMoqAutoData]
@@ -109,7 +110,7 @@ public class EditApprenticeshipInformationControllerPostTests
         await sut.Post(submitApprenticeshipInformationModel, cancellationToken);
 
         // Assert
-        Assert.That(sut.TempData.ContainsKey(TempDataKeys.YourAmbassadorProfileSuccessMessage), Is.EqualTo(true));
+        Assert.That(sut.TempData.ContainsKey(TempDataKeys.YourAmbassadorProfileSuccessMessage), Is.True);
     }
 
     [Test, RecursiveMoqAutoData]

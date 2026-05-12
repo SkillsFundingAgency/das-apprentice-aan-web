@@ -84,11 +84,11 @@ public class EditAreaOfInterestControllerGetTests
         var result = sut.Get(new CancellationToken());
 
         //Assert
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             var viewResult = result as ViewResult;
             Assert.That(viewResult!.ViewName, Does.Contain(SharedRouteNames.EditAreaOfInterest));
-        });
+        }
     }
 
     [Test, AutoData]
@@ -107,7 +107,7 @@ public class EditAreaOfInterestControllerGetTests
         var sut = EditAreaOfInterestController.SelectProfileViewModelMapping(profiles, memberProfiles);
 
         //Assert
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(sut, Is.InstanceOf(selectProfileViewModels.GetType()));
             Assert.That(sut, Has.Count.EqualTo(1));
@@ -116,7 +116,7 @@ public class EditAreaOfInterestControllerGetTests
             Assert.That(sut[0].Category, Is.EqualTo(profiles.ToArray()[0].Category));
             Assert.That(sut[0].Ordering, Is.EqualTo(profiles.ToArray()[0].Ordering));
             Assert.That(sut[0].IsSelected, Is.EqualTo(profileValue));
-        });
+        }
     }
 
     [Test]
@@ -148,11 +148,11 @@ public class EditAreaOfInterestControllerGetTests
         // Assert
         using (new AssertionScope())
         {
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(viewModel!.FirstSectionTitle, Is.EqualTo(AreaOfInterestTitleConstant.FirstSectionTitleForApprentice));
                 Assert.That(viewModel!.SecondSectionTitle, Is.EqualTo(AreaOfInterestTitleConstant.SecondSectionTitleForApprentice));
-            });
+            }
         }
     }
 
