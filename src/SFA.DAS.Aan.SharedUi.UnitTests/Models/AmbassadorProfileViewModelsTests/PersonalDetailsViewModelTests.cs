@@ -47,7 +47,7 @@ public class PersonalDetailsViewModelTests
         {
             sut.Should().NotBeNull();
             sut.FullName.Should().Be(fullName);
-            sut.JobTitleDisplayValue.GetType().Should().Be(typeof(string));
+            sut.JobTitleDisplayValue.Should().BeOfType<string>();
             sut.UserType.Should().Be(userType);
         }
     }

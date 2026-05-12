@@ -77,7 +77,7 @@ public class NetworkEventDetailsViewModelTests
             Assert.That(sut.ContactName, Is.EqualTo(contactName));
             Assert.That(sut.ContactEmail, Is.EqualTo(contactEmail));
             Assert.That(sut.Attendees, Has.Count.EqualTo(0));
-            Assert.That(sut.AttendeeCount, Is.EqualTo(0));
+            Assert.That(sut.AttendeeCount, Is.Zero);
             Assert.That(sut.EventGuests, Has.Count.EqualTo(0));
             Assert.That(sut.StartDateTime, Is.EqualTo(start));
             if (sut.StartDateTime < DateTime.UtcNow)

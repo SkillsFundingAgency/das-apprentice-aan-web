@@ -166,9 +166,9 @@ public class EditApprenticeshipInformationControllerGetTests
         using (Assert.EnterMultipleScope())
         {
             Assert.That(viewModel!.ShowApprenticeshipInformation, Is.EqualTo(showApprenticeshipInformation));
-            Assert.That(viewModel!.Sector, Is.EqualTo(null));
-            Assert.That(viewModel!.Programmes, Is.EqualTo(null));
-            Assert.That(viewModel!.Level, Is.EqualTo(null));
+            Assert.That(viewModel!.Sector, Is.Null);
+            Assert.That(viewModel!.Programmes, Is.Null);
+            Assert.That(viewModel!.Level, Is.Null);
         }
     }
 
@@ -343,9 +343,9 @@ public class EditApprenticeshipInformationControllerGetTests
             Assert.That(result.EmployerCounty, Is.EqualTo(employerCounty));
             Assert.That(result.EmployerPostcode, Is.EqualTo(employerPostcode));
             Assert.That(result.ShowApprenticeshipInformation, Is.EqualTo(showApprenticeshipInformation));
-            Assert.That(result.Sector, Is.EqualTo(null));
-            Assert.That(result.Programmes, Is.EqualTo(null));
-            Assert.That(result.Level, Is.EqualTo(null));
+            Assert.That(result.Sector, Is.Null);
+            Assert.That(result.Programmes, Is.Null);
+            Assert.That(result.Level, Is.Null);
         }
     }
 
