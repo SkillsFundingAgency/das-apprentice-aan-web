@@ -6,7 +6,6 @@ using SFA.DAS.ApprenticeAan.Web.Constant;
 using SFA.DAS.ApprenticeAan.Web.Models;
 using SFA.DAS.ApprenticeAan.Web.Models.Onboarding;
 using SFA.DAS.ApprenticeAan.Web.Models.Shared;
-using SFA.DAS.ApprenticeAan.Web.Constant;
 
 namespace SFA.DAS.ApprenticeAan.Web.Orchestrators.Shared
 {

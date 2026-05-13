@@ -11,10 +11,10 @@ public class PersonalDetailsViewModelTests
     private PersonalDetailsViewModel sut;
     private string fullName;
     private string regionName;
-    private string personalDetailsChangeUrl = Guid.NewGuid().ToString();
-    private string areaOfInterestChangeUrl = Guid.NewGuid().ToString();
-    private string contactDetailsChangeUrl = Guid.NewGuid().ToString();
-    private string memberProfileUrl = Guid.NewGuid().ToString();
+    private readonly string personalDetailsChangeUrl = Guid.NewGuid().ToString();
+    private readonly string areaOfInterestChangeUrl = Guid.NewGuid().ToString();
+    private readonly string contactDetailsChangeUrl = Guid.NewGuid().ToString();
+    private readonly string memberProfileUrl = Guid.NewGuid().ToString();
     private IEnumerable<MemberProfile> memberProfiles;
     private IEnumerable<MemberPreference> memberPreferences;
     private MemberUserType userType;

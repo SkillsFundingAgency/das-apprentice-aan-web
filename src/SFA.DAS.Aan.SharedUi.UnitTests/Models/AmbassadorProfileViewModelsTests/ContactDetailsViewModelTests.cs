@@ -11,7 +11,7 @@ public class ContactDetailsViewModelTests
     private string email;
     private IEnumerable<MemberProfile> memberProfiles;
     private IEnumerable<MemberPreference> memberPreferences;
-    private string contactDetailChangeUrl = Guid.NewGuid().ToString();
+    private readonly string contactDetailChangeUrl = Guid.NewGuid().ToString();
 
     [SetUp]
     public void Setup()
