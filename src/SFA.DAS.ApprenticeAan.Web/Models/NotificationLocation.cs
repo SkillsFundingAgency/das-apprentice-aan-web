@@ -2,7 +2,7 @@
 
 public class NotificationLocation
 {
-    public string LocationName { get; set; }
-    public double[] GeoPoint { get; set; }
+    public string LocationName { get; set; } = string.Empty;
+    public double[] GeoPoint { get; set; } = [];
     public int Radius { get; set; }
 }

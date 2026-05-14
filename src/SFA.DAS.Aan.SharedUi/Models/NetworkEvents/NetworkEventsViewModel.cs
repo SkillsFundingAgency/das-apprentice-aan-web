@@ -17,7 +17,7 @@ public class NetworkEventsViewModel : INetworkHubLink
     public SelectedFiltersModel SelectedFiltersModel { get; set; } = new SelectedFiltersModel();
     public string? NetworkHubLink { get; set; }
 
-    public string OrderBy { get; set; }
+    public string OrderBy { get; set; } = string.Empty;
 
     public List<SelectListItem> OrderByOptions => new List<SelectListItem>
         { new("Soonest", "soonest"), new("Closest", "closest") };
