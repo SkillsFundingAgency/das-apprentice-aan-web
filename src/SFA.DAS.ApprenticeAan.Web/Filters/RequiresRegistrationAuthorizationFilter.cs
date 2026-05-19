@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -22,10 +22,10 @@ public class RequiresRegistrationAuthorizationFilter : IAuthorizationFilter
     {
         if (context.ActionDescriptor is ControllerActionDescriptor controller &&
             controller.ControllerName.Equals("Services", StringComparison.CurrentCultureIgnoreCase)) return;
-        
+
         if (_user.HasCreatedAccount) return;
 
-        var returnUrl = WebUtility.UrlEncode(context.HttpContext.Request.GetUri().ToString());
+        var returnUrl = WebUtility.UrlEncode(context.HttpContext.Request.GetDisplayUrl());
         var redirectUrl = string.Concat(_apprenticeAccountsUrl, "?returnUrl=", returnUrl);
         context.Result = new RedirectResult(redirectUrl);
     }

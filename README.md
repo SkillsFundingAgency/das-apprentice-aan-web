@@ -5,8 +5,7 @@
 <img src="https://avatars.githubusercontent.com/u/9841374?s=200&v=4" align="right" alt="UK Government logo">
 
 [![Build Status](https://dev.azure.com/sfa-gov-uk/Digital%20Apprenticeship%20Service/_apis/build/status/das-apprentice-aan-web?branchName=main)](https://dev.azure.com/sfa-gov-uk/Digital%20Apprenticeship%20Service/_build/latest?definitionId=3044&branchName=main)
-[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=SkillsFundingAgency_das-apprentice-aan-web)](https://sonarcloud.io/summary/new_code?id=SkillsFundingAgency_das-apprentice-aan-web)
-[![Confluence Page](https://img.shields.io/badge/Confluence-Project-blue)](https://skillsfundingagency.atlassian.net/wiki/spaces/NDL/pages/3852894209/AAN+Apprentice+Solution+Architecture)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=SkillsFundingAgency_das-apprentice-aan-web&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=SkillsFundingAgency_das-apprentice-aan-web)
 [![License](https://img.shields.io/badge/license-MIT-lightgrey.svg?longCache=true&style=flat-square)](https://en.wikipedia.org/wiki/MIT_License)
 
 This web solution is part of Apprentice Ambassador Network (AAN) project. Here the apprentice users can onboard to become ambassadors, find and sign-up for network events, find and collaborate with other ambassadors.
@@ -19,6 +18,8 @@ Users are expected to register themselves in the Apprentice portal. Once registe
 ### Pre-Requisites
 * A clone of this repository
 * An Azure Active Directory account with the appropriate roles as per the [config](https://github.com/SkillsFundingAgency/das-employer-config/blob/master/das-tools-servicebus-support/SFA.DAS.Tools.Servicebus.Support.json).
+
+### Dependencies
 * The Outer API [das-apim-endpoints](https://github.com/SkillsFundingAgency/das-apim-endpoints/tree/master/src/ApprenticeAan) should be available either running locally or accessible in an Azure tenancy.
 * The [das-apprentice-login-service](https://github.com/SkillsFundingAgency/das-apprentice-login-service) should be available either running locally or accessible in an Azure tenancy.
 * The [das-apprentice-accounts-web](https://github.com/SkillsFundingAgency/das-apprentice-accounts-web) should be available either running locally or accessible in an Azure tenancy.
@@ -48,9 +49,8 @@ In the web project, if not exist already, add `AppSettings.Development.json` fil
 ```
 
 ## Technologies
-* .NetCore 8.0
+* .Net 10.0
 * NUnit
 * Moq
 * FluentAssertions
 * RestEase
-* MediatR

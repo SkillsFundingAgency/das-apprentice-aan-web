@@ -1,4 +1,4 @@
-﻿using AutoFixture.NUnit3;
+﻿using AutoFixture.NUnit4;
 using SFA.DAS.Aan.SharedUi.Models;
 using SFA.DAS.ApprenticeAan.Web.Models;
 
@@ -12,7 +12,7 @@ public class ProfileModelTests
     {
         var profileData = (ProfileModel)profiles;
 
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(profileData, Is.Not.Null);
 
@@ -20,6 +20,6 @@ public class ProfileModelTests
             Assert.That(profiles.Description, Is.EqualTo(profileData.Description));
             Assert.That(profiles.Category, Is.EqualTo(profileData.Category));
             Assert.That(profiles.Ordering, Is.EqualTo(profileData.Ordering));
-        });
+        }
     }
 }

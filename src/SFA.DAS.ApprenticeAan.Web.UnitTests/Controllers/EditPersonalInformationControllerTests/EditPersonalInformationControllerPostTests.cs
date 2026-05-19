@@ -1,5 +1,4 @@
-﻿//using System.Drawing;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -122,12 +121,12 @@ public class EditPersonalInformationControllerPostTests
         var response = await _sut.Post(new(), CancellationToken.None);
 
         //Assert
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(response, Is.TypeOf<RedirectToRouteResult>());
             var redirectToAction = (RedirectToRouteResult)response;
             Assert.That(redirectToAction.RouteName, Does.Contain(SharedRouteNames.YourAmbassadorProfile));
-        });
+        }
     }
 
     [Test]

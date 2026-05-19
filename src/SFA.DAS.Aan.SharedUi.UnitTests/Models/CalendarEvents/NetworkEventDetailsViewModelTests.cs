@@ -16,7 +16,7 @@ public class NetworkEventDetailsViewModelTests
 
         var sut = new NetworkEventDetailsViewModel(source, Guid.NewGuid());
 
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(sut.CalendarEventId, Is.EqualTo(source.CalendarEventId));
             Assert.That(sut.CalendarName, Is.EqualTo(source.CalendarName));
@@ -48,7 +48,7 @@ public class NetworkEventDetailsViewModelTests
                 Assert.That(sut.IsPastEvent, Is.False);
 
             }
-        });
+        }
     }
 
 
@@ -60,7 +60,7 @@ public class NetworkEventDetailsViewModelTests
 
         var sut = new NetworkEventDetailsViewModel(calendarName, start, end, title, description, contactName, contactEmail);
 
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(sut.CalendarName, Is.EqualTo(calendarName));
             Assert.That(sut.StartDate, Is.EqualTo(start.UtcToLocalTime().ToString("dddd, d MMMM yyyy")));
@@ -77,7 +77,7 @@ public class NetworkEventDetailsViewModelTests
             Assert.That(sut.ContactName, Is.EqualTo(contactName));
             Assert.That(sut.ContactEmail, Is.EqualTo(contactEmail));
             Assert.That(sut.Attendees, Has.Count.EqualTo(0));
-            Assert.That(sut.AttendeeCount, Is.EqualTo(0));
+            Assert.That(sut.AttendeeCount, Is.Zero);
             Assert.That(sut.EventGuests, Has.Count.EqualTo(0));
             Assert.That(sut.StartDateTime, Is.EqualTo(start));
             if (sut.StartDateTime < DateTime.UtcNow)
@@ -88,7 +88,7 @@ public class NetworkEventDetailsViewModelTests
             {
                 Assert.That(sut.IsPastEvent, Is.False);
             }
-        });
+        }
     }
 
 
@@ -217,18 +217,18 @@ public class NetworkEventDetailsViewModelTests
     [Test, MoqAutoData]
     public void GoogleMapLink_ReturnsExpectedUrl(NetworkEventDetailsViewModel sut)
     {
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(sut.GoogleMapsLink,
                 Is.EqualTo(sut.LocationDetails?.Location == null
                     ? string.Empty
                     : $"https://www.google.com/maps/dir//{sut.LocationDetails?.Location}+{sut.LocationDetails?.Postcode}"));
-        });
+        }
     }
 
     private static void DoAssertsForInPersonAndHybridEvents(CalendarEvent source, NetworkEventDetailsViewModel sut)
     {
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(sut.CalendarEventId, Is.EqualTo(source.CalendarEventId));
             Assert.That(sut.CalendarName, Is.EqualTo(source.CalendarName));
@@ -250,6 +250,6 @@ public class NetworkEventDetailsViewModelTests
             Assert.That(sut.Attendees, Is.EqualTo(source.Attendees));
             Assert.That(sut.AttendeeCount, Is.EqualTo(source.Attendees.Count));
             Assert.That(sut.EventGuests, Is.EqualTo(source.EventGuests));
-        });
+        }
     }
 }

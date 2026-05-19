@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using AutoFixture.NUnit3;
+using AutoFixture.NUnit4;
 using FluentAssertions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -18,6 +18,7 @@ using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.LeavingTheNetworkTests;
+
 public class LeavingTheNetworkAreYouSureTests
 {
     static readonly string ProfileSettingsUrl = Guid.NewGuid().ToString();
@@ -41,11 +42,11 @@ public class LeavingTheNetworkAreYouSureTests
         var viewResult = result as ViewResult;
         var model = viewResult!.Model as LeaveTheNetworkAreYouSureViewModel;
 
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(model!.ProfileSettingsLink, Is.EqualTo(ProfileSettingsUrl));
             Assert.That(viewResult.ViewName, Is.EqualTo(LeaveTheNetworkController.LeaveTheNetworkAreYouSureViewPath));
-        });
+        }
     }
 
     [Test, MoqAutoData]

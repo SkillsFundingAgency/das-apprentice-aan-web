@@ -1,4 +1,4 @@
-﻿using AutoFixture.NUnit3;
+﻿using AutoFixture.NUnit4;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using FluentValidation;
@@ -75,7 +75,7 @@ public class MemberProfileControllerTests
     [Test]
     [MoqInlineAutoData(MemberUserType.Apprentice)]
     [MoqInlineAutoData(MemberUserType.Employer)]
-    public void Get_ReturnsProfileView(
+    public async Task Get_ReturnsProfileView(
         MemberUserType memberUserType,
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         [Frozen] Mock<ISessionService> sessionServiceMock,
@@ -102,11 +102,11 @@ public class MemberProfileControllerTests
         var result = sut.Get(memberId, cancellationToken);
 
         //Assert
-        Assert.Multiple(async () =>
+        using (Assert.EnterMultipleScope())
         {
             var viewResult = await result as ViewResult;
             Assert.That(viewResult!.ViewName, Does.Contain("Profile"));
-        });
+        }
     }
 
     [Test]
@@ -185,7 +185,8 @@ public class MemberProfileControllerTests
         {
             response.Should().BeOfType<RedirectToRouteResult>();
             response.As<RedirectToRouteResult>().RouteName.Should().Be(SharedRouteNames.NotificationSentConfirmation);
-        };
+        }
+        ;
     }
 
     [Test]

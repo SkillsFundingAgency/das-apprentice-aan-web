@@ -4,13 +4,14 @@ using FluentAssertions.Execution;
 using SFA.DAS.Aan.SharedUi.Models.AmbassadorProfile;
 
 namespace SFA.DAS.Aan.SharedUi.UnitTests.Models.AmbassadorProfileViewModelsTests;
+
 public class ContactDetailsViewModelTests
 {
     private ContactDetailsViewModel sut;
     private string email;
     private IEnumerable<MemberProfile> memberProfiles;
     private IEnumerable<MemberPreference> memberPreferences;
-    private string contactDetailChangeUrl = Guid.NewGuid().ToString();
+    private readonly string contactDetailChangeUrl = Guid.NewGuid().ToString();
 
     [SetUp]
     public void Setup()
@@ -58,17 +59,14 @@ public class ContactDetailsViewModelTests
         ContactDetailsViewModel _sut = new ContactDetailsViewModel();
 
         // Assert
-        using (new AssertionScope())
+        using (Assert.EnterMultipleScope())
         {
-            Assert.Multiple(() =>
-            {
-                Assert.That(_sut, Is.Not.Null);
-                Assert.That(_sut.EmailAddress, Is.Null);
-                Assert.That(_sut.LinkedIn, Is.Null);
-                Assert.That(_sut.LinkedInDisplayClass, Is.Null);
-                Assert.That(_sut.LinkedInDisplayValue, Is.Null);
-                Assert.That(_sut.ContactDetailChangeUrl, Is.Null);
-            });
+            Assert.That(_sut, Is.Not.Null);
+            Assert.That(_sut.EmailAddress, Is.Null);
+            Assert.That(_sut.LinkedIn, Is.Null);
+            Assert.That(_sut.LinkedInDisplayClass, Is.Null);
+            Assert.That(_sut.LinkedInDisplayValue, Is.Null);
+            Assert.That(_sut.ContactDetailChangeUrl, Is.Null);
         }
     }
 }

@@ -16,11 +16,11 @@ public class MembersViewModelTests
         networkDirectorySummary.IsRegionalChair = false;
         var sut = (MembersViewModel)networkDirectorySummary;
 
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(sut.IsRegionalChair, Is.EqualTo(networkDirectorySummary.IsRegionalChair));
             Assert.That(sut.UserRole, Is.EqualTo(networkDirectorySummary.UserType));
-        });
+        }
     }
 
     [Test]
@@ -30,11 +30,11 @@ public class MembersViewModelTests
         networkDirectorySummary.IsRegionalChair = true;
         var sut = (MembersViewModel)networkDirectorySummary;
 
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(sut.IsRegionalChair, Is.EqualTo(networkDirectorySummary.IsRegionalChair));
             Assert.That(sut.UserRole, Is.EqualTo(Role.RegionalChair));
-        });
+        }
     }
 
     [Test]
@@ -44,11 +44,11 @@ public class MembersViewModelTests
         networkDirectorySummary.RegionId = null;
         var sut = (MembersViewModel)networkDirectorySummary;
 
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(sut.RegionId, Is.EqualTo(networkDirectorySummary.RegionId));
             Assert.That(sut.RegionName, Is.EqualTo("Multi-regional"));
-        });
+        }
     }
 
     [Test]
@@ -58,11 +58,11 @@ public class MembersViewModelTests
         networkDirectorySummary.RegionId = 1;
         var sut = (MembersViewModel)networkDirectorySummary;
 
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(sut.RegionId, Is.EqualTo(networkDirectorySummary.RegionId));
             Assert.That(sut.RegionName, Is.EqualTo(networkDirectorySummary.RegionName));
-        });
+        }
     }
 
 

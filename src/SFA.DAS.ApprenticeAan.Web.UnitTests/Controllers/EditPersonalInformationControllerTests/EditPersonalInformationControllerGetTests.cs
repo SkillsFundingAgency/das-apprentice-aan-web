@@ -1,4 +1,4 @@
-﻿using AutoFixture.NUnit3;
+﻿using AutoFixture.NUnit4;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -86,7 +86,7 @@ public class EditPersonalInformationControllerGetTests
 
     [Test]
     [MoqAutoData]
-    public void Index_ReturnsProfileView(
+    public async Task Index_ReturnsProfileView(
         [Frozen] Mock<IOuterApiClient> outerApiMock,
         GetMemberProfileResponse getMemberProfileResponse,
         [Greedy] EditPersonalInformationController sut
@@ -106,11 +106,11 @@ public class EditPersonalInformationControllerGetTests
         var result = sut.Index(new CancellationToken());
 
         //Assert
-        Assert.Multiple(async () =>
+        using (Assert.EnterMultipleScope())
         {
             var viewResult = await result as ViewResult;
             Assert.That(viewResult!.ViewName, Does.Contain("EditPersonalInformation"));
-        });
+        }
     }
 
     [Test]
@@ -141,7 +141,7 @@ public class EditPersonalInformationControllerGetTests
         var sut = EditPersonalInformationController.EditPersonalInformationViewModelMapping(regionId, memberProfiles, memberPreferences, userType, organisationName);
 
         //Assert
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(sut, Is.InstanceOf(editPersonalInformationViewModel.GetType()));
             Assert.That(sut.RegionId, Is.EqualTo(regionId));
@@ -152,6 +152,6 @@ public class EditPersonalInformationControllerGetTests
             Assert.That(sut.NetworkHubLink, Is.Null);
             Assert.That(sut.JobTitle, Is.EqualTo(memberProfiles.ToArray()[0].Value));
             Assert.That(sut.Biography, Is.EqualTo(memberProfiles.ToArray()[1].Value));
-        });
+        }
     }
 }

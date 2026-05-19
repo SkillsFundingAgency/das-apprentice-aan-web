@@ -6,8 +6,8 @@
 
         public class Location
         {
-            public string Name { get; set; }
-            public double[] Coordinates { get; set; }
+            public string Name { get; set; } = string.Empty;
+            public double[] Coordinates { get; set; } = [];
         }
     }
 }

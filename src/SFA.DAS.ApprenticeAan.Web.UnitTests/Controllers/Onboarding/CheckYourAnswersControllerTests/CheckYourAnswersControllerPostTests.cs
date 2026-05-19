@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using AutoFixture.NUnit3;
+using AutoFixture.NUnit4;
 using FluentAssertions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -61,14 +61,14 @@ public class CheckYourAnswersControllerPostTests : CheckYourAnswersControllerTes
             && r.LastName == user.HttpContext!.User.FindFirstValue(IdentityClaims.FamilyName)
             && r.ReceiveNotifications == onboardingSessionModel.ReceiveNotifications
             && r.MemberNotificationEventFormatValues.Count == onboardingSessionModel.EventTypes.Count
-            && r.MemberNotificationEventFormatValues.First().EventFormat == onboardingSessionModel.EventTypes.First().EventType
-            && r.MemberNotificationEventFormatValues.First().Ordering == onboardingSessionModel.EventTypes.First().Ordering
-            && r.MemberNotificationEventFormatValues.First().ReceiveNotifications == onboardingSessionModel.EventTypes.First().IsSelected
+            && r.MemberNotificationEventFormatValues[0].EventFormat == onboardingSessionModel.EventTypes[0].EventType
+            && r.MemberNotificationEventFormatValues[0].Ordering == onboardingSessionModel.EventTypes[0].Ordering
+            && r.MemberNotificationEventFormatValues[0].ReceiveNotifications == onboardingSessionModel.EventTypes[0].IsSelected
             && r.MemberNotificationLocationValues.Count == onboardingSessionModel.NotificationLocations.Count
-            && r.MemberNotificationLocationValues.First().Name == onboardingSessionModel.NotificationLocations.First().LocationName
-            && r.MemberNotificationLocationValues.First().Radius == onboardingSessionModel.NotificationLocations.First().Radius
-            && r.MemberNotificationLocationValues.First().Latitude == onboardingSessionModel.NotificationLocations.First().GeoPoint[0]
-            && r.MemberNotificationLocationValues.First().Longitude == onboardingSessionModel.NotificationLocations.First().GeoPoint[1]
+            && r.MemberNotificationLocationValues[0].Name == onboardingSessionModel.NotificationLocations[0].LocationName
+            && r.MemberNotificationLocationValues[0].Radius == onboardingSessionModel.NotificationLocations[0].Radius
+            && r.MemberNotificationLocationValues[0].Latitude == onboardingSessionModel.NotificationLocations[0].GeoPoint[0]
+            && r.MemberNotificationLocationValues[0].Longitude == onboardingSessionModel.NotificationLocations[0].GeoPoint[1]
         )));
 
         result.As<ViewResult>().ViewName.Should().Be(CheckYourAnswersController.ApplicationSubmittedViewPath);

@@ -5,7 +5,7 @@ namespace SFA.DAS.Aan.SharedUi.Models.NetworkEvents;
 public class EventFilterChoices
 {
     public string? Keyword { get; set; }
-    public string Location { get; set; }
+    public string Location { get; set; } = string.Empty;
     public int Radius { get; set; }
     public DateTime? FromDate { get; set; }
     public DateTime? ToDate { get; set; }

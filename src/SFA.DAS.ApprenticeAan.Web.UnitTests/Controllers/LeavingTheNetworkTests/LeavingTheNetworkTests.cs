@@ -1,4 +1,4 @@
-﻿using AutoFixture.NUnit3;
+﻿using AutoFixture.NUnit4;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +14,7 @@ using SFA.DAS.ApprenticePortal.Authentication.TestHelpers;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers.LeavingTheNetworkTests;
+
 public class LeavingTheNetworkTests
 {
     static readonly string ProfileSettingsUrl = Guid.NewGuid().ToString();
@@ -52,7 +53,7 @@ public class LeavingTheNetworkTests
         var viewResult = result as ViewResult;
         var model = viewResult!.Model as LeaveTheNetworkViewModel;
 
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(model!.LeavingReasonsTitle, Is.EqualTo(leavingCategoryReasons.Category));
             Assert.That(model!.LeavingReasons, Is.EqualTo(leavingCategoryReasons.LeavingReasons));
@@ -61,7 +62,7 @@ public class LeavingTheNetworkTests
             Assert.That(model!.LeavingExperienceTitle, Is.EqualTo(leavingCategoryExperience.Category));
             Assert.That(model!.LeavingExperience, Is.EqualTo(leavingCategoryExperience.LeavingReasons));
             Assert.That(model!.ProfileSettingsLink, Is.EqualTo(ProfileSettingsUrl));
-        });
+        }
     }
 
     [TestCase(0)]

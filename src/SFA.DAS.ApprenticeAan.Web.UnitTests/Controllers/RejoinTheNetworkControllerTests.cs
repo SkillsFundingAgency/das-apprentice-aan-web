@@ -1,4 +1,4 @@
-﻿using AutoFixture.NUnit3;
+﻿using AutoFixture.NUnit4;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SFA.DAS.Aan.SharedUi.Infrastructure;
@@ -7,6 +7,7 @@ using SFA.DAS.ApprenticeAan.Web.Controllers;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.ApprenticeAan.Web.UnitTests.Controllers;
+
 public class RejoinTheNetworkControllerTests
 {
     [Test]
@@ -33,11 +34,11 @@ public class RejoinTheNetworkControllerTests
         outerApiClientMock.Verify(x => x.PostMemberReinstate(memberId, cancellationToken), Times.Once);
         sessionServiceMock.Verify(x => x.Clear(), Times.Once);
 
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(response, Is.TypeOf<RedirectToRouteResult>());
             var redirectToAction = (RedirectToRouteResult)response;
             Assert.That(redirectToAction.RouteName, Does.Contain(SharedRouteNames.Home));
-        });
+        }
     }
 }

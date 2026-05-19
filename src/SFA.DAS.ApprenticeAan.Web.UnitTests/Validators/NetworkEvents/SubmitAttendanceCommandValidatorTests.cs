@@ -33,6 +33,6 @@ public class SubmitAttendanceCommandValidatorTests
         var sut = new SubmitAttendanceCommandValidator();
         var result = sut.TestValidate(model);
 
-        result.ShouldHaveAnyValidationError();
+        result.ShouldHaveValidationErrorFor(c => c.StartDateTime);
     }
 }

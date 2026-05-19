@@ -2,15 +2,15 @@
 
 public class EventNotificationSettingsViewModel : IBackLink
 {
-    public List<EventFormatViewModel> EventFormats { get; set; }
-    public List<NotificationLocationsViewModel> EventNotificationLocations { get; set; }
+    public List<EventFormatViewModel> EventFormats { get; set; } = new List<EventFormatViewModel>();
+    public List<NotificationLocationsViewModel> EventNotificationLocations { get; set; } = new List<NotificationLocationsViewModel>();
     public bool? ReceiveMonthlyNotifications { get; set; }
-    public string ReceiveMonthlyNotificationsText { get; set; }
+    public string ReceiveMonthlyNotificationsText { get; set; } = string.Empty;
     public bool UserNewToNotifications { get; set; }
     public string? ChangeMonthlyEmailUrl { get; set; }
     public string? ChangeEventTypeUrl { get; set; }
     public string? ChangeLocationsUrl { get; set; }
-    public string BackLink { get; set; }
+    public string BackLink { get; set; } = string.Empty;
     public bool ShowLocationsSection { get; set; }
 }
 
