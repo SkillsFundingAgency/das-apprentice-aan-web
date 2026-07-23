@@ -19,10 +19,7 @@ public class ApplicationConfiguration : ISharedUiConfiguration
 
     public ConnectionStringsConfiguration ConnectionStrings { get; set; } = new();
 
-    public AuthenticationConfiguration Authentication { get; set; } = new();
-
     public OuterApiConfiguration ApprenticeAanOuterApi { get; set; } = new();
-    public bool UseGovSignIn { get; set; }
     public bool StubAuth { get; set; }
 }
 
@@ -43,11 +40,6 @@ public class ConnectionStringsConfiguration
 {
     public string RedisConnectionString { get; set; } = null!;
     public string DataProtectionKeysDatabase { get; set; } = null!;
-}
-
-public class AuthenticationConfiguration
-{
-    public string MetadataAddress { get; set; } = null!;
 }
 
 public class OuterApiConfiguration : IApimClientConfiguration

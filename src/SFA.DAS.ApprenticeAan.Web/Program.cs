@@ -39,15 +39,7 @@ builder.Services
 
 builder.Services.AddTransient<ICustomClaims, ApprenticeAccountPostAuthenticationClaimsHandler>();
 builder.Services.AddTransient<IApprenticeAccountProvider, ApprenticeAccountProvider>();
-if (applicationConfiguration.UseGovSignIn)
-{
-    builder.Services.AddGovLoginAuthentication(applicationConfiguration.ApplicationUrls, rootConfiguration);
-}
-else
-{
-    builder.Services.AddTransient<IOidcService, StubOidcService>();
-    builder.Services.AddAuthentication(applicationConfiguration!.Authentication, builder.Environment);
-}
+builder.Services.AddGovLoginAuthentication(applicationConfiguration.ApplicationUrls, rootConfiguration);
 
 builder.Services.AddHealthChecks()
     .AddCheck<ApprenticeAanOuterApiHealthCheck>(ApprenticeAanOuterApiHealthCheck.HealthCheckResultDescription,
@@ -60,7 +52,7 @@ builder.Services.AddSharedUi(applicationConfiguration, options =>
     /// options.SetCurrentNavigationSection(NavigationSection.ApprenticeFeedback);
     options.EnableZendesk();
     options.EnableGoogleAnalytics();
-    options.SetUseGovSignIn(applicationConfiguration.UseGovSignIn);
+    options.SetUseGovSignIn(true);
 });
 
 builder.Services

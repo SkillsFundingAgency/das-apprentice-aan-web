@@ -33,7 +33,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        if (_configuration is { UseGovSignIn: true, StubAuth: false })
+        if (_configuration is { StubAuth: false })
         {
             try
             {
